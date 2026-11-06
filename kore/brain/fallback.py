@@ -41,10 +41,23 @@ def _join(items: list[str]) -> str:
     return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " y " + items[-1]
 
 
-def phrase(event) -> str | None:
-    """The fallback sentence for an engine Event, or None if nothing should be said aloud."""
+def phrase(event, manner: str = "say") -> str | None:
+    """The fallback sentence for an event, or None if nothing should be said aloud.
+
+    manner comes from the manners gate: "short" is for quiet mode, night and
+    visitors; "signal" (private, with visitors there) is a soft sound and at most
+    their name; "family" is a message, never words.
+    """
     d = event.data
     k = event.kind
+    if manner == "family":
+        return None
+    if manner == "signal":
+        if k == "morning_greeting":
+            return "Buenos días."
+        return f"{d['person']}, un recordatorio para cuando pueda." if d.get("person") else None
+    if manner == "short":
+        return _short(event)
     if k == "medication_reminder":
         what = _join([m["description"] or m["name"] for m in d["medications"]])
         if d["attempt"] == 1 and not d["late"]:
@@ -72,4 +85,36 @@ def phrase(event) -> str | None:
         for a in d["shared_appointments"]:
             text += f" A {spoken_time(a['time'])}: {a['title']}."
         return text
+    if k == "quiet_over":
+        return "Hola otra vez. ¿Todo bien?"
+    if k == "visit_follow_up":
+        return "¿Qué tal ha ido la visita?"
+    if k == "welcome_back":
+        return "Hola de nuevo. Desde ahora vuelvo con los recordatorios."
+    if k == "away_presence_check":
+        if d.get("person"):
+            return f"Por cierto, ¿ha vuelto ya {d['person']}? Si es así, retomo sus recordatorios."
+        return "Hola. Si ya hay alguien de vuelta en casa, basta con decírmelo y retomo los recordatorios."
     return None  # family alerts etc. are messages, not speech
+
+
+def _short(event) -> str | None:
+    """Very short and soft: just enough to know what it's about."""
+    d = event.data
+    k = event.kind
+    if k == "medication_reminder":
+        return f"{d['person']}, {_join([m['description'] or m['name'] for m in d['medications']])}."
+    if k in ("appointment_same_day", "appointment_day_before"):
+        when = "En una hora" if k == "appointment_same_day" else f"Mañana a {spoken_time(d['time'])}"
+        return f"{when}: {d['title']}."
+    if k == "reminder":
+        return f"{d['text'][:1].upper()}{d['text'][1:]}."
+    if k == "birthday":
+        return f"Hoy cumple años {d['name']}."
+    if k == "morning_greeting":
+        return "Buenos días."
+    if k == "clock_untrusted":
+        return "No estoy seguro de la hora. Mejor mirar el pastillero."
+    if k == "away_presence_check" and not d.get("person"):
+        return "Hola. ¿Hay alguien de vuelta?"
+    return phrase(event)

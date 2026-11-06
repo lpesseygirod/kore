@@ -2,8 +2,9 @@
 
 The brain is scripted here (no Claude, no network): each line the person says
 comes with the tool calls Claude is expected to make. Events from the engine
-are worded with the offline fallback phrases. This checks the deterministic
-half of the day; phase 4 adds quiet mode, visitors and the real brain.
+go through the manners gate (quiet mode, visitors, night) and are worded with
+the offline fallback phrases. This checks the deterministic half of the day;
+the real brain comes with phase 1.
 
 Run:  uv run python -m sim.day
 """
@@ -16,6 +17,7 @@ from datetime import datetime, timedelta
 
 from kore.brain import fallback, tools
 from kore.brain.session import Person, Session
+from kore.manners.gate import Manners
 from kore.memory import meds, store
 from kore.memory.db import connect
 from kore.scheduler.clock import HOME_TZ, FakeClock
@@ -42,6 +44,7 @@ def setup(conn, clock):
     for pid in (carmen, antonio):
         store.set_consent(conn, clock, pid, "water_nudges", pid == carmen)
         store.set_consent(conn, clock, pid, "movement_nudges", pid == carmen)
+        store.set_consent(conn, clock, pid, "conversation_starters", pid == carmen)
     return Session([Person(carmen, "Carmen", "Carmen"), Person(antonio, "Antonio", "Toni")])
 
 
@@ -56,6 +59,9 @@ SCRIPT = {
     "12:17": [("presence", "absent")],
     "13:00": [("presence", "moving"), ("say", "Ya estoy aquí. No había huevos", [("back_from_shopping", {"not_found": ["huevos"]})])],
     "13:30": [("presence", "still")],
+    "16:00": [("presence", "moving"), ("say", "Pepe, cállate, que quiero descansar", [("be_quiet", {})])],
+    "17:00": [("say", "Ha llegado mi hermana", [("visitors_arrived", {})])],
+    "19:00": [("say", "Ya se ha ido Rosa", [("visitors_left", {})])],
     "21:31": [("say", "Soy Carmen, ya está", [("mark_dose_taken", {"person": "Carmen"})])],
 }
 
@@ -72,6 +78,10 @@ def word(tool_name: str, result: dict) -> str:
         return f"Hecho. La lista tiene {fallback._join(result['items'])}."
     if tool_name == "going_shopping":
         return f"Recuerda: {fallback._join(result['items'])}."
+    if tool_name == "be_quiet":
+        return "Claro."
+    if tool_name in ("visitors_arrived", "visitors_left"):
+        return None  # nothing to say
     if tool_name == "back_from_shopping":
         return f"Dejo {fallback._join(result['kept_for_next_time'])} en la lista para la próxima vez."
     return "Hecho."
@@ -83,6 +93,7 @@ def run_day(path=":memory:") -> tuple[list[Line], dict]:
     session = setup(conn, clock)
     ctx = tools.Context(conn, clock, session)
     engine = Engine(conn, clock)
+    manners = Manners(conn, clock)
     transcript: list[Line] = []
 
     def pepe(text):
@@ -95,16 +106,19 @@ def run_day(path=":memory:") -> tuple[list[Line], dict]:
         hhmm = clock.now().strftime("%H:%M")
         for step in SCRIPT.get(hhmm, []):
             if step[0] == "presence":
-                for e in engine.on_presence(step[1]):
-                    pepe(fallback.phrase(e))
+                manners.submit(engine.on_presence(step[1]))
+                manners.on_presence(step[1])
             else:
                 _, text, calls = step
                 session.begin_turn(text)
                 transcript.append(Line(hhmm, "Persona", text))
                 for name, args in calls:
                     pepe(word(name, tools.call(ctx, name, args)))
-        for e in engine.tick():
-            pepe(fallback.phrase(e))
+        manners.submit(engine.tick())
+        manners.tick()
+        for item in manners.next_items():
+            pepe(fallback.phrase(item.event, item.manner))
+            manners.mark_done(item)
     doses = {f"{r['name']} {r['slot_utc']}": r["status"] for r in conn.execute(
         "SELECT m.name, d.slot_utc, d.status FROM doses d JOIN medications m ON m.id = d.medication_id")}
     return transcript, {"doses": doses, "list": store.list_items(conn)}

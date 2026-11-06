@@ -14,13 +14,15 @@ from __future__ import annotations
 import json
 import sqlite3
 from dataclasses import dataclass, field
-from datetime import date, datetime
+from datetime import date, datetime, timedelta, timezone
 from typing import Callable
 
 from kore.brain.session import ConfirmationRefused, Session, SpeakerMismatch, SpeakerUnknown
-from kore.memory import meds, store
-from kore.memory.db import utc_iso
-from kore.scheduler.clock import Clock
+from kore.manners import modes
+from kore.manners.gate import Manners
+from kore.memory import meds, settings, store
+from kore.memory.db import from_utc_iso, utc_iso
+from kore.scheduler.clock import Clock, local_at
 
 
 @dataclass
@@ -311,6 +313,14 @@ def _exec_add_appt(ctx, p):
                                                     p["location"])}
 
 
+@executor("go_away")
+def _exec_go_away(ctx, p):
+    back_on = date.fromisoformat(p["back_on"]) if p["back_on"] else None
+    for pid in p["person_ids"]:
+        modes.start(ctx.conn, ctx.clock, "away", pid, expected_back=back_on)
+    return {"say": "Wish them a good trip."}
+
+
 @executor("add_reminder")
 def _exec_add_reminder(ctx, p):
     return {"reminder_id": store.add_reminder(ctx.conn, ctx.clock, p["person_id"], p["text"], p["time"], p["rule"],
@@ -357,13 +367,118 @@ def _remove_list(ctx: Context, args: dict) -> dict:
 
 @tool("going_shopping", "They said they're going shopping: returns the list to read to them.")
 def _going(ctx: Context, args: dict) -> dict:
+    # Things for them wait while they're out, but only if we know who went: with
+    # two at home and nobody named, nothing changes (the other can say "not mine").
+    # Reading the list is fine after outside text; changing the mode is not.
+    if ctx.session.speaker_id is not None and ctx.tainted_turn != ctx.session.turn:
+        modes.start(ctx.conn, ctx.clock, "out", ctx.session.speaker_id)
     return {"ok": True, "items": store.list_items(ctx.conn)}
 
 
 @tool("back_from_shopping", "They're back and said what they didn't find. Everything else leaves the list.",
       {"not_found": ITEMS}, writes=True, required=["not_found"])
 def _back(ctx: Context, args: dict) -> dict:
+    if ctx.session.speaker_id is not None:
+        modes.end(ctx.conn, ctx.clock, "out", ctx.session.speaker_id)
     return {"ok": True, "kept_for_next_time": store.back_from_shopping(ctx.conn, args["not_found"])}
+
+
+# --- manners: quiet, visitors, away -------------------------------------------
+
+
+@tool("be_quiet", "They asked you to be quiet. Say only 'Claro.' Medicine and appointment reminders still "
+      "come, very short. Give minutes or until if they said how long; otherwise two hours.",
+      {"minutes": {"type": "integer"},
+       "until": {"type": "string", "description": "HH:MM, or 'night' for 'until tonight'."}}, writes=True)
+def _be_quiet(ctx: Context, args: dict) -> dict:
+    now = ctx.clock.now()
+    until = None
+    if args.get("minutes"):
+        minutes = int(args["minutes"])
+        if minutes <= 0:
+            raise ValueError("minutes must be positive")
+        until = now.astimezone(timezone.utc) + timedelta(minutes=minutes)  # real minutes, even across DST
+    elif args.get("until"):
+        hhmm = args["until"]
+        if hhmm == "night":
+            # Said at night already: until the morning, not until tomorrow night.
+            hhmm = settings.get(ctx.conn, "night_end" if Manners(ctx.conn, ctx.clock).is_night() else "night_start")
+        until = local_at(now.date(), hhmm, ctx.clock.tz)
+        if until <= now:
+            until = local_at(now.date() + timedelta(days=1), hhmm, ctx.clock.tz)
+    modes.start(ctx.conn, ctx.clock, "quiet", until=until)
+    row = modes.active(ctx.conn, ctx.clock, "quiet")
+    return {"ok": True, "quiet_until": from_utc_iso(row["until_utc"], ctx.clock.tz).strftime("%H:%M"),
+            "say": "Only 'Claro.' Nothing else."}
+
+
+@tool("can_talk_again", "They said you can talk again before the quiet time was up.", writes=True)
+def _can_talk(ctx: Context, args: dict) -> dict:
+    return {"ok": modes.end(ctx.conn, ctx.clock, "quiet")}
+
+
+@tool("visitors_arrived", "They said they have visitors (or are on the phone). Stay discreet: nothing private "
+      "out loud until they say the visitors have left.", writes=True)
+def _visitors(ctx: Context, args: dict) -> dict:
+    modes.start(ctx.conn, ctx.clock, "visitors")
+    return {"ok": True}
+
+
+@tool("visitors_left", "They said the visitors have gone.", writes=True)
+def _visitors_left(ctx: Context, args: dict) -> dict:
+    return {"ok": modes.end(ctx.conn, ctx.clock, "visitors")}
+
+
+def _who_goes(ctx: Context, args: dict) -> list[int]:
+    """Only someone who is going can say so, and we must know who is speaking: an
+    unknown voice can't pause anyone's medicine reminders."""
+    s = ctx.session
+    if s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    if args.get("everyone") or len(s.household) == 1:
+        return [p.id for p in s.household]
+    return [_person_id(ctx, args)]
+
+
+@tool("propose_going_away", "They're going away for days (hospital, a holiday, a relative's home). Reminders "
+      "pause for them until they're back, so this needs their yes to the read-back, then confirm_action.",
+      {"person": PERSON, "everyone": {"type": "boolean", "description": "Everyone in the home is going."},
+       "back_on": {"type": "string", "description": "YYYY-MM-DD, if they said when they'll be back."}},
+      writes=True)
+def _propose_away(ctx: Context, args: dict) -> dict:
+    back_on = date.fromisoformat(args["back_on"]) if args.get("back_on") else None
+    if back_on is not None and back_on < ctx.clock.now().date():
+        raise ValueError("back_on is in the past")
+    people = _who_goes(ctx, args)
+    names = " and ".join(ctx.session.person(p).call_name for p in people)
+    readback = (f"{names} away{' until ' + back_on.isoformat() if back_on else ''}: reminders pause until "
+                "you tell me you're back. Is that right?")
+    a = ctx.session.propose("go_away", {"person_ids": people, "back_on": back_on.isoformat() if back_on else None},
+                            readback)
+    return {"ok": True, "action_id": a.id, "say_and_wait": readback}
+
+
+@tool("back_home", "Someone is back home after being away for days (they say so, or the other person "
+      "does: 'Carmen ya ha vuelto').", {"person": PERSON, "everyone": {"type": "boolean"}}, writes=True)
+def _back_home(ctx: Context, args: dict) -> dict:
+    # Anyone known may say someone else is back: it only resumes reminders (the safe side).
+    s = ctx.session
+    if s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    if args.get("everyone"):
+        people = [p.id for p in s.household]
+    elif args.get("person"):
+        found = s.find_person(args["person"])
+        if found is None:
+            raise ValueError(f"no one called {args['person']!r} lives here")
+        people = [found.id]
+    else:
+        people = [s.speaker_id]
+    back = [p for p in people if modes.end(ctx.conn, ctx.clock, "away", p)]
+    return {"ok": bool(back), "back": [ctx.session.person(p).call_name for p in back],
+            **({} if back else {"error": "not_away"})}
 
 
 @tool("remember_place", "Remember where something was put.", {"thing": {"type": "string"},

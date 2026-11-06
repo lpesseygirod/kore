@@ -8,7 +8,12 @@ the network, so reminders work with the internet down.
 Events carry a category (PEPE.md section 4):
   1 = always (medication, appointments, morning greeting, clock problems)
   2 = only if they said yes (water, movement)
-The manners layer (phase 4) decides how and whether to say them right now.
+The manners layer (kore/manners/gate.py) decides how and whether to say them now.
+
+A dose with no "I took it" is closed as "missed" only if a reminder was really
+said out loud (the voice reports it: meds.mark_spoken) and the person is home;
+otherwise "unknown". Only "missed" counts towards a family alert. Medicine
+reminders are not attempted at all for someone away for days.
 """
 
 from __future__ import annotations
@@ -17,9 +22,10 @@ import sqlite3
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 
+from kore.manners import modes
 from kore.memory import meds, store
 from kore.memory.db import from_utc_iso, utc_iso
-from kore.memory.meds import elapsed
+from kore.memory.meds import _utc, elapsed
 from kore.scheduler.clock import Clock, local_at
 
 # Medication: first reminder at the time, then two retries (at most 3, PEPE.md 4).
@@ -55,6 +61,9 @@ class Event:
     person_ids: list[int]
     data: dict = field(default_factory=dict)
     private: bool = False  # don't say it in front of visitors
+    key: str | None = None  # a newer event with the same key replaces one not yet said
+    expires_at: datetime | None = None  # not worth saying after this
+    not_before: datetime | None = None
 
 
 class Engine:
@@ -62,7 +71,6 @@ class Engine:
         self.conn = conn
         self.clock = clock
         self.hot_day = hot_day
-        self._clock_warned = False
         self._presence = "absent"
         self._still_since: datetime | None = None
 
@@ -70,12 +78,12 @@ class Engine:
 
     def tick(self) -> list[Event]:
         if not self.clock.trusted():
-            # Don't fire or log doses on a wrong clock; say why, once.
-            if self._clock_warned:
+            # Don't fire or log doses on a wrong clock; say why, once (also across restarts).
+            if not self._once("clock_untrusted"):
                 return []
-            self._clock_warned = True
-            return [Event("clock_untrusted", 1, self._everyone(), {"say": meds.ClockUntrusted.say})]
-        self._clock_warned = False
+            return [Event("clock_untrusted", 1, self._everyone(), {"say": meds.ClockUntrusted.say},
+                          key="clock_untrusted")]
+        self.conn.execute("DELETE FROM event_log WHERE key = 'clock_untrusted'")  # warn again next time
         now = self.clock.now()
         events: list[Event] = []
         events += self._medication(now)
@@ -104,7 +112,9 @@ class Engine:
             return []
         if not self._once(f"morning:{now.date()}"):
             return []
-        return [Event("morning_greeting", 1, self._everyone(), self.plan_for_day(now.date()))]
+        plan = self.plan_for_day(now.date())
+        return [Event("morning_greeting", 1, self._everyone(), plan, private="people" in plan,
+                      expires_at=local_at(now.date(), MORNING_UNTIL, self.clock.tz))]
 
     def plan_for_day(self, day: date) -> dict:
         """What today holds, for the greeting. Facts from code only.
@@ -150,12 +160,16 @@ class Engine:
                 ).fetchone()
                 attempts = row["attempts"] if row else 0
                 if elapsed(slot, now) >= CLOSE_AFTER:
-                    meds.close_slot(self.conn, self.clock, med, slot, reminded=attempts > 0)
-                    if attempts > 0:
+                    reminded = (row is not None and row["spoken"] > 0
+                                and not modes.not_home(self.conn, self.clock, med["person_id"]))
+                    meds.close_slot(self.conn, self.clock, med, slot, reminded=reminded)
+                    if reminded:
                         closed_missed.append(med["person_id"])
                     continue
                 if attempts >= len(ATTEMPT_OFFSETS) or elapsed(slot, now) < ATTEMPT_OFFSETS[attempts]:
                     continue
+                if modes.active(self.conn, self.clock, "away", med["person_id"]):
+                    continue  # away for days: nothing to remind; resumes when they're back
                 if row and elapsed(from_utc_iso(row["last_attempt_utc"], self.clock.tz), now) < timedelta(minutes=15):
                     continue  # catching up after an outage: one attempt at a time
                 self.conn.execute(
@@ -166,18 +180,20 @@ class Engine:
                 )
                 key = (med["person_id"], utc_iso(slot))
                 due.setdefault(key, []).append(
-                    {"name": med["name"], "description": med["description"], "attempt": attempts + 1}
+                    {"id": med["id"], "name": med["name"], "description": med["description"],
+                     "attempt": attempts + 1}
                 )
         events = []
         for (pid, slot_utc), items in sorted(due.items()):
             slot = from_utc_iso(slot_utc, self.clock.tz)
             events.append(Event(
                 "medication_reminder", 1, [pid],
-                {"person": self._call_name(pid), "time": slot.strftime("%H:%M"), "medications": items,
+                {"person": self._call_name(pid), "time": slot.strftime("%H:%M"), "slot_utc": slot_utc,
+                 "medications": items,
                  "attempt": max(i["attempt"] for i in items), "late": elapsed(slot, now) > timedelta(minutes=50),
                  "rules": "Address them by name. A 'yes' only counts once you know who is speaking. "
                           + meds.NEVER_DOUBLE},
-                private=True,
+                private=True, key=f"med:{pid}:{slot_utc}", expires_at=_utc(slot) + CLOSE_AFTER,
             ))
         for pid in sorted(set(closed_missed)):
             events += self._missed_alert(pid)
@@ -226,7 +242,7 @@ class Engine:
                     f"appointment_{which}", 1, pids,
                     {"title": a["title"], "location": a["location"], "time": starts.strftime("%H:%M"),
                      "day": starts.strftime("%A"), "person": self._call_name(a["person_id"]) if a["person_id"] else None},
-                    private=a["person_id"] is not None,
+                    private=a["person_id"] is not None, key=f"appt:{a['id']}:{which}", expires_at=starts,
                 ))
         return events
 
@@ -244,7 +260,8 @@ class Engine:
         out = []
         for b in self._birthdays_on(now.date()):
             if self._once(f"birthday:{b['name']}:{now.date()}"):
-                out.append(Event("birthday", 1, self._everyone(), b))
+                out.append(Event("birthday", 1, self._everyone(), b,
+                                 expires_at=local_at(now.date() + timedelta(days=1), "00:00", self.clock.tz)))
         return out
 
     def _voice_reminders(self, now: datetime) -> list[Event]:
@@ -264,7 +281,9 @@ class Engine:
                     continue
                 if self._once(key):
                     pids = [r["person_id"]] if r["person_id"] else self._everyone()
-                    out.append(Event("reminder", 1, pids, {"text": r["text"], "time": r["time_hhmm"]}))
+                    out.append(Event("reminder", 1, pids, {"text": r["text"], "time": r["time_hhmm"]},
+                                     private=r["person_id"] is not None, key=key,
+                                     expires_at=_utc(at) + REMINDER_CATCH_UP))
                     if r["rule"] == "once":
                         self.conn.execute("UPDATE reminders SET active = 0 WHERE id = ?", (r["id"],))
         return out
@@ -281,7 +300,8 @@ class Engine:
             late = elapsed(at, now)
             if timedelta(0) <= late and self._once(f"water:{now.date()}:{t}"):
                 if late <= WATER_CATCH_UP:
-                    out.append(Event("water_nudge", 2, people, {"hot_day": self.hot_day}))
+                    out.append(Event("water_nudge", 2, people, {"hot_day": self.hot_day},
+                                     expires_at=at + WATER_CATCH_UP))
         return out
 
     def _movement(self, now: datetime) -> list[Event]:
@@ -294,7 +314,8 @@ class Engine:
         self._still_since = now  # next nudge only after another long sit
         if not any(self._once(f"movement:{now.date()}:{n}") for n in range(MOVEMENT_MAX_PER_DAY)):
             return []
-        return [Event("movement_nudge", 2, people, {"sitting_minutes": int(sat.total_seconds() // 60)})]
+        return [Event("movement_nudge", 2, people, {"sitting_minutes": int(sat.total_seconds() // 60)},
+                      expires_at=now + timedelta(minutes=30))]
 
     def _daytime(self, now: datetime) -> bool:
         start, end = (local_at(now.date(), t, self.clock.tz) for t in NUDGE_HOURS)
@@ -313,7 +334,8 @@ class Engine:
         return [r["id"] for r in self.conn.execute("SELECT id FROM people ORDER BY id")]
 
     def _consenting(self, kind: str) -> list[int]:
-        return [pid for pid in self._everyone() if store.has_consent(self.conn, pid, kind)]
+        return [pid for pid in self._everyone() if store.has_consent(self.conn, pid, kind)
+                and not modes.not_home(self.conn, self.clock, pid)]
 
     def _call_name(self, pid: int) -> str:
         return self.conn.execute("SELECT call_name FROM people WHERE id = ?", (pid,)).fetchone()["call_name"]

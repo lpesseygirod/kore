@@ -233,11 +233,19 @@ def mark_taken(conn: sqlite3.Connection, clock: Clock, person_id: int, medicatio
     return {"ok": True, "marked": marked, "already_taken": already, "rules": NEVER_DOUBLE}
 
 
+def mark_spoken(conn: sqlite3.Connection, medication_ids: list[int], slot_utc: str) -> None:
+    """The voice said this reminder out loud (called by the manners layer)."""
+    for mid in medication_ids:
+        conn.execute("UPDATE reminder_attempts SET spoken = spoken + 1 WHERE medication_id = ? AND slot_utc = ?",
+                     (mid, slot_utc))
+
+
 def close_slot(conn: sqlite3.Connection, clock: Clock, med: sqlite3.Row, slot: datetime, reminded: bool) -> None:
     """The dose window ended with no "I took it": record it honestly.
 
-    'missed' means we reminded and got no answer; 'unknown' means we never
-    reminded (device off, clock untrusted), so we can't say anything.
+    'missed' means a reminder was said out loud and got no answer; 'unknown'
+    means it never was (device off, clock untrusted, visitors, out or away), so
+    we can't say anything. Only 'missed' counts towards a family alert.
     """
     conn.execute(
         "INSERT OR IGNORE INTO doses (medication_id, person_id, slot_utc, status, logged_at_utc) "

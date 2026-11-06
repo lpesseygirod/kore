@@ -8,11 +8,17 @@ from tests.conftest import at
 
 
 def run(engine, clock, until, step=timedelta(minutes=1)):
-    """Tick every simulated minute until `until`; return (time, event) pairs."""
+    """Tick every simulated minute until `until`; return (time, event) pairs.
+
+    Plays the voice too: every medicine reminder is said, as the device would report.
+    """
     out = []
     while clock.now() < until:
         clock.advance(seconds=step.total_seconds())
-        out += [(clock.now().strftime("%H:%M"), e) for e in engine.tick()]
+        for e in engine.tick():
+            if e.kind == "medication_reminder":
+                meds.mark_spoken(engine.conn, [m["id"] for m in e.data["medications"]], e.data["slot_utc"])
+            out.append((clock.now().strftime("%H:%M"), e))
     return out
 
 

@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 1
+SCHEMA_VERSION = 2
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -67,6 +67,7 @@ CREATE TABLE IF NOT EXISTS reminder_attempts (
     slot_utc TEXT NOT NULL,
     attempts INTEGER NOT NULL,
     last_attempt_utc TEXT NOT NULL,
+    spoken INTEGER NOT NULL DEFAULT 0,  -- times the voice actually said it (phase 4)
     PRIMARY KEY (medication_id, slot_utc)
 );
 
@@ -130,6 +131,55 @@ CREATE TABLE IF NOT EXISTS event_log (
     fired_at_utc TEXT NOT NULL
 );
 
+-- Quiet, visitors (whole home), out of the house, away for days (per person). Phase 4.
+CREATE TABLE IF NOT EXISTS modes (
+    id INTEGER PRIMARY KEY,
+    kind TEXT NOT NULL CHECK (kind IN ('quiet', 'visitors', 'out', 'away')),
+    person_id INTEGER REFERENCES people(id),  -- NULL for the whole home
+    started_at_utc TEXT NOT NULL,
+    until_utc TEXT,                            -- NULL: until they say so
+    expected_back TEXT,                        -- away: the day they said they'd be back
+    ended_at_utc TEXT,
+    ended_how TEXT CHECK (ended_how IN ('said', 'time', 'presence', 'replaced'))
+);
+
+-- Settings changed by setup or feedback. person_id 0 = the whole home.
+CREATE TABLE IF NOT EXISTS settings (
+    person_id INTEGER NOT NULL DEFAULT 0,
+    key TEXT NOT NULL,
+    value TEXT NOT NULL,
+    updated_at TEXT NOT NULL,
+    PRIMARY KEY (person_id, key)
+);
+
+-- What Pepe has to say, and what the manners layer decided. A row is only
+-- 'done' once the voice has said it, so a restart in between says it again.
+CREATE TABLE IF NOT EXISTS outbox (
+    id INTEGER PRIMARY KEY,
+    created_at_utc TEXT NOT NULL,
+    kind TEXT NOT NULL,
+    category INTEGER NOT NULL,
+    person_ids TEXT NOT NULL,
+    data TEXT NOT NULL,
+    private INTEGER NOT NULL,
+    key TEXT,
+    not_before_utc TEXT,
+    expires_at_utc TEXT,
+    status TEXT NOT NULL CHECK (status IN ('ready', 'held', 'done', 'dropped')),
+    manner TEXT CHECK (manner IN ('say', 'short', 'signal', 'family')),
+    reason TEXT,
+    allowed_at_utc TEXT,
+    done_at_utc TEXT
+);
+CREATE INDEX IF NOT EXISTS outbox_open ON outbox(status) WHERE status IN ('ready', 'held');
+
+-- How they answered something Pepe started (warm, brief, not_now, ignored).
+CREATE TABLE IF NOT EXISTS reply_signals (
+    id INTEGER PRIMARY KEY,
+    at_utc TEXT NOT NULL,
+    kind TEXT NOT NULL CHECK (kind IN ('warm', 'brief', 'not_now', 'ignored'))
+);
+
 CREATE TABLE IF NOT EXISTS tool_log (
     id INTEGER PRIMARY KEY,
     at_utc TEXT NOT NULL,
@@ -153,8 +203,16 @@ def connect(path: str | Path = ":memory:") -> sqlite3.Connection:
         conn.execute("PRAGMA journal_mode = WAL")
     conn.execute("PRAGMA synchronous = FULL")
     conn.executescript(SCHEMA)
+    _migrate(conn)
     conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
     return conn
+
+
+def _migrate(conn: sqlite3.Connection) -> None:
+    """Columns added after a table existed (CREATE IF NOT EXISTS doesn't add them)."""
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(reminder_attempts)")}
+    if "spoken" not in cols:
+        conn.execute("ALTER TABLE reminder_attempts ADD COLUMN spoken INTEGER NOT NULL DEFAULT 0")
 
 
 def utc_iso(dt: datetime) -> str:

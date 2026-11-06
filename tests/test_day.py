@@ -1,6 +1,6 @@
 """Phase 3 'done when': A day with Pepe (PEPE.md 5) runs in under a minute and
-matches the table, for every row the scheduler owns. Quiet mode (16:00),
-visitors (17:00) and the visit follow-up (19:30) are phase 4 (manners)."""
+matches the table. Since phase 4 the events go through the manners gate, so the
+quiet (16:00), visitors (17:00) and visit follow-up (19:30) rows are covered too."""
 
 import time
 
@@ -35,6 +35,8 @@ def test_runs_in_under_a_minute(day):
         ("12:15", "Recuerda: leche, pan y huevos"),  # going shopping
         ("13:00", "huevos en la lista"),             # back, no eggs
         ("15:30", "paseo"),                          # sitting two hours
+        ("16:00", "Claro."),                         # be quiet
+        ("19:30", "visita"),                         # quiet again: how was the visit?
         ("20:00", "Mañana a las once: el médico"),   # doctor tomorrow
         ("21:30", "nueve y media"),                  # evening pill
     ],
@@ -51,6 +53,12 @@ def test_all_doses_taken_once_and_list_kept_eggs(day):
     _, state, _ = day
     assert sorted(state["doses"].values()) == ["taken"] * 3
     assert state["list"] == ["huevos"]
+
+
+def test_quiet_then_discreet_with_the_visitor(day):
+    # After "be quiet": only the short appointment reminder, then nothing while Rosa is there.
+    said = [(l.time, l.text) for l in day[0] if l.who == "Pepe" and "16:00" <= l.time < "19:30"]
+    assert said == [("16:00", "Claro."), ("16:00", "En una hora: visita de tu hermana Rosa.")]
 
 
 def test_nothing_unprompted_at_night(day):
