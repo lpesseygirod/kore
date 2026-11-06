@@ -7,6 +7,8 @@ dependencies = []
 
 [dependency-groups]
 dev = ["pytest>=8"]
+# Only for live API runs (experiments, recording test answers). Apache-2.0 licence.
+live = ["anthropic>=1.0"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
