@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 2
+SCHEMA_VERSION = 3
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -150,6 +150,53 @@ CREATE TABLE IF NOT EXISTS settings (
     value TEXT NOT NULL,
     updated_at TEXT NOT NULL,
     PRIMARY KEY (person_id, key)
+);
+
+-- "Just now" and "today" values, which run out on their own.
+CREATE TABLE IF NOT EXISTS setting_overrides (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL DEFAULT 0,
+    key TEXT NOT NULL,
+    value TEXT NOT NULL,
+    until_utc TEXT NOT NULL,
+    feedback_id INTEGER REFERENCES feedback(id)
+);
+
+-- Feedback about how Pepe behaves (phase 4b). Only the feedback sentence is
+-- stored, never the conversation around it. Lea sees and can undo every row.
+CREATE TABLE IF NOT EXISTS feedback (
+    id INTEGER PRIMARY KEY,
+    at_utc TEXT NOT NULL,
+    speaker_id INTEGER REFERENCES people(id),
+    person_id INTEGER REFERENCES people(id),   -- who it applies to; NULL = the whole home
+    said TEXT NOT NULL,
+    understood TEXT NOT NULL,
+    kind TEXT NOT NULL CHECK (kind IN ('setting', 'rule', 'praise', 'safety', 'other')),
+    setting_key TEXT,
+    new_value TEXT,
+    previous_value TEXT,                       -- what was stored before (NULL: nothing of their own)
+    rule_text TEXT,
+    scope TEXT NOT NULL CHECK (scope IN ('now', 'today', 'always')),
+    until_utc TEXT,                            -- for 'now' and 'today'
+    follow_up_question TEXT,
+    follow_up_answer TEXT,
+    follow_up_state TEXT NOT NULL DEFAULT 'none'
+        CHECK (follow_up_state IN ('none', 'asked', 'answered', 'dropped')),
+    status TEXT NOT NULL CHECK (status IN
+        ('active', 'undone', 'replaced', 'held_safety', 'not_applied', 'noted')),
+    replaced_by INTEGER REFERENCES feedback(id),
+    review_first INTEGER NOT NULL DEFAULT 0,   -- touches medicine, alerts or night: top of Lea's page
+    misunderstood INTEGER NOT NULL DEFAULT 0,
+    lea_note TEXT,
+    checked_at_utc TEXT                        -- the light "is that better?" a few days later
+);
+
+-- Things Pepe notices but never acts on alone ("be quiet" every afternoon, "¿qué?" often).
+CREATE TABLE IF NOT EXISTS behaviour_signals (
+    id INTEGER PRIMARY KEY,
+    at_utc TEXT NOT NULL,
+    person_id INTEGER REFERENCES people(id),
+    kind TEXT NOT NULL CHECK (kind IN ('repeat_request'))
 );
 
 -- What Pepe has to say, and what the manners layer decided. A row is only

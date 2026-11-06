@@ -51,7 +51,8 @@ CAT2_MIN_GAP = timedelta(hours=1)
 CAT2_MIN_GAP_AFTER_BRIEF = timedelta(hours=2)
 IGNORED_WAIT = timedelta(hours=4)  # after a check-in is ignored, wait much longer
 STARTERS_PER_DAY = 2  # PEPE.md 4: "two or three", whatever the setting
-STARTERS = {"visit_follow_up"}  # conversation starters, under the daily limit
+# Conversation starters, under the daily limit (and "how chatty" from feedback).
+STARTERS = {"visit_follow_up", "feedback_check", "quiet_suggestion", "slower_suggestion"}
 
 VISIT_FOLLOW_UP_AFTER = timedelta(minutes=30)
 VISIT_FOLLOW_UP_WINDOW = timedelta(hours=3)
@@ -273,18 +274,26 @@ class Manners:
 
     # --- state ------------------------------------------------------------
 
-    def is_night(self, now: datetime | None = None) -> bool:
-        now = now or self.clock.now()
-        start, end = settings.get(self.conn, "night_start"), settings.get(self.conn, "night_end")
-        t = now.strftime("%H:%M")  # wall clock: night hours are local times
-        return (start <= t or t < end) if start > end else start <= t < end
+    def is_night(self, person_ids: list[int] | None = None) -> bool:
+        """Night for any of these people (default: anyone at home). Each can have their own hours."""
+        t = self.clock.now().strftime("%H:%M")  # wall clock: night hours are local times
+        for p in person_ids or self._everyone() or [settings.HOME]:
+            start = settings.get(self.conn, "night_start", p, self.clock)
+            end = settings.get(self.conn, "night_end", p, self.clock)
+            if settings.within(t, start, end):
+                return True
+        return False
 
-    def snapshot(self, exclude_id: int | None = None) -> Snapshot:
+    def is_rest_time(self) -> bool:
+        hours = settings.get(self.conn, "rest_hours", settings.HOME, self.clock)
+        return bool(hours) and settings.within(self.clock.now().strftime("%H:%M"), *hours.split("-"))
+
+    def snapshot(self, targets: list[int] | None = None, exclude_id: int | None = None) -> Snapshot:
         people = self._everyone()
-        block, left = self._category_2(exclude_id)
+        block, left = self._category_2(targets or people, exclude_id)
         return Snapshot(
-            night=self.is_night(),
-            quiet=modes.active(self.conn, self.clock, "quiet") is not None,
+            night=self.is_night(targets),
+            quiet=modes.active(self.conn, self.clock, "quiet") is not None or self.is_rest_time(),
             visitors=modes.active(self.conn, self.clock, "visitors") is not None,
             presence=self.presence,
             away={p for p in people if modes.active(self.conn, self.clock, "away", p)},
@@ -293,7 +302,7 @@ class Manners:
             starters_left=left,
         )
 
-    def _category_2(self, exclude_id: int | None) -> tuple[str | None, int]:
+    def _category_2(self, targets: list[int], exclude_id: int | None) -> tuple[str | None, int]:
         now = self.clock.now()
         day_start = utc_iso(local_at(now.date(), "00:00", self.clock.tz))
         signals = self.conn.execute("SELECT kind, at_utc FROM reply_signals WHERE at_utc >= ?",
@@ -302,7 +311,10 @@ class Manners:
         allowed = self.conn.execute(
             "SELECT kind, allowed_at_utc FROM outbox WHERE category = 2 AND allowed_at_utc >= ? "
             "AND status IN ('ready', 'done') AND id IS NOT ?", (day_start, exclude_id)).fetchall()
-        left = (STARTERS_PER_DAY + ("warm" in kinds) - ("brief" in kinds)
+        # How chatty they asked Pepe to be ("habla menos"): the least chatty of them wins.
+        base = min((settings.STARTERS_FOR_CHATTINESS[settings.get(self.conn, "chattiness", p, self.clock)]
+                    for p in targets), default=STARTERS_PER_DAY)
+        left = (base + ("warm" in kinds and base > 0) - ("brief" in kinds)
                 - sum(a["kind"] in STARTERS for a in allowed))
         if "not_now" in kinds:
             return "not now, today", 0
@@ -323,7 +335,8 @@ class Manners:
         elif row["not_before_utc"] and row["not_before_utc"] > utc_iso(now):
             status, manner, reason = HELD, None, "not yet"
         else:
-            status, manner, reason = decide(_event(row), self.snapshot(exclude_id=row["id"]))
+            ev = _event(row)
+            status, manner, reason = decide(ev, self.snapshot(ev.person_ids, exclude_id=row["id"]))
         allowed = row["allowed_at_utc"]
         if status == READY and allowed is None:
             allowed = utc_iso(now)

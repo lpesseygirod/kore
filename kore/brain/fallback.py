@@ -91,6 +91,14 @@ def phrase(event, manner: str = "say") -> str | None:
         return "¿Qué tal ha ido la visita?"
     if k == "welcome_back":
         return "Hola de nuevo. Desde ahora vuelvo con los recordatorios."
+    if k == "feedback_check":
+        who = f"{d['person']}, " if d.get("person") else ""
+        return f"{who}una pregunta rápida: con el cambio de hace unos días, ¿va mejor así?"
+    if k == "quiet_suggestion":
+        return (f"He notado que muchas tardes toca descanso sobre {spoken_time(d['around'])}. "
+                "¿Me quedo en silencio a esa hora cada día?")
+    if k == "slower_suggestion":
+        return f"{d['person']}, si viene bien, puedo hablar más despacio o más alto. Basta con decírmelo."
     if k == "away_presence_check":
         if d.get("person"):
             return f"Por cierto, ¿ha vuelto ya {d['person']}? Si es así, retomo sus recordatorios."

@@ -18,6 +18,7 @@ from datetime import date, datetime, timedelta, timezone
 from typing import Callable
 
 from kore.brain.session import ConfirmationRefused, Session, SpeakerMismatch, SpeakerUnknown
+from kore.feedback import store as feedback
 from kore.manners import modes
 from kore.manners.gate import Manners
 from kore.memory import meds, settings, store
@@ -392,7 +393,9 @@ def _back(ctx: Context, args: dict) -> dict:
        "until": {"type": "string", "description": "HH:MM, or 'night' for 'until tonight'."}}, writes=True)
 def _be_quiet(ctx: Context, args: dict) -> dict:
     now = ctx.clock.now()
-    until = None
+    # With no time said: the home's usual quiet time (two hours unless they asked for another).
+    minutes = settings.get(ctx.conn, "quiet_minutes", settings.HOME, ctx.clock)
+    until = now.astimezone(timezone.utc) + timedelta(minutes=int(minutes))
     if args.get("minutes"):
         minutes = int(args["minutes"])
         if minutes <= 0:
@@ -402,7 +405,8 @@ def _be_quiet(ctx: Context, args: dict) -> dict:
         hhmm = args["until"]
         if hhmm == "night":
             # Said at night already: until the morning, not until tomorrow night.
-            hhmm = settings.get(ctx.conn, "night_end" if Manners(ctx.conn, ctx.clock).is_night() else "night_start")
+            night = Manners(ctx.conn, ctx.clock).is_night()
+            hhmm = settings.get(ctx.conn, "night_end" if night else "night_start", settings.HOME, ctx.clock)
         until = local_at(now.date(), hhmm, ctx.clock.tz)
         if until <= now:
             until = local_at(now.date() + timedelta(days=1), hhmm, ctx.clock.tz)
@@ -414,7 +418,13 @@ def _be_quiet(ctx: Context, args: dict) -> dict:
 
 @tool("can_talk_again", "They said you can talk again before the quiet time was up.", writes=True)
 def _can_talk(ctx: Context, args: dict) -> dict:
-    return {"ok": modes.end(ctx.conn, ctx.clock, "quiet")}
+    ended = modes.end(ctx.conn, ctx.clock, "quiet")
+    if Manners(ctx.conn, ctx.clock).is_rest_time():
+        # Their usual rest time: lifted for today only.
+        tomorrow = local_at(ctx.clock.now().date() + timedelta(days=1), "00:00", ctx.clock.tz)
+        settings.put_for_now(ctx.conn, "rest_hours", "", settings.HOME, tomorrow)
+        ended = True
+    return {"ok": ended}
 
 
 @tool("visitors_arrived", "They said they have visitors (or are on the phone). Stay discreet: nothing private "
@@ -492,6 +502,61 @@ def _remember_place(ctx: Context, args: dict) -> dict:
 def _where(ctx: Context, args: dict) -> dict:
     found = store.where_is(ctx.conn, args["thing"])
     return {"ok": True, "found": found, **({} if found else {"say": "Say you don't know; never guess."})}
+
+
+# --- feedback about how Pepe behaves (phase 4b) -----------------------------------
+
+
+@tool("record_feedback",
+      "They said something about how you behave: a request ('habla más despacio', 'no me despiertes tan "
+      "pronto'), a complaint, praise or a correction of your manners. (Facts like 'the pill is at 10' go through "
+      "the normal tools.) Store only their feedback sentence. kind: setting (speech_rate, volume, answer_length, "
+      "chattiness, night_start, night_end, rest_hours, quiet_minutes; value is a step like slower, faster, "
+      "louder, softer, shorter, longer, less, more, or an exact value), rule (a short written rule for that "
+      "person, e.g. \"don't bring up her sister's health\"), praise, safety (anything about medicines, reminders, "
+      "alerts or help), other. scope: now, today or always (default always, for the speaker only). If it isn't "
+      "clear, add the one follow-up question you will ask.",
+      {"said": {"type": "string", "description": "Their feedback sentence only, nothing around it."},
+       "understood": {"type": "string", "description": "What you understood, in one line."},
+       "kind": {"type": "string"}, "setting": {"type": "string"}, "value": {"type": "string"},
+       "rule": {"type": "string"}, "scope": {"type": "string"},
+       "replaces_rule_id": {"type": "integer"}, "person": PERSON,
+       "home_wide": {"type": "boolean", "description": "For both of them (only if they said so)."},
+       "follow_up_question": {"type": "string"}},
+      writes=True, required=["said", "understood", "kind"])
+def _record_feedback(ctx: Context, args: dict) -> dict:
+    s = ctx.session
+    about = None
+    if args.get("person"):
+        found = s.find_person(args["person"])
+        if found is None:
+            raise ValueError(f"no one called {args['person']!r} lives here")
+        about = found.id
+    # Any change needs a known voice, even one for the whole home: an unknown voice
+    # (a guest, the TV) can't change how Pepe treats either of them.
+    if s.speaker_id is None and (args["kind"] in ("setting", "rule") or about is not None):
+        s.ask_identity(about)
+        raise SpeakerUnknown(about)
+    result = feedback.record(
+        ctx.conn, ctx.clock, speaker_id=s.speaker_id, about_id=about if about is not None else s.speaker_id,
+        said=args["said"], understood=args["understood"], kind=args["kind"], setting_key=args.get("setting"),
+        value=args.get("value"), rule=args.get("rule"), scope=args.get("scope") or "always",
+        replaces_rule_id=args.get("replaces_rule_id"), follow_up_question=args.get("follow_up_question"),
+        home_wide=bool(args.get("home_wide")))
+    return {"ok": result.get("error") is None, **result}
+
+
+@tool("feedback_follow_up", "Their answer to your one follow-up question about some feedback. If they didn't "
+      "want to explain, leave answer empty: drop it. scope if the answer changed it (now, today, always).",
+      {"feedback_id": {"type": "integer"}, "answer": {"type": "string"}, "scope": {"type": "string"}},
+      writes=True, required=["feedback_id"])
+def _feedback_follow_up(ctx: Context, args: dict) -> dict:
+    row = ctx.conn.execute("SELECT speaker_id FROM feedback WHERE id = ?", (int(args["feedback_id"]),)).fetchone()
+    if row is None:
+        raise ValueError("no such feedback")
+    if row["speaker_id"] is not None:
+        ctx.session.require_speaker(row["speaker_id"])  # only the person who said it
+    return feedback.follow_up(ctx.conn, ctx.clock, int(args["feedback_id"]), args.get("answer"), args.get("scope"))
 
 
 # --- memory of the person ---------------------------------------------------

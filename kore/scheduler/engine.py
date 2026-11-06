@@ -22,8 +22,9 @@ import sqlite3
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 
+from kore.feedback import store as feedback
 from kore.manners import modes
-from kore.memory import meds, store
+from kore.memory import meds, settings, store
 from kore.memory.db import from_utc_iso, utc_iso
 from kore.memory.meds import _utc, elapsed
 from kore.scheduler.clock import Clock, local_at
@@ -52,6 +53,8 @@ MOVEMENT_MAX_PER_DAY = 2
 NUDGE_HOURS = ("10:00", "20:00")
 MORNING_FROM = "06:00"
 MORNING_UNTIL = "12:00"  # first presence after this is not a "good morning"
+# The light "is that better?" a few days after a change, at most one a day (BUILD-PLAN 2).
+FEEDBACK_AT = "11:30"
 
 
 @dataclass
@@ -92,6 +95,7 @@ class Engine:
         events += self._voice_reminders(now)
         events += self._water(now)
         events += self._movement(now)
+        events += self._feedback(now)
         return events
 
     # --- presence sensor --------------------------------------------------
@@ -316,6 +320,31 @@ class Engine:
             return []
         return [Event("movement_nudge", 2, people, {"sitting_minutes": int(sat.total_seconds() // 60)},
                       expires_at=now + timedelta(minutes=30))]
+
+    # --- feedback: the light check later, and suggestions from what Pepe noticed --
+
+    def _feedback(self, now: datetime) -> list[Event]:
+        out = []
+        at = local_at(now.date(), FEEDBACK_AT, self.clock.tz)
+        if elapsed(at, now) >= timedelta(0) and self._daytime(now) and self._once(f"feedback:{now.date()}"):
+            row = feedback.due_check(self.conn, self.clock)
+            if row is not None:
+                who = [row["person_id"]] if row["person_id"] else self._everyone()
+                out.append(Event("feedback_check", 2, who, {
+                    "person": self._call_name(row["person_id"]) if row["person_id"] else None,
+                    "understood": row["understood"], "feedback_id": row["id"]},
+                    expires_at=local_at(now.date(), NUDGE_HOURS[1], self.clock.tz)))
+            hour = feedback.quiet_pattern(self.conn, self.clock)
+            if hour and self._once(f"quiet_suggestion:{now.isocalendar().year}-{now.isocalendar().week}"):
+                out.append(Event("quiet_suggestion", 2, self._everyone(), {"around": hour},
+                                 expires_at=local_at(now.date(), NUDGE_HOURS[1], self.clock.tz)))
+        for pid in self._everyone() if self._daytime(now) else []:
+            if (feedback.repeat_requests_today(self.conn, self.clock, pid) >= feedback.REPEATS_FOR_SUGGESTION
+                    and settings.get(self.conn, "speech_rate", pid, self.clock) != settings.CHOICES["speech_rate"][0]
+                    and self._once(f"slower_suggestion:{pid}:{now.isocalendar().year}-{now.isocalendar().week}")):
+                out.append(Event("slower_suggestion", 2, [pid], {"person": self._call_name(pid)},
+                                 expires_at=now + timedelta(hours=2)))
+        return out
 
     def _daytime(self, now: datetime) -> bool:
         start, end = (local_at(now.date(), t, self.clock.tz) for t in NUDGE_HOURS)
