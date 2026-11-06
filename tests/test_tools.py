@@ -222,3 +222,20 @@ def test_appointment_time_zone_is_converted_not_overwritten(ctx, conn, clock):
     say(ctx, "Soy Carmen. El médico el jueves")
     r = call(ctx, "propose_appointment", title="médico", starts_at="2026-11-12T10:00+00:00")
     assert "11:00" in r["say_and_wait"]  # 10:00 UTC is 11:00 in Madrid
+
+
+def test_appointment_moved_only_after_a_yes(ctx, conn, clock):
+    aid = store.add_appointment(conn, clock, ctx.session.household[0].id, "el médico", at(11, day=10))
+    say(ctx, "Soy Carmen. El médico se ha cambiado al viernes a la misma hora")
+    r = call(ctx, "propose_appointment_change", appointment_id=aid, starts_at="2026-11-13T11:00")
+    assert r["ok"] and "Friday 13 November at 11:00" in r["say_and_wait"]
+    assert store.appointments(conn, clock)[0]["when"].startswith("Tuesday")
+    say(ctx, "Sí")
+    assert call(ctx, "confirm_action", action_id=r["action_id"])["ok"]
+    assert store.appointments(conn, clock)[0]["when"].startswith("Friday")
+
+
+def test_someone_elses_appointment_cannot_be_cancelled(ctx, conn, clock):
+    aid = store.add_appointment(conn, clock, ctx.session.household[0].id, "el médico", at(11, day=10))
+    say(ctx, "Soy Toni. Cancela lo del médico")
+    assert call(ctx, "propose_appointment_change", appointment_id=aid, cancel=True)["error"] == "speaker_is_someone_else"
