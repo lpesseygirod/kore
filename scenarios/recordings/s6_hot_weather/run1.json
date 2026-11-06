@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "889d5e32385492b5c71c1d11258bb7502e92ded2a96717019ae892f6bd13231c",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna medicina ni cita apuntada para hoy, así que tiene el día libre. Aquí estoy para lo que necesite.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 241,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 241,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 80,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "34c3e65366d13368a33c0d3b0f7eae02746e17660cc7a8df66f79e7821a27b08",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, hoy hace calor. Le vendría bien un vaso de agua. Cuando le apetezca, claro.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 193,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 193,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

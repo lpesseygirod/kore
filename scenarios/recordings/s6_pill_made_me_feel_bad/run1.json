@@ -1,0 +1,132 @@
+[
+ {
+  "request_hash": "7c63161cf6356e0bb310908444cdaaee88af10bbd0888020fe7a5c22e39d783f",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna cita para hoy. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 246,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 246,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 56,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "842ca1710d3e687341b12d83397c98c0369e0d3c060d02fcc011cda81f764bcf",
+  "response": {
+   "content": [
+    {
+     "text": "Lamento que se encuentre así, Carmen. Los tobillos hinchados son algo que conviene contarle a su médico o a su farmacéutico cuanto antes, porque solo ellos pueden decidir qué hacer con la pastilla. Mientras tanto, no cambie nada por su cuenta. ¿Se encuentra mareada o con alguna otra molestia ahora mismo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 152,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 152,
+    "cache_read_input_tokens": 6188,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 134,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "de4d44586d151fbd86da246dd5bf0960e9c9c0434d3e1b4e560d5799144b0e7d",
+  "response": {
+   "content": [
+    {
+     "text": "Entiendo que quiere que lo apunte en la lista para el médico. Lo añado.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_011siv83XWNpnH9BzuxDQWg6",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "La pastilla nueva me sienta mal y se me hinchan los tobillos"
+      ],
+      "list": "para el médico"
+     },
+     "name": "add_to_list",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 222,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 222,
+    "cache_read_input_tokens": 6340,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 132,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "45c3b7f4c23858bc25879a74562df2c8ff5301d2f3eaa98f8db19d276b381369",
+  "response": {
+   "content": [
+    {
+     "text": "Ya está apuntado en su lista para el médico: que la pastilla nueva le sienta mal y que se le hinchan los tobillos. ¿Quiere que le ponga también una cita con el médico?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 180,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 180,
+    "cache_read_input_tokens": 6562,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 69,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

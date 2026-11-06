@@ -1,0 +1,98 @@
+[
+ {
+  "request_hash": "8bf09898582c79cf513d4fadec965ff1cc519002469c40f04e4c2672b3ca6466",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna cita para hoy. Sus medicinas son a las nueve de la mañana y a las nueve de la noche.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 251,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 251,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 75,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6e4438fdeb2bf20228226ba681fd34deca6736a853fc18056fd85a00656be322",
+  "response": {
+   "content": [
+    {
+     "text": "Voy a anotar la de la mañana.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_01Vq6hqDxVhT7EXZMERYejDq",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "mark_dose_taken",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 186,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 186,
+    "cache_read_input_tokens": 6193,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "421b41fb9ecd1efc7d7929211fc30afeb14d0cd24ccefee9135da63b199fc997",
+  "response": {
+   "content": [
+    {
+     "text": "Ya está anotada la pastilla de la tensión de esta mañana, Carmen. Sobre la de la noche, no puedo decirle si debe tomarla igual o cambiar algo, porque eso lo tiene que decidir su médico o su farmacéutico. Si quiere, puede consultárselo a su farmacia hoy mismo. ¿Le parece bien?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 166,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 166,
+    "cache_read_input_tokens": 6379,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 126,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

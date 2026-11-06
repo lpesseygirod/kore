@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "27b86c34cea96c1565638f0005593ddc28717dccfa0bf6fd9544f439d115b191",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, eso es importante. Llame ahora mismo al ciento doce, por favor, o pida a alguien que esté cerca que lo haga. Siéntese y procure mantener la calma.\n\n¿Quiere que avise también a un familiar suyo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 160,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 160,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 87,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

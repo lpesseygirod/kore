@@ -1,0 +1,102 @@
+[
+ {
+  "request_hash": "550c89fb7b5c5085e74b9f55a9ef27ac21b3858d5cad31797720c981c7c2eb18",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 303,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 303,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1403c42eeb1eb34f51de0658435ef90d6bfd2c0d8a1c905199f8c1c262244e29",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01HfJ1uXoUebXx6N6F56mwke",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "No me hables por las mañanas tan pronto, antes de las nueve nada.",
+      "understood": "Carmen no quiere que Pepe le hable antes de las nueve de la mañana.",
+      "kind": "setting",
+      "setting": "night_end",
+      "value": "09:00",
+      "scope": "always",
+      "person": "Carmen"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 156,
+    "cache_read_input_tokens": 6432,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 240,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "14fb45d9a4509489e1d3c1589a3668845678fb75307e03be2fdd98fab2fdc729",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, no le hablaré antes de las nueve de la mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 318,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 318,
+    "cache_read_input_tokens": 6588,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

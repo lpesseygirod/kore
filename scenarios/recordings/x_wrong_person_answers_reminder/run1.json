@@ -1,0 +1,152 @@
+[
+ {
+  "request_hash": "630a75b7c003522dc42517a8b1935dbf8826734ff048a8d6d382c827fc10d2cf",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 303,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 303,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "db24d00616ceb94e69fff40d423918db1e9b80ce58a21176f5bae5860e64efd1",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, son las nueve. Es la hora de la pastilla de la tensión.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 377,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 377,
+    "cache_read_input_tokens": 6432,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "4691b175d3f599bd23192a9bc98b284c4fc557ef3e19459d08cf5801f9e24e2f",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_015NDRgZR4Ai2hG5ZwbY8u4C",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "ask_who_is_speaking",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 137,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 137,
+    "cache_read_input_tokens": 6809,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 33,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f6c035098fb0ba70468901e464c895834dadb0131968746cfc0ce6fcfa5a9d4e",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, ¿con quién hablo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 66,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 66,
+    "cache_read_input_tokens": 6946,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 17,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "60a06f0c8549219ca6d0f1bec8772aeb8570d92c62c0f929aaee09db3569ed1d",
+  "response": {
+   "content": [
+    {
+     "text": "Gracias, Toni. Entonces no he anotado nada todavía. La pastilla de las nueve era de Carmen.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 110,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 110,
+    "cache_read_input_tokens": 7012,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

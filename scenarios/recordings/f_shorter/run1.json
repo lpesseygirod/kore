@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "a4ac15b5fb3d2ca4c9e02536859146cbb54bd13a0eaf4a0e8d47003a71333ffc",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy, así que tiene el día libre. Que tenga una buena mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 75,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "dcecb916c43fd3d7a4a0a3f95f78d5f93e70e11c1af4a3eb6bc28412ef8c73b6",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_016KoSjMnTkkNsTsDMNazao1",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Te enrollas mucho, Pepe. Contesta más corto.",
+      "understood": "Carmen wants shorter answers from now on.",
+      "kind": "setting",
+      "setting": "answer_length",
+      "value": "shorter",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 166,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 166,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 200,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6925256a6c8822042fbf58d454461de7397a4daa1df6b9f88b0637c8b1f91802",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Carmen. Seré más breve.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 277,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 277,
+    "cache_read_input_tokens": 6349,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 19,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

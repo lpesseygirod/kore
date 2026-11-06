@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "935cfe35a0222f071399d0e32e7ebe96e47bcd52e145f487807cc9a946d33add",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01DyBVpRwik3LBUq14TpbjMe",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "be_quiet",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 154,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 154,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5b9e6fbe80171c1e2dee85473229b7eac8cb12b60456f7575e5cd40822278039",
+  "response": {
+   "content": [
+    {
+     "text": "Claro.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 74,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 74,
+    "cache_read_input_tokens": 6283,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 6,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

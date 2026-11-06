@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "3196f1596a768d076a6d0201a718a18627d1504eea28a535e1c0364e2c991396",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Y hoy es el cumpleaños de su nieta Lucía, por si quiere llamarla.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 262,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 262,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 86,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "58f4110421d37bb6343d4b09d87bb7aa9e408d16acd54021b3bb896a38f0fbfb",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, hoy cumple años su nieta Lucía. Quizá le haga ilusión recibir una llamada suya.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 208,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 208,
+    "cache_read_input_tokens": 6204,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 44,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

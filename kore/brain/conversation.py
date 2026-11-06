@@ -19,14 +19,18 @@ import json
 from dataclasses import dataclass, field
 
 from kore.brain import fallback, tools
+from kore.brain.language import looks_english
 from kore.brain.prompt import SYSTEM_PROMPT, state_block
 from kore.feedback import store as feedback
 from kore.manners import modes
 from kore.manners.gate import Item
 
 MODEL = "claude-sonnet-5-5"  # Lea approved 2026-11-06 (experiment 4)
-# Thinking off (between_tools is Sonnet 5.5's lowest setting), low effort: spoken replies.
-MODEL_CONFIG = {"thinking": {"type": "between_tools"}, "output_config": {"effort": "low"}}
+# Adaptive thinking at low effort: Claude can think privately (in thinking blocks the
+# voice never sees) and skips it on simple turns. With thinking off ("between_tools"),
+# the pilot showed it sometimes writing its notes as text, which the voice would read
+# out. Speed to be measured in phase 1 (experiment 4 timed "between_tools").
+MODEL_CONFIG = {"thinking": {"type": "adaptive"}, "output_config": {"effort": "low"}}
 MAX_TOKENS = 1024
 MAX_TOOL_ROUNDS = 6
 CACHE = {"type": "ephemeral", "ttl": "1h"}
@@ -56,6 +60,7 @@ class Brain:
     messages: list[dict] = field(default_factory=list)
     calls: list[ToolCall] = field(default_factory=list)
     responses: list[dict] = field(default_factory=list)
+    dropped: list[str] = field(default_factory=list)  # text kept from the voice (notes in English), for Lea
 
     # --- the two ways a turn starts ---------------------------------------------
 
@@ -82,7 +87,7 @@ class Brain:
             resp = self.client.create(self.request())
             self.responses.append(resp)
             self.messages.append({"role": "assistant", "content": resp["content"]})
-            spoken += [b["text"] for b in resp["content"] if b.get("type") == "text"]
+            spoken += [self._speakable(b["text"]) for b in resp["content"] if b.get("type") == "text"]
             uses = [b for b in resp["content"] if b.get("type") == "tool_use"]
             if resp.get("stop_reason") != "tool_use" or not uses:
                 break
@@ -96,6 +101,11 @@ class Brain:
         else:
             spoken.append(fallback.CONNECTION_PROBLEM)  # too many tool rounds: say something true
         return " ".join(s.strip() for s in spoken if s.strip())
+
+    def _speakable(self, text: str) -> str:
+        kept, dropped = speakable(text)
+        self.dropped += dropped
+        return kept
 
     def request(self) -> dict:
         return {
@@ -145,7 +155,15 @@ class Brain:
                     elif b.get("type") == "text" and b["text"].startswith("Event from the scheduler"):
                         out.append(("Evento", b["text"]))
             else:
-                text = " ".join(b["text"] for b in m["content"] if b.get("type") == "text").strip()
+                text = " ".join(speakable(b["text"])[0] for b in m["content"] if b.get("type") == "text").strip()
                 if text:
                     out.append(("Pepe", text))
         return out
+
+
+def speakable(text: str) -> tuple[str, list[str]]:
+    """Safety net: a line that is clearly English is Claude's note, not speech. (kept, dropped)."""
+    keep, dropped = [], []
+    for line in text.split("\n"):
+        (dropped if looks_english(line) else keep).append(line)
+    return "\n".join(keep).strip(), dropped

@@ -239,3 +239,10 @@ def test_someone_elses_appointment_cannot_be_cancelled(ctx, conn, clock):
     aid = store.add_appointment(conn, clock, ctx.session.household[0].id, "el médico", at(11, day=10))
     say(ctx, "Soy Toni. Cancela lo del médico")
     assert call(ctx, "propose_appointment_change", appointment_id=aid, cancel=True)["error"] == "speaker_is_someone_else"
+
+
+def test_forget_with_nothing_saved_marks_the_conversation_for_the_log(ctx):
+    say(ctx, "Soy Carmen. Mi hermana está enferma, pero es un secreto")
+    say(ctx, "Olvida eso")
+    r = call(ctx, "forget")
+    assert r["ok"] and r["forgotten"] == "conversation" and ctx.forget_up_to_turn == 2

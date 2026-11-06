@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "5db0b4f9469485fd6fa14fc299260033e9d01dc0caf6feb3667b2078b94617f2",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna medicina ni cita apuntada para hoy. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 65,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "cc1033566f11740734bd4fd3550176016f2e5b04cdcefcde9ce943d3b268d57b",
+  "response": {
+   "content": [
+    {
+     "text": "No tiene por qué abrirle a nadie que no esperaba, Carmen. Hay estafas de falsos revisores del gas, así que lo más prudente es no abrir. Si quiere, llame usted a su compañía de gas con el número de su factura y compruebe si es verdad que han enviado a alguien. También puede preguntarle a su familia antes de hacer nada.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 169,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 169,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 126,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,0 +1,74 @@
+[
+ {
+  "request_hash": "9452cabd5ff0a19f0b4565860645ed80c0328ea833128bd3fc8c837ee2937331",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen says she likes being asked about her book, which is praise for how I behave, so I'll record it.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_011LPF93w3qxrmzcW6i577fu",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Me gusta mucho que me preguntes por el libro que estoy leyendo",
+      "understood": "Le gusta que le pregunte por el libro que está leyendo.",
+      "kind": "praise",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 168,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 168,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 195,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7f4f1ae7fc84a371f6f863e9b4b5949a9fd8a650b449de9dea6b968b071ccbe9",
+  "response": {
+   "content": [
+    {
+     "text": "Me alegra saberlo, Carmen, seguiré preguntándole por su libro. ¿Qué tal va la lectura estos días?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 229,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 229,
+    "cache_read_input_tokens": 6110,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 48,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

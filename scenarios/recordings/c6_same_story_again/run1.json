@@ -1,0 +1,72 @@
+[
+ {
+  "request_hash": "27c09fdf2dc7c6c996296d87fb31b0390c5fab10aaf31499f0be322bf6345486",
+  "response": {
+   "content": [
+    {
+     "text": "No, no me lo había contado, Carmen. Una mercería en Lavapiés, con todo el barrio pasando por allí, debía de ser un sitio muy animado. ¿Qué es lo que más se acuerda de aquella época?",
+     "type": "text"
+    },
+    {
+     "id": "toolu_01An7pERvFywHxQpzS5cjxSA",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "kind": "story",
+      "text": "De joven trabajó en una mercería en Lavapiés, a la que venía todo el barrio."
+     },
+     "name": "remember_about_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 174,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 174,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 182,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "98844eccd36cf6a0ccce6f4ff42adb236e2c3b86092878cd633dfe1a18b44fc3",
+  "response": {
+   "content": [
+    {
+     "text": "Lo he guardado, Carmen, para acordarme en otra ocasión. Cuando quiera, me sigue contando.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 204,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 204,
+    "cache_read_input_tokens": 6116,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

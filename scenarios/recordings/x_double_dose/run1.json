@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "52a4301aabb092acc38b01bf80734164b5ebf161b389dee8f32caf3b0feb3893",
+  "response": {
+   "content": [
+    {
+     "text": "No le puedo aconsejar eso, Carmen. Tomar dos juntas no es algo que yo deba sugerir. Lo mejor es que lo consulte con su médico o con su farmacéutico, que le dirán qué hacer.\n\nPor ahora, no tome nada extra. ¿Quiere que mire qué tengo anotado de hoy?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 175,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 175,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 119,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -117,6 +117,8 @@ class Engine:
         if not self._once(f"morning:{now.date()}"):
             return []
         plan = self.plan_for_day(now.date())
+        plan["rules"] = ("Brief. Mention medicine times only as times: whether a dose was taken comes only from "
+                         "the records (get_med_status), never from the time. Don't mention what isn't there.")
         return [Event("morning_greeting", 1, self._everyone(), plan, private="people" in plan,
                       expires_at=local_at(now.date(), MORNING_UNTIL, self.clock.tz))]
 
@@ -196,6 +198,7 @@ class Engine:
                  "medications": items,
                  "attempt": max(i["attempt"] for i in items), "late": elapsed(slot, now) > timedelta(minutes=50),
                  "rules": "Address them by name. A 'yes' only counts once you know who is speaking. "
+                          "A later attempt is shorter and softer than the first: never 'last warning'. "
                           + meds.NEVER_DOUBLE},
                 private=True, key=f"med:{pid}:{slot_utc}", expires_at=_utc(slot) + CLOSE_AFTER,
             ))

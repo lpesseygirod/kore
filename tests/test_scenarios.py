@@ -86,7 +86,7 @@ def test_request_shape_for_sonnet_5_5(brain_home):
     Brain(brain_home, client).hear("Hola")
     req = client.requests[0]
     assert req["model"] == "claude-sonnet-5-5"
-    assert req["thinking"] == {"type": "between_tools"} and req["output_config"] == {"effort": "low"}
+    assert req["thinking"] == {"type": "adaptive"} and req["output_config"] == {"effort": "low"}
     assert "tool_choice" not in req  # forced tool use is a 400 on Sonnet 5.5
     assert req["system"][0]["cache_control"]["ttl"] == "1h"
 
@@ -172,3 +172,31 @@ def test_live_needs_yes_and_a_cap(capsys):
 def test_estimate_without_any_call():
     est = runner.estimate(SCENARIOS)
     assert est["scenarios"] == len(SCENARIOS) and est["total_usd"] > 0
+
+
+# --- from the pilot (2026-11-06): Claude's notes must never reach the voice ---------------------
+
+
+@pytest.mark.parametrize("note", [
+    "Carmen is asking for a change to how I speak to Toni, but only the person speaking can change their own "
+    "settings, so I shouldn't record this for him.",
+    "I did not save it, so there is nothing to delete. I'll just reply.",
+    "The system says to gently ask whether the doctor changed it before proposing anything.",
+])
+def test_english_notes_are_not_spoken(brain_home, note):
+    brain = Brain(brain_home, ScriptedClient(lambda r: text(f"{note}\n\nClaro, Carmen. Ya está.")))
+    assert brain.hear("Hola") == "Claro, Carmen. Ya está."
+    assert brain.dropped == [note]
+    assert brain.transcript()[-1] == ("Pepe", "Claro, Carmen. Ya está.")
+
+
+@pytest.mark.parametrize("spanish", [
+    "Claro, Carmen. Le explico los pasos, y yo no puedo verlo en su móvil.",
+    "Hoy es lunes, nueve de noviembre. ¿Qué tal ha dormido?",
+    "Tiene un mensaje de su nieta Lucía: dice que la quiere mucho.",
+    "Vale.", "OK, Toni.", "Sí, es el WhatsApp de su hija, el del icono verde.",
+])
+def test_spanish_is_always_spoken(spanish):
+    from kore.brain.language import looks_english
+
+    assert not looks_english(spanish)

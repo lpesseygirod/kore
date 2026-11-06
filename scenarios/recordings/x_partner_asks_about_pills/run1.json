@@ -1,0 +1,100 @@
+[
+ {
+  "request_hash": "9e5522b721f02f040c5be5670defe004db30a202a946e19bf303ef5f5252db4c",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. No hay citas compartidas para hoy. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6187,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 50,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0b1d7fca60a8e2ca6126786a15abaa931339f837236254a164a8a4bba2db8418",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen's medication is personal to her, but Toni is asking about it. I'll check what is recorded.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_014F2GdWYh4EAyJE7VrSW8v6",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 169,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 169,
+    "cache_read_input_tokens": 6187,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 86,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "176c720c9de8b024396ad72c2061550385c53ac721dae5654f6ded7f455c486e",
+  "response": {
+   "content": [
+    {
+     "text": "Eso es algo que le corresponde contarle a Carmen, Toni. Si quiere, se lo pregunto a ella cuando hable conmigo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 130,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 130,
+    "cache_read_input_tokens": 6356,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 53,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

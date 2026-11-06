@@ -1,0 +1,132 @@
+[
+ {
+  "request_hash": "4b0affbb8af888dff767088cfdd9d02b105b0a3f049f650ee92f95f0ddaed397",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_015FAJzf9HsY5jzqg3qS6Y6X",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 304,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 304,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "509ab666653a7be32a124758fbb649c29862c511eabb21660c0563bfd25cb801",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tengo anotado que esta mañana, a las nueve y diez, tomó la pastilla de la tensión y la vitamina D.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 270,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 270,
+    "cache_read_input_tokens": 6433,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 75,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "556697a4fb8d61ebdaa7eceacc006a6eb03a343686ef8e5648771cfa353a23c2",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Lah2YShnnQ5wfDvg7vj1ZS",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 162,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 162,
+    "cache_read_input_tokens": 6703,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "bb2b163606168071f1d34fc52960231106cc598619edbcfd96f48ff55c0ca3c4",
+  "response": {
+   "content": [
+    {
+     "text": "Sí, Carmen. Tengo anotado que la vitamina D la tomó hoy a las nueve y diez.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 270,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 270,
+    "cache_read_input_tokens": 6865,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

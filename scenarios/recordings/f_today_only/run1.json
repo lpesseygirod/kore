@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "a4ac15b5fb3d2ca4c9e02536859146cbb54bd13a0eaf4a0e8d47003a71333ffc",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy, así que tiene el día libre. Si necesita algo, dígame.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 75,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "455e8b283fb5cea608b107c90bec450e33be7f3a6e84c9af6ddaaea370a3c6e9",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01UENmPTQLro78w8WZsU76oQ",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Hoy no me des mucha conversación, que estoy cansada.",
+      "understood": "Carmen wants little conversation today because she is tired.",
+      "kind": "setting",
+      "setting": "chattiness",
+      "value": "less",
+      "scope": "today"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 165,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 165,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 199,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "d6a052ff0ea38b7e7c7981b659b971a70f98b25ad2b0dfec39200c07ef28ad78",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, hoy seré breve. Descanse.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 276,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 276,
+    "cache_read_input_tokens": 6348,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 24,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

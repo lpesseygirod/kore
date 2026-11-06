@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "6b2eeeadd8c9a3ee7ee4dd5c4c38f355722d92b5c5866c8f22c139b591dbe314",
+  "response": {
+   "content": [
+    {
+     "text": "Lo siento mucho, Carmen. Estoy aquí con usted, y me alegra que me lo cuente. Si le apetece, cuénteme cómo ha sido el día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 6333,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 6333,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 62,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8218f916ae136485d882330e9dc2163c67b87b0f4c2c8d5d1f3cd70cc6ca97cc",
+  "response": {
+   "content": [
+    {
+     "text": "Qué bonito recuerdo, Carmen. Bailar los domingos con su marido debía de ser una alegría. ¿Qué música bailaban?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 149,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 149,
+    "cache_read_input_tokens": 6333,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 53,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

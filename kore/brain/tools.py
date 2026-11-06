@@ -33,6 +33,8 @@ class Context:
     session: Session
     tainted_turn: int | None = None  # the turn in which outside text was read
     inbox: list[dict] = field(default_factory=list)  # messages from family (phase 6 fills it)
+    # "Forget that" with nothing saved: the conversation log must drop turns up to here (phase 1 loop).
+    forget_up_to_turn: int | None = None
 
 
 @dataclass
@@ -631,9 +633,14 @@ def _what_known(ctx: Context, args: dict) -> dict:
     }
 
 
-@tool("forget", "'Forget that': delete a note for good. Use the note_id you saved or read.",
-      {"person": PERSON, "note_id": {"type": "integer"}}, writes=True, required=["note_id"])
+@tool("forget", "'Forget that': delete it for good. With the note_id if you saved it as a note; without one, "
+      "what they said in this conversation is dropped from the conversation log.",
+      {"person": PERSON, "note_id": {"type": "integer"}}, writes=True)
 def _forget(ctx: Context, args: dict) -> dict:
+    if args.get("note_id") is None:
+        # Nothing saved as a note: the loop drops this conversation's turns so far from its log.
+        ctx.forget_up_to_turn = ctx.session.turn
+        return {"ok": True, "forgotten": "conversation", "say": "Say simply that it's forgotten."}
     pid = _person_id(ctx, args)
     gone = store.forget_note(ctx.conn, pid, int(args["note_id"]))
     return {"ok": gone, **({} if gone else {"error": "not_found"})}

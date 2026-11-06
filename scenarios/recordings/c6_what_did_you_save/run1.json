@@ -1,0 +1,160 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 6504,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 6504,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "28fb7fca5bcf5dcf1c49ef8fb169738d5ef540bcf06f18da5f2fb8beff4519cb",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_017tTyrD5SSccoSFtpewgN2A",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "kind": "person",
+      "text": "Su nieta Lucía estudia enfermería en Salamanca."
+     },
+     "name": "remember_about_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 136,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 136,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 94,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "633d78f34f484f44c3903413544f8eff3d11d65a3e3283d3fbd38c0267446c81",
+  "response": {
+   "content": [
+    {
+     "text": "Apuntado, Carmen. Su nieta Lucía estudia enfermería en Salamanca. Debe de estar usted muy orgullosa.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 116,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 116,
+    "cache_read_input_tokens": 6640,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0250fffc693f37638ba9ea2a5b447d9c54328aed56971582b42f95f3ab97dc55",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01JzNGGViNeoKRBrpkPZRjpG",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "what_do_you_know_about_me",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 133,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 133,
+    "cache_read_input_tokens": 6756,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 34,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5cfb3f43f9d32c14a211b295d703ce6231b9d521d04b8ad84253db947c6f66ed",
+  "response": {
+   "content": [
+    {
+     "text": "Sé una sola cosa, Carmen: que su nieta Lucía estudia enfermería en Salamanca. No tengo apuntados medicinas ni citas suyas. Si quiere, puede contarme más cosas y yo las apunto.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 109,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 109,
+    "cache_read_input_tokens": 6889,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 83,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

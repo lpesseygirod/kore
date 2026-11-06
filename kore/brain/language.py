@@ -112,3 +112,26 @@ def self_identified(text: str, names: dict[int, list[str]], answering: bool = Fa
             if answering and re.fullmatch(rf"(si |yes |no )?{a}", folded):
                 found.add(pid)
     return found.pop() if len(found) == 1 else None
+
+
+# Words only English uses (none of them a Spanish word), and common Spanish ones, to
+# catch Claude's own notes written in English before the voice says them.
+ENGLISH_WORDS = {
+    "the", "is", "are", "was", "were", "i", "i'll", "i'm", "it's", "don't", "can't", "shouldn't", "this", "that",
+    "to", "so", "and", "of", "for", "not", "should", "asking", "says", "said", "did", "nothing", "there", "just",
+    "reply", "before", "whether", "changed", "will", "need", "they", "their", "them", "my", "with", "what", "she",
+    "his", "her", "we", "you", "your", "about", "request", "user", "system", "tool", "call", "it", "be", "has",
+    "have", "would", "which", "because", "but", "if", "or", "only", "can", "now", "here", "here's", "let", "let's",
+}
+SPANISH_WORDS = {
+    "el", "la", "los", "las", "de", "del", "que", "y", "es", "un", "una", "por", "para", "con", "su", "sus", "lo",
+    "le", "les", "se", "ya", "muy", "pero", "como", "mi", "te", "usted", "esta", "este", "eso", "al", "hoy", "si",
+}
+
+
+def looks_english(text: str) -> bool:
+    """True for a passage that is clearly English (Pepe only speaks Spanish)."""
+    words = re.findall(r"[a-záéíóúüñ']+", text.lower())
+    en = sum(w in ENGLISH_WORDS for w in words)
+    es = sum(fold(w) in SPANISH_WORDS for w in words)
+    return en >= 3 and en > 2 * es

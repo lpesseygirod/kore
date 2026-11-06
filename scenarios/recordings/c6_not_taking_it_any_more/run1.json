@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "b0e8d014e28c17f59d4ebad19e86810f67c0b7885d60df9bced674fafdb2b34e",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_017jLkUdEBCPkZtknpiGyVmE",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6433,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5fb39fb093e9168f78e9a5951a4fe24e3fcdfe76903afeb93451d530af06fcbb",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión es a las nueve, y todavía no tengo anotado que la haya tomado. Si no está segura, puede mirar en el pastillero.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6653,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 87,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "53b68ac0405da5abffdb1d71b1af9028ce99edc3084ecf9ba089f3cc2ee409aa",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSnAYKEAgTGAI4AUIIdGhpbmtpbmcSDJpD1IpFSkyWQfU5UBoMMJVVPnCgCiCgVlZsIjB62jkHn1Fu4FDyo/6dauRyaMTsCZAiY0jHxcEekFXEDKzwkFVb53dTPAqA7jYDU4IquQWhYNc1qOufg8ONaAuRgJxs5WjSeSePyZ15UhF+Hq1Hr9O4vyYou6qMbkdeQnfUUT4uwIK4YYxP6SRIlJcMLENW0HO6IvM2b86hQpki4IfoazB4juLYo375w18vc6Ek1xxC4rcyqd7bG4owyAjxjwXYp0vwJSrwYh6pc/0Z/VC/Q28oOvBAO2ftfYBDW/P704XHCy61E1KWX1HOUzbmo2CgFxr6iTBrOSNPybOag/xnCSPYjy9PJ/QvxAZQ57u3QsymLgxOt6WJ1V0G4M0i7UfleWnD34yaCmDLYXc3o7V+o9sc5AiUFTrVLbMpdDw7KLkdZZvAJ3xo51+6+R+0A0vHo7c0ZJ1khgKRLY8fVUW9p97A3NC/2zSKQ3NGR0e4ibn9H2Ub546O8ToW0GZ2czQaQvAdVJ1l9iLGgMhlK3pqeJ2RvGnm2C4QDBU5/mUGTvH06mgbh8ycYNi7a0ETdrJDhiJ894vGFhVp4F2SnnVu4BbiIgsUSKpF32c88I5Hp1x74tnLDjvlQql2NcKlX7k2NbTeiGJzb+I7gzvhVkhLoc3hzndoX9nVFH52r82DPD2ySbQHKtYo/xuX9i5wmquGLDM97714HpwTpsGRmZNMnVmQYAUdb9TUrP0ualue22vnHu+cTXIaqDjPx5DMqH9FLxd0e1+GQ3ImItSo3wA2hCv7XwwJ0L7EIL1FTs5nybAT+bdW8XH+nDiGnKKk/5uIb+5loHplWQUS5Esz2Qq4HZAxuwMA7WcmsXc3IomKRcJwKt0On/Jp9NYbSoc8cx4J2sOZ8AwWX2VwrGc/KZJRc0L65z+0xFG8c37RfLiTNNMdvnx8j1H0CxKksPptjdS0tVkPI7B4fLSYkmChb1U9fOLHPA5d91/m61tpfRTtCtH5lm3PlQ/DavftpWS/11PnjJSry5zo16omGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Gracias por decírmelo, Carmen. ¿Se lo ha cambiado su médico?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 180,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 180,
+    "cache_read_input_tokens": 6653,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 93,
+    "output_tokens_details": {
+     "thinking_tokens": 58
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

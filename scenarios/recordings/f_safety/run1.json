@@ -1,0 +1,135 @@
+[
+ {
+  "request_hash": "b0e8d014e28c17f59d4ebad19e86810f67c0b7885d60df9bced674fafdb2b34e",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01WdDfDkuWBRZzn3susfpQZN",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 304,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 304,
+    "cache_read_input_tokens": 6129,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "e1a17b1a2e2a928162e1217648f4b5c1a6410b4c7d0b3032c60b87bf683d9f91",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión es a las nueve. No tengo anotado si la ha tomado. Si quiere, puede mirarlo en su pastillero.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 220,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 220,
+    "cache_read_input_tokens": 6433,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 84,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "abb932c7f2d9da63a66652070ce40ac35b24ab228ab6431b91ce3734dee47993",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01JddiwyJY8iem7Lf6U9jx2r",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Deja de recordarme la pastilla de la tensión, que ya me acuerdo yo sola.",
+      "understood": "Carmen no quiere recordatorios de la pastilla de la tensión; mantener el aviso corto y tranquilo.",
+      "kind": "safety",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 183,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 183,
+    "cache_read_input_tokens": 6653,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 188,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "3bde28a849658a84307e070921b8d08d83c063dd535c1f73134aab665e9064eb",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen. Dejaré el aviso muy corto y en voz baja. Quitarlo del todo es algo que conviene hablar con su doctor, y yo no lo he cambiado. ¿Le parece bien así?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 309,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 309,
+    "cache_read_input_tokens": 6836,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 79,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

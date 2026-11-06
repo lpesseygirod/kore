@@ -1,0 +1,104 @@
+[
+ {
+  "request_hash": "a4ac15b5fb3d2ca4c9e02536859146cbb54bd13a0eaf4a0e8d47003a71333ffc",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna medicina ni cita apuntada para hoy, así que tiene el día libre. Si necesita algo, aquí estoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 80,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "4e601b8498cf0a4b0bae0fa5e837c720a7e51a1433ad596cb1e243b610a517e1",
+  "response": {
+   "content": [
+    {
+     "text": "Esto es una petición sobre cómo me comporto, así que la guardo como una regla para ella.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_01SdJhJpJQnxzz1WgPRBWkKC",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Por favor, no me saques el tema de mi hermana, que está muy malita y me pongo triste.",
+      "understood": "Carmen no quiere que yo saque el tema de su hermana enferma, porque le entristece.",
+      "kind": "rule",
+      "rule": "No sacar el tema de su hermana ni de su enfermedad; solo hablar de ello si ella misma lo menciona.",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 181,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 181,
+    "cache_read_input_tokens": 6183,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 274,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f4493c09f9e5bced4a043ff83dcdf6f702b17eef645fba5022ed4b609f9d8f69",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, no le sacaré ese tema. Lo siento mucho.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 382,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 382,
+    "cache_read_input_tokens": 6364,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 31,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

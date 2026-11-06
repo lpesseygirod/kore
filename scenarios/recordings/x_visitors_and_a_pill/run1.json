@@ -1,0 +1,98 @@
+[
+ {
+  "request_hash": "cee719e0b5370068c59ced0e59ef6207c12a51f7da2a0828454f73bae7944c36",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen says her sister has come over for a snack, which counts as having a visitor. I'll switch to discreet mode so nothing private is said out loud while she is there.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_01R9SnqgKw7h2tq1vWn2CrX4",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "visitors_arrived",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 154,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 154,
+    "cache_read_input_tokens": 5942,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 83,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f0f47a088e66e8814893f57c88540dec33cd27c36e06923e8be653c94930477d",
+  "response": {
+   "content": [
+    {
+     "text": "Qué alegría, Carmen. Disfruten de la merienda. Estaré discreto mientras esté su hermana, y cuando se marche, dígamelo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 97,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 97,
+    "cache_read_input_tokens": 6096,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 56,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "93f73506c1ed7881ad5ff51134ba4c0ec5aa2bbaa18e6955c4f15be411d0320a",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, tiene un recordatorio pendiente para cuando pueda.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 376,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 376,
+    "cache_read_input_tokens": 6193,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]
