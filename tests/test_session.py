@@ -69,10 +69,35 @@ def test_confirmation_needs_a_later_clear_yes():
     s.begin_turn("Sí, pero a las diez")
     with pytest.raises(ConfirmationRefused, match="not_a_clear_yes"):
         s.take_confirmed(a.id)
+    b = s.propose("add_medication", {}, "Blood pressure pill at 10:00. Is that right?")
     s.begin_turn("Sí")
-    assert s.take_confirmed(a.id).status == "done"
+    assert s.take_confirmed(b.id).status == "done"
     with pytest.raises(ConfirmationRefused):
-        s.take_confirmed(a.id)  # only once
+        s.take_confirmed(b.id)  # only once
+
+
+def test_a_new_read_back_replaces_the_old_one():
+    # Review finding: "No, a las diez" → new proposal → "Sí" confirmed both, saving 09:00 too.
+    s = Session([CARMEN])
+    s.begin_turn("La pastilla a las 9")
+    old = s.propose("add_medication", {"t": "09:00"}, "?")
+    s.begin_turn("No, a las diez")
+    new = s.propose("add_medication", {"t": "10:00"}, "?")
+    s.begin_turn("Sí")
+    with pytest.raises(ConfirmationRefused, match="expired"):
+        s.take_confirmed(old.id)
+    assert s.take_confirmed(new.id).payload == {"t": "10:00"}
+
+
+def test_yes_must_answer_the_read_back_directly():
+    # Review finding: a "vale" two turns later, about something else, confirmed a stop.
+    s = Session([CARMEN])
+    s.begin_turn("Ya no quiero la pastilla")
+    a = s.propose("stop_medication", {}, "?")
+    s.begin_turn("¿Qué tiempo hace mañana?")
+    s.begin_turn("Vale")
+    with pytest.raises(ConfirmationRefused, match="expired"):
+        s.take_confirmed(a.id)
 
 
 def test_confirmation_expires():

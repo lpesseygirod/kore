@@ -22,6 +22,9 @@ from kore.scheduler.clock import Clock, local_at
 EARLY_WINDOW = timedelta(minutes=60)
 # Taken this long after the scheduled time counts as "late".
 LATE_AFTER = timedelta(hours=2)
+# "I took it" never reaches further back than this: an early pill today must
+# not rewrite yesterday's missed dose.
+REACH_BACK = timedelta(hours=6)
 
 NEVER_DOUBLE = (
     "Never suggest catching up, taking another, or doubling a dose. "
@@ -92,6 +95,21 @@ def stop_medication(conn: sqlite3.Connection, clock: Clock, medication_id: int) 
     )
 
 
+def request_stop(conn: sqlite3.Connection, clock: Clock, medication_id: int) -> bool:
+    """A confirmed "stop reminding me". Stops only on the second confirmed day; returns whether it stopped."""
+    today = clock.now().date().isoformat()
+    row = conn.execute(
+        "SELECT first_yes_day FROM med_stop_requests WHERE medication_id = ?", (medication_id,)
+    ).fetchone()
+    if row is not None and row["first_yes_day"] < today:
+        stop_medication(conn, clock, medication_id)
+        conn.execute("DELETE FROM med_stop_requests WHERE medication_id = ?", (medication_id,))
+        return True
+    conn.execute("INSERT OR IGNORE INTO med_stop_requests (medication_id, first_yes_day) VALUES (?, ?)",
+                 (medication_id, today))
+    return False
+
+
 def medications(conn: sqlite3.Connection, person_id: int | None = None, active: bool = True) -> list[sqlite3.Row]:
     sql = "SELECT * FROM medications WHERE active = ?"
     args: list = [int(active)]
@@ -101,14 +119,19 @@ def medications(conn: sqlite3.Connection, person_id: int | None = None, active: 
     return conn.execute(sql + " ORDER BY id", args).fetchall()
 
 
-def find_medication(conn: sqlite3.Connection, person_id: int, name: str) -> sqlite3.Row | None:
+# Words that don't identify a medicine: "la de la tensión" means "tensión".
+FILLER_WORDS = {"la", "el", "las", "los", "de", "del", "mi", "mis", "lo", "the", "my", "of", "one", "pill", "pills"}
+
+
+def find_medications(conn: sqlite3.Connection, person_id: int, name: str) -> list[sqlite3.Row]:
+    """Every medicine the words could mean. More than one means: ask, never pick."""
     from kore.brain.language import fold
 
-    target = fold(name)
-    for med in medications(conn, person_id):
-        if target and (target in fold(med["name"]) or target in fold(med["description"])):
-            return med
-    return None
+    words = set(fold(name).split()) - FILLER_WORDS
+    if not words:
+        return []
+    return [m for m in medications(conn, person_id)
+            if words <= set(fold(m["name"] + " " + m["description"]).split())]
 
 
 # --- slots -----------------------------------------------------------------
@@ -156,8 +179,10 @@ def dose_row(conn: sqlite3.Connection, medication_id: int, slot: datetime) -> sq
 def mark_taken(conn: sqlite3.Connection, clock: Clock, person_id: int, medication_id: int | None = None) -> dict:
     """Log "I took it" for the person's current dose(s).
 
-    Without a medication, it covers every medication due at the most recent
-    dose time ("I took my morning pills"). Never logs a dose twice.
+    Without a medication, it covers the medicines whose dose is open now, if
+    they all share one time ("I took my morning pills"). If open doses have
+    different times (08:00 and 08:30), nothing is logged: Pepe asks which.
+    Never logs a dose twice, never reaches back more than REACH_BACK.
     """
     now = _check_clock(clock)
     meds = medications(conn, person_id)
@@ -166,24 +191,29 @@ def mark_taken(conn: sqlite3.Connection, clock: Clock, person_id: int, medicatio
         if not meds:
             return {"ok": False, "error": "unknown_medication"}
 
-    current = [(m, current_slot(m, now, clock)) for m in meds]
-    current = [(m, s) for m, s in current if s is not None]
-    if not current:
-        return {"ok": False, "error": "no_dose_due", "rules": NEVER_DOUBLE}
-    if medication_id is None:
-        latest = max(s for _, s in current)
-        current = [(m, s) for m, s in current if s == latest]
+    open_doses, already = [], []
+    for med in meds:
+        slot = current_slot(med, now, clock)
+        if slot is None or elapsed(slot, now) > REACH_BACK:
+            continue
+        row = dose_row(conn, med["id"], slot)
+        entry = {"medication": med["name"], "slot": slot.strftime("%H:%M"), "day": slot.date().isoformat()}
+        if row is not None and row["status"] == "taken":
+            entry["taken_at"] = from_utc_iso(row["taken_at_utc"], clock.tz).strftime("%H:%M")
+            already.append(entry)
+        else:
+            open_doses.append((med, slot, entry))
+    if not open_doses and not already:
+        return {"ok": False, "error": "no_dose_due", "rules": NEVER_DOUBLE,
+                "say": "Say you have no dose due now to note. Never guess which one."}
+    if len({_utc(s) for _, s, _ in open_doses}) > 1:
+        return {"ok": False, "error": "ambiguous", "options": [e for _, _, e in open_doses],
+                "say": "Ask which medicine they took. Never guess.", "rules": NEVER_DOUBLE}
 
-    marked, already = [], []
+    marked = []
     conn.execute("BEGIN IMMEDIATE")
     try:
-        for med, slot in current:
-            row = dose_row(conn, med["id"], slot)
-            entry = {"medication": med["name"], "slot": slot.strftime("%H:%M"), "day": slot.date().isoformat()}
-            if row is not None and row["status"] == "taken":
-                entry["taken_at"] = from_utc_iso(row["taken_at_utc"], clock.tz).strftime("%H:%M")
-                already.append(entry)
-                continue
+        for med, slot, entry in open_doses:
             late = elapsed(slot, now) > LATE_AFTER
             conn.execute(
                 "INSERT INTO doses (medication_id, person_id, slot_utc, status, taken_at_utc, logged_at_utc, note) "

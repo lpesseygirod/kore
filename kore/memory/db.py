@@ -56,6 +56,12 @@ CREATE TABLE IF NOT EXISTS doses (
     UNIQUE (medication_id, slot_utc)
 );
 
+-- "Stop reminding me": needs a clear yes on two different days (BUILD-PLAN 2).
+CREATE TABLE IF NOT EXISTS med_stop_requests (
+    medication_id INTEGER PRIMARY KEY REFERENCES medications(id),
+    first_yes_day TEXT NOT NULL       -- local YYYY-MM-DD
+);
+
 CREATE TABLE IF NOT EXISTS reminder_attempts (
     medication_id INTEGER NOT NULL REFERENCES medications(id),
     slot_utc TEXT NOT NULL,

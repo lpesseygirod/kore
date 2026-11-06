@@ -14,8 +14,8 @@ from dataclasses import dataclass, field
 
 from kore.brain.language import is_affirmative, self_identified
 
-# A pending confirmation must be answered within this many turns.
-CONFIRM_WITHIN_TURNS = 2
+# A pending confirmation must be answered in the very next turn.
+CONFIRM_WITHIN_TURNS = 1
 
 
 class SpeakerUnknown(Exception):
@@ -131,12 +131,13 @@ class Session:
         if len(self.household) == 1:
             return
         names = {p.id: p.aliases for p in self.household}
-        pid = self_identified(text, names)
+        q = self.identity_question
+        answering = q is not None and self.turn == q[1] + 1
+        pid = self_identified(text, names, answering=answering)
         if pid is not None:
             self.speaker_id = pid
             self.identity_question = None
             return
-        q = self.identity_question
         if q is not None:
             candidate, asked_turn = q
             if self.turn == asked_turn + 1 and candidate is not None and is_affirmative(text):
@@ -146,6 +147,10 @@ class Session:
     # --- confirmations -----------------------------------------------------
 
     def propose(self, kind: str, payload: dict, readback: str) -> PendingAction:
+        # Only the latest read-back can be confirmed: a "sí" answers what Pepe just asked.
+        for p in self.pending.values():
+            if p.status == "pending":
+                p.status = "expired"
         action = PendingAction(next(self._ids), kind, payload, readback, self.turn, self.speaker_id)
         self.pending[action.id] = action
         return action

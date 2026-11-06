@@ -72,6 +72,36 @@ def test_stopping_a_medication_needs_a_yes(ctx, conn):
     assert len(meds.medications(conn)) == 1
 
 
+def stop_pill(ctx):
+    say(ctx, "Soy Carmen. No me recuerdes más la de la tensión")
+    r = call(ctx, "propose_medication_change", medication="tensión", times=[])
+    say(ctx, "Sí")
+    return call(ctx, "confirm_action", action_id=r["action_id"])
+
+
+def test_stopping_a_reminder_needs_a_yes_on_two_different_days(ctx, conn, clock):
+    # BUILD-PLAN 2: a safety rule is never weakened by one sentence.
+    add_pill(ctx)
+    first = stop_pill(ctx)
+    assert first["ok"] and first["stopped"] is False
+    assert len(meds.medications(conn)) == 1
+    assert stop_pill(ctx)["stopped"] is False  # same day again: still not
+    clock.set(at(10, day=10))
+    ctx.session.end_conversation()
+    assert stop_pill(ctx)["stopped"] is True
+    assert meds.medications(conn) == []
+
+
+def test_ambiguous_medicine_asks(ctx, conn):
+    add_pill(ctx)
+    say(ctx, "Soy Carmen, apunta la de la tensión de la noche")
+    r = call(ctx, "propose_medication", name="tensión noche", times=["21:00"])
+    say(ctx, "Sí")
+    call(ctx, "confirm_action", action_id=r["action_id"])
+    say(ctx, "Me he tomado la de la tensión")
+    assert call(ctx, "mark_dose_taken", medication="tensión")["error"] == "ambiguous_medication"
+
+
 # --- two people ---------------------------------------------------------------
 
 

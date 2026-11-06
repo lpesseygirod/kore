@@ -53,10 +53,42 @@ def test_early_window_counts_for_the_coming_dose(conn, clock, home, pills):
 
 
 def test_too_early_is_not_guessed(conn, clock, home, pills):
-    clock.set(at(7, 0))  # before the 9:00 window opens; yesterday's 21:30 is the current slot
+    clock.set(at(7, 0))  # before the 9:00 window opens; yesterday's dose is too long ago
     r = meds.mark_taken(conn, clock, home["carmen"], pills["vitamin"])
-    # vitamin's current slot is yesterday 9:00, never today's
-    assert r["marked"][0]["day"] == "2026-11-08"
+    assert r["error"] == "no_dose_due"
+
+
+def test_adjacent_times_are_ambiguous_not_guessed(conn, clock, home):
+    # Review finding: at 08:05 "ya me la he tomado" marked the 08:30 pill, not the 08:00 one.
+    meds.add_medication(conn, clock, home["antonio"], "Eutirox", ["08:00"])
+    enalapril = meds.add_medication(conn, clock, home["antonio"], "Enalapril", ["08:30"])
+    clock.set(at(8, 5))
+    r = meds.mark_taken(conn, clock, home["antonio"])
+    assert r["error"] == "ambiguous"
+    assert {o["medication"] for o in r["options"]} == {"Eutirox", "Enalapril"}
+    assert conn.execute("SELECT count(*) FROM doses").fetchone()[0] == 0
+    assert meds.mark_taken(conn, clock, home["antonio"], enalapril)["marked"]
+
+
+def test_early_pill_today_does_not_rewrite_yesterdays_missed_dose(conn, clock, home):
+    # Review finding: at 06:30 "I took it" turned yesterday's missed 08:00 into "taken".
+    mid = meds.add_medication(conn, clock, home["carmen"], "x", ["08:00"])
+    med = meds.medications(conn, home["carmen"])[0]
+    meds.close_slot(conn, clock, med, at(8, 0), reminded=True)
+    clock.set(at(6, 30, day=10))
+    r = meds.mark_taken(conn, clock, home["carmen"], mid)
+    assert r["error"] == "no_dose_due"
+    assert meds.dose_row(conn, mid, at(8, 0))["status"] == "missed"
+
+
+def test_ambiguous_medicine_name_is_not_guessed(conn, clock, home):
+    meds.add_medication(conn, clock, home["carmen"], "Sintrom", ["20:00"], "la pastilla rosa")
+    meds.add_medication(conn, clock, home["carmen"], "Adiro", ["09:00"], "la pastilla blanca")
+    assert len(meds.find_medications(conn, home["carmen"], "pastilla")) == 2
+    assert [m["name"] for m in meds.find_medications(conn, home["carmen"], "la rosa")] == ["Sintrom"]
+    assert [m["name"] for m in meds.find_medications(conn, home["carmen"], "la verde")] == []
+    assert [m["name"] for m in meds.find_medications(conn, home["carmen"], "pastilla rosa")] == ["Sintrom"]
+    assert [m["name"] for m in meds.find_medications(conn, home["carmen"], "sintrom")] == ["Sintrom"]
 
 
 def test_taken_late_is_flagged_and_never_suggests_doubling(conn, clock, home, pills):

@@ -170,11 +170,23 @@ def _mark_taken(ctx: Context, args: dict) -> dict:
     pid = _person_id(ctx, args)
     med_id = None
     if args.get("medication"):
-        med = meds.find_medication(ctx.conn, pid, args["medication"])
-        if med is None:
-            return {"ok": False, "error": "unknown_medication", "say": "Ask which medicine they mean. Never guess."}
+        med = _one_medication(ctx, pid, args["medication"])
+        if isinstance(med, dict):
+            return med
         med_id = med["id"]
     return meds.mark_taken(ctx.conn, ctx.clock, pid, med_id)
+
+
+def _one_medication(ctx: Context, pid: int, name: str):
+    """The single medicine `name` means, or an error dict asking which."""
+    found = meds.find_medications(ctx.conn, pid, name)
+    if len(found) == 1:
+        return found[0]
+    if not found:
+        return {"ok": False, "error": "unknown_medication", "say": "Ask which medicine they mean. Never guess."}
+    return {"ok": False, "error": "ambiguous_medication",
+            "options": [f"{m['name']} ({m['description']})" if m["description"] else m["name"] for m in found],
+            "say": "Ask which one they mean. Never guess."}
 
 
 @tool("propose_medication", "Prepare to save a new medicine. Nothing is saved until the person says yes "
@@ -199,9 +211,9 @@ def _propose_med(ctx: Context, args: dict) -> dict:
        "times": {"type": "array", "items": {"type": "string"}}}, writes=True, required=["medication", "times"])
 def _propose_med_change(ctx: Context, args: dict) -> dict:
     pid = _person_id(ctx, args)
-    med = meds.find_medication(ctx.conn, pid, args["medication"])
-    if med is None:
-        return {"ok": False, "error": "unknown_medication", "say": "Ask which medicine they mean."}
+    med = _one_medication(ctx, pid, args["medication"])
+    if isinstance(med, dict):
+        return med
     if args["times"]:
         times = meds._valid_times(args["times"])
         readback = f"{med['name']} at {', '.join(times)} from now on. Is that right?"
@@ -282,8 +294,13 @@ def _exec_change_med(ctx, p):
 
 @executor("stop_medication")
 def _exec_stop_med(ctx, p):
-    meds.stop_medication(ctx.conn, ctx.clock, p["medication_id"])
-    return {}
+    if meds.request_stop(ctx.conn, ctx.clock, p["medication_id"]):
+        person = ctx.conn.execute("SELECT person_id FROM medications WHERE id = ?", (p["medication_id"],)).fetchone()
+        # Phase 6 sends it; the person agreed to family alerts at setup.
+        return {"stopped": True, "tell_family": store.has_consent(ctx.conn, person["person_id"], "family_missed_meds")}
+    return {"stopped": False,
+            "say": "The reminder stays for now. Say kindly you'll keep it short and quiet, suggest mentioning it "
+                   "to their doctor, and that if they still want it stopped on another day, they can tell you again."}
 
 
 @executor("add_appointment")
