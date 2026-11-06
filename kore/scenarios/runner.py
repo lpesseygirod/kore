@@ -98,7 +98,7 @@ class Home:
         h = sc.get("home", {})
         self.ids: dict[str, int] = {}
         people = []
-        for p in h.get("people", [{"name": "Carmen"}]):
+        for p in h.get("people", [{"name": "Carmen"}]):  # "people": [] = a home switched on for the first time
             pid = meds.add_person(self.conn, self.clock, p["name"], p.get("call_name"))
             self.ids[p["name"]] = pid
             if p.get("call_name"):
@@ -129,6 +129,15 @@ class Home:
             self.clock.set(self.when(t["at"]))
             meds.mark_taken(self.conn, self.clock, self.ids[t["person"]])
             self.clock.set(now)
+        if "setup_done_until" in h:  # a home part-way through setup: every step before this one is done
+            from kore.setup import progress, steps
+            progress.set_status(self.conn, self.clock, "in_progress")
+            for st in steps.STEPS:
+                if st.id == h["setup_done_until"]:
+                    break
+                for pid in ([None] if st.scope == "home" else [p.id for p in people]):
+                    if not (st.two_people_only and len(people) < 2):
+                        progress.mark(self.conn, self.clock, st.id, pid)
         self.session = Session(people)
         self.ctx = tools.Context(self.conn, self.clock, self.session)
         self.brain = Brain(self.ctx, client, forms=h.get("forms", {}))

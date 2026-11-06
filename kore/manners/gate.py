@@ -172,6 +172,9 @@ class Manners:
 
     def on_presence(self, state: str) -> None:
         """Sensor: 'moving' | 'still' | 'absent'."""
+        if not store.sensor_allowed(self.conn):
+            self.presence = "unknown"  # someone said no to the sensor
+            return
         prev, self.presence = self.presence, state
         if state == "absent" or not self.clock.trusted():
             return

@@ -22,6 +22,8 @@ from kore.brain import fallback, tools
 from kore.brain.language import looks_english
 from kore.brain.prompt import SYSTEM_PROMPT, state_block
 from kore.feedback import store as feedback
+from kore.memory import settings
+from kore.setup import progress as setup
 from kore.manners import modes
 from kore.manners.gate import Item
 
@@ -141,7 +143,13 @@ class Brain:
         people = {s.speaker_id: names[s.speaker_id]} if s.speaker_id is not None else names
         lines += feedback.prompt_lines(ctx.conn, ctx.clock, people)
         when = f"{fallback.spoken_date(now.date())}, {now.strftime('%H:%M')}"
-        forms = {names[p.id]: self.forms.get(p.name, "usted") for p in s.household}
+        forms = {names[p.id]: _form(settings.stored(ctx.conn, "address", p.id) or self.forms.get(p.name, "usted"))
+                 for p in s.household}
+        if setup.status(ctx.conn) in ("not_started", "in_progress"):  # paused: wait for the next day's offer
+            nxt = setup.next_step(ctx.conn, s.speaker_id, [p.id for p in s.household])
+            if nxt.step is not None or nxt.need_speaker:
+                lines.append("Setup isn't finished: when it fits (not in the middle of something else), "
+                             "call setup_next to continue it, one question at a time.")
         return "<state>\n" + state_block(when, "\n".join(lines), forms) + "\n</state>"
 
     def transcript(self) -> list[tuple[str, str]]:
@@ -167,3 +175,7 @@ def speakable(text: str) -> tuple[str, list[str]]:
     for line in text.split("\n"):
         (dropped if looks_english(line) else keep).append(line)
     return "\n".join(keep).strip(), dropped
+
+
+def _form(value: str) -> str:
+    return {"tu": "tú"}.get(value, value)

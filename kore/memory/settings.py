@@ -28,6 +28,7 @@ DEFAULTS = {
     "volume": "normal",
     "answer_length": "normal",
     "chattiness": "normal",     # how many conversation starters a day
+    "address": "usted",         # tú or usted, asked at setup (usted until they say)
 }
 
 # Settings that only exist for the whole home (one speaker, one room: night for
@@ -46,6 +47,7 @@ CHOICES = {
     "volume": ["soft", "normal", "loud", "very_loud"],
     "answer_length": ["short", "normal", "long"],
     "chattiness": ["none", "less", "normal", "more"],
+    "address": ["usted", "tu"],
 }
 STEPS = {
     "slower": ("speech_rate", -1), "faster": ("speech_rate", +1),

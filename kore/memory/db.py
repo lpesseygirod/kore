@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 3
+SCHEMA_VERSION = 4
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -87,6 +87,8 @@ CREATE TABLE IF NOT EXISTS contacts (
     relation TEXT NOT NULL DEFAULT '',
     birthday_md TEXT,                 -- "MM-DD"
     birthday_reminders INTEGER NOT NULL DEFAULT 1,
+    help_contact INTEGER NOT NULL DEFAULT 0,  -- the person to contact if they need help (phase 6 sends)
+    for_person INTEGER REFERENCES people(id),
     created_at TEXT NOT NULL
 );
 
@@ -199,6 +201,21 @@ CREATE TABLE IF NOT EXISTS behaviour_signals (
     kind TEXT NOT NULL CHECK (kind IN ('repeat_request'))
 );
 
+-- The setup conversation (phase 5): which steps are done, for the home (0) or each person.
+CREATE TABLE IF NOT EXISTS setup_steps (
+    person_id INTEGER NOT NULL,
+    step TEXT NOT NULL,
+    status TEXT NOT NULL CHECK (status IN ('done', 'skipped')),
+    at_utc TEXT NOT NULL,
+    PRIMARY KEY (person_id, step)
+);
+CREATE TABLE IF NOT EXISTS setup_state (
+    id INTEGER PRIMARY KEY CHECK (id = 1),
+    status TEXT NOT NULL,
+    changed_at TEXT NOT NULL,
+    offered_on TEXT
+);
+
 -- What Pepe has to say, and what the manners layer decided. A row is only
 -- 'done' once the voice has said it, so a restart in between says it again.
 CREATE TABLE IF NOT EXISTS outbox (
@@ -260,6 +277,10 @@ def _migrate(conn: sqlite3.Connection) -> None:
     cols = {r["name"] for r in conn.execute("PRAGMA table_info(reminder_attempts)")}
     if "spoken" not in cols:
         conn.execute("ALTER TABLE reminder_attempts ADD COLUMN spoken INTEGER NOT NULL DEFAULT 0")
+    cols = {r["name"] for r in conn.execute("PRAGMA table_info(contacts)")}
+    if "help_contact" not in cols:
+        conn.execute("ALTER TABLE contacts ADD COLUMN help_contact INTEGER NOT NULL DEFAULT 0")
+        conn.execute("ALTER TABLE contacts ADD COLUMN for_person INTEGER REFERENCES people(id)")
 
 
 def utc_iso(dt: datetime) -> str:

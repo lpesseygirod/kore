@@ -100,6 +100,17 @@ class Session:
                 return p
         raise KeyError(person_id)
 
+    def add_person(self, person: Person, speaking: bool) -> None:
+        """Someone new at home (setup). If they introduced themselves, they're the speaker now."""
+        self.household.append(person)
+        if speaking:
+            self.speaker_id = person.id
+            self.identity_question = None
+        # No _auto_speaker here: someone they told us about never becomes "the speaker".
+
+    def rename(self, person_id: int, call_name: str) -> None:
+        self.person(person_id).call_name = call_name
+
     def find_person(self, name: str) -> Person | None:
         from kore.brain.language import fold
 

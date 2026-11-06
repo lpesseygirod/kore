@@ -25,6 +25,7 @@ from datetime import date, datetime, timedelta
 from kore.feedback import store as feedback
 from kore.manners import modes
 from kore.memory import meds, settings, store
+from kore.setup import progress as setup
 from kore.memory.db import from_utc_iso, utc_iso
 from kore.memory.meds import _utc, elapsed
 from kore.scheduler.clock import Clock, local_at
@@ -102,6 +103,9 @@ class Engine:
 
     def on_presence(self, state: str) -> list[Event]:
         """state: 'moving' | 'still' | 'absent'. Returns the morning greeting when due."""
+        if not store.sensor_allowed(self.conn):
+            self._presence, self._still_since = "unknown", None
+            return []  # someone said no to the sensor: it plays no part at all
         now = self.clock.now()
         prev, self._presence = self._presence, state
         if state == "still":
@@ -111,16 +115,28 @@ class Engine:
             self._still_since = None
         if state == "absent" or not self.clock.trusted():
             return []
+        out = []
+        night = settings.within(now.strftime("%H:%M"), settings.get(self.conn, "night_start"),
+                                settings.get(self.conn, "night_end"))
+        if state == "moving" and not night and setup.offer_due(self.conn, self.clock):
+            # Setup not finished: offer (again) to start or carry on, once a day (the gate keeps it off nights).
+            setup.mark_offered(self.conn, self.clock)
+            out.append(Event("setup_offer", 1, self._everyone(), private=True, data={
+                "status": setup.status(self.conn),
+                "rules": "Call setup_next and follow it: one question at a time. They can say not now."},
+                             expires_at=now + timedelta(hours=2)))
+        if not self._everyone():
+            return out  # nobody known yet: the welcome is the greeting
         if not (elapsed(local_at(now.date(), MORNING_FROM, self.clock.tz), now) >= timedelta(0)
                 and elapsed(now, local_at(now.date(), MORNING_UNTIL, self.clock.tz)) > timedelta(0)):
-            return []
+            return out
         if not self._once(f"morning:{now.date()}"):
-            return []
+            return out
         plan = self.plan_for_day(now.date())
         plan["rules"] = ("Brief. Mention medicine times only as times: whether a dose was taken comes only from "
                          "the records (get_med_status), never from the time. Don't mention what isn't there.")
         return [Event("morning_greeting", 1, self._everyone(), plan, private="people" in plan,
-                      expires_at=local_at(now.date(), MORNING_UNTIL, self.clock.tz))]
+                      expires_at=local_at(now.date(), MORNING_UNTIL, self.clock.tz))] + out
 
     def plan_for_day(self, day: date) -> dict:
         """What today holds, for the greeting. Facts from code only.

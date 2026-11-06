@@ -17,13 +17,15 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from typing import Callable
 
-from kore.brain.session import ConfirmationRefused, Session, SpeakerMismatch, SpeakerUnknown
+from kore.brain.session import ConfirmationRefused, Person, Session, SpeakerMismatch, SpeakerUnknown
 from kore.feedback import store as feedback
 from kore.manners import modes
 from kore.manners.gate import Manners
 from kore.memory import meds, settings, store
 from kore.memory.db import from_utc_iso, utc_iso
 from kore.scheduler.clock import Clock, local_at
+from kore.setup import progress as setup
+from kore.setup import steps as setup_steps
 
 
 @dataclass
@@ -195,6 +197,22 @@ def _one_medication(ctx: Context, pid: int, name: str):
             "say": "Ask which one they mean. Never guess."}
 
 
+MEDICINE_WORDS = ("pastill", "medic", "dosis", "pill", "tablet", "comprimid", "jarabe", "insulin", "inhal",
+                  "gotas", "parche")
+
+
+def _is_medicine(text: str) -> bool:
+    from kore.brain.language import fold
+
+    return any(w.startswith(m) for w in fold(text).split() for m in MEDICINE_WORDS)
+
+
+def _health_ok(ctx: Context, pid: int) -> None:
+    if store.declined(ctx.conn, pid, "health_info"):
+        raise ValueError("they said no to keeping their medicines and appointments: ask again only if they "
+                         "bring it up (propose_permission health_info)")
+
+
 @tool("propose_medication", "Prepare to save a new medicine. Nothing is saved until the person says yes "
       "to the read-back and you call confirm_action.",
       {"person": PERSON, "name": {"type": "string"}, "times": {"type": "array", "items": {"type": "string"},
@@ -202,6 +220,7 @@ def _one_medication(ctx: Context, pid: int, name: str):
       writes=True, required=["name", "times"])
 def _propose_med(ctx: Context, args: dict) -> dict:
     pid = _person_id(ctx, args)
+    _health_ok(ctx, pid)
     times = meds._valid_times(args["times"])
     who = ctx.session.person(pid).call_name
     readback = f"{args['name']} for {who} at {', '.join(times)}. Is that right?"
@@ -241,6 +260,8 @@ def _propose_med_change(ctx: Context, args: dict) -> dict:
        "location": {"type": "string"}}, writes=True, required=["title", "starts_at"])
 def _propose_appt(ctx: Context, args: dict) -> dict:
     pid = _person_or_shared(ctx, args)
+    if pid is not None:
+        _health_ok(ctx, pid)
     starts = datetime.fromisoformat(args["starts_at"])
     starts = starts.replace(tzinfo=ctx.clock.tz) if starts.tzinfo is None else starts.astimezone(ctx.clock.tz)
     readback = f"{args['title']} on {starts.strftime('%A %d %B at %H:%M')}. Is that right?"
@@ -283,6 +304,8 @@ def _propose_appt_change(ctx: Context, args: dict) -> dict:
       writes=True, required=["text", "time", "rule"])
 def _propose_reminder(ctx: Context, args: dict) -> dict:
     pid = _person_or_shared(ctx, args)
+    if pid is not None and _is_medicine(args.get("text", "")):
+        _health_ok(ctx, pid)
     store._check_rule(args["rule"])
     time = meds._valid_times([args["time"]])[0]
     first = date.fromisoformat(args["first_day"]) if args.get("first_day") else ctx.clock.now().date()
@@ -314,6 +337,7 @@ def executor(kind):
 
 @executor("add_medication")
 def _exec_add_med(ctx, p):
+    _health_ok(ctx, p["person_id"])
     return {"medication_id": meds.add_medication(ctx.conn, ctx.clock, p["person_id"], p["name"], p["times"],
                                                  p["description"])}
 
@@ -333,6 +357,41 @@ def _exec_stop_med(ctx, p):
     return {"stopped": False,
             "say": "The reminder stays for now. Say kindly you'll keep it short and quiet, suggest mentioning it "
                    "to their doctor, and that if they still want it stopped on another day, they can tell you again."}
+
+
+@executor("add_person")
+def _exec_add_person(ctx, p):
+    # Whatever setup's state was (not started, or complete for the first person), the new
+    # person has their own steps now. Set before adding: with nobody saved, status() reads the
+    # people table.
+    setup.set_status(ctx.conn, ctx.clock, "in_progress")
+    pid = meds.add_person(ctx.conn, ctx.clock, p["name"], p["call_name"])
+    ctx.session.add_person(Person(pid, p["name"], p["call_name"]), speaking=p["speaking"])
+    return {"person_id": pid}
+
+
+@executor("rename")
+def _exec_rename(ctx, p):
+    ctx.conn.execute("UPDATE people SET call_name = ? WHERE id = ?", (p["call_name"], p["person_id"]))
+    ctx.session.rename(p["person_id"], p["call_name"])
+    return {}
+
+
+@executor("permission")
+def _exec_permission(ctx, p):
+    store.set_consent(ctx.conn, ctx.clock, p["person_id"], p["kind"], True)
+    if p["kind"] in STEP_FOR_PERMISSION:
+        _close_step(ctx, STEP_FOR_PERMISSION[p["kind"]], p["person_id"])
+    return {}
+
+
+@executor("add_contact")
+def _exec_add_contact(ctx, p):
+    cid = store.add_contact(ctx.conn, ctx.clock, p["name"], p["relation"], p["birthday"],
+                            help_contact=p["help"], for_person=p["for_person"])
+    if p["help"] and p["for_person"] is not None:
+        _close_step(ctx, "help_contact", p["for_person"])
+    return {"contact_id": cid}
 
 
 @executor("move_appointment")
@@ -597,6 +656,242 @@ def _feedback_follow_up(ctx: Context, args: dict) -> dict:
     if row["speaker_id"] is not None:
         ctx.session.require_speaker(row["speaker_id"])  # only the person who said it
     return feedback.follow_up(ctx.conn, ctx.clock, int(args["feedback_id"]), args.get("answer"), args.get("scope"))
+
+
+# --- the setup conversation (phase 5) ----------------------------------------------
+
+
+def _people(ctx: Context) -> list[int]:
+    return [p.id for p in ctx.session.household]
+
+
+@tool("setup_next", "The next setup question and how to save the answer. One question at a time; if they'd "
+      "rather stop, call setup_pause.")
+def _setup_next(ctx: Context, args: dict) -> dict:
+    s = ctx.session
+    if setup.status(ctx.conn) == "complete":
+        return {"ok": True, "complete": True}
+    nxt = setup.next_step(ctx.conn, s.speaker_id, _people(ctx))
+    progress = f"{nxt.done} of {nxt.total}"
+    if nxt.need_speaker:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    if nxt.step is None:
+        if nxt.waiting_for:
+            names = ", ".join(s.person(p).call_name for p in nxt.waiting_for)
+            return {"ok": True, "done_for_now": True, "progress": progress,
+                    "say": f"Their part is done. {names} still has a few questions, whenever suits them."}
+        return {"ok": True, "complete": setup.status(ctx.conn) == "complete", "progress": progress}
+    who = s.person(nxt.person_id).call_name if nxt.person_id else None
+    return {"ok": True, "step": nxt.step.id, "for": who, "ask": nxt.step.ask, "save": nxt.step.save,
+            "progress": progress}
+
+
+@tool("setup_step_done", "Mark a setup step as done (or skipped, if they'd rather not answer).",
+      {"step": {"type": "string"}, "skipped": {"type": "boolean"}}, writes=True, required=["step"])
+def _setup_step_done(ctx: Context, args: dict) -> dict:
+    step = setup_steps.BY_ID.get(args["step"])
+    if step is None:
+        raise ValueError(f"unknown step {args['step']!r}")
+    s = ctx.session
+    if step.scope == "person" and s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    if step.id == "people" and not s.household:
+        raise ValueError("nobody saved yet: propose_person first")
+    nxt = setup.next_step(ctx.conn, s.speaker_id, _people(ctx))
+    if nxt.step is None or nxt.step.id != step.id:
+        expected = nxt.step.id if nxt.step else "none for this person now"
+        raise ValueError(f"the next setup step is {expected}: one at a time, in order")
+    setup.mark(ctx.conn, ctx.clock, step.id, s.speaker_id, bool(args.get("skipped")))
+    return {"ok": True}
+
+
+# Answers that close their setup step by themselves (the permission or setting is the answer).
+STEP_FOR_PERMISSION = {"conversation_starters": "chattiness", "health_info": "health_info", "listening": "listening",
+                       "presence_sensor": "presence", "family_missed_meds": "family_alerts",
+                       "emergency_path": "emergency", "share_with_partner": "share"}
+
+
+def _close_step(ctx: Context, step_id: str, person_id: int | None) -> None:
+    """Mark a setup step done when its answer is saved, if it's still open for this person."""
+    if setup.status(ctx.conn) == "complete":
+        return
+    step = setup_steps.BY_ID[step_id]
+    key = setup.HOME if step.scope == "home" else person_id
+    if (key, step_id) not in setup.done_steps(ctx.conn):
+        setup.mark(ctx.conn, ctx.clock, step_id, person_id)
+
+
+@tool("setup_pause", "They'd rather carry on another day (or not start now). You'll offer again another day.",
+      writes=True)
+def _setup_pause(ctx: Context, args: dict) -> dict:
+    if setup.status(ctx.conn) in ("complete", "paused"):
+        return {"ok": True, "say": "Nothing to pause. Just carry on."}
+    setup.set_status(ctx.conn, ctx.clock, "paused")
+    return {"ok": True, "say": "Say that's fine, and that you'll ask again another day."}
+
+
+RESERVED_NAMES = {"pepe"}  # the companion's name and wake word
+
+
+def _check_name(s: Session, names: list[str], except_id: int | None = None) -> None:
+    """A name must be told apart from the other person's ("soy María" vs "soy María José") and from Pepe."""
+    from kore.brain.language import fold
+
+    for n in names:
+        words = fold(n).split()
+        if not words or any(w in RESERVED_NAMES for w in words):
+            raise ValueError("that name can't be used: it's Pepe's own (the wake word)")
+        for p in s.household:
+            if p.id == except_id:
+                continue
+            for alias in p.aliases:
+                a = fold(alias).split()
+                if set(a) & set(words):
+                    raise ValueError(f"too close to {p.call_name}'s name: ask for another way to call them")
+
+
+@tool("propose_person", "Setup: someone who lives here says their name (and how they like to be called), or tells "
+      "you about the other person at home. Reads back the name; saved after their yes.",
+      {"name": {"type": "string"}, "call_name": {"type": "string", "description": "How they like to be called."},
+       "is_speaker": {"type": "boolean", "description": "True if it's the person speaking, false for someone "
+                      "they tell you about. The person speaking is always saved first."}},
+      writes=True, required=["name", "is_speaker"])
+def _propose_person(ctx: Context, args: dict) -> dict:
+    name = args["name"].strip()
+    call = (args.get("call_name") or name).strip()
+    if not name or len(name) > 40 or len(call) > 40:
+        raise ValueError("a name, please")
+    s = ctx.session
+    if len(s.household) >= 2:
+        raise ValueError("v1 is for up to two people at home")
+    _check_name(s, [name, call])
+    if "is_speaker" not in args:
+        raise ValueError("say whether this is the person speaking (is_speaker)")
+    speaking = bool(args["is_speaker"])
+    if not s.household and not speaking:
+        raise ValueError("first save the person who is speaking: ask their name")
+    if speaking and s.speaker_id is not None:
+        raise ValueError("the speaker is already saved; this must be someone else (is_speaker false)")
+    readback = f"So I'll call {'you' if speaking else 'them'} {call}. Is that right?"
+    a = ctx.session.propose("add_person", {"name": name, "call_name": call, "speaking": speaking}, readback)
+    return {"ok": True, "action_id": a.id, "say_and_wait": readback}
+
+
+@tool("propose_call_name", "They want to be called something else ('call me Mari'). Their own name only.",
+      {"call_name": {"type": "string"}}, writes=True, required=["call_name"])
+def _propose_call_name(ctx: Context, args: dict) -> dict:
+    s = ctx.session
+    if s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    call = args["call_name"].strip()
+    if not call or len(call) > 40:
+        raise ValueError("a name, please")
+    _check_name(s, [call], except_id=s.speaker_id)
+    readback = f"From now on I'll call you {call}. Is that right?"
+    a = s.propose("rename", {"person_id": s.speaker_id, "call_name": call}, readback)
+    return {"ok": True, "action_id": a.id, "say_and_wait": readback}
+
+
+@tool("setup_setting", "Setup: save how they want things (address: tu or usted; speech_rate; volume; chattiness; "
+      "night_start, night_end, rest_hours as HH:MM-HH:MM).",
+      {"setting": {"type": "string"}, "value": {"type": "string"}}, writes=True, required=["setting", "value"])
+def _setup_setting(ctx: Context, args: dict) -> dict:
+    key, value = args["setting"], args["value"].strip()
+    s = ctx.session
+    if s.speaker_id is None and key not in settings.HOME_ONLY:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    person = settings.HOME if key in settings.HOME_ONLY else s.speaker_id
+    if key == "address":
+        value = {"tú": "tu"}.get(value.lower(), value.lower())
+    if value in settings.STEPS:
+        step_key, direction = settings.STEPS[value]
+        if step_key != key:
+            raise ValueError(f"{value!r} is a step for {step_key}")
+        value = settings.step(key, settings.get(ctx.conn, key, person), direction)
+    if key in ("night_start", "night_end"):
+        for times, in ctx.conn.execute("SELECT times FROM medications WHERE active = 1"):
+            start = value if key == "night_start" else settings.get(ctx.conn, "night_start")
+            end = value if key == "night_end" else settings.get(ctx.conn, "night_end")
+            if any(settings.within(x, start, end) for x in json.loads(times)):
+                raise ValueError("a medicine time would fall in the night: ask about the medicine time first")
+    settings.put(ctx.conn, ctx.clock, key, value, person)
+    if key == "address":
+        _close_step(ctx, "address", s.speaker_id)
+    return {"ok": True, "setting": key, "value": value}
+
+
+PERMISSION_TEXT = {
+    "health_info": "keep your medicines and appointments, to remind you",
+    "conversation_starters": "start a conversation with you sometimes",
+    "water_nudges": "remind you now and then to drink some water",
+    "movement_nudges": "suggest moving a little after sitting a long time",
+    "listening": "listen only after you say my name or press the button",
+    "presence_sensor": "notice when you're up or moving around, to greet you and check you're all right",
+    "family_missed_meds": "let your help contact know if you miss your medicine several times in a row",
+    "emergency_path": "message your help contact straight away if you say 'Pepe, ayuda' or press the button",
+    "share_with_partner": "tell the other person at home whether you've taken your medicine, if they ask",
+}
+
+
+@tool("propose_permission", "Ask one permission, in one plain sentence. Saved only after their clear yes "
+      "(confirm_action). kinds: " + ", ".join(PERMISSION_TEXT), {"kind": {"type": "string"}}, writes=True,
+      required=["kind"])
+def _propose_permission(ctx: Context, args: dict) -> dict:
+    kind = args["kind"]
+    if kind not in PERMISSION_TEXT:
+        raise ValueError(f"unknown permission {kind!r}")
+    s = ctx.session
+    if s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    readback = f"May I {PERMISSION_TEXT[kind]}? You can change it any time."
+    a = s.propose("permission", {"person_id": s.speaker_id, "kind": kind}, readback)
+    return {"ok": True, "action_id": a.id, "say_and_wait": readback}
+
+
+@tool("record_permission_no", "They said no to a permission (or would rather not). Saved at once: no needs no "
+      "confirmation.", {"kind": {"type": "string"}}, writes=True, required=["kind"])
+def _permission_no(ctx: Context, args: dict) -> dict:
+    kind = args["kind"]
+    if kind not in PERMISSION_TEXT:
+        raise ValueError(f"unknown permission {kind!r}")
+    s = ctx.session
+    if s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    store.set_consent(ctx.conn, ctx.clock, s.speaker_id, kind, False)
+    if kind in STEP_FOR_PERMISSION:
+        _close_step(ctx, STEP_FOR_PERMISSION[kind], s.speaker_id)
+    return {"ok": True, "say": "Say that's fine, in a few words. No persuading."}
+
+
+@tool("propose_contact", "A family member or friend: their birthday (MM-DD) to remember, and/or that they're the "
+      "person to contact if help is needed. Saved after a yes.",
+      {"name": {"type": "string"}, "relation": {"type": "string"}, "birthday": {"type": "string"},
+       "help": {"type": "boolean"}}, writes=True, required=["name"])
+def _propose_contact(ctx: Context, args: dict) -> dict:
+    s = ctx.session
+    if args.get("help") and s.speaker_id is None:
+        s.ask_identity(None)
+        raise SpeakerUnknown(None)
+    birthday = args.get("birthday")
+    if birthday:
+        m, d = (int(x) for x in birthday.split("-"))
+        date(2024, m, d)
+    parts = [args["name"] + (f" ({args['relation']})" if args.get("relation") else "")]
+    if birthday:
+        parts.append(f"birthday on {date(2024, m, d).strftime('%d %B')}")
+    if args.get("help"):
+        parts.append("the person to contact if you need help")
+    readback = ", ".join(parts) + ". Is that right?"
+    a = s.propose("add_contact", {"name": args["name"], "relation": args.get("relation", ""),
+                                  "birthday": birthday, "help": bool(args.get("help")),
+                                  "for_person": s.speaker_id}, readback)
+    return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
 
 # --- outside text --------------------------------------------------------------

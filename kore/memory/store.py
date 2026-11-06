@@ -27,6 +27,8 @@ CONSENTS = {
     "water_nudges",           # category 2
     "movement_nudges",        # category 2
     "conversation_starters",  # category 2
+    "listening",              # listens after the wake word or the button (told and agreed at setup)
+    "presence_sensor",        # notices when they're up or moving
 }
 
 
@@ -38,6 +40,22 @@ def set_consent(conn: sqlite3.Connection, clock: Clock, person_id: int, kind: st
         "ON CONFLICT (person_id, kind) DO UPDATE SET granted = excluded.granted, at = excluded.at",
         (person_id, kind, int(granted), utc_iso(clock.now())),
     )
+
+
+def declined(conn: sqlite3.Connection, person_id: int, kind: str) -> bool:
+    """They were asked and said no (not just: never asked)."""
+    row = conn.execute("SELECT granted FROM consents WHERE person_id = ? AND kind = ?", (person_id, kind)).fetchone()
+    return bool(row and not row["granted"])
+
+
+def sensor_allowed(conn: sqlite3.Connection) -> bool:
+    """One presence sensor for the room: used only if nobody at home said no to it."""
+    return conn.execute("SELECT 1 FROM consents WHERE kind = 'presence_sensor' AND granted = 0").fetchone() is None
+
+
+def listening_declined(conn: sqlite3.Connection) -> bool:
+    """Someone said no to listening after the wake word: the voice loop (phase 1) must then use the button only."""
+    return conn.execute("SELECT 1 FROM consents WHERE kind = 'listening' AND granted = 0").fetchone() is not None
 
 
 def has_consent(conn: sqlite3.Connection, person_id: int, kind: str) -> bool:
@@ -201,15 +219,17 @@ def appointments(conn: sqlite3.Connection, clock: Clock, person_id: int | None =
 
 
 def add_contact(
-    conn: sqlite3.Connection, clock: Clock, name: str, relation: str = "", birthday_md: str | None = None
+    conn: sqlite3.Connection, clock: Clock, name: str, relation: str = "", birthday_md: str | None = None,
+    help_contact: bool = False, for_person: int | None = None,
 ) -> int:
     if birthday_md is not None:
         m, d = (int(x) for x in birthday_md.split("-"))
         date(2024, m, d)  # validates, leap day included
         birthday_md = f"{m:02d}-{d:02d}"
     cur = conn.execute(
-        "INSERT INTO contacts (name, relation, birthday_md, created_at) VALUES (?, ?, ?, ?)",
-        (name, relation, birthday_md, utc_iso(clock.now())),
+        "INSERT INTO contacts (name, relation, birthday_md, help_contact, for_person, created_at) "
+        "VALUES (?, ?, ?, ?, ?, ?)",
+        (name, relation, birthday_md, int(help_contact), for_person, utc_iso(clock.now())),
     )
     return cur.lastrowid
 
