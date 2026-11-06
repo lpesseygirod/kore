@@ -130,10 +130,18 @@ def notes(conn: sqlite3.Connection, person_id: int) -> list[dict]:
 
 
 def forget_note(conn: sqlite3.Connection, person_id: int, note_id: int) -> bool:
-    """Really deletes (secure_delete is on); a WAL checkpoint pushes it out of the log too."""
-    cur = conn.execute("DELETE FROM notes WHERE id = ? AND person_id = ?", (note_id, person_id))
+    """Really deletes: the note, and every tool_log row that quoted it.
+
+    secure_delete overwrites the freed space; a WAL checkpoint pushes it out
+    of the write-ahead log too.
+    """
+    row = conn.execute("SELECT text FROM notes WHERE id = ? AND person_id = ?", (note_id, person_id)).fetchone()
+    if row is None:
+        return False
+    conn.execute("DELETE FROM notes WHERE id = ?", (note_id,))
+    conn.execute("DELETE FROM tool_log WHERE instr(args, ?) > 0 OR instr(result, ?) > 0", (row["text"], row["text"]))
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
-    return cur.rowcount == 1
+    return True
 
 
 def forget_place(conn: sqlite3.Connection, place_id: int) -> bool:
