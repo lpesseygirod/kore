@@ -6,6 +6,7 @@ Plain storage. Who may read or change what is checked in brain/tools.py.
 
 from __future__ import annotations
 
+import json
 import sqlite3
 from datetime import date, datetime
 
@@ -140,7 +141,10 @@ def forget_note(conn: sqlite3.Connection, person_id: int, note_id: int) -> bool:
     if row is None:
         return False
     conn.execute("DELETE FROM notes WHERE id = ?", (note_id,))
-    conn.execute("DELETE FROM tool_log WHERE instr(args, ?) > 0 OR instr(result, ?) > 0", (row["text"], row["text"]))
+    # The log stores JSON, where quotes and backslashes are escaped: search both forms.
+    escaped = json.dumps(row["text"], ensure_ascii=False)[1:-1]
+    for form in {row["text"], escaped}:
+        conn.execute("DELETE FROM tool_log WHERE instr(args, ?) > 0 OR instr(result, ?) > 0", (form, form))
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     return True
 

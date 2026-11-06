@@ -30,6 +30,7 @@ CLOSE_AFTER = timedelta(hours=2)
 MISSED_IN_A_ROW_FOR_ALERT = 2
 
 APPT_DAY_BEFORE_AT = "20:00"
+APPT_DAY_BEFORE_LATEST = timedelta(minutes=90)  # after an outage, not later than 21:30
 APPT_SAME_DAY_BEFORE = timedelta(hours=1)
 BIRTHDAY_AT = "10:00"
 # A voice reminder missed while the device was off still fires up to this late.
@@ -44,6 +45,7 @@ MOVEMENT_MAX_PER_DAY = 2
 # Category-2 nudges only in the day, whatever else the manners layer decides.
 NUDGE_HOURS = ("10:00", "20:00")
 MORNING_FROM = "06:00"
+MORNING_UNTIL = "12:00"  # first presence after this is not a "good morning"
 
 
 @dataclass
@@ -97,24 +99,31 @@ class Engine:
             self._still_since = None
         if state == "absent" or not self.clock.trusted():
             return []
-        if now < local_at(now.date(), MORNING_FROM, self.clock.tz):
+        if not (elapsed(local_at(now.date(), MORNING_FROM, self.clock.tz), now) >= timedelta(0)
+                and elapsed(now, local_at(now.date(), MORNING_UNTIL, self.clock.tz)) > timedelta(0)):
             return []
         if not self._once(f"morning:{now.date()}"):
             return []
         return [Event("morning_greeting", 1, self._everyone(), self.plan_for_day(now.date()))]
 
     def plan_for_day(self, day: date) -> dict:
-        """What today holds, per person, for the greeting. Facts from code only."""
-        plan = {"date": day.isoformat(), "weekday": day.strftime("%A"), "people": {}}
-        for p in self.conn.execute("SELECT * FROM people ORDER BY id"):
+        """What today holds, for the greeting. Facts from code only.
+
+        Personal things (medicine times, a doctor's visit) are included only in
+        a one-person home: with two, nobody is known to be in the room yet.
+        """
+        plan = {"date": day.isoformat(), "weekday": day.strftime("%A")}
+        people = self.conn.execute("SELECT * FROM people ORDER BY id").fetchall()
+        if len(people) == 1:
+            p = people[0]
             doses = sorted({t for m in meds.medications(self.conn, p["id"])
                             for t in (s.strftime("%H:%M") for s in meds.slots_on(m, day, self.clock))})
             appts = [a for a in store.appointments(self.conn, self.clock, p["id"], upcoming=False)
                      if a["starts_at"].date() == day and a["person_id"] == p["id"]]
-            plan["people"][p["call_name"]] = {
+            plan["people"] = {p["call_name"]: {
                 "medicine_times": doses,
                 "appointments": [{"title": a["title"], "time": a["starts_at"].strftime("%H:%M")} for a in appts],
-            }
+            }}
         plan["shared_appointments"] = [
             {"title": a["title"], "time": a["starts_at"].strftime("%H:%M")}
             for a in store.appointments(self.conn, self.clock, upcoming=False)
@@ -175,11 +184,13 @@ class Engine:
         return events
 
     def _missed_alert(self, pid: int) -> list[Event]:
+        # Counted per dose time, not per pill: two pills missed at 09:00 is one missed time.
         rows = self.conn.execute(
-            "SELECT status, slot_utc FROM doses WHERE person_id = ? ORDER BY slot_utc DESC LIMIT ?",
+            "SELECT slot_utc, min(status = 'missed') AS all_missed FROM doses WHERE person_id = ? "
+            "GROUP BY slot_utc ORDER BY slot_utc DESC LIMIT ?",
             (pid, MISSED_IN_A_ROW_FOR_ALERT),
         ).fetchall()
-        if len(rows) < MISSED_IN_A_ROW_FOR_ALERT or any(r["status"] != "missed" for r in rows):
+        if len(rows) < MISSED_IN_A_ROW_FOR_ALERT or not all(r["all_missed"] for r in rows):
             return []
         if not store.has_consent(self.conn, pid, "family_missed_meds"):
             return []
@@ -205,8 +216,9 @@ class Engine:
             for which, at in triggers.items():
                 if elapsed(at, now) < timedelta(0) or elapsed(told, at) < timedelta(0):
                     continue  # not yet, or they told us after this moment (they know)
-                if which == "day_before" and now.date() != at.date():
-                    continue  # too late for "tomorrow"
+                if which == "day_before" and elapsed(at, now) > APPT_DAY_BEFORE_LATEST:
+                    self._once(f"appt:{a['id']}:{which}")  # too late at night for "tomorrow": drop it
+                    continue
                 if not self._once(f"appt:{a['id']}:{which}"):
                     continue
                 pids = [a["person_id"]] if a["person_id"] else self._everyone()
@@ -237,22 +249,24 @@ class Engine:
 
     def _voice_reminders(self, now: datetime) -> list[Event]:
         out = []
-        for r in self.conn.execute("SELECT * FROM reminders WHERE active = 1"):
-            if not store.reminder_occurs_on(r["rule"], date.fromisoformat(r["anchor_date"]), now.date()):
-                continue
-            at = local_at(now.date(), r["time_hhmm"], self.clock.tz)
-            late = elapsed(at, now)
-            if late < timedelta(0):
-                continue
-            key = f"rem:{r['id']}:{now.date()}"
-            if late > REMINDER_CATCH_UP:
-                self._once(key)  # too late to be useful: drop it quietly
-                continue
-            if self._once(key):
-                pids = [r["person_id"]] if r["person_id"] else self._everyone()
-                out.append(Event("reminder", 1, pids, {"text": r["text"], "time": r["time_hhmm"]}))
-                if r["rule"] == "once":
-                    self.conn.execute("UPDATE reminders SET active = 0 WHERE id = ?", (r["id"],))
+        for r in self.conn.execute("SELECT * FROM reminders WHERE active = 1").fetchall():
+            # Yesterday too: a 23:55 reminder missed in an outage still counts after midnight.
+            for day in (now.date() - timedelta(days=1), now.date()):
+                if not store.reminder_occurs_on(r["rule"], date.fromisoformat(r["anchor_date"]), day):
+                    continue
+                at = local_at(day, r["time_hhmm"], self.clock.tz)
+                late = elapsed(at, now)
+                if late < timedelta(0):
+                    continue
+                key = f"rem:{r['id']}:{day}"
+                if late > REMINDER_CATCH_UP:
+                    self._once(key)  # too late to be useful: drop it quietly
+                    continue
+                if self._once(key):
+                    pids = [r["person_id"]] if r["person_id"] else self._everyone()
+                    out.append(Event("reminder", 1, pids, {"text": r["text"], "time": r["time_hhmm"]}))
+                    if r["rule"] == "once":
+                        self.conn.execute("UPDATE reminders SET active = 0 WHERE id = ?", (r["id"],))
         return out
 
     # --- category 2: water and movement -----------------------------------

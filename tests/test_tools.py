@@ -205,3 +205,20 @@ def test_schemas_are_valid_for_the_api():
         assert s["name"] and s["description"] and s["input_schema"]["type"] == "object"
         for r in s["input_schema"]["required"]:
             assert r in s["input_schema"]["properties"]
+
+
+def test_forget_removes_notes_with_quotes_from_the_log_too(ctx, conn):
+    # Review finding: JSON escaping hid the note from the log scrub.
+    say(ctx, "Soy Carmen")
+    text = 'mi nieto dice que soy "la reina del barrio"'
+    nid = call(ctx, "remember_about_person", kind="story", text=text)["note_id"]
+    say(ctx, "Olvida eso")
+    assert call(ctx, "forget", note_id=nid)["ok"]
+    rows = conn.execute("SELECT args || result FROM tool_log").fetchall()
+    assert not any("reina del barrio" in r[0] for r in rows)
+
+
+def test_appointment_time_zone_is_converted_not_overwritten(ctx, conn, clock):
+    say(ctx, "Soy Carmen. El médico el jueves")
+    r = call(ctx, "propose_appointment", title="médico", starts_at="2026-11-12T10:00+00:00")
+    assert "11:00" in r["say_and_wait"]  # 10:00 UTC is 11:00 in Madrid

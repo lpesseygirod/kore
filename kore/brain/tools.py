@@ -139,8 +139,8 @@ def _person_or_shared(ctx: Context, args: dict) -> int | None:
 # --- who is speaking --------------------------------------------------------
 
 
-@tool("ask_who_is_speaking", "Use when you need to know who is talking. Returns the question to ask.",
-      {"candidate": {"type": "string", "description": "The person you think it is, if any."}})
+@tool("ask_who_is_speaking", "Use when you need to know who is talking. Say the returned question exactly.",
+      {"candidate": {"type": "string", "description": "The person you think it is, if any."}}, writes=True)
 def _ask_who(ctx: Context, args: dict) -> dict:
     p = ctx.session.find_person(args["candidate"]) if args.get("candidate") else None
     return {"ok": True, "ask": ctx.session.ask_identity(p.id if p else None)}
@@ -235,7 +235,8 @@ def _propose_med_change(ctx: Context, args: dict) -> dict:
        "location": {"type": "string"}}, writes=True, required=["title", "starts_at"])
 def _propose_appt(ctx: Context, args: dict) -> dict:
     pid = _person_or_shared(ctx, args)
-    starts = datetime.fromisoformat(args["starts_at"]).replace(tzinfo=ctx.clock.tz)
+    starts = datetime.fromisoformat(args["starts_at"])
+    starts = starts.replace(tzinfo=ctx.clock.tz) if starts.tzinfo is None else starts.astimezone(ctx.clock.tz)
     readback = f"{args['title']} on {starts.strftime('%A %d %B at %H:%M')}. Is that right?"
     a = ctx.session.propose("add_appointment", {"person_id": pid, "title": args["title"],
                                                 "starts_at": starts.isoformat(),
@@ -325,7 +326,7 @@ def _confirm(ctx: Context, args: dict) -> dict:
 
 
 @tool("cancel_action", "Drop a proposed action (they said no, or corrected it: then propose again).",
-      {"action_id": {"type": "integer"}}, required=["action_id"])
+      {"action_id": {"type": "integer"}}, writes=True, required=["action_id"])
 def _cancel(ctx: Context, args: dict) -> dict:
     ctx.session.cancel(int(args["action_id"]))
     return {"ok": True}

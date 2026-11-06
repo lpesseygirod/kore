@@ -149,7 +149,6 @@ def test_morning_greeting_once_with_the_days_plan(conn, clock, carmen_pills):
     clock.set(at(8, 30))
     [g] = e.on_presence("moving")
     assert g.kind == "morning_greeting"
-    assert g.data["people"]["Carmen"]["medicine_times"] == ["09:00", "21:30"]
     assert g.data["shared_appointments"] == [{"title": "visita de Rosa", "time": "17:00"}]
     assert e.on_presence("still") == [] and e.on_presence("moving") == []
 
@@ -173,3 +172,51 @@ def test_reminders_work_with_no_network(conn, clock, carmen_pills, monkeypatch):
     monkeypatch.setattr(socket, "create_connection", no_network)
     events = run(Engine(conn, clock), clock, at(9, 1))
     assert kinds(events) == [("09:00", "medication_reminder")]
+
+
+# --- review findings ----------------------------------------------------------
+
+
+def test_one_missed_morning_with_two_pills_is_not_two_in_a_row(conn, clock, carmen_pills, home):
+    store.set_consent(conn, clock, home["carmen"], "family_missed_meds", True)
+    e = Engine(conn, clock)
+    events = run(e, clock, at(12, 0))  # 09:00 tensión + vitamina D both missed: one dose time
+    assert "family_alert_missed_meds" not in [k for _, k in kinds(events)]
+    events = run(e, clock, at(23, 59))  # 21:30 missed too: now two dose times in a row
+    assert [k for _, k in kinds(events)].count("family_alert_missed_meds") == 1
+
+
+def test_no_good_morning_in_the_evening(conn, clock, carmen_pills):
+    e = Engine(conn, clock)
+    clock.set(at(21, 0))
+    assert e.on_presence("moving") == []
+
+
+def test_no_tomorrow_reminder_late_at_night(conn, clock, home):
+    store.add_appointment(conn, clock, home["carmen"], "médico", at(11, day=10))
+    clock.set(at(23, 50))  # device back on late
+    events = run(Engine(conn, clock), clock, at(23, 59))
+    assert events == []
+
+
+def test_voice_reminder_just_before_midnight_survives_a_short_outage(conn, clock, home):
+    store.add_reminder(conn, clock, None, "cerrar la puerta", "23:55", "daily", date(2026, 11, 9))
+    clock.set(at(0, 30, day=10))  # off from 23:50 to 00:30
+    events = run(Engine(conn, clock), clock, at(0, 31, day=10))
+    assert [e.data["text"] for _, e in events] == ["cerrar la puerta"]
+
+
+def test_greeting_in_a_two_person_home_keeps_personal_things_private(conn, clock, carmen_pills):
+    e = Engine(conn, clock)
+    clock.set(at(8, 30))
+    [g] = e.on_presence("moving")
+    assert "people" not in g.data  # nobody known yet: only shared things
+
+
+def test_greeting_in_a_one_person_home_has_the_plan(conn, clock):
+    pid = meds.add_person(conn, clock, "Carmen")
+    meds.add_medication(conn, clock, pid, "tensión", ["09:00"])
+    e = Engine(conn, clock)
+    clock.set(at(8, 30))
+    [g] = e.on_presence("moving")
+    assert g.data["people"]["Carmen"]["medicine_times"] == ["09:00"]
