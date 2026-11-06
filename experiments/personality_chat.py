@@ -47,6 +47,7 @@ STATE = state_block(
     "lunes 9 de noviembre de 2026, 10:30",
     "Speaking: Carmen, a widow who lives alone.\n"
     "Medicine records today for Carmen: tensión 09:00, taken at 09:10. vitamina D 09:00, not recorded.",
+    forms={"Carmen": "usted"},  # Lea's decision pending; usted is the prompt's default anyway
 )
 
 SCRIPT = [
