@@ -1,0 +1,14 @@
+.env
+.env.*
+private/
+data/
+docs/reports/
+_to_delete/
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+*.db
+*.db-wal
+*.db-shm
+.pytest_cache/
