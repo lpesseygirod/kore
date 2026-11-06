@@ -24,6 +24,7 @@ CONSENTS = {
     "emergency_path",         # "Pepe, help" / the button message family without asking
     "share_with_partner",     # the other person may hear my medication status
     "water_nudges",           # category 2
+    "movement_nudges",        # category 2
     "conversation_starters",  # category 2
 }
 
@@ -157,14 +158,17 @@ def add_appointment(
     conn: sqlite3.Connection, clock: Clock, person_id: int | None, title: str, starts_at: datetime, location: str = ""
 ) -> int:
     cur = conn.execute(
-        "INSERT INTO appointments (person_id, title, starts_at_utc, location, created_at) VALUES (?, ?, ?, ?, ?)",
+        "INSERT INTO appointments (person_id, title, starts_at_utc, location, told_at) VALUES (?, ?, ?, ?, ?)",
         (person_id, title, utc_iso(starts_at), location, utc_iso(clock.now())),
     )
     return cur.lastrowid
 
 
-def move_appointment(conn: sqlite3.Connection, appointment_id: int, starts_at: datetime) -> None:
-    conn.execute("UPDATE appointments SET starts_at_utc = ? WHERE id = ?", (utc_iso(starts_at), appointment_id))
+def move_appointment(conn: sqlite3.Connection, clock: Clock, appointment_id: int, starts_at: datetime) -> None:
+    conn.execute(
+        "UPDATE appointments SET starts_at_utc = ?, told_at = ? WHERE id = ?",
+        (utc_iso(starts_at), utc_iso(clock.now()), appointment_id),
+    )
     # Reminders for the old time must fire again for the new one.
     conn.execute("DELETE FROM event_log WHERE key LIKE ?", (f"appt:{appointment_id}:%",))
 

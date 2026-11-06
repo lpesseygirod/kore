@@ -71,7 +71,7 @@ CREATE TABLE IF NOT EXISTS appointments (
     starts_at_utc TEXT NOT NULL,
     location TEXT NOT NULL DEFAULT '',
     cancelled INTEGER NOT NULL DEFAULT 0,
-    created_at TEXT NOT NULL
+    told_at TEXT NOT NULL             -- when they last told us (made or moved)
 );
 
 CREATE TABLE IF NOT EXISTS contacts (
