@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "6aeb7160747ba3b9f2823ae7d7f95f5223e87e3c698bf9803dbba2eb40dc2968",
+  "response": {
+   "content": [
+    {
+     "text": "Perdona, Carmen, no te he entendido bien. ¿Quiere repetirme qué necesita, con calma?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6366,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 42,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

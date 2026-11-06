@@ -1,0 +1,126 @@
+[
+ {
+  "request_hash": "d025f79e567658590c516764f0eb8f1cc99e0c0c108b803ba290692aac426a02",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tiene la medicina a las nueve. ¿Quiere que le diga algo más?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 60,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "92835022aee003071ee783c9ecec899a2823225c7931b2cc340a52456d221b70",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, son las nueve. Es la hora de la pastilla de la tensión. ¿Me dice cuando se la haya tomado?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 368,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 368,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 48,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c21fbecffb0dc205b38ca85d905f74dd140ed07a515f87dea797ac183d0d06e5",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Jx2LwBZXi2VegyuE5ByiBc",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen",
+      "medication": "tensión"
+     },
+     "name": "mark_dose_taken",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 128,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 128,
+    "cache_read_input_tokens": 6877,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 79,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1095f765b7dca9a1295fa813699aa2d3190a99f44d9911e1fea2e67007e48871",
+  "response": {
+   "content": [
+    {
+     "text": "Perfecto, Carmen, ya lo he apuntado. Que tenga una buena mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 199,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 199,
+    "cache_read_input_tokens": 7005,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 35,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

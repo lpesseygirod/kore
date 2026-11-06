@@ -1,0 +1,96 @@
+[
+ {
+  "request_hash": "7cebbdb344759e71302c5cefb684859d9c59c7f2062e1e185430e39bbb00b1cf",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01YY6aAbKfFS1Mm2rWSG59mU",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b73c3b9e048cae018bb1bfc59fcf99ff02fda6827568ca68a883d6e508aaf2ee",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión es a las nueve, y todavía no consta en mis notas. Si quiere, dígame si ya se la ha tomado y lo apunto.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6729,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 88,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0add3641e07cd2d3f367ceecb42be581dafe0f412235f963ca87dab1d831f413",
+  "response": {
+   "content": [
+    {
+     "text": "Entiendo, Carmen. ¿Se lo ha cambiado su médico?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 181,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 181,
+    "cache_read_input_tokens": 6729,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

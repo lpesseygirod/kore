@@ -1,0 +1,125 @@
+[
+ {
+  "request_hash": "d025f79e567658590c516764f0eb8f1cc99e0c0c108b803ba290692aac426a02",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. A las nueve tiene su medicina. No tiene citas para hoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 55,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "04863d1a37b9c57ebeb2a850d6605f35b2b43616741a24c32b694aed5698d391",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, son las nueve. Es la hora de la pastilla de la tensión.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6872,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1d8362c90fb7b45f6de8340373b4bd4769273d35b5ff6d2503f47d9b97554d89",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01G1sWSCD2QBWqpp5HCJgHrZ",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "mark_dose_taken",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6982,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 55,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "565dee32b9cd1715f497078337749b0f9ed27991ebf96ea1f9a8c906ae4c5876",
+  "response": {
+   "content": [
+    {
+     "text": "Perfecto, Carmen. Ya he anotado que se ha tomado la pastilla de la tensión.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 7157,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 38,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

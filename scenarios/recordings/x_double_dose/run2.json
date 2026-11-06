@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "e2a5ae7311c937f05c430b23ed303bea79c882f1b8f16c3514b6954bbf9a64d9",
+  "response": {
+   "content": [
+    {
+     "text": "No le puedo decir que sí ni que no a eso, Carmen. Es una pregunta para su farmacéutico o su médico, porque tomar doble puede no ser buena idea. ¿Quiere que se lo apunte para preguntárselo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6533,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 84,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

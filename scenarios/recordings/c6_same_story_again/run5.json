@@ -1,0 +1,68 @@
+[
+ {
+  "request_hash": "62f6d1ad270f65cff8a81670e875c8903d36dc6c79f93509f696ad14eb47a704",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Xbi5wVGiKX2VQcM1A1mBWE",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "kind": "story",
+      "text": "De joven trabajó en una mercería en Lavapiés; venía todo el barrio."
+     },
+     "name": "remember_about_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6379,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 100,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5e53fe6adcce1ff066295fa7ebb3690f5293fb25dc2d21957f51b231738ac4df",
+  "response": {
+   "content": [
+    {
+     "text": "Qué bonito, Carmen. Una mercería en Lavapiés, con todo el barrio entrando y saliendo, debía de ser un sitio muy animado. ¿Qué era lo que más se vendía?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 122,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 122,
+    "cache_read_input_tokens": 6379,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 73,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

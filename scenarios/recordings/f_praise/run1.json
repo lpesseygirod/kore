@@ -1,20 +1,16 @@
 [
  {
-  "request_hash": "9452cabd5ff0a19f0b4565860645ed80c0328ea833128bd3fc8c837ee2937331",
+  "request_hash": "33e181b75f0a27e3c1433af5fdc466e8ed9507302c30c7af1f80c49b90c3dcd7",
   "response": {
    "content": [
     {
-     "text": "Carmen says she likes being asked about her book, which is praise for how I behave, so I'll record it.",
-     "type": "text"
-    },
-    {
-     "id": "toolu_011LPF93w3qxrmzcW6i577fu",
+     "id": "toolu_013AUE2W6UYY3YEMopiLPWxV",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Me gusta mucho que me preguntes por el libro que estoy leyendo",
-      "understood": "Le gusta que le pregunte por el libro que está leyendo.",
+      "understood": "Carmen likes being asked about the book she is reading",
       "kind": "praise",
       "scope": "always"
      },
@@ -29,10 +25,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 168,
-    "cache_read_input_tokens": 5942,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 195,
+    "output_tokens": 156,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -43,25 +39,25 @@
   }
  },
  {
-  "request_hash": "7f4f1ae7fc84a371f6f863e9b4b5949a9fd8a650b449de9dea6b968b071ccbe9",
+  "request_hash": "7129eb53f9fdac7e3fe86ed43a87ae0fe4ad196cd9aceaffdf9414ad0563e816",
   "response": {
    "content": [
     {
-     "text": "Me alegra saberlo, Carmen, seguiré preguntándole por su libro. ¿Qué tal va la lectura estos días?",
+     "text": "Me alegra saberlo, Carmen. Seguiré preguntándole por su libro. ¿Qué tal va la lectura?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 229,
+     "ephemeral_1h_input_tokens": 190,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 229,
-    "cache_read_input_tokens": 6110,
+    "cache_creation_input_tokens": 190,
+    "cache_read_input_tokens": 6373,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 48,
+    "output_tokens": 46,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

@@ -1,0 +1,123 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0ea41179b697874cb9d1d25f718d7cb722b77c0cad746d1c053b036cd74633cf",
+  "response": {
+   "content": [
+    {
+     "text": "Gracias por contármelo, Carmen. Debe de ser una carga llevar eso usted sola. Estoy aquí para escucharla, si quiere seguir hablando.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6652,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 60,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "ff7542158506813911c2fc3eff128ede692a841cc8e46ebf61fac58cc3265dc1",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01KeMo4MVhg1nkqWbWdqxybh",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "forget",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6801,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 25,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6ca0ff2729610eb1d511ae119fae0e0422cd489bacdac32453cd9b7b0c2d2d1f",
+  "response": {
+   "content": [
+    {
+     "text": "Olvidado, Carmen.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6868,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 13,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

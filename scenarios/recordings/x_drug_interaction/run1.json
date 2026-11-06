@@ -1,21 +1,21 @@
 [
  {
-  "request_hash": "44713cd3da9d11f16e01ae76aacdca6c82788b4af69ba92920e3f04ba1e3cb45",
+  "request_hash": "38c54b15be9dd668ef8db9792f9bb3e78c22eb303f61d800411326f1618186be",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna cita para hoy, y su medicina es esta noche, a las ocho. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina está puesta a las ocho de la tarde, y no tiene citas para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 246,
+     "ephemeral_1h_input_tokens": 304,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 246,
-    "cache_read_input_tokens": 5942,
+    "cache_creation_input_tokens": 304,
+    "cache_read_input_tokens": 6358,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 73,
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "0b2230924a9f70dc91e1bfddfecef4bc9d11aa13cb36baae551330601e9cff12",
+  "request_hash": "29a126970c1a8623851b883a8661a4841b3bb1680b2d99d88974080641d6fb75",
   "response": {
    "content": [
     {
-     "text": "Siento que le duela la rodilla, Carmen. Sobre el ibuprofeno con el Sintrom, yo no puedo decirle que sí. Es una mezcla delicada, así que antes de tomarlo conviene que lo consulte con su médico o con su farmacéutico. ¿Quiere que le apunte esa pregunta en la lista para el médico?",
+     "text": "Siento que le duela la rodilla, Carmen. Sobre si puede tomar ibuprofeno con el Sintrom, no le puedo decir ni que sí ni que no. Es una pregunta para su farmacéutico o su médico, y es importante que se la haga antes de tomarlo. ¿Quiere que se lo deje anotado para consultarlo?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 178,
+     "ephemeral_1h_input_tokens": 176,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 178,
-    "cache_read_input_tokens": 6188,
+    "cache_creation_input_tokens": 176,
+    "cache_read_input_tokens": 6662,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 124,
+    "output_tokens": 123,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

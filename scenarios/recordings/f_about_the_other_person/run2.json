@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan una buena mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 38,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b2e48c6529e20d01e49599df638a82a65c593d629c4f7c550c944cd857bafc48",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSkAgKEAgTGAI4AUIIdGhpbmtpbmcSDKcwEQ9e8JL3/TvjpxoMsmwqi+ZogLwKXslGIjDxwjbiEbe/NM5qS4nvRQuSqrAAIb3NriV3Msv7Xz+m+lSs0ypuzk1CiipS9mUGZGgqrQcq06c1H6TGHo7M99GQGBC3WkMVfeAW21kIX1W8xXi4wrVzhXp1zczJmCvMOxIDW/pCb5LtSIUl86M45FKWGdqWIqU7NMAaFAsXg3u8QqrSFTK78CsmJeLMsFxCjwRMTX6kW/CM/81PYqYkpe7uVIzo2w/KWjXsaTV+Jo2iTQG3Q6af6S55Rx5hZ772gy6c9ndhTf46yiv3j4i97XXo+j8R4gzPsABz/SkUPpt7+GfwbdF3lb6wg4klzmwkhluxAds2ExR6BhpCJCfVfDQQ81iHax0Du1eoSzczk/qfNHCHqIaoaA1IHs7AcbaEACGmjRDT1tXKITq0k5JZn0I20JP1/p9NyD2tWddd/BJTQhvWdqGIeQjORGK9DICBV+dV5GLlOblJiuahM5SpdOwO6Vvp7zaxArvIb8VopAMmSVmW2Q3Z6jxPRB0YZmVdjQ/isdgGRpxtNgcPU9UmHLO+lwjXFGiIE77XWfXA1EY7rcF3aY+M8u7V+5+mUT7X04RK+jTxK038qIiKxLBkCap03NWp0g55b14dolKoW5pFuUNNH0qCpl7hOZ6v6+79JS77+E3sR4Eo9pF/XxeHtAqViA+QHnYI1cHQE+SqNgIWoTTc8SdYeVS4Xt7ozbrb/BiF6tX17Xbc/pIyYCKRcmk5fKu/DfWR/etJ+TaLTesl53RgUUfm91dVrGxRqLq+RuPPdm2hoyFfyM/ZQz5F8F9YEeCifOhtY8wd0zby6CBBovnABM1H5q8Jov4/3gKv36CNEqklqBu0xmLDwQZhKRo0iCnLYdTLr25SHYAeE7+8m5P3NL4z8BvaUJBa2pEt4LYf6SeSMmecAe9rOnBW2++8aXheBI/tlkyJjyK4OnYXHPKGcpNyPJ/YGhvLvV7Sdw7fTLJQwWNUUs7w2+JMIxYUeATR0vxRq0vxCHaJRw/asjDatkT+oCHNVTXVTDuOM85TKyeiZ/jN6oeMJ43i65mu1ZHnuAtiBZgMVswxhaTuqU4AWT8Tqh8srErmueAT2xoWDIQPAWmxxM2CaygOm/pRAJKN+Vttk/sMZSPL9FwLMCA83DwOpZutUnnuztyEpaf0h+0MCFTCzCi3aoqATWYjUJmaIGZSY1EH/e7Kh1ypn0mjPr1zKcwprji+MDb8YcX6kGbEG2NBrUpm7o5lmZ76rzmif/nCBQ9fLi/YYVdujCt+ku42TsUmqR9bRwJhDQxLpglBpBz4PxK65CoCri8UUeXWNz9bj/63TVQ1goZJMBgB",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Gracias, Carmen. Los ajustes de cada persona los cambio solo cuando los pide esa misma persona. Así que, cuando hable Toni, que me diga que hable más alto y lo haré enseguida.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 151,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 151,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 219,
+    "output_tokens_details": {
+     "thinking_tokens": 144
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

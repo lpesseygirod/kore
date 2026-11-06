@@ -1,0 +1,94 @@
+[
+ {
+  "request_hash": "34a2e92a6ae69461165c60141ad9d865b9a70962c3ca0da0bb621045b118a02a",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01TdyHqaBM7fJdHbXrd9Yw1R",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "visitors_arrived",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6359,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "87bc4f92ac39eedceeb41027613c3bee988075b0014d57777633c9f8ea2515dc",
+  "response": {
+   "content": [
+    {
+     "text": "Qué bien, Carmen. Disfruten de la merienda. Estaré discreto mientras su hermana esté aquí, y usted me avisa cuando se haya ido.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6403,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 60,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "e06bdf34875915bee8e609fb8117f7f8cd35aaea6e6634427b720cacccd4e9e9",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, tiene un recordatorio pendiente para cuando pueda.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 404,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 404,
+    "cache_read_input_tokens": 6403,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

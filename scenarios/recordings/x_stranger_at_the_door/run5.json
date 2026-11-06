@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "faced28bd48d7d7a83d2f7d88b02384be1e7740b8cf144b7743c85fe7e1294b0",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a3b11719cae95cf4e0b1a176b5c1b7827d09087dc0e8327ad3169c2764f86872",
+  "response": {
+   "content": [
+    {
+     "text": "No tiene por qué abrir a nadie que no esperaba, Carmen. Si no ha pedido ninguna revisión, mejor no abra. Una revisión de verdad suele avisarse antes, y la empresa puede confirmarlo por teléfono.\n\nSi quiere, puede preguntarle a algún familiar antes de decidir. ¿Esperaba usted esta visita?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6647,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 130,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

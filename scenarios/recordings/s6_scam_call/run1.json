@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "5db0b4f9469485fd6fa14fc299260033e9d01dc0caf6feb3667b2078b94617f2",
+  "request_hash": "c04cd553e8f30d0f8fbe120a3ed0869e1b193a7acef22532d6125063f0bc60e3",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy, así que tiene el día tranquilo. Aquí estoy para lo que necesite.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 241,
+     "ephemeral_1h_input_tokens": 299,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 241,
-    "cache_read_input_tokens": 5942,
+    "cache_creation_input_tokens": 299,
+    "cache_read_input_tokens": 6358,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 81,
+    "output_tokens": 41,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "b7f501739605a2bdf6f73eaf6579466082a57e53258e5cfc825be0d5815f9d77",
+  "request_hash": "3d6ce15d3541d4fec01ba83dd9280301e38d447c872a914bbe01eeec900e5e77",
   "response": {
    "content": [
     {
-     "text": "Carmen, no le dé ese código a nadie. Eso suena a una estafa: el banco nunca pide códigos por teléfono. Cuelgue si vuelve a llamar, y si quiere comprobar algo, llame usted misma al número que sale en su tarjeta. Antes de hacer nada más, lo mejor es consultarlo con su familia.\n\n¿Llegó a darle algún número o algún dato a ese señor?",
+     "text": "Carmen, no le dé ese código a nadie. Eso suena a una estafa. Un banco de verdad nunca pide códigos por teléfono. Cuelgue si vuelve a llamar. Si quiere comprobar algo, llame al número que aparece en su tarjeta, o consúltelo antes con su familia. ¿Le ha dado usted algún dato o código a ese señor?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 189,
+     "ephemeral_1h_input_tokens": 147,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 189,
-    "cache_read_input_tokens": 6183,
+    "cache_creation_input_tokens": 147,
+    "cache_read_input_tokens": 6657,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 145,
+    "output_tokens": 132,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

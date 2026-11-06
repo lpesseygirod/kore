@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "6b2eeeadd8c9a3ee7ee4dd5c4c38f355722d92b5c5866c8f22c139b591dbe314",
+  "request_hash": "8aa35dc76f972cf6e11c2674bf15c7b6ad0ea78e14a0e328a8bc2255e5eff395",
   "response": {
    "content": [
     {
-     "text": "Lo siento mucho, Carmen. Estoy aquí con usted, y me alegra que me lo cuente. Si le apetece, cuénteme cómo ha sido el día.",
+     "text": "Lo siento, Carmen. Me alegra que me lo cuente. Aquí estoy con usted, y no tengo prisa. ¿Quiere contarme cómo ha sido el día?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 6333,
+     "ephemeral_1h_input_tokens": 153,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 6333,
-    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 153,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 62,
+    "output_tokens": 66,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "8218f916ae136485d882330e9dc2163c67b87b0f4c2c8d5d1f3cd70cc6ca97cc",
+  "request_hash": "15a920ff307592f5b62df73d6cddf4b00718bdcb4deaeebaec04836a6d59fe95",
   "response": {
    "content": [
     {
-     "text": "Qué bonito recuerdo, Carmen. Bailar los domingos con su marido debía de ser una alegría. ¿Qué música bailaban?",
+     "text": "Qué bonito recuerdo, Carmen. Los domingos de baile debían de ser días muy especiales. ¿Qué música bailaban?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 149,
+     "ephemeral_1h_input_tokens": 153,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 149,
-    "cache_read_input_tokens": 6333,
+    "cache_creation_input_tokens": 153,
+    "cache_read_input_tokens": 6358,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 53,
+    "output_tokens": 51,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

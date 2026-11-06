@@ -1,0 +1,68 @@
+[
+ {
+  "request_hash": "62f6d1ad270f65cff8a81670e875c8903d36dc6c79f93509f696ad14eb47a704",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_012vrxdPjqHdFc5cLHXspQe6",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "kind": "story",
+      "text": "De joven trabajó en una mercería en Lavapiés, a la que venía todo el barrio."
+     },
+     "name": "remember_about_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6379,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 103,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "458270c024287256f57d15041d4ae247a8cf9a831be8b171351d36db49d75197",
+  "response": {
+   "content": [
+    {
+     "text": "No, no me lo había contado. Debía de ser un sitio muy animado, con todo el barrio entrando y saliendo. ¿Qué era lo que más se vendía en la mercería?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 64,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

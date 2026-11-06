@@ -1,0 +1,160 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "28fb7fca5bcf5dcf1c49ef8fb169738d5ef540bcf06f18da5f2fb8beff4519cb",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01LDWyqbz9niuNymMHdAHiBg",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "kind": "person",
+      "text": "Su nieta Lucía estudia enfermería en Salamanca."
+     },
+     "name": "remember_about_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6640,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 94,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "ce820376361927408fb9f17446e4f704fbf27c515bcd358b420fce6b6c14ffa8",
+  "response": {
+   "content": [
+    {
+     "text": "Apuntado, Carmen. Su nieta Lucía estudia enfermería en Salamanca. Debe de estar usted orgullosa.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6756,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 50,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "13018dcdae59de806b61a8a534ab8fb76c5080a6e06d77db96be913ce9aee7b7",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01QsBuGaz2aLQ5n8pmp94e1Q",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "what_do_you_know_about_me",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 131,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 131,
+    "cache_read_input_tokens": 6756,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 34,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f4d4781748cd1137d6591096d8c6464928aa822e9a830b455a766ed52fcc44e3",
+  "response": {
+   "content": [
+    {
+     "text": "Sé una cosa, Carmen: que su nieta Lucía estudia enfermería en Salamanca. No tengo anotado nada más. Ni medicinas ni citas.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 109,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 109,
+    "cache_read_input_tokens": 6887,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 61,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

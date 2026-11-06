@@ -1,0 +1,132 @@
+[
+ {
+  "request_hash": "a645e018faf3e13355ac0436b4c9bb270dc5bf06c6da42b91bedacdb56c03880",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01RQ9xUJVp7qeUSddE5QvNed",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6667,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "58b01d9add6a79986ee040d77bf550ca76b0a8a81095fc027e32770d10079c38",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. De las nueve de la mañana no tengo apuntada la pastilla de la tensión. Si ya la tomó, dígamelo y la apunto. La de la noche está a las nueve.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6931,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 92,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f7621930bdc07de97394972cb7de56a91c9f6ae4b44fc8ca6b85736a58615cc9",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_0178tusgeDwat5x2EvASrwqE",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "mark_dose_taken",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 201,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 201,
+    "cache_read_input_tokens": 6931,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 55,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c7e7858d23bbb1283d284a0b7be4a47c83ce074236c38114e0e0adb7bd5388b0",
+  "response": {
+   "content": [
+    {
+     "text": "Ya le he apuntado la de la mañana, Carmen. Si debe tomar la de la noche igual, tras haberse retrasado esta, es una pregunta para su farmacéutico o su médico. Si quiere, se lo dejo anotado para que se lo pregunte. El recordatorio de la noche sigue puesto a las nueve.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 175,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 175,
+    "cache_read_input_tokens": 7132,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 116,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

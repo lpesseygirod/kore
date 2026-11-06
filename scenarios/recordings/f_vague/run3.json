@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "9a1fd4669726b02e3af5ea9e28a39cb88e687d7b76533e3c91a5f87b46b9320a",
+  "response": {
+   "content": [
+    {
+     "text": "Con mucho gusto, Carmen. El cocido madrileño se hace por partes, así que le cuento la primera.\n\nPrimero, ponga los garbanzos en remojo la noche anterior, con un poco de sal. Al día siguiente, en una olla grande con agua fría, ponga la carne de ternera, un hueso de caña y un trozo de gallina. Si quiere, añada también un hueso de jamón y tocino.\n\nCuando rompa a hervir, quite la espuma que se forma. ¿Le sigo contando el siguiente paso?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6359,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 186,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f15dcecf4e85bb1335001fb4cfb7ae10fcbf9078c2de35913f53c87aeeea1e6f",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01375FiUXh6qcxWGCpxJHrNz",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Uf, eso ha sido demasiado.",
+      "understood": "The last answer was too long; wants shorter answers.",
+      "kind": "setting",
+      "setting": "answer_length",
+      "value": "shorter",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 267,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 267,
+    "cache_read_input_tokens": 6359,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 193,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "ded6a7eae8f2998047f37c1f31a94b17e4d778506d708800247ec028180fe262",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Carmen, me alargué. A partir de ahora le contestaré más corto.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 270,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 270,
+    "cache_read_input_tokens": 6626,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 33,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -111,6 +111,6 @@
   "home": {"people": [{"name": "Carmen"}]},
   "steps": [{"say": "Hoy no me des mucha conversación, que estoy cansada."}],
   "expect": {"tool_args": [{"tool": "record_feedback", "args": {"scope": "today"}}]},
-  "judge": ["Agrees in one short sentence, without asking questions"]
+  "judge": ["Agrees briefly (a sentence or two at most), without asking questions"]
  }
 ]

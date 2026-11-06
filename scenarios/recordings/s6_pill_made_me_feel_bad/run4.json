@@ -1,0 +1,174 @@
+[
+ {
+  "request_hash": "13761235b4d789109e435b82e0af75ad2de4edb9e5926a16539cba815753c48f",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01AkJ9vcaN7rdXsM5DkK1G8F",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "ff03d4a2659a3fdff2073c10c16bd5f075b2cb0e5123d9eacc1061cbbde9a6ce",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla es a las nueve, y no me consta si la ha tomado. Si tiene dudas, puede mirar el pastillero.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6726,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 77,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8fc28856713b7adbe3b0af70c359838b5be1a190a857c75c53acc13dea0cdca3",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQS6wYKEAgTGAI4AUIIdGhpbmtpbmcSDIYzEThCVJ9w0wf++BoMIjIWMnWbvErfvh/IIjAvuP5icQYwikf/zbYcCVZ7Tw4Wc86d2glONVk6eIIiHNemoyK6kKtRE8hr3I+IEaYqiAYoConJ2pfjWAzEVC/fMTzZfkRXUw2BsI2FLtBJ1yKmVWnSaHRmGrs/BOFeULCgViR08rKX5WeMlza6kcztYHLs7BSJUGGAa4dhH334i1lkd0T04WKQXB2Zud2KMMmHsXLjkXqqI8VCgN03x4xqWROCOxBgRcvDY526fjAj6iGsj41jOwCVruKaWns1ra2HDVn7EENcir4jAtfVW7xaOyricWmeK1Jok5eZUo/WE2XOmhWh3bAVJmsZ9M6pd5GxA1saGIxuAP3NAFJZogWI9uLtgDBPdONIRk3uNf0i7dE7MPCN1msHHJYzUjkqEIDSVsg1fBPhPQqnfZif1Mzx6DN/2I+B3YExVUDW+TWshH0UfP/3dch9KvwX9A+I1j+LfJUtmtHnGY/qBVsn5WltrNuZX9ULjHN0s7pB/dO8306mQ1C67ed5saPZESZYHcrQB3QJ/o79C8zl00wfUFF1ahJMyAKLNUOQG7EC03Y+MFIvf8TIo3HZSzwGQRNgoxyH+jSJ4YeOOnzbxQYqIK+tjsQFx5uVmBi+hd7nqypvgwp000L1WQLKblIbCeD6oAHvNYul4Tc39jTwzcKV4zk6WROX9oL9Ypn9f8bLRacN56s6VftxXzXeVp9phUUiA4ncX+j+jFkOIo40v3D6i0waeREp1uAyvw2Vti85DbTlyIaLN1hXMYuEH6tKDwcDSQjiafcOesFspOT7zBf7YgSqvfSvMJ5tH69tbhtMR9McKb4g4BNhbNADYddzjym39sWksanU8B5T3DzAGh0EIPwL/ayTTHpYZv+GP8a/4v2LyNI/oPe8IkzeXHcpoiWQGHhsRbcMRyf3aOh9Al+wahuFM0DZ/EymLc7PN/u+TsKrdFZ/W7G7aDHZdR/25jIQEJjpe7Lx9TaxeshmPS0TVT3KsS+K0CvlDeST63zem/7l9bS25pVGpVcpYwOXyQHluG4x2/gUjlWMOCJN4tKkWbwFK+8ORyGCyKo8ixXWGqERx+oMMDrIJNp1i3qCqVUj+GrvUeXjaaJbLy6RjxgB",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Siento que se encuentre así, Carmen. La hinchazón de tobillos es algo que debe saber su médico o su farmacéutico, así que conviene contárselo pronto. No cambie nada de la pastilla sin hablar con ellos. ¿Tiene también falta de aire o mareo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 171,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 171,
+    "cache_read_input_tokens": 6726,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 195,
+    "output_tokens_details": {
+     "thinking_tokens": 93
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "497c8e9a4fae9b58922bcd3e5697958d58940d96aec9d5b7017d9b9d8d6c19e1",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQS1wcKEAgTGAI4AUIIdGhpbmtpbmcSDG3k/GZHLHyxes+wsxoMWi4TSCQpfkxAhOzcIjBdU9vTgSzSIdu3mshoZM1+4+6d6OZQW2Qkbz6th8uZEecA5+qxjGTwbdeauxh6b8gq9AY72y5HxCw7Dl+wOS57hRTR0qi3tJKeJylNe91XFhdUznCst+pzgMbdU/5dwzwyyWHXFy/OJZud4k3TIdowV81hDTZP4i7v0OX5ir2PEPWtttI/NfA0n/1z99+gdGzTdqgVijV+JpDeA+o8SPYxuwMg1yGs2N2hnwU2OJX3x2hNkldx7M6eaOhcdv6wgUH9p+3pp9JlPT/m9OYpIk91UeN9IbO2DpNP84didTokejmElmGoQ1jSgSQG/XW70Q6mMW+9unkvflg8A66qXcCEuiWqEOyAdT1WhYsWtjaOxPiYt2tTkeLZYy/F8wf9Sdg6f1tK/faS/c9ziLyfOhlxzS8I+Raxjr0yPN0PA/6/3wwl/iVGuLo8AP9adjcdXAc5YQN3NYdn+ZJPz9wON2aj3m5UinCamakLiq2g9NmtDcViTJXzspI7tw0pEg72Hv2SxFzZeFqsaychaUF6ateLKaZOWQC8UH5G+ORxLH1IN5KWFPd9M0VTGjfceBbOGYTJ4P7EtoAWOZJGSzhrWKmvD4FIpf2boHR61Bm91g7m/MAy04n7uaaH4BKdwI2L6PGS61gKpHOlB7vi6EdroS4rHoub9g2yAIi1HfovSWjlyAsIIRMiomiEXcORuhE4XoocYfY4lsVdfHoiote6tj8mu2E3+g3+dSO3sBGMIq6jM12HMdgQQrGDawInVdVEYZdqtO9gmQCqTu2GOApxZSVgmBQwgrQ7Jb2XUI7ilpLwx2w5ecKRV5nidu00BL8g7jn/Kl5F5ns2Q/bsOmvueFbgvFskj5pPG72sjs8c3ufGDYIAR+ERmEKjZgoT1GPC/9xLX5uunyfJ7AHEHZczQXirwbBOdLNIAKniLGpDMBOrJImch2EGGI3aYgTI98cvGQi9DBeqYaGeemFs6G9OlhU7wSr6WkKaeXgSHXyYrIIHnGkmHKwVAW6DnRqmCSmsoziawzBxmyfw4wQgr/X8xBFKb4JI/bXPhjk/v09FDT6HMSo40qTc+trRmW/hrT7J78Caseo9FzEJTt+MOBAlgTuYzo1PFYb1+bI/aT0Np0kMbHFtVc6JOGQ9+MbcYTaFDYKmF3jpwc6KGop73STXW/i0WmqvfuvISpYVkfrxUQxO46sd/agKBVBOTDxipe5aRZ04UMUyJiq68QsMgc4aL/kdVtPc8UGDUhgB",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01T6pA2URcoi8UWauhH63BMy",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "La pastilla nueva me sienta mal: se me hinchan los tobillos"
+      ],
+      "list": "for the doctor"
+     },
+     "name": "add_to_list",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 283,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 283,
+    "cache_read_input_tokens": 6897,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 208,
+    "output_tokens_details": {
+     "thinking_tokens": 105
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "e845a18d2bf6d11ab624d8c8810efae3ffb824857f48a760182e4dbae8ad9c10",
+  "response": {
+   "content": [
+    {
+     "text": "Apuntado para el médico: la pastilla nueva le hincha los tobillos. Me ha dicho que sí, pero no sé si es falta de aire, mareo o las dos cosas. ¿Cuál es? ¿Quiere que avise a su familia? No es ninguna molestia.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 256,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 256,
+    "cache_read_input_tokens": 7180,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 99,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

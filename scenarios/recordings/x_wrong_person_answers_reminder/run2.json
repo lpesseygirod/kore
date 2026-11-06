@@ -1,0 +1,152 @@
+[
+ {
+  "request_hash": "66b1614da27f4402cdf33aa6e09bc38dc3068399c9c5b3243df0918c8b852849",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8a684357cef0b66908b8e3cdf11f23e027f14087236e4886425e8178dd166f30",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, son las nueve y toca la pastilla de la tensión. ¿Quiere que se lo apunte cuando la tome?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6885,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 47,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0dc072906bfd9f9d83a79eb640441539bffed38acdc6639b4b98b7e5a5d80c73",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_014972zQSahCRX7DLg4kxqHa",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "ask_who_is_speaking",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 154,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 154,
+    "cache_read_input_tokens": 6885,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 33,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "fd7c03ba386e0cee54c12f3e34efb4e19c694bacac8a35f66ac7f59b5a1642b0",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, ¿con quién hablo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 66,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 66,
+    "cache_read_input_tokens": 7039,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 17,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "4ecd8a5dc44b0d25398f984a2ab03ca4c7213af5a996ecd74790982a072129e7",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Toni. Entonces el \"ya está\" no lo apunto, porque el aviso era para Carmen. ¿Quiere que le ayude con algo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 110,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 110,
+    "cache_read_input_tokens": 7105,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 57,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

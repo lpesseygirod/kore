@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "42c8ef90f834c06696ea7b3cdb2e4d9506d23913d74dcfc1582e3e8602420d2f",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSxAcKEAgTGAI4AUIIdGhpbmtpbmcSDFsgTwNwZUr4fxX16xoMGzLoBu2SUjktscdIIjAmWDfVtMeU0peLsMEcyzDM4EOOQvDBq/9uRFM5ZEZ50T6Zs0kuSFAMF7yQ31UzrKIq4QYi/GB++N3MKLqyPQ0mLQMzmS0p3SbVShk64Fisy77IlFsPOhLoCAgjSagjVb+dCufnqOYSbFJhZiQrrXEdVubGyJuMf8rMx7Tps8BniwLqWbfNw+JtrvLXacjqjdNFjK5bTt2+VEMpHjjHzEYYdHN+NzKqvjwFaxX9kQTBPOdF+vlHarCt79ocwyEIZBwKBgTjd4AIovhkdlFfZViBlpkzj8WGlinztVbR9lAKNW06ep2vx8BMprM2zBAReI0Fvq8FDikko0y1kV5iI4A/o0X27bp6vbMPOBZCDBwJagpOSAlMifmXnfJTedH8GFOFMrtyj8dmqdm6IBOomXVQQwUV1YdUNvoY/ck0m5anbyjKJs1r1iCrEG+wAoJUWceof7ZUplSsj4/xSpz63gZj+8Vguhh6L2kmFRYRtHPIf7GnGS7q784H5xCfEa8D74v5OjoHxHjgzOo9xehV7ubLln7a1uF5hnpXRikCVnVdk/rQTvIon10oJ4zKwIdTS5aziTQb/HWmMsTb1cUUQdYSuNjNwRHCDNC7dEhTFS1rsoosLFjuv3BtxzOFBFCjZ1NVRq6hFnAFTdn00QLiOY4CpAgqb3SsB5Ix7XMKwS45pN2lcH5mu1ZEgwA+V4CpqG3C0IMA5bvMYq4KYmDoaH7Xz3RPWPyyTrltdKyEfjscnZcTO2uKnPElFufKZFs+P5Wtg7TtBgzVElVUwbofgK+/S+4VnFNAyDv+qn+aGjl7L3Oehyz5IH/oWURxCaLwSdy/PMWryf0XDhgFo7h+85/GuP4/5dlO5rK8LHYmy3mXgs/rWaXAMf2gidnEh0YSCoOFXuIBtaehABvqDKSjGcZ2XPZYzaTmPdVYoudIV4x9YFHAWwQ9IjJoiPZyyqmPC+YzuhwRUVGSHEGMiUFmhaEfdvrnedf9DgXWXRsH8s/bpCi4OdBVPQCO81xQIFE+aJiohGEhIbMVxdqGG+W8xQerRteOLsh4uzaf/5Kv1rVc/3U7o4wRbiL8GXIvYUM7Q11W41M5Vg1wqIIEbjcGg61oCTKKZVBeR8ZW01wL/9n+ZWINgl9ZX3FU5ry52cEM+T0uOFMYRoH/xnGcqKjTLIvPAwgeswfxcexO9eZBvmTEAt5hDWiHILet8kPDwu9lsZQBYainGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Perdone, Toni, pero lo que tiene que ver con las medicinas de Carmen se lo tiene que decir ella. Puede preguntárselo directamente. Si quiere, puedo mirar si usted se ha tomado la suya.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6661,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 208,
+    "output_tokens_details": {
+     "thinking_tokens": 125
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

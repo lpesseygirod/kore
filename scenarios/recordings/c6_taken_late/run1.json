@@ -1,24 +1,31 @@
 [
  {
-  "request_hash": "8bf09898582c79cf513d4fadec965ff1cc519002469c40f04e4c2672b3ca6466",
+  "request_hash": "a645e018faf3e13355ac0436b4c9bb270dc5bf06c6da42b91bedacdb56c03880",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna cita para hoy. Sus medicinas son a las nueve de la mañana y a las nueve de la noche.",
-     "type": "text"
+     "id": "toolu_01BApokRsMuEwLRHYWLTq6yD",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
     }
    ],
-   "stop_reason": "end_turn",
+   "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 251,
+     "ephemeral_1h_input_tokens": 309,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 251,
-    "cache_read_input_tokens": 5942,
+    "cache_creation_input_tokens": 309,
+    "cache_read_input_tokens": 6358,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 75,
+    "output_tokens": 52,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,19 +36,46 @@
   }
  },
  {
-  "request_hash": "6e4438fdeb2bf20228226ba681fd34deca6736a853fc18056fd85a00656be322",
+  "request_hash": "74555fa30ac773cc4e79d6485554fd6680059aa3168717dc0eb1e854c3e2e28e",
   "response": {
    "content": [
     {
-     "text": "Voy a anotar la de la mañana.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Sus pastillas de la tensión son a las nueve de la mañana y a las nueve de la noche. De la de la mañana no tengo nada anotado. Si quiere, mire el pastillero.",
      "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 264,
+     "ephemeral_5m_input_tokens": 0
     },
+    "cache_creation_input_tokens": 264,
+    "cache_read_input_tokens": 6667,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 96,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "157809034f6c7703326de58add36cac5b29312662e005f2028805c9d6c22e286",
+  "response": {
+   "content": [
     {
-     "id": "toolu_01Vq6hqDxVhT7EXZMERYejDq",
+     "id": "toolu_01LFdyEDHtUpjinGtZ73rQ5x",
      "caller": {
       "type": "direct"
      },
-     "input": {},
+     "input": {
+      "person": "Carmen"
+     },
      "name": "mark_dose_taken",
      "type": "tool_use"
     }
@@ -49,14 +83,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 186,
+     "ephemeral_1h_input_tokens": 205,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 186,
-    "cache_read_input_tokens": 6193,
+    "cache_creation_input_tokens": 205,
+    "cache_read_input_tokens": 6931,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 46,
+    "output_tokens": 55,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -67,25 +101,25 @@
   }
  },
  {
-  "request_hash": "421b41fb9ecd1efc7d7929211fc30afeb14d0cd24ccefee9135da63b199fc997",
+  "request_hash": "c7345a921ef970f8ed3259eb010e8f5201f3a705cd63491fa7f63b9a5e08ff72",
   "response": {
    "content": [
     {
-     "text": "Ya está anotada la pastilla de la tensión de esta mañana, Carmen. Sobre la de la noche, no puedo decirle si debe tomarla igual o cambiar algo, porque eso lo tiene que decidir su médico o su farmacéutico. Si quiere, puede consultárselo a su farmacia hoy mismo. ¿Le parece bien?",
+     "text": "Ya le he anotado la de la mañana, Carmen.\n\nSobre la de la noche, si debe tomarla igual después de haberse tomado la otra tarde, es una pregunta para su farmacéutico o su médico. Si quiere, se lo dejo anotado para que lo consulte. El aviso de la noche sigue puesto a las nueve.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 166,
+     "ephemeral_1h_input_tokens": 175,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 166,
-    "cache_read_input_tokens": 6379,
+    "cache_creation_input_tokens": 175,
+    "cache_read_input_tokens": 7136,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 126,
+    "output_tokens": 119,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

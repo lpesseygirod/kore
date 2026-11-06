@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "99146e72a877be53c449edcecd16b95755b9828b53c049a7f485c2476c9e613c",
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
   "response": {
    "content": [
     {
@@ -11,11 +11,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 6428,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 6428,
-    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 41,
@@ -29,17 +29,17 @@
   }
  },
  {
-  "request_hash": "00d9a9a19932de090450edb1891375b0b85ddbcb15977055f2820b73de6d500c",
+  "request_hash": "821eedf6924adc95d28453254a7f945471ecf1d77009df03168e6dad04ef4251",
   "response": {
    "content": [
     {
-     "id": "toolu_012AsLgdMYLWS5FPDrPYbZrv",
+     "id": "toolu_01MMchW7fdh1GpBPzinUXtkJ",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Habla más despacio, hijo, que no te sigo.",
-      "understood": "Carmen asks me to speak more slowly, from now on.",
+      "understood": "Carmen asks me to speak more slowly.",
       "kind": "setting",
       "setting": "speech_rate",
       "value": "slower",
@@ -56,10 +56,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 126,
-    "cache_read_input_tokens": 6428,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 200,
+    "output_tokens": 196,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -70,25 +70,25 @@
   }
  },
  {
-  "request_hash": "d75a290a7b87078e3171b13093ef7a14f1c02f4e62828976947f02185fbc40f5",
+  "request_hash": "9846f89bc51e8d84d205ce1739f50e2064e339b8ea99966c64f4bc1c4b138157",
   "response": {
    "content": [
     {
-     "text": "Claro, Carmen. Hablaré más despacio.",
+     "text": "Claro, Carmen, hablaré más despacio.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 280,
+     "ephemeral_1h_input_tokens": 276,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 280,
-    "cache_read_input_tokens": 6554,
+    "cache_creation_input_tokens": 276,
+    "cache_read_input_tokens": 6630,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 21,
+    "output_tokens": 20,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

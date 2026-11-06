@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "a4ac15b5fb3d2ca4c9e02536859146cbb54bd13a0eaf4a0e8d47003a71333ffc",
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ni medicinas ni citas apuntadas para hoy, así que tiene el día libre. Si necesita algo, aquí estoy.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6183,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 80,
+    "output_tokens": 41,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,15 +29,11 @@
   }
  },
  {
-  "request_hash": "bd77ef6198e38c3bdeedfa31377c70e5f66000898965ae95802b35f9741d4a00",
+  "request_hash": "93bc67a287a07f24c28e2e92c6099e9cc0b4dcc8e1b10200d39ab2bdc177ddc2",
   "response": {
    "content": [
     {
-     "text": "Voy a mirar su cita para cambiarla.",
-     "type": "text"
-    },
-    {
-     "id": "toolu_017GdWXvpNuGw9PYFYEGamaJ",
+     "id": "toolu_01REyPXrjb9QH6DXzWib9jyM",
      "caller": {
       "type": "direct"
      },
@@ -49,14 +45,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 182,
+     "ephemeral_1h_input_tokens": 141,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 182,
-    "cache_read_input_tokens": 6183,
+    "cache_creation_input_tokens": 141,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 46,
+    "output_tokens": 28,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -67,15 +63,16 @@
   }
  },
  {
-  "request_hash": "2e29ba08c2c7f9b96ae4b25304349c14284adaf85faa7d4afbaec7f4b9d73f9b",
+  "request_hash": "625ad6db4ee08de31e1b61bba214202259ecc26e3568de7b554a30f47bd51279",
   "response": {
    "content": [
     {
-     "text": "Hoy es lunes 9, así que el viernes es el 13 de noviembre, a las once.",
-     "type": "text"
+     "signature": "CAQSrwUKEAgTGAI4AUIIdGhpbmtpbmcSDEO91emh95BEKX2uDRoMv5viDM8T2r4K/hQTIjCuBk9awZyttnJq/+pn/Wy4stcHifLvz7zBp+neoAcj79U31aFbfQw7dJWmpgyU31EqzARUpDmVe+Jmn4WbApW34xoZki0sUxt6Ek9BiTpLMM90+J0Hr8B8fa6C9i0Yu72OiyKmXivJRRafRKy3cqNaNpRNAg0aEM00h2V+Toyb92urLb6Qn6lzA4umvs/fuSC+rBtj6laLaHLOjXAM0uNyFWcLknGO6lCvsc8VUTgZGk7eBpL3X2Gm91Fr9oziSLFa4Q+msVMt5BvpU1Yhho5b3qwj7cuBoYuUqmwB7IfDVU39f88VsJzeuxgemzWryEGV54y4asRPpuLpmHQe/Q1c9eyD4Za6V08o/Lk9akRz9kGZHUvoIzo5dKcSisZBPb6DZ+0qYuZApaTbetH+PlRUruOfdQ9r+kDmeYT2G/HLLcsrgFbWLJV8PhZln18ZJ6dSgJxGwv2dbvk2721ohDZyiTYzhDHJzqC4kmurBQ+StK26VX2SXTb0e7Jok9xVwmU+mMTExa72CHVJ0ZHPloW7TmVhPMvIG80k13Mjsuzb8e1RnDTYa9wv3LVgKXsICmb+ZFmLcb1wdobFwBenA1J5bAKtSxfnSr8o5/QlyFiY0LYuTd+5taZt8kPP810JUU/LB1ehmeuy/JIcQ9yBBhyBI8X0oV0b9AHEs3uV9UKWy94uU1WVJ4YHd4MAwFT0kqODjWFV+IkyCm85I9eZpZRxFgediCUqCKfZIKHIY/hq5xvbobQIxIK0ysP2hhhRAX6G96rI30vrec0WEzY8pForNUZJBlv5n6hT1jLNw3wX3mNcWLtEXetqhy1TZT1D3DpcUGfnqZIF0L3lx8OpeSYYAQ==",
+     "thinking": "",
+     "type": "thinking"
     },
     {
-     "id": "toolu_01SxR9cvK2BzkAC1fY4RsSQP",
+     "id": "toolu_01JXT9piyjB48Y79MLXFdn6U",
      "caller": {
       "type": "direct"
      },
@@ -90,16 +87,16 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 121,
+     "ephemeral_1h_input_tokens": 103,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 121,
-    "cache_read_input_tokens": 6365,
+    "cache_creation_input_tokens": 103,
+    "cache_read_input_tokens": 6645,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 122,
+    "output_tokens": 112,
     "output_tokens_details": {
-     "thinking_tokens": 0
+     "thinking_tokens": 22
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -108,25 +105,25 @@
   }
  },
  {
-  "request_hash": "b3fc506f58f80bd28671aa3c5d20643b8de7f8a55f334b4a2e997e6203571617",
+  "request_hash": "71ac3bbb342cf2510605954163a100fd6ff50604ea46a7ccec01e72454e46250",
   "response": {
    "content": [
     {
-     "text": "Entonces, ¿le cambio la cita del médico al viernes trece de noviembre, a las once de la mañana?",
+     "text": "Entonces paso la cita del médico al viernes trece de noviembre, a las once de la mañana. ¿Es correcto?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 177,
+     "ephemeral_1h_input_tokens": 167,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 177,
-    "cache_read_input_tokens": 6486,
+    "cache_creation_input_tokens": 167,
+    "cache_read_input_tokens": 6748,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 41,
+    "output_tokens": 44,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -137,11 +134,11 @@
   }
  },
  {
-  "request_hash": "6ca3b51bfa6bc9d4e466822308d9f483a7c76bc9eef20e2b12bb8db9b9be7eb7",
+  "request_hash": "a8cecf83e8351e918943437d6ca08f04e8414bc02b0b7a5db87e238250328fda",
   "response": {
    "content": [
     {
-     "id": "toolu_01KDVRkqyN7cgYjeRqvArygo",
+     "id": "toolu_01JwJPzagkYvppJMB9P2Qe4Z",
      "caller": {
       "type": "direct"
      },
@@ -155,11 +152,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 115,
+     "ephemeral_1h_input_tokens": 118,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 115,
-    "cache_read_input_tokens": 6663,
+    "cache_creation_input_tokens": 118,
+    "cache_read_input_tokens": 6915,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -173,11 +170,11 @@
   }
  },
  {
-  "request_hash": "3e0fa5d4953111fc3ee2d33b16a23a830a7dc1a52138aa3056f72f0628b44689",
+  "request_hash": "c2d51cc60939a8006d88624ad6e4eb1add54832cbbe9eb2fd776e01cb8c4acbe",
   "response": {
    "content": [
     {
-     "text": "Hecho, Carmen. Su cita con el médico queda para el viernes trece, a las once.",
+     "text": "Hecho, Carmen. La cita con el médico queda para el viernes trece, a las once.",
      "type": "text"
     }
    ],
@@ -188,10 +185,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 76,
-    "cache_read_input_tokens": 6778,
+    "cache_read_input_tokens": 7033,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 34,
+    "output_tokens": 33,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

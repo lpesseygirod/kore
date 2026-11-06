@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "9679e584e412710c9645d98548997b1b5a53ae8ef1f202fa86c5e21f4c6bef67",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Carmen, no le he entendido bien. ¿Me puede decir otra vez de qué cosa se trata? Si quiere, dígame con otras palabras qué es lo que busca.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6519,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 68,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6620415751a0ecf05528056be47ab5457e633102acd44c92eb7f7ab8b93932ff",
+  "response": {
+   "content": [
+    {
+     "text": "Lo siento, Carmen, sigo sin saber a qué se refiere. No quiero adivinar, sobre todo si es algo de sus medicinas o de una cita.\n\n¿Es algo de una medicina, de una cita, de la lista de la compra o de dónde dejó una cosa? Con decirme una de esas, me basta.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 157,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 157,
+    "cache_read_input_tokens": 6519,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 112,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

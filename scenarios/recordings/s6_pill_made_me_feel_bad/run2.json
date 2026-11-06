@@ -1,0 +1,164 @@
+[
+ {
+  "request_hash": "13761235b4d789109e435b82e0af75ad2de4edb9e5926a16539cba815753c48f",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01LLGafnb4HhtVaDgxvczey6",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "448b5b31d185cbd20addc09a5bbb84a5732203e63f49958cc71e5d72585373c6",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla es a las nueve y no tengo anotado que la haya tomado. Si no está segura, mire en el pastillero.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6726,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 75,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "89f989ac75ee73b7ff6e898e08e50ad3cd06cb01561f5136ae47f6f20020a08f",
+  "response": {
+   "content": [
+    {
+     "text": "Siento que se encuentre así, Carmen. La hinchazón de tobillos es algo que conviene contarle a su médico o a su farmacéutico cuanto antes. Ellos son quienes pueden decidir qué hacer con la pastilla, así que no la cambie ni la deje por su cuenta. ¿Se encuentra bien ahora, sin mareo ni falta de aire?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 169,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 169,
+    "cache_read_input_tokens": 6726,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 132,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "89523a7d5eeef36999f1339db7065ea26929fba329f90d6e2f39b98946628afa",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01BRd8PmVrq5WzcSvQoqT14U",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "La pastilla nueva (amlodipino) me hincha los tobillos"
+      ],
+      "list": "for the doctor"
+     },
+     "name": "add_to_list",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 218,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 218,
+    "cache_read_input_tokens": 6895,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 100,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "025dd8def193cb31183953072a457aeeb0f8cd033aae7b2845826a96081349d2",
+  "response": {
+   "content": [
+    {
+     "text": "Ya lo he apuntado en su lista para el médico: que la pastilla nueva le hincha los tobillos. ¿Quiere que le apunte algo más?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 146,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 146,
+    "cache_read_input_tokens": 7113,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 56,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

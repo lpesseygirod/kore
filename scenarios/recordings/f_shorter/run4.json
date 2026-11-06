@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "19b5ef2b4be7ccf67de6f48b11e8544ad1c6415b27386b533a8fdf72f5875318",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_019ZHodS1xUDfUcyeCXiAR3p",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Te enrollas mucho, Pepe. Contesta más corto.",
+      "understood": "Wants shorter answers from now on.",
+      "kind": "setting",
+      "setting": "answer_length",
+      "value": "shorter",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6634,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 197,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6bf46729a503b30e56b01b761f9240aeae703a1f987641b635179f4e838e822f",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, seré más breve.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 274,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 274,
+    "cache_read_input_tokens": 6634,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 17,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

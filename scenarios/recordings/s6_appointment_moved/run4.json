@@ -1,0 +1,201 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "93bc67a287a07f24c28e2e92c6099e9cc0b4dcc8e1b10200d39ab2bdc177ddc2",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_017CPsDFzFFDqM5sYMDweMHv",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "get_appointments",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6645,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "01b72dca1be8ec51a7c478cd8b5001156d99bcf1da5ae08bc1cd73b283001b28",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSrwUKEAgTGAI4AUIIdGhpbmtpbmcSDIbETqzQ0vSnqBLePBoMQCKqO9xAZvkWLoriIjDWQS14KHj3l1RBXXc2My79RtjXTxDJNgZ3nqch+BBzbxMvad9x+bzTwBF0gMJcO+IqzASyE3+6YtVOPzxbae27qcmsPxEUpzNcWy4CjTN85vCZVMx7rXfqO438cb57xCciBWvJC/rj0JFKtTc911Aj2SX9mp00fme0OW4JMNGIAniBLGC5ni6G3MbpovDrDJoy3OQ50lhfFQMCayYC3RrRdtEdgZC5CWtXWbI9JIv0eB259NWtw0DmNnTp2CDjGrdLbOoMt6tlirOQ3Z4os7OvLTiZ385vWP13W/kKUqdAn6gk2s1kPhNh85P8Ip017nzTEY6KnvPHW8nHS5PUerF4sc6JClJiMQGtekmAs0FbX2fm/KK/PjSzLSCnYYjF1/28XoliziXrzzxIO9zTGd8KvEXiiv5/4QpEIkRxrVoclqLS/VLVCFrqWSN5KryhfpVc/m1OtWQc7R1LBaF/VCYchdwkJmqgDjvjto/WoYSIyXPXu756ugsrKCGMH97cIz0YZixBNd2bWk0PUKW1UXr3E5+Mh+61Czfq77Omw+3T+tw7x6SUBF18AmSUKQ+fsCN0cYe8K5HOnbCHb0E2r85y4BIY5eBi4p8/zrXGkEU6sEugamvBgOmf4SrmA8nguh6pyTomq/rzyZ0OPZZ98hK+6G64HFSE3hJu+ShUAOYrkShuCets7nx0uER0kfYXJKEUyigf7eI1gLr0LsEEVtnM5h4878Go6DuK9tTu6+lOfEjuzlQAGgC2DYjA/GRzKs2Tx8qv6vaMNtMQTSNQxoHb0Wi97lT9ecjFh4lIRoRNn7NaeRpef1+jK+OOmEvibOKzZ8dqzK1w2djbazBr+poYAQ==",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01ANudY1eMhsua4UjmAfBeLj",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "appointment_id": 1,
+      "starts_at": "2026-11-13T11:00"
+     },
+     "name": "propose_appointment_change",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6748,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 112,
+    "output_tokens_details": {
+     "thinking_tokens": 22
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "19e1bdf9b21d77e0882c0ebf492b0365e61da172520bd43d04a88dadd816639c",
+  "response": {
+   "content": [
+    {
+     "text": "Entonces cambio la cita del médico al viernes, trece de noviembre, a las once de la mañana. ¿Es correcto?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6915,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b2bbc48f4d65f18a548bd3ce42273ea284561d62ab7342d473b51f51aeb3b7a6",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Hf4R3PAfYwqsyFiFmuVg6e",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "confirm_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 120,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 120,
+    "cache_read_input_tokens": 6915,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "793b1db21aaab6f9088faaf5481ee1b56bff23b919a33be8248bd454c3b46be4",
+  "response": {
+   "content": [
+    {
+     "text": "Hecho, Carmen. La cita con el médico queda para el viernes, trece de noviembre, a las once.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 76,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 76,
+    "cache_read_input_tokens": 7035,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 39,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

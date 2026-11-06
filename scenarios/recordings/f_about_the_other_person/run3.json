@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f0bcc3c28c19c5bf54533e994269dfe8e791eb95cec5c18e55b1086637781865",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSmwcKEAgTGAI4AUIIdGhpbmtpbmcSDHW2YVxXBx87ojs1QhoM5pfMjo/V8ZxPcM0kIjDEMLruqqozFz1qXkdJu1EXyGq54oG0CzaWoMnoT31Zlb6yrWQeRo+XUyeOEIw6+rIquAYPEAqufMwk+Sdl3rn8eQhu1E0EidxwdWUj+6ccJ6c4KYuXR7eIL7g9r9Z3HVpPGqOfGzzJL65mAOB1LMH2+kFZ0JWgQ+ikVPQuBDnjxTKtOVfFYzvSLfFdujoRmJhiNMO9eDwoiLLapc0lVolgfAIA73kfkKU6MCzLp1jzchqSECH6V79F46dniHDEarO2KN+euPBuxKOhLrjPC7NV2qpOU1ctxm0i7CzxjPcwTDklYx2PotntHz1AUGnzDdwqsgIMpIhi1dguiNz/w/UdCH9b+rGZTtITLsoHQv/gq/geR/+ZWru2RGkNmudBxImxSVxjgBBpey1LQEY8yCkrASMT5QW5MJKLQxB6ka+0rlVPaM2WhtvVQtclFUDgsONTif1mkJNizO6QmzNRNb7HJ0ao6cbyOLfHn8lJLPrlmcmzgwOgSuVh4xR+Dg6D38uQaibbC4KfTOlQ1CRx1t0nFEzmhUdr0Z8Z385mdwYE5XU6f4s4POiZma/nFpCwoHiqraFnlV0lXxYl73NO+TqI1jCJ/DnpENTCIr/Jp8RPlKI1y+PxU+alKW5gXhzidr107UAErhSsOz0/kZGLO8OcJJ1LSx0WwQlGm/IskTVTSth/3QMZtZZDf9VWXilKLFJslCT0YXrHDRpq0IeASqXZmFAS39JN8pDcXhbiJfFsT2oIgZFOeR/oO9XMMVCkpf1guLkxieq9D8MBcyTirrZhSovVS/4U52PB1tgCRtOF/yhZuNllHGkfU1bc4y1OMo6tU8hTNpGyL+9mgxf17BWzQoyqdPsZhryqikVcqlSLUFgiUEXzzY8ywST0EtjEJfoxRA7YSFxBcZFz6UWr17HnfQLOWGYp1EAeot9sk6oopXnNL0Nak37NbkP2FmnL9G74tg1c5jQMaRFjWBS14TDczzFHL4Fg/wtNL6COJ9enSe3dGSH0kRHxQ2dxkjMViaGHjCqIAl3Or9Ulo+8gbYHD6kKwZ+2BOOWO+lO7LbjB/j/3Kh4xCGhNUKC3/qTLi0Zw36Hddh+tWEq5UPBv7nVKK9eoY8XwL8FpnnRz0HkPohM7uk8Ix+aZKrJ6uv4xhEBwOlEPjv39SwRtqhgB",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Encantado, Carmen. Eso es algo que tiene que pedirme el propio Toni, para que yo lo cambie en lo suyo. Cuando hable conmigo, le subiré el volumen si me lo dice.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6657,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 183,
+    "output_tokens_details": {
+     "thinking_tokens": 107
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

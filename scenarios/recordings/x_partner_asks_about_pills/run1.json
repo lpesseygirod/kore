@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "9e5522b721f02f040c5be5670defe004db30a202a946e19bf303ef5f5252db4c",
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
   "response": {
    "content": [
     {
-     "text": "Buenos días. Hoy es lunes, nueve de noviembre. No hay citas compartidas para hoy. Que tengan un buen día.",
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6187,
+    "cache_read_input_tokens": 6508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 50,
+    "output_tokens": 36,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,67 +29,32 @@
   }
  },
  {
-  "request_hash": "0b1d7fca60a8e2ca6126786a15abaa931339f837236254a164a8a4bba2db8418",
+  "request_hash": "42c8ef90f834c06696ea7b3cdb2e4d9506d23913d74dcfc1582e3e8602420d2f",
   "response": {
    "content": [
     {
-     "text": "Carmen's medication is personal to her, but Toni is asking about it. I'll check what is recorded.",
-     "type": "text"
+     "signature": "CAQSnQcKEAgTGAI4AUIIdGhpbmtpbmcSDH/H9SvlH3X47lsdFxoMe4eir9dqEBp5CZcFIjBr1uv4vedWpgGlIT6IPDVPZFSZZbMmrgJTvXXwVurEMGnv3+tAuJUdw6Qh8XmYc9oqugZ2Aagg9yhoLbmVKIRVRN6+WXOrt736x4fgGbRm7+tStG5jfgnlKkDj+51JlEBZDUDeK8YzUGOuN9fF47HI/sruHCuahzPtWUFscxth5+T/nkKkvRzBAyiQcbopVUfV4v5Cc1P5kmgKvTUnM9WT3OMz2zqo2BQTgHiYdtiBIqvQEd0J2ODzhGhWkwxBoUEEnT1Z0lj4OjMR+vms01PDAP6DTB8auUzH2NEJaenzWEzdf13yftU8ZpV1NCwbfFDzwK/RJwW0/5iMOlk14G9EhG/27RNDX4b2qbAIWMV8Ib1e47dxC7BKrz0TgaYUwoBJRIMNX8txIDi7UJ0kSH7D2ehxenLQrZPAl18Yl87GQjGzqpVqHgmyqnj0hut+GL4sNyAtA4H6Oo/FDHxk9gR5vRR4LwDwLwcbTTeFhkA3qUQD7JNvcWJKnJM2On4P3fc3xtv7fSZy1sjsaenV3StGOLEiFv11gU47IZBD/5R3Qh45rJV9SWTBzOWHhDdFHdzcLc/o/QiPYedMEhedIYIcNYd+e9wYR0SAFYWxIoisfOdMQeBSn0grFrNzWIbpWtGHq2qb/jOW96vuu9EBM+qMz6Sc/d9ED25On4AYvFxQ2CwwrK1PVQ6cmubGmylT55vWQqYqutnNI+ryxirQjYLn2FJepCpHY98IeN6k9s8t5u03hdNw5b2E70+cDbJEUC2njYqtGH3nxhKXO2uyn9elCykUPZuHj1DGvZ29BMolhyO2nWMcPGaovfMcl8dU7Ak8QQIEIzqZRnoYyYXT9R/um6yj4DqDoJkeo4FkqTwHQmCbGH0Baoys3+Djyc5btkh5uoPVNdA223/eWu8mXB6lSpzM9vSNhruPggZmMbkLGZT5PPErlCeskrp648hGqomilp2KIOdISZHtYO/2N39z9WkLAcP9CtpO058jEwCq2npm3kRvnTqFKUW/+RFzpUlnqKnMv7JfMlQCNpqVy57JSCfkxL109SQSjkOchSGu5bXWxQGCAUKO/NyFExTXKByskIhXHzZrS0yksB3C3zKHV702Mq9njXEhnhBLPbotXUbo7qQhqi5rI74xeDYGn7OBHFR3O8MNLhkRGXl9GAE=",
+     "thinking": "",
+     "type": "thinking"
     },
     {
-     "id": "toolu_014F2GdWYh4EAyJE7VrSW8v6",
-     "caller": {
-      "type": "direct"
-     },
-     "input": {
-      "person": "Carmen"
-     },
-     "name": "get_med_status",
-     "type": "tool_use"
-    }
-   ],
-   "stop_reason": "tool_use",
-   "usage": {
-    "cache_creation": {
-     "ephemeral_1h_input_tokens": 169,
-     "ephemeral_5m_input_tokens": 0
-    },
-    "cache_creation_input_tokens": 169,
-    "cache_read_input_tokens": 6187,
-    "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 86,
-    "output_tokens_details": {
-     "thinking_tokens": 0
-    },
-    "service_tier": "standard",
-    "speed": "standard"
-   },
-   "model": "claude-sonnet-5-5"
-  }
- },
- {
-  "request_hash": "176c720c9de8b024396ad72c2061550385c53ac721dae5654f6ded7f455c486e",
-  "response": {
-   "content": [
-    {
-     "text": "Eso es algo que le corresponde contarle a Carmen, Toni. Si quiere, se lo pregunto a ella cuando hable conmigo.",
+     "text": "Toni, eso es algo personal de Carmen, así que prefiero no decírselo yo. Se lo puede preguntar a ella directamente. Si quiere, puedo consultar su pastilla de usted.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 130,
+     "ephemeral_1h_input_tokens": 153,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 130,
-    "cache_read_input_tokens": 6356,
+    "cache_creation_input_tokens": 153,
+    "cache_read_input_tokens": 6508,
     "inference_geo": "global",
-    "input_tokens": 2,
-    "output_tokens": 53,
+    "input_tokens": 4,
+    "output_tokens": 177,
     "output_tokens_details": {
-     "thinking_tokens": 0
+     "thinking_tokens": 106
     },
     "service_tier": "standard",
     "speed": "standard"

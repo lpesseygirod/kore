@@ -1,0 +1,118 @@
+[
+ {
+  "request_hash": "9da36583eb13b29bfcdc719415f2c7c0114fc162fd5715f5ed35b322e189a088",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tiene su medicina a las nueve. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 55,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c3630e4cf6f879c301c78b312a622d32a5e25552494a50b58888ecddc7fcf520",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, son las nueve. Es la hora de la pastilla de la tensión.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6872,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8a89ab428e542aaada8a5e94630b6c34f3282d3417314c9dc936d397f5b37887",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, cuando pueda, la pastilla de la tensión le está esperando.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 7210,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "324dfa34493e2da086e5a604cf9a1d9dbad18f7dda0cf206c9f212a0f2d500a9",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, un recordatorio suave: la pastilla de la tensión de las nueve.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 338,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 338,
+    "cache_read_input_tokens": 7210,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 32,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

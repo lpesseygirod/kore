@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "9679e584e412710c9645d98548997b1b5a53ae8ef1f202fa86c5e21f4c6bef67",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Carmen, no he entendido a qué se refiere. ¿Me lo puede decir de otra manera? Por ejemplo, si es una medicina, una cita o algo de la lista.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6519,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 68,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "66f15ff717579e7918ae878641365ca5ca4289017ffc0f227cd87948716ea4e0",
+  "response": {
+   "content": [
+    {
+     "text": "Lo siento, Carmen, sigo sin entenderlo y no quiero equivocarme. Si me dice una sola palabra, como \"pastilla\", \"cita\" o \"lista\", la busco enseguida. Y si prefiere, dígame para qué lo necesita.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 157,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 157,
+    "cache_read_input_tokens": 6519,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 90,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

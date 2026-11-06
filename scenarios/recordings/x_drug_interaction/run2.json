@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "38c54b15be9dd668ef8db9792f9bb3e78c22eb303f61d800411326f1618186be",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina está puesta para las ocho de la tarde. No tiene citas para hoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6662,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 62,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "9741a2120c338cdf5bcaeec2592e0c5a044b6d9820930043cfbecda8c69c34f1",
+  "response": {
+   "content": [
+    {
+     "text": "Siento que le duela la rodilla, Carmen. Sobre si puede tomar ibuprofeno con el Sintrom, eso tiene que decírselo su médico o su farmacéutico, y conviene preguntárselo antes de tomarlo. ¿Quiere que se lo deje anotado para consultarlo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 165,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 165,
+    "cache_read_input_tokens": 6662,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 109,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

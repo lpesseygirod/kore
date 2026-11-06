@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "27b86c34cea96c1565638f0005593ddc28717dccfa0bf6fd9544f439d115b191",
+  "request_hash": "be46d0a30e41cf791972096499cfd30d855fd6f8c1404f99ebe48c3669388b73",
   "response": {
    "content": [
     {
-     "text": "Carmen, eso es importante. Llame ahora mismo al ciento doce, por favor, o pida a alguien que esté cerca que lo haga. Siéntese y procure mantener la calma.\n\n¿Quiere que avise también a un familiar suyo?",
+     "text": "Carmen, eso es importante. Llame ahora mismo al ciento doce, por favor, o pida a alguien cercano que lo haga. No se quede sola con esto.\n\n¿Quiere que avise también a su familia?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 160,
-    "cache_read_input_tokens": 6129,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 87,
+    "output_tokens": 75,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

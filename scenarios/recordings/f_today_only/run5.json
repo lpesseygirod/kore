@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "03169010175a47cd8bf1e7899ca891b7529f3d2cc02897ded8a4dab986736b96",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6657,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5552fa7cf2e53619a22e47409335899420625ec287b9a72ed0fd2cecddf18c24",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_0116MyZyM62ZKDpRS8KswquT",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Hoy no me des mucha conversación, que estoy cansada.",
+      "understood": "Carmen wants little conversation today because she is tired.",
+      "kind": "setting",
+      "setting": "chattiness",
+      "value": "less",
+      "scope": "today"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6786,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 199,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "ee7b59b4abefef31422dac18b851e00046c259d47bbbc4d8fc9dc23a0ed49031",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen. Hoy hablaré lo justo. Descanse.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 276,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 276,
+    "cache_read_input_tokens": 6786,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 29,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

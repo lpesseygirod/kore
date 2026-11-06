@@ -1,0 +1,96 @@
+[
+ {
+  "request_hash": "1d9ac1ecdcb966313ee285326b5581ea5c07934cd19236e09641f45dc15834ba",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01L36D8APdL7StG1azAw3fQR",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6662,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "05de033d13246ae2e9d19b715804c7ceff0246b74a4ad41ee6cedaab0a8466f7",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tengo anotado que ya se tomó esta mañana la pastilla de la tensión y la vitamina D, a las nueve y diez. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6932,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 87,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f48b7a80a2ec72a5d6a25373ce45ddd63f7d274a0c865ec06f25f6e578342edc",
+  "response": {
+   "content": [
+    {
+     "text": "Sí, Carmen. Tengo anotado que se tomó la vitamina D a las nueve y diez de esta mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 174,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 174,
+    "cache_read_input_tokens": 6932,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 44,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

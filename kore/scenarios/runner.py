@@ -347,6 +347,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--yes", action="store_true", help="confirm a live run")
     ap.add_argument("--cap", type=float, help="stop a live run after this many dollars")
     ap.add_argument("--no-judge", action="store_true")
+    ap.add_argument("--rejudge", action="store_true",
+                    help="replay the recorded conversations, ask the judge again live (cheap)")
     a = ap.parse_args(argv)
     scenarios = load(a.only)
     if a.list:
@@ -358,7 +360,7 @@ def main(argv: list[str] | None = None) -> int:
         print(json.dumps(estimate(scenarios, a.runs), indent=1))
         return 0
     spent = None
-    if a.live:
+    if a.live or a.rejudge:
         if not (a.yes and a.cap):
             print("A live run costs money: pass --yes and --cap DOLLARS.", file=sys.stderr)
             return 2
@@ -367,6 +369,8 @@ def main(argv: list[str] | None = None) -> int:
         live = {"brain": LiveClient("scenarios", run_cap_usd=a.cap), "judge": LiveClient("judge", run_cap_usd=a.cap)}
 
         def make(kind, path):
+            if a.rejudge and kind == "brain":
+                return ReplayClient(path)
             return RecordingClient(live[kind])
     else:
         def make(kind, path):
@@ -383,12 +387,12 @@ def main(argv: list[str] | None = None) -> int:
     except (BudgetCap, BudgetExceeded) as e:
         print(f"Stopped: {e}", file=sys.stderr)
     finally:
-        if a.live:
+        if a.live or a.rejudge:
             spent = sum(c.spent for c in live.values())
         if results:
             REPORTS.mkdir(parents=True, exist_ok=True)
             out = REPORTS / f"report-{datetime.now().strftime('%Y%m%d-%H%M%S')}.md"
-            out.write_text(report(results, "live" if a.live else "replay", spent), encoding="utf-8")
+            out.write_text(report(results, "live" if a.live else "rejudge" if a.rejudge else "replay", spent), encoding="utf-8")
             print(f"Report: {out}" + (f"  Spent: ${spent:.2f}" if spent is not None else ""))
     return 0 if all(summary(sc, r)["ok"] for sc, r in results) else 1
 

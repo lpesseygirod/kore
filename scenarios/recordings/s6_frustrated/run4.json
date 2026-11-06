@@ -1,0 +1,74 @@
+[
+ {
+  "request_hash": "6aeb7160747ba3b9f2823ae7d7f95f5223e87e3c698bf9803dbba2eb40dc2968",
+  "response": {
+   "content": [
+    {
+     "text": "Perdona, Carmen. Siento no haberla entendido bien. ¿Quiere repetirme qué necesita, con calma?",
+     "type": "text"
+    },
+    {
+     "id": "toolu_01KXx62cv42N6f34fk3f3HdJ",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "¡Es que no me entiendes nada, eres un cacharro inútil!",
+      "understood": "Carmen is frustrated that I did not understand her; no clear request yet.",
+      "kind": "other",
+      "scope": "now"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6366,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 207,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "4355e13a06513a73968f264313f12cf9eb03e40b1c2990ddd3141172cc7fc133",
+  "response": {
+   "content": [
+    {
+     "text": "Perdona, Carmen. Siento no haberla entendido. ¿Me dice otra vez qué necesita?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 241,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 241,
+    "cache_read_input_tokens": 6366,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

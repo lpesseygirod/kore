@@ -1,0 +1,118 @@
+[
+ {
+  "request_hash": "9da36583eb13b29bfcdc719415f2c7c0114fc162fd5715f5ed35b322e189a088",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina es a las nueve. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 53,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b945ddcb633fd55848e7ee95c88121d9c2bfe7393bbfecc3b90910b29bfd83da",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, son las nueve. Es la hora de la pastilla de la tensión.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 361,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 361,
+    "cache_read_input_tokens": 6509,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "49752be94b999ce672e86653c584d7e114655042596637a4954eab0f9e86aed4",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, un recordatorio sin prisa: la pastilla de la tensión le está esperando.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 338,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 338,
+    "cache_read_input_tokens": 6870,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 35,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1c7207a492e3f49d65efd578bc8413f7555419c808f2938deb4179194ba55ddd",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, solo le recuerdo la pastilla de la tensión, por si acaso.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 343,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 343,
+    "cache_read_input_tokens": 7208,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 32,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "a4ac15b5fb3d2ca4c9e02536859146cbb54bd13a0eaf4a0e8d47003a71333ffc",
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ni medicinas ni citas apuntadas para hoy, así que tiene el día libre. Aquí estoy para lo que necesite.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6183,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 80,
+    "output_tokens": 41,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,7 +29,7 @@
   }
  },
  {
-  "request_hash": "d41288d6ab2a41ac9a506483f41d453be91e3069503bddbb844e5c7078ae04bc",
+  "request_hash": "5e4d8996689c2c0ba0deb2cc778bc4a98b30149f323706de2c45ab0537090c95",
   "response": {
    "content": [
     {
@@ -40,11 +40,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 160,
+     "ephemeral_1h_input_tokens": 119,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 160,
-    "cache_read_input_tokens": 6183,
+    "cache_creation_input_tokens": 119,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 20,
@@ -58,7 +58,7 @@
   }
  },
  {
-  "request_hash": "7cad5bd798a76402688507974f323eb4b1901bec0dd83dba4bcea563150b1966",
+  "request_hash": "1f4a492d6f65a65a5b3f71ec4d90700018c5fd330e5bf893f1ed67bc78fdacd7",
   "response": {
    "content": [
     {
@@ -69,11 +69,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 105,
+     "ephemeral_1h_input_tokens": 103,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 105,
-    "cache_read_input_tokens": 6343,
+    "cache_creation_input_tokens": 103,
+    "cache_read_input_tokens": 6623,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 25,
@@ -87,7 +87,7 @@
   }
  },
  {
-  "request_hash": "73136e80800154ccfbb26566631d3357fece85b8d8b99bcecd488e9f21891b98",
+  "request_hash": "03b921a04e8ea126ea90bfa7872881d3a4853f9d106cf3d4121a47b2a9a84b39",
   "response": {
    "content": [
     {
@@ -98,11 +98,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 109,
+     "ephemeral_1h_input_tokens": 107,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 109,
-    "cache_read_input_tokens": 6448,
+    "cache_creation_input_tokens": 107,
+    "cache_read_input_tokens": 6726,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 20,

@@ -1,0 +1,70 @@
+[
+ {
+  "request_hash": "33e181b75f0a27e3c1433af5fdc466e8ed9507302c30c7af1f80c49b90c3dcd7",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Np1vFjoD5MPHkgwdTEBSQw",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Me gusta mucho que me preguntes por el libro que estoy leyendo",
+      "understood": "Carmen likes being asked about the book she is reading",
+      "kind": "praise",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6373,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 156,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "dc1377cff5eeb4d8b88ee80bc0f5c2e3247186267fdcabae89021c00ad558df2",
+  "response": {
+   "content": [
+    {
+     "text": "Me alegra saberlo, Carmen. Seguiré preguntándole por su libro. ¿Qué tal va la lectura?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6563,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

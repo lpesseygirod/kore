@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. ¿Cómo han amanecido?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 39,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1c6ae82210ed215ef71fe64efe00542d17453a7197f3903ab2df877d93d43bef",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSlwcKEAgTGAI4AUIIdGhpbmtpbmcSDCLoHg1wUVSo+IqzmxoMQkA3dNJ3eolglaVDIjDCxj0RzjHb5beqUjO1SC9opEC8kcV5F0YLXdN2E/D/zrVhuSss4LT8f0fWFQyb58cqtAZFCmt7I6JjkI2+16fNii67nq249KJBmQwuAbnFbRaYmXm5I5VioowbXOCIm9e+fZK37/zC0UNdaV6hPmnbkWHxuFtchpy2P8BusJMAtvvPdjc5UjXoV+HBQMWt7AnG5WMSIt3wmSDYa/mfYwYyDGtnv0QlZ/F2P1IIkyM7vpwGGPdjDLwfy2dYIpBhsOZzzfRqvUHD7DIjtwpNpB5p5kgY+s0K5PiRLw6gMPodacedOlDBcbreKUKlqUEpQWpc8ABRrshAjxkXVlYYw2hPb9APaDND8sY/xkWzS/qS4M3zdSdXKnLsYmCC6EDoaI/WHkgaal2eouTzSLiKwmcDHEGOv6a6cf9ORqcJShCr1TMbQN7vmvN15H/FLXB2uAcEdJbKO76dT/y2xD83UwtEHpMHq0gWe1wDX46tjPCO5DVLTFjGW/heTU2CGsK1Gw0OBjEmG8CuBL1lVVMgt2JZl3eMaXdLjhJ1GXb+HspRiGCcpY4HKqTLZkJ9/CzY0assoJCW1tWnWUjwpc+FmgXzoxtLux70UMW+RS2NMIgUwr3iLz4Z7OcSi5/MwPlG7prK6t4bo343BeSxNddmB7G7KOoPbIieAK1gWnevmvZk6wZZ1sJd53V1es7gfNemNINGK5VOU4Vjukoy9jGJUhZclVYYDjCONPqGZLaPaPtCMGVhjT49fVR+lIcI/6IsvlsIsPDAka+NCySqZBc/GTyI55k4AKhG5ly+6JvV3+bI9Mq8MqetpBtXEqYkqLU++zPFm27Gj/gHZJgQvewc4qt7xR64rmd/eytjNwLEYauqSoMARE4kFDvpd001ORRASFUhdajTdXxOFj57yuxrlV0mTanrLQHvVyMiAcMNTNYgLYwmG/dgWPwuY3Tcft7nSDxmBev4YdTvRLh4oM9yqAcXF9NOtxuDggttSxv6iBC5CSnoWgQHArNxwe3npo2enKh+ifTZYmmJomJlAHXDSOwTfw+Dy9qZEw36HiT6NHhvvnfJnsFMwHckb8y1APPq9sZnXlN44VyP7d2W4xXbw2P6fLysBtVy3OXZM750j6eYi9MM/wl6ppDJo+fcIiGUGrb2l/P6/S/rGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Toni, los datos de las pastillas de Carmen son suyos, y prefiero que se lo pregunte usted a ella. ¿Quiere que le diga si usted ha tomado la suya?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 156,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 174,
+    "output_tokens_details": {
+     "thinking_tokens": 107
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

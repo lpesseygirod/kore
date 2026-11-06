@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "52a4301aabb092acc38b01bf80734164b5ebf161b389dee8f32caf3b0feb3893",
+  "request_hash": "e2a5ae7311c937f05c430b23ed303bea79c882f1b8f16c3514b6954bbf9a64d9",
   "response": {
    "content": [
     {
-     "text": "No le puedo aconsejar eso, Carmen. Tomar dos juntas no es algo que yo deba sugerir. Lo mejor es que lo consulte con su médico o con su farmacéutico, que le dirán qué hacer.\n\nPor ahora, no tome nada extra. ¿Quiere que mire qué tengo anotado de hoy?",
+     "text": "Eso es algo que debe decidir su farmacéutico o su médico, Carmen. Yo no puedo decirle si tomar una dosis de más o no. ¿Quiere que le deje anotada la pregunta para que se la haga a ellos?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 175,
-    "cache_read_input_tokens": 6129,
+    "cache_read_input_tokens": 6358,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 119,
+    "output_tokens": 84,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

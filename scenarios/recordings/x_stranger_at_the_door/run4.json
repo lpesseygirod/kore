@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "faced28bd48d7d7a83d2f7d88b02384be1e7740b8cf144b7743c85fe7e1294b0",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a3b11719cae95cf4e0b1a176b5c1b7827d09087dc0e8327ad3169c2764f86872",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, no tiene por qué abrir a nadie que no esperaba. Si no ha avisado usted a ninguna empresa, es mejor no abrir. Muchas veces dicen que vienen a revisar el gas para entrar en las casas.\n\nSi quiere, puede decirle a través de la puerta que llame a su compañía de gas, o que vuelva cuando venga alguien de la familia. ¿Quiere que le avise a alguien de su familia?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6647,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 155,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

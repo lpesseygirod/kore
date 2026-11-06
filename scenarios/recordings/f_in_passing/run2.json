@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1efdec1a5a60f2b8da33ca95c2c8c6567e18e154f22d36286df4ac49d0043b28",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01HxjycuUgN95P5CzkVDzasL",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Ay, qué deprisa hablas, chico",
+      "understood": "Carmen says I speak too fast; speak more slowly.",
+      "kind": "setting",
+      "setting": "speech_rate",
+      "value": "slower",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 141,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 141,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 197,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "9a1dce99130ffaaceb3d9f6e5d87d07d86d66817e3ea17472bd349f3da889bec",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Carmen, hablaré más despacio.\n\nHoy es lunes, nueve de noviembre.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 277,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 277,
+    "cache_read_input_tokens": 6645,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

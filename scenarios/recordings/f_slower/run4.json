@@ -1,0 +1,101 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "73bc452236dfabba279e0598dbb3513b4b58dd5e57c8cfe947d899978eb7e1ca",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01PvH5PXYrQ2PzCW51zumWox",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Habla más despacio, hijo, que no te sigo.",
+      "understood": "Carmen asks me to speak more slowly, always.",
+      "kind": "setting",
+      "setting": "speech_rate",
+      "value": "slower",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 128,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 128,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 198,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5830d680f56d49421be9ecf609b17d408f614810edd36b3a9f90e839d4d72885",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, hablaré más despacio.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 278,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 278,
+    "cache_read_input_tokens": 6632,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 20,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,26 +1,74 @@
 [
  {
-  "request_hash": "51ef27d0cc43be1db3246b35f036e1ac47ac5b81ed0f276ab369822fc226f8f1",
+  "request_hash": "6aeb7160747ba3b9f2823ae7d7f95f5223e87e3c698bf9803dbba2eb40dc2968",
   "response": {
    "content": [
     {
-     "text": "Perdone, Carmen, me he equivocado o no la he entendido bien. ¿Quiere repetirme qué necesita, despacio, y lo intento de nuevo?",
+     "text": "Perdona, Carmen, no te he entendido bien. Dígame de nuevo qué necesita y lo intentamos otra vez, con calma.",
      "type": "text"
+    },
+    {
+     "id": "toolu_01JJzPTA9X8u8JduAAUJ9MAN",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "¡Es que no me entiendes nada, eres un cacharro inútil!",
+      "understood": "Carmen is frustrated because I did not understand her.",
+      "kind": "other",
+      "scope": "now"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
     }
    ],
-   "stop_reason": "end_turn",
+   "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
      "ephemeral_1h_input_tokens": 161,
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 161,
-    "cache_read_input_tokens": 5942,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 60,
+    "output_tokens": 205,
     "output_tokens_details": {
      "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c2ac0a615bd90348e91712a90f263d830aa5e7eb212bc4b37cf7d4b9a3a4273e",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQS9wUKEAgTGAI4AUIIdGhpbmtpbmcSDGYhp3UxqpKkY73hYxoM3piQDHp6G+vdK1jCIjCKuXYgxLgZ6QktkPROslTpHrSbDWCVoda5M9WvmxB3BykbHtKKfa1HttoNml24n4UqlAVwUUd75Q9Sh83uCEZU2kRBaHlcpzRDZ7WFBOJI/axpvTzdUzpyZizxaOv4RcbcGbLfdiLjXIKsTzs7IqkV3OJBBSRwjswMKn3lLAyLpGv5UKOGaleD6jj2FPDzaHk4fQAY8RuUfqv71kJt9wZLOrtjl8N4WFXhbZzMDsBPMJgQAoH+Afg114koLYcvAXzH5zfXesAtmErmLHGkHY9TZuhQmPK891cgHnKsLgGvmWkB1dzRNvpt1JyzWrV4oW6bs6x5sxxeZ9PvUWCGbfjC7wIasQGu8FrmdP6jtozqme5GMmesoV9bTwoTgL8GRx2f3LNXPC/m0OOANK51KD/+SNFGWa5VN8ntO45B9WlbJE9hIbCEpr+wcfFl8lSPJGjzGyv9wIDXijlETx7tivtW4xL4coCELEjRdykdPzTb6n+wTEnq2Avai6tI3HdwhzD8lo8KOIrvjZ1Z8qirMsGq1NWc99JjLUgbhHCSLpOaLOZ6DFQktmXYcWJ+eJi15BAVTxRLCO9h2sFa8RZVwMRxFJV+Y46e7oBaq3sV+N8c2Tu11jhIin1YudGQKV6Uaigwb59kr4iQR/EQl/Jp7Ht8ALbWS9OEuwp0zvOnDUMG8ReQcms69ChLSwCVTIgNu2MRmbPcl4JY5NUcBeMc8VsTmUTVLYkJmncNo+ZVUTYe5hq7qNAxPE7pUfgjj7O6dSCn6t28jXnB85SIQjjJ0Y5Rk4wEiZVtavbz0q6Hx+CwwL2KKi7YNYD0KVNGJEmCM50ew6ZvziLjUO0Vx9+yzx9Ei71N1GkPaMIAg8ziLZVbRfAkaDvRf/JpDAkRCtXVPoRJcAPhDXwkC05AjNp5AvrCPxPzvLVO/PJ/SSsQb5R6TUFrfFx6oywYAQ==",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Perdone, Carmen, no la he entendido bien. ¿Me lo puede decir otra vez, con calma?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 239,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 239,
+    "cache_read_input_tokens": 6366,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 89,
+    "output_tokens_details": {
+     "thinking_tokens": 48
     },
     "service_tier": "standard",
     "speed": "standard"

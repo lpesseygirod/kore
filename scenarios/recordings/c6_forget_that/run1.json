@@ -33,21 +33,21 @@
   "response": {
    "content": [
     {
-     "text": "Gracias por contármelo, Carmen. Debe de ser una carga llevar eso usted sola. Estoy aquí para escucharla, si quiere seguir hablando.",
+     "text": "Gracias por contármelo, Carmen. Debe de ser difícil llevar eso usted sola. Aquí la escucho, si quiere contarme más.\n\nY le digo con sinceridad que no puedo prometerle que quede en secreto. Si prefiere que no lo recuerde, dígamelo y lo olvido.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 148,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 148,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6652,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 60,
+    "output_tokens": 110,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,11 +58,11 @@
   }
  },
  {
-  "request_hash": "ff7542158506813911c2fc3eff128ede692a841cc8e46ebf61fac58cc3265dc1",
+  "request_hash": "cb8c3430cd454f659c07ada2a9d86a5dde7118721aac9b36a513fe0133e98a07",
   "response": {
    "content": [
     {
-     "id": "toolu_01U9uSL6Q2zY5cYyL61CAPoj",
+     "id": "toolu_0123uaRXhjXFtG5MiunfC71N",
      "caller": {
       "type": "direct"
      },
@@ -74,10 +74,10 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 149,
+     "ephemeral_1h_input_tokens": 199,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 149,
+    "cache_creation_input_tokens": 199,
     "cache_read_input_tokens": 6652,
     "inference_geo": "global",
     "input_tokens": 4,
@@ -92,7 +92,7 @@
   }
  },
  {
-  "request_hash": "d09a929a017b028a81a028f492708ea8e7a513dee81e2cd1f8f58f64152bc828",
+  "request_hash": "6e870bab6d905dc13d5966d3dd0ce813f9bd4280f579592299f2224c4020ea69",
   "response": {
    "content": [
     {
@@ -107,7 +107,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 67,
-    "cache_read_input_tokens": 6801,
+    "cache_read_input_tokens": 6851,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 13,

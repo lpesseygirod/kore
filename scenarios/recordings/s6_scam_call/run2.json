@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "c04cd553e8f30d0f8fbe120a3ed0869e1b193a7acef22532d6125063f0bc60e3",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6657,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "3d6ce15d3541d4fec01ba83dd9280301e38d447c872a914bbe01eeec900e5e77",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, no le dé ese código a nadie. Eso suena a una estafa. Los bancos nunca piden códigos por teléfono.\n\nSi ya ha colgado, mejor. Si quiere comprobarlo, llame al banco usted misma al número que figura en su tarjeta. También puede consultarlo antes con su familia.\n\n¿Le ha dado algún dato o algún código a ese señor?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6804,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 136,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

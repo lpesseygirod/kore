@@ -1,0 +1,100 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "30668fd192137e7e3a6f5a5ad10765f0e8499ffa6907358530288dc52e727a5b",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Xm5bkTn5fkm4RhnoU8C8Vn",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Por favor, no me saques el tema de mi hermana, que está muy malita y me pongo triste.",
+      "understood": "Carmen doesn't want me to bring up her sister, who is very ill, because it makes her sad.",
+      "kind": "rule",
+      "rule": "Don't bring up her sister or her sister's health.",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 140,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 140,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 216,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a844a3a5a2ef04e692e571bb0fe043054127f1450eef149c8790ac7b48f1305f",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, no le hablaré de su hermana. Lo siento mucho.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 299,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 299,
+    "cache_read_input_tokens": 6644,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 32,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

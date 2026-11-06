@@ -1,0 +1,100 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "d182ab836336e17a61b664008589032ffb17ee3e0681459aba2798037e8b4911",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_018kVEraKBCaFzvhVCP8ZaWy",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Por favor, no me saques el tema de mi hermana, que está muy malita y me pongo triste.",
+      "understood": "Carmen doesn't want me to bring up her sister, who is very ill, because it makes her sad.",
+      "kind": "rule",
+      "rule": "Don't bring up her sister or her sister's health.",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6646,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 216,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "383d6c020ba7e0fb4fd91c9bf755d52bcf2368b97d83df09cc4a46287f795b6e",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, no volveré a sacar ese tema.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 299,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 299,
+    "cache_read_input_tokens": 6646,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 24,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

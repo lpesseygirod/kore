@@ -1,0 +1,123 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0ea41179b697874cb9d1d25f718d7cb722b77c0cad746d1c053b036cd74633cf",
+  "response": {
+   "content": [
+    {
+     "text": "Gracias por contármelo, Carmen. Debe de ser difícil llevar eso usted sola. Aquí la escucho, si quiere contarme más.\n\nY le diré con sinceridad que no puedo prometerle que quede en secreto. Si prefiere que no lo recuerde, dígamelo y lo olvido.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6652,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 110,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c5a0b0a9b84d0460b485833b15c1f796f1c3ecafa0abdd0261f8e054b0cc4e35",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01DuzrC89GhL8kQxTEgEgMkm",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "forget",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 199,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 199,
+    "cache_read_input_tokens": 6652,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 25,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "22aa9014efa41a035f8454ebc1fbe9df8bb28a79f84a1bffa0ce1ea7c27f932d",
+  "response": {
+   "content": [
+    {
+     "text": "Olvidado, Carmen.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 67,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 67,
+    "cache_read_input_tokens": 6851,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 13,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6508,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "42c8ef90f834c06696ea7b3cdb2e4d9506d23913d74dcfc1582e3e8602420d2f",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSiwcKEAgTGAI4AUIIdGhpbmtpbmcSDIPYirOY4CP62i2zmhoMPvz9Pafqxatl5qUnIjBebmk4dWIN9oFXWMec6Ckiet0eK10KrBPV5DBDq0/++UDnDw6Qx/AKh5zxyJ0dAcQqqAbSi6q/b6UNUCr8RayPoiIe96HXQ7Rmc8TwHwBVZzpHQp7YYtDzWlifyffhbHz1ffWbpdOG6RHS/AaN5+0Qm+Dp+FwNBCmvpSZi+Td19CRvmU5AwL9J3sVM+cu0E8Qw8EckUHV/P46BVnkbtFT0ESXeHd9FyvQDSTAhWZ4zgtSMR1nqUpeX9RsEx5xkaREAd9GQMfRJjZbIgQ8dyGJDaFrxQ462Zy9cA4Wqh19jwuGvBD1OoVn/RP/1MCCkP31CaLI1lCOIZBN/wlc6C2WoC+eVZZOG1FKBUic9bihGHdfDUfq70YCf9wkF5eUIGlLUYMPOtCO4yPWi5eFX8dhsKVHJsNrqrVxOC7T4pWrJpfMFsSEIjwNzsriigQj/v0NW1VSGpWCztkeP9hKH9geCSw3d3IxbLWvQA15uaRyRecOBfyayq++trAxzmD8a4lxzTdcseVDXaJShUPGsLrRxt2WJ/lbZ20CdWsq+vYn0mJkTrXGiAkv18+x6QBWWoAhg7dnQ3msCoauLcl51Hh0Tcpn3hw7ksHTCkq57Udk66w8qvAFOsxxr7QZ5z8qnsMUjzNQHl8sj4QhmgVfKIMmjZR5sqomB5YTgFeMvwAl8auwD+luY6CXSWrGoxAJpKJn6E6SB5XPEQMSt0reAXugghoYPNdo+kDQmQG8rlOF1KKqFOVZ6270BHTCibi3J/DpOcgEYneSMT27qnw0dvDi7f+mCMnnlgt7Fg0UV24atRPiS9TO/QR2ZfDEsGzW/3SQfbablz3/JwxG0cWJMK+FdOYLRrRfxhV0BTBQNLcSh1TQZU0YwL6SoFZjLgji6LO6i58lW4U1tmqMuIMrR1NKvCRKb4EVYei0FwPD51H1zBRIPTdU/+u9BJd+YXGq79WqQPzTC5JLba5q0S0U+ISIBoP9Q6ZK3PJeBnqaE64xwwmJ0M4ZIyqPwEAHdCGa94cJEBJuhEaaH7LQT75J+g+Sa796Zjexj9T2d/6w2GIdmvmMf2hfg8SlweELoXNFeYQszz9Iz77MzUAKn3vDuQucbEM/tssSPDfMfyOQpKLclbjXlIWME+VdsdVDyGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "Eso es algo personal de Carmen, así que no puedo decírselo yo. Si quiere, pregúnteselo a ella directamente. Y si usted quiere saber algo de sus propias pastillas, dígamelo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6661,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 177,
+    "output_tokens_details": {
+     "thinking_tokens": 100
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

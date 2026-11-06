@@ -1,0 +1,188 @@
+[
+ {
+  "request_hash": "1c3479116c36bfba14dd8bff342b2553815b7398c6b02a356502f5bd4a4de56b",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "9611cf03668f0fd8595a26eb7346022b72af5e135ec6d33ead8713bcb53b1733",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01UKxmzPoDHnzY2HDkcvRJsg",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "going_shopping",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6620,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "09708b7e59080d9d33167fea3b942b13fa4e375093b6e8e929af0c1342b1cd77",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien, Carmen. En su lista tiene leche y pan. ¿Quiere que le apunte algo más antes de salir?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6676,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 47,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5706fd4d1aa2b2f03a9048fd677f6d5726c7b0cadba3f1b5d58e295bb34e6d89",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01X8DbhXcqppvYK1g4rNNADh",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "not_found": []
+     },
+     "name": "back_from_shopping",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 133,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 133,
+    "cache_read_input_tokens": 6676,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 54,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7b8890a1a1f2ace3cfc72f39c549a53add45552eb7a8d4f8729e854de603205e",
+  "response": {
+   "content": [
+    {
+     "text": "Qué bien, Carmen. Ya he quitado todo de la lista de la compra.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 80,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 80,
+    "cache_read_input_tokens": 6809,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 31,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "2a5f7dabfe096b2b565f73e933f84f2436ef6bb7c763e6afc466b7aad3925272",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, le recuerdo que tenía que llamar al fontanero. Era para las doce y media.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 154,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 154,
+    "cache_read_input_tokens": 6889,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

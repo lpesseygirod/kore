@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "889d5e32385492b5c71c1d11258bb7502e92ded2a96717019ae892f6bd13231c",
+  "request_hash": "eeb148c5818332d7a7c47e65982c62a5feb16a1045462be967a7ae4edbad6071",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene ninguna medicina ni cita apuntada para hoy, así que tiene el día libre. Aquí estoy para lo que necesite.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Le puedo ayudar en algo?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 241,
+     "ephemeral_1h_input_tokens": 299,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 241,
-    "cache_read_input_tokens": 5942,
+    "cache_creation_input_tokens": 299,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 80,
+    "output_tokens": 47,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "34c3e65366d13368a33c0d3b0f7eae02746e17660cc7a8df66f79e7821a27b08",
+  "request_hash": "1666e0369440e09789407fe6db35010ef04bc9e875b433406623a6af03c89596",
   "response": {
    "content": [
     {
-     "text": "Carmen, hoy hace calor. Le vendría bien un vaso de agua. Cuando le apetezca, claro.",
+     "text": "Carmen, hoy hace calor. Quizá le apetezca tomar un vaso de agua.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 193,
+     "ephemeral_1h_input_tokens": 158,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 193,
-    "cache_read_input_tokens": 6183,
+    "cache_creation_input_tokens": 158,
+    "cache_read_input_tokens": 6504,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 43,
+    "output_tokens": 35,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

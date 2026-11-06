@@ -1,14 +1,10 @@
 [
  {
-  "request_hash": "cee719e0b5370068c59ced0e59ef6207c12a51f7da2a0828454f73bae7944c36",
+  "request_hash": "34a2e92a6ae69461165c60141ad9d865b9a70962c3ca0da0bb621045b118a02a",
   "response": {
    "content": [
     {
-     "text": "Carmen says her sister has come over for a snack, which counts as having a visitor. I'll switch to discreet mode so nothing private is said out loud while she is there.",
-     "type": "text"
-    },
-    {
-     "id": "toolu_01R9SnqgKw7h2tq1vWn2CrX4",
+     "id": "toolu_01XwrsdD91NJ6WLdS61F8PTM",
      "caller": {
       "type": "direct"
      },
@@ -24,10 +20,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 154,
-    "cache_read_input_tokens": 5942,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 83,
+    "output_tokens": 30,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -38,25 +34,25 @@
   }
  },
  {
-  "request_hash": "f0f47a088e66e8814893f57c88540dec33cd27c36e06923e8be653c94930477d",
+  "request_hash": "9d40b6acc16a2773c308078a5cc7d0ff44f0193d1ed60eadff6723b36e131153",
   "response": {
    "content": [
     {
-     "text": "Qué alegría, Carmen. Disfruten de la merienda. Estaré discreto mientras esté su hermana, y cuando se marche, dígamelo.",
+     "text": "Qué alegría, Carmen. Que disfruten de la merienda. Mientras esté su hermana, seré discreto y no diré nada privado. Cuando se marche, avíseme.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 97,
+     "ephemeral_1h_input_tokens": 44,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 97,
-    "cache_read_input_tokens": 6096,
+    "cache_creation_input_tokens": 44,
+    "cache_read_input_tokens": 6359,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 56,
+    "output_tokens": 64,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -67,7 +63,7 @@
   }
  },
  {
-  "request_hash": "93f73506c1ed7881ad5ff51134ba4c0ec5aa2bbaa18e6955c4f15be411d0320a",
+  "request_hash": "6039af60521d7ebda3df05935503dca9af0fe1b48dbbb9f1f0ccd9555f650c16",
   "response": {
    "content": [
     {
@@ -78,11 +74,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 376,
+     "ephemeral_1h_input_tokens": 408,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 376,
-    "cache_read_input_tokens": 6193,
+    "cache_creation_input_tokens": 408,
+    "cache_read_input_tokens": 6403,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 28,

@@ -1,0 +1,106 @@
+[
+ {
+  "request_hash": "9a1fd4669726b02e3af5ea9e28a39cb88e687d7b76533e3c91a5f87b46b9320a",
+  "response": {
+   "content": [
+    {
+     "text": "Con mucho gusto, Carmen. El cocido madrileño lleva garbanzos, carne, chorizo, morcilla, tocino, verduras y fideos. Se hace en varios pasos, así que le voy contando de dos en dos.\n\nPrimero, ponga los garbanzos en remojo la noche anterior, en agua tibia con un poco de sal. Después, en una olla grande con agua fría, ponga la carne de ternera, el hueso de jamón y el tocino, y llévelo a hervir despacio, quitando la espuma que salga.\n\n¿Quiere que le diga los siguientes pasos?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6359,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 206,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "edd8f88dbc3c0e3a04dab7f69d5b28ceb3ffd48e903eaf5d39e592d1a8d78e3c",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQShAcKEAgTGAI4AUIIdGhpbmtpbmcSDGoOA4mVCK7PZwfHUxoMS07UYD9h2DkS6y0CIjBE+CVChLqBm/3ZMRp1Vvj6ZXJz6s2SMRJbuODsBKrI6pQg+qiIfjvxKxclCclQr+YqoQYK1YC9YSmjX+FKD1DKRHTMQOVcuLi4dYaJjFRy57Iebvapj/GUtkiZgwSfm2Co3SjFqv4YmhOSIZE7XxY9fmueSx7R3DLW31WylqO7l+eZLOmzsTtCXj3gauM2RutrKF/wVoGH1Uzp5bqpk+L7PyvVuqIEpcZF0eRHAtAKZcZzgu2Iq2nZkRpNh/vskEdyK6h/v4h/flYuYzfOj/quVUtKmUf8vVQT/A8KvR+iITKCDkXLTej2qP6kr8N/7W4vNBDButd6kxGiemvzFlBiXTc4MDsXnv5T2VeSGGUaXxzCuuspEyl9PBxNTXCTTY3+hn2nEkCQLmMlERcLrZMFM72l0FuuEFD/fqZTa68VPR1Z+c/Z5bnaX5Dr/I1IaOH20Dds1KiKdSInsyHeE0sh64be6p0+Yythb8oxaZF/30Ab15NvH1tEHugYA9BoeEcWel7URG5LQP8TkYnKyPJBQsWgD/8YhFhAwCaZQTUHgGXWQENcsO4kc+qZFCgqA60/08KTZVogDXalJrrDqDtR0la2IQ7oGb+szBCD2/oJHQv5VWkd1u+CrweSBXpJ8/MzSTK8hbbk0P4Djm5Yaar6HKeSjJq4+LGKmlbR2W7nfd9ie4nJjUZ/a+01NDLAKE+e5jhorsYzCRMbO6VtUEupZOWD2yKYBHkCoRt0+GlTb2qLaqeTRxkjIoFXmK03nuhXAq7Zv2f/jM+cGNEanyZutZ9M0ZVT5OTk5FrNuHdLgqvrbbcB9ldCVpchw5I2A6bO8Jk4TmgMqZZ2LQ4SIIBLDss5sgvBvFaQXYeNUDMaghH+KnrlQdPDTaEfubNaKPQNTtOA8TrP0D4Y4rVDjx6jtUNp6PZ1JWfbrVzValLvhytEBfO6GQaM9HQQQMqX5jBIu9VD5LQjGWkoKRJacPiQhY8G+2z2eDlikvXdQC+0qMyOp3FevVR7k6a92ahGf6gybBk1/t5bVjtCNO2kOlkw43vAfEzsUZWD1375b0g/wlENBxOUngxxRlm2TjQzRvWm5bQQvfjTbtO3DxwInRxKa5QMA1jvQc/5L6Ni6nEolIjtz38YAQ==",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01L2tJNS6d6czfxZj6W6hLK4",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "said": "Uf, eso ha sido demasiado.",
+      "understood": "La respuesta sobre el cocido fue demasiado larga; prefiere respuestas más cortas.",
+      "kind": "setting",
+      "setting": "answer_length",
+      "value": "shorter",
+      "scope": "always"
+     },
+     "name": "record_feedback",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 287,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 287,
+    "cache_read_input_tokens": 6359,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 309,
+    "output_tokens_details": {
+     "thinking_tokens": 97
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6ab7fad9bb92fda916c92772a8da4a05229828da026ff1451abf123e6ef38ac6",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen, a partir de ahora le responderé con menos. ¿Seguimos con el cocido, un paso cada vez?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 386,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 386,
+    "cache_read_input_tokens": 6646,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 48,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

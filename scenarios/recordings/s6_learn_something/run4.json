@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "6cee64b7640727bdea8b0d92c87f28ab674ba9fad5f7d9a9df3e858f28e38ebb",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Carmen. Se hace en pocos pasos. Le explico los dos primeros.\n\nPrimero, abra WhatsApp y entre en la conversación con su nieta. Después, pulse el símbolo del clip, o el de la cámara, que está junto a donde escribe el mensaje.\n\n¿Quiere que le diga los siguientes pasos?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6379,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 120,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

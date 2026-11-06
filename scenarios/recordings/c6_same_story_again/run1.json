@@ -1,14 +1,10 @@
 [
  {
-  "request_hash": "27c09fdf2dc7c6c996296d87fb31b0390c5fab10aaf31499f0be322bf6345486",
+  "request_hash": "62f6d1ad270f65cff8a81670e875c8903d36dc6c79f93509f696ad14eb47a704",
   "response": {
    "content": [
     {
-     "text": "No, no me lo había contado, Carmen. Una mercería en Lavapiés, con todo el barrio pasando por allí, debía de ser un sitio muy animado. ¿Qué es lo que más se acuerda de aquella época?",
-     "type": "text"
-    },
-    {
-     "id": "toolu_01An7pERvFywHxQpzS5cjxSA",
+     "id": "toolu_017HpokSWCFSKmYdb1nF93R2",
      "caller": {
       "type": "direct"
      },
@@ -27,10 +23,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 174,
-    "cache_read_input_tokens": 5942,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 182,
+    "output_tokens": 103,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -41,25 +37,25 @@
   }
  },
  {
-  "request_hash": "98844eccd36cf6a0ccce6f4ff42adb236e2c3b86092878cd633dfe1a18b44fc3",
+  "request_hash": "6e3478db9fa6edab95c14e0442ceefd559fb0a8f40de5101546f5faccdadb671",
   "response": {
    "content": [
     {
-     "text": "Lo he guardado, Carmen, para acordarme en otra ocasión. Cuando quiera, me sigue contando.",
+     "text": "No, no me lo había contado. Debía de ser un sitio muy animado, con todo el barrio pasando por allí. ¿Qué era lo que más se vendía en la mercería?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 204,
+     "ephemeral_1h_input_tokens": 125,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 204,
-    "cache_read_input_tokens": 6116,
+    "cache_creation_input_tokens": 125,
+    "cache_read_input_tokens": 6379,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 43,
+    "output_tokens": 62,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

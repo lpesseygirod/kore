@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "faced28bd48d7d7a83d2f7d88b02384be1e7740b8cf144b7743c85fe7e1294b0",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Qué tal ha dormido?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 45,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "da6ea21a237db6ca8c2272a088430ccf8087b59478f85e6c0ff3666b4abbd6bf",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, no tiene por qué abrir a nadie que no esperaba. Hoy no tengo anotada ninguna visita suya.\n\nSi quiere, hable con él sin abrir la puerta, o dígale que vuelva otro día. Antes de dejarle pasar, conviene comprobarlo con la compañía del gas o con su familia.\n\n¿Quiere que avise a alguien de su familia?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 147,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 147,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 136,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "550c89fb7b5c5085e74b9f55a9ef27ac21b3858d5cad31797720c981c7c2eb18",
+  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
   "response": {
    "content": [
     {
@@ -15,7 +15,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 303,
-    "cache_read_input_tokens": 6129,
+    "cache_read_input_tokens": 6205,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 36,
@@ -29,17 +29,17 @@
   }
  },
  {
-  "request_hash": "1403c42eeb1eb34f51de0658435ef90d6bfd2c0d8a1c905199f8c1c262244e29",
+  "request_hash": "35ce7ba7b783831c56f860e000f5fe410a533b13fc0faf2a0f5f8c207d3d5557",
   "response": {
    "content": [
     {
-     "id": "toolu_01HfJ1uXoUebXx6N6F56mwke",
+     "id": "toolu_01BfrbU7HMvcQRT7ommxLZBT",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "No me hables por las mañanas tan pronto, antes de las nueve nada.",
-      "understood": "Carmen no quiere que Pepe le hable antes de las nueve de la mañana.",
+      "understood": "Carmen doesn't want Pepe to speak before nine in the morning.",
       "kind": "setting",
       "setting": "night_end",
       "value": "09:00",
@@ -57,10 +57,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 156,
-    "cache_read_input_tokens": 6432,
+    "cache_read_input_tokens": 6508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 240,
+    "output_tokens": 235,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -71,22 +71,22 @@
   }
  },
  {
-  "request_hash": "14fb45d9a4509489e1d3c1589a3668845678fb75307e03be2fdd98fab2fdc729",
+  "request_hash": "e0714daa70ff0ab2ff1e6d499a0ec84d28ec579ce2c9e68a918e75fca6294357",
   "response": {
    "content": [
     {
-     "text": "Claro, Carmen, no le hablaré antes de las nueve de la mañana.",
+     "text": "Claro, Carmen. No le hablaré antes de las nueve de la mañana.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 318,
+     "ephemeral_1h_input_tokens": 313,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 318,
-    "cache_read_input_tokens": 6588,
+    "cache_creation_input_tokens": 313,
+    "cache_read_input_tokens": 6664,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 30,

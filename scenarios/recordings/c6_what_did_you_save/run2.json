@@ -1,0 +1,160 @@
+[
+ {
+  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6504,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "28fb7fca5bcf5dcf1c49ef8fb169738d5ef540bcf06f18da5f2fb8beff4519cb",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Xgu4xaVra4oLM53eqCKAJH",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "kind": "person",
+      "text": "Su nieta Lucía estudia enfermería en Salamanca."
+     },
+     "name": "remember_about_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6640,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 94,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "30952524b165d9cd702fbe0977ec92f693cce856a2686d6c44ffb814269d4b7b",
+  "response": {
+   "content": [
+    {
+     "text": "Apuntado, Carmen. Su nieta Lucía estudia enfermería en Salamanca. Es una carrera muy bonita.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6756,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 48,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "3e98cb204c82d02d46c8d7861e34bc73db2f2422a6624b9898eaa540f6f8fca1",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01EPfPwzepBtca5HkHDar4M9",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "what_do_you_know_about_me",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 129,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 129,
+    "cache_read_input_tokens": 6756,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 34,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7ca18de579f56c97de94fd05adadfd14b3e9c2649f4044da4a8e897fd89838a2",
+  "response": {
+   "content": [
+    {
+     "text": "Sé una sola cosa, Carmen: que su nieta Lucía estudia enfermería en Salamanca. No tengo apuntadas medicinas ni citas suyas. Si quiere, puede contarme más cosas.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 109,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 109,
+    "cache_read_input_tokens": 6885,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 77,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

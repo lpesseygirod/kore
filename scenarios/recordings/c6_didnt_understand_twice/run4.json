@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "9679e584e412710c9645d98548997b1b5a53ae8ef1f202fa86c5e21f4c6bef67",
+  "response": {
+   "content": [
+    {
+     "text": "No he entendido bien, Carmen. ¿A qué se refiere con \"la cosa esa\"? Si me da alguna pista, intento ayudarle.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 6519,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 53,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b5f3437e4cab9314afe25e93fccaf7c505b48fbeeca03b9152fa96f7c6d78b97",
+  "response": {
+   "content": [
+    {
+     "text": "Perdone, Carmen, sigo sin entenderle y no quiero equivocarme. ¿Me lo puede decir de otra forma? Por ejemplo, si es de una medicina, de una cita o de algo de la compra.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 142,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 142,
+    "cache_read_input_tokens": 6519,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 78,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

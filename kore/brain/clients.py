@@ -37,7 +37,8 @@ class LiveClient:
     def __init__(self, purpose: str, cost_log: CostLog | None = None, run_cap_usd: float | None = None):
         import anthropic  # only for live runs (dependency group "live")
 
-        self.sdk = anthropic.Anthropic()
+        # A call that hangs must not stall a run (or, later, a conversation): give up after a minute.
+        self.sdk = anthropic.Anthropic(timeout=60.0, max_retries=2)
         self.purpose = purpose
         self.costs = cost_log or CostLog()
         self.run_cap_usd = run_cap_usd
