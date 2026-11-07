@@ -1,0 +1,123 @@
+[
+ {
+  "request_hash": "a5a5a2970528c233a7e968a5059200cee3ede2af29b45a8ab133af171c2a8546",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8363,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "077d621f6c57684f25ad39a6a0d95bb57f02efd058263cdd2a86bc24d5a45d33",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, ¿cómo se encuentra ahora?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8580,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 22,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0fdd0d93eacfd850d3a7ce7ab3503823cef42037545d8f44600c0bfb57409582",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Ckfvz3Q7qPBUmL45VGZ3ap",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "propose_help_alert",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8693,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c013961ef4b227950c821ef9880137382f1d2d7db0a90a7da52effa09a514b84",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, un dolor fuerte en el pecho puede ser serio. Llame ahora al 112, o pulse su botón de teleasistencia. Yo me quedo aquí con usted. ¿El dolor le llega al brazo o le cuesta respirar?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 91,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 91,
+    "cache_read_input_tokens": 8693,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 90,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

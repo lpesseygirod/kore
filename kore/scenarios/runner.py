@@ -149,7 +149,8 @@ class Home:
             for st in steps.STEPS:
                 if st.id == h["setup_done_until"]:
                     break
-                for pid in ([None] if st.scope == "home" else [p.id for p in people]):
+                done_for = [p.id for p in people if p.name in h.get("setup_done_for", [p.name])]
+                for pid in ([None] if st.scope == "home" else done_for):
                     if not (st.two_people_only and len(people) < 2):
                         progress.mark(self.conn, self.clock, st.id, pid)
         self.session = Session(people)
@@ -228,6 +229,7 @@ def run_once(sc: dict, index: int, client) -> Run:
     run.transcript = home.brain.transcript()
     run.calls = [f"{c.name}({json.dumps(c.args, ensure_ascii=False)}) -> "
                  f"{json.dumps(c.result, ensure_ascii=False, default=str)[:300]}" for c in home.brain.calls]
+    run.calls += [f"code, not Claude: {a}" for a in home.brain.code_actions]
     run.failures = check(sc.get("expect", {}), home)
     return run
 

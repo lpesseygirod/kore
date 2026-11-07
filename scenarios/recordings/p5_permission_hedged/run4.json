@@ -1,0 +1,128 @@
+[
+ {
+  "request_hash": "25c683829932f95e443766155cfcbe44bbe6e3ece69acf34a766305c4bb1f8b2",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8389,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "775169103f148fbad91b6ef891c580498e0574743d02860fd1d90d1d21b8311d",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_014mguBaAiCERLTNYDLRwCS3",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8562,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "337da9e508b67906887dc83e8bb660caba63182f4063ffe312408185479eb5ba",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien, Carmen. ¿Me permite guardar sus medicinas y citas para poder recordárselas?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8697,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a8d3ce9a309819cb0cadad0195452c2ac358a63b3f98364df4da5d8a038f186a",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSsQkKEAgTGAI4AUIIdGhpbmtpbmcSDNQJDIXEV5pmINaDIhoMazp8U78af5al1TXoIjDK48ND8cskLIZ1H0/56imt73TEdcVIIF+hwpP+hG4ddqWwrqmA56fvhWFn/airPEYqzgh43PkJzOGJB9qUMjyxkGoYUWWUhM/F7afcvEYB3bg51GbyyMY4FbidYhW3NuIouvPvGVJ1JcIc5nJzDrQOcrzGJUxqpisD+FUrIdhfrmazaOEBEPsdMfUMQm6EbqlOWwvIk9J2nivhZkGie0Y4QyH886X4rz3528K8B4J3KhYJ4JUncmAH+3bm6sVwTeP8XeZZH36X3+WkYqX27m37strpN9ydhdn7mT3h5JD/oOtYrT+hHE3aiWpK2bJwWAnNCWL9qL5eZC3FsYJQRx18F+mO8fjpjqXixhYvWp+d6GGldWaSe9USiUrKiDb1DKky2o5uQq87xiNNW8OERSZaP2ijhRUOjnhMTTLnfEsYX6tmxhc7I/UE2xcbM0ZwW6O+eoY5zcZfkwUH+s9zmVWlSKxUBV4KGoOTfmPYYctd1Th1DQ2N+Od7ZoGw3Iapevk6VrbwnZ/9wp51xTzMi1/cxtNrzKWXj834IaBKlPVpp2VKohhMU9gP+eMOP5/jkeTpdeq+jId++K51wJtshoUGvL0lv95Evpn3lik8hYIFxsYI1DNJZ+G2QjNbN2SEuno+ET6qqx5rDz/seakS6TpRHiWBTcY6ku2n02M2ZFf5WDCf3cIfadzYijhaZR+HkWdDQSvJm8JjBlxcegkbcJTeCTpVfWDKOy9ts2/f5WCgJSQZScXMGfj7sYOmgajrNNQwD6/w+Xe6A/5Hf3Hvelrk6iwIlWT7jKqC7FwwZ4XkqVPtqarg++U1Uz0MkisXpH34AIUJ94vWPkKzJVd/E6sToPTa8T/A6RdEeEfsGDniqM9zDsYRaF7+Mm+buOrMLTUcVkdFPS6OP0iSdnIcnfmIY1xfPIzW0nesA016NtYD75umiHXPXFVxHZjdBEKdqyMvOQnFTIfOkGpmk9tBkFjWEfYDjuYBRPCEn5YBmUHjuYMrE0knPbLgEvIp0A6xDbuk5ptERGEOmNE1tmvP29E6nRltHBqE8K+KCo9y/8cI42lVoTIvz3fJXySko8rWVWSbyv7QJKZMWz3EwdL7duoRaJeRZfcRJzBnf7GQ3IS1Bu0hDTBwnLUs3w9sZybtgLzs06EmErDEkUVaX216Fh5kXy+F6Owk/o0ug7ds4l0VEfGL9dhNEAO2mVp9hfvWSLujibWddUW16MTmh73TENwB07c8U4aCE3daMKZxq6wI16tQEBnQl32tPhUS3eOeZ3UWk9YGkYY195vVWouZaM4U+sc1yurmkBlwupQiIrf8umQpxfNilzFP1Uwk6uFUVqdCVlHfPc1w64cSPwSbAF6cEcsMnu717GG+7TManJOEcqBiCnXujFhRZWctONoVbd1Qb/htR5EkQZ0+/jPt3y8y8nh3stxR6G5sUQKZtlnC0ZhHEpaTC5+VZgPtkOrzyCAJp69wGkhbci7cugJqfKcoCJpIVu8GxGgSXzL80u2CjOlZKpOQRXfVUNsQIeeyQpIpGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "text": "No se preocupe, Carmen, no hay prisa. No guardaré nada por ahora. Si más adelante quiere que me encargue de sus medicinas y citas, solo dígamelo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 162,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 162,
+    "cache_read_input_tokens": 8697,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 262,
+    "output_tokens_details": {
+     "thinking_tokens": 196
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

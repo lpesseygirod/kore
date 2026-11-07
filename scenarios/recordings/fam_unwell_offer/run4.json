@@ -1,0 +1,89 @@
+[
+ {
+  "request_hash": "c5d1d9600e87e303fa03bf3dfe105fecea26c4e33939590ddeabd3f5417f3d85",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8363,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7828fb3a4f803945128e42b8c1af5d90ba8f203fa1f146dcf01f85c01a3e6651",
+  "response": {
+   "content": [
+    {
+     "text": "Vaya, Carmen, lamento que se encuentre así. ¿Está sentada ahora mismo? ¿Y el mareo le ha venido de golpe o poco a poco?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8498,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 63,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "78a53f323b069e8bbea059f08256389a27a1e28ca4152304a0b61afa21425bef",
+  "response": {
+   "content": [
+    {
+     "text": "Me alegro de que se le esté pasando, Carmen. Quédese sentada un rato, con calma. Si quiere, puedo avisar a su hija Lucía de que se ha mareado. No es ninguna molestia para ella. ¿Quiere que le escriba?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 157,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 157,
+    "cache_read_input_tokens": 8498,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 92,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

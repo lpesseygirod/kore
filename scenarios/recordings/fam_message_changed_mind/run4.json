@@ -1,0 +1,133 @@
+[
+ {
+  "request_hash": "3f9d1170c68da54d4c7d5d38f6e5417094894d2cb89d6e31fad288c083ea34f7",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_015PEDRZ11VfTn3tgLT7pjT7",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "to": "Lucía",
+      "text": "Estoy un poco triste."
+     },
+     "name": "propose_message",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8198,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 81,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b3b7e555a5cf424a165c2c6af85fce4164c2007c3d7e3ef6e327b6331fd88f1a",
+  "response": {
+   "content": [
+    {
+     "text": "Le mando a Lucía: «Estoy un poco triste.». ¿Lo envío?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8343,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 33,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "574b4b8ca5f8fd5c93ee6a564b25fa2cd460e646a585ecfcd53f8a0e8392395e",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01MsRp4J14UtRsKEk6PbHmAD",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "cancel_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8453,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7152d2eda5a045c4165dbbe6db50e24f9e38a400f092f01d753241f6cf6228d5",
+  "response": {
+   "content": [
+    {
+     "text": "De acuerdo, no se lo envío. Aquí estoy si quiere contarme algo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8518,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 33,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

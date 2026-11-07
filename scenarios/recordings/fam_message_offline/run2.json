@@ -1,0 +1,162 @@
+[
+ {
+  "request_hash": "dd20fc255086b6129980c54c70461d5a84740a961b868e28f134d944e94fe92f",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01D8hgRNWtjc7LmXm6jBm2wV",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "to": "Lucía",
+      "text": "Lucía, mañana no vengas, que voy al médico."
+     },
+     "name": "propose_message",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8203,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 91,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7138de7c166a24059548302fc6f47fdbf32fc048a9c264048a6a606a5e5ada2e",
+  "response": {
+   "content": [
+    {
+     "text": "Le mando a Lucía: «Lucía, mañana no vengas, que voy al médico.». ¿Lo envío?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8368,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "ad570521c68a970341f7aec6a25e5c4a3eace6224cb3b4e2077d224c74ad7cdc",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_012n6nvzXhfEmJsaK956sCXP",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "confirm_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8480,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "54c745a1e0c2227ffbff7eb7d63d3adbaff51c36a7e4d438a3ebcf61f0e585a7",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, no he podido enviar el mensaje a Lucía ahora mismo. Lo seguiré intentando y se lo diré cuando salga.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8605,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 53,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a3507bd96c7bed27659858571d06ae5c38549f468d833b7bf20d3dd9854cb041",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, ya se ha enviado el mensaje a Lucía. Le he dicho que mañana no venga porque va al médico.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 169,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 169,
+    "cache_read_input_tokens": 8605,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,0 +1,301 @@
+[
+ {
+  "request_hash": "25c683829932f95e443766155cfcbe44bbe6e3ece69acf34a766305c4bb1f8b2",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8389,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "bdf9fb6591dc98240d40d9030eb4de74bcc414bb0aaf30619cf14d5aba6c4157",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_015ozBnFXwnAbax1PwpNmGRK",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8550,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6b5a20f6337bd9e3623ddc408e78e29f0c8bd28ace4a6e03c2f633feec4e090c",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien, Carmen. ¿Quiere que le recuerde algún medicamento? Si es así, dígame cuál es y a qué hora se lo toma.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8695,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 57,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b1dddfb2141be08cdefa3da9a82e87ddf1f62e81534dcc91a853ef12aacf9813",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01F5f7dcu9QkinTEvvGVUSn5",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "name": "la pastilla de la tensión",
+      "times": [
+       "09:00"
+      ]
+     },
+     "name": "propose_medication",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 181,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 181,
+    "cache_read_input_tokens": 8695,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 84,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0a118cc6f4167e0d4c2300a70458815cee7eec66d291d79e4d2c89803b1b72e3",
+  "response": {
+   "content": [
+    {
+     "text": "Entonces, la pastilla de la tensión, para usted, todos los días a las nueve de la mañana. ¿Es correcto?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 143,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 143,
+    "cache_read_input_tokens": 8876,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "290865a7fd81b3508e169695e1a69ab17e594c689d38c6a72645703561673c3b",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Q87bb8Z9aMkNSNiykE9aHx",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "confirm_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 156,
+    "cache_read_input_tokens": 9019,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "eedad5d97a4092747593c2443502107183917503154a6dbb48a4edfc9c1df753",
+  "response": {
+   "content": [
+    {
+     "text": "Apuntada, Carmen. ¿Quiere que le recuerde algún otro medicamento?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 83,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 83,
+    "cache_read_input_tokens": 9175,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 35,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "580272ac99cdb53f6f6f18fc5e1c8b980caa9a7af4217ef1e8125c8a45d7e3b7",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Uvh1gj2ywD3GLVXW7Yb4hR",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "step": "medicines"
+     },
+     "name": "setup_step_done",
+     "type": "tool_use"
+    },
+    {
+     "id": "toolu_01Sr8TRShrZusj94P2pG3yY8",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 149,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 149,
+    "cache_read_input_tokens": 9258,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 76,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "469a172e762ca65a94d8a4c2ef61a0298ed8d4c2b13b385013bcee8dc9c6433a",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien. ¿Tiene alguna cita próxima, como el médico, o algún cumpleaños de la familia que no quiera olvidar?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 253,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 253,
+    "cache_read_input_tokens": 9407,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

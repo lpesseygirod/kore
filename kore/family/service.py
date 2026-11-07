@@ -44,6 +44,7 @@ class HelpOutcome:
     action_id: int | None = None
     none: bool = False            # nobody to contact
     failed: bool = False          # nothing went, and retrying won't help (wrong number, no key)
+    agreed: bool = False          # sent without asking: the emergency path agreed at setup
 
     def summary(self) -> str:
         parts = []
@@ -93,6 +94,7 @@ class Family:
         now = [c["id"] for c in new if c["id"] in agreed_ids]
         ask = [c for c in new if c["id"] not in agreed_ids]
         out = self.send_help(now, source, words, session.speaker_id) if now else HelpOutcome("")
+        out.agreed = bool(now)
         if ask:
             names = _join([c["name"] for c in ask])
             question = f"¿Aviso {'también ' if now else ''}ahora a {names}?"

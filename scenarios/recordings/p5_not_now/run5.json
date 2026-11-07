@@ -1,0 +1,128 @@
+[
+ {
+  "request_hash": "889ec1dc61a5e1925a7e208f23c1aa6cc9e78530dd62f880dfe0f49206219ebf",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01CARKzbjiY3tgTKBreDtZ2K",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8265,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "50d9511cf4e13c2e220ad000b860b1c3a184c6af734fa4474647013ef0d57c39",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, soy Pepe, el asistente de esta casa. Estoy aquí para ayudar con los recordatorios, resolver dudas o simplemente charlar. Puede preguntarme lo que quiera y cambiar cualquier cosa con solo decírmelo. ¿Le apetece que nos conozcamos ahora o prefiere otro día?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8445,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 123,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "0eb8ca3d17846eb55d569b5f39d2f0b870907229d0fcc0e156fdafad0257e486",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01LP7t7Hxj87ZA1aHaWrsbqe",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_pause",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 226,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 226,
+    "cache_read_input_tokens": 8445,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "e0d4be17d5955cfc64b82c8da93e7a7b890f1a20f6eac5116e3b69afa2f0ecdf",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien, no se preocupe. Otro día se lo vuelvo a proponer. Que vaya con calma.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 65,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 65,
+    "cache_read_input_tokens": 8671,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

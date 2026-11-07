@@ -1,0 +1,123 @@
+[
+ {
+  "request_hash": "9392d50774eb93c5a6e0f5b299d5540d424c340dd8f0575505c9c54903f0d6c1",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. No hay citas compartidas ni cumpleaños para hoy. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8393,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 58,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8d9238d58d87c7fcb0b1c4c836e2b47cb7dddd31b5b6fefce946468df8e1b655",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01Uo1AriqvUUAKoFPJrcjsXw",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 167,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 167,
+    "cache_read_input_tokens": 8393,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "edec0a12776d8d488e46beb90192f687580cdcd109b2f5f0d95141ba93c77934",
+  "response": {
+   "content": [
+    {
+     "text": "Hola, Carmen. Por su parte ya hemos terminado, no queda nada pendiente. A Toni todavía le quedan algunas preguntas, cuando él quiera. ¿Le puedo ayudar en algo más?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 89,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 89,
+    "cache_read_input_tokens": 8560,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 79,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a9f7690052de22ff33e9d3f3af46e7279ae7151d1362ed2924738012ecb02571",
+  "response": {
+   "content": [
+    {
+     "text": "Entendido, Carmen. Lo dejamos para cuando vuelva él. Si necesita algo mientras tanto, dígame.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 182,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 182,
+    "cache_read_input_tokens": 8649,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 47,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

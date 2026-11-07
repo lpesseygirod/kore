@@ -1,0 +1,162 @@
+[
+ {
+  "request_hash": "25c683829932f95e443766155cfcbe44bbe6e3ece69acf34a766305c4bb1f8b2",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8389,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "775169103f148fbad91b6ef891c580498e0574743d02860fd1d90d1d21b8311d",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_013jgadENMJ9k4JmGKsTgod4",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8562,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "e5a3b3aca20cceaf873234c6591c97376c55ffaf200234b1a2257d3a479ba65f",
+  "response": {
+   "content": [
+    {
+     "text": "Con mucho gusto, Carmen. ¿Me permite guardar sus medicinas y sus citas para poder recordárselas?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8697,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 46,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "2167a16772f1068133bcad54996ef8bfece394ce12f205f197004b2db472f32e",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQS8AYKEAgTGAI4AUIIdGhpbmtpbmcSDP/S+JU3wyzuXDt0ohoMGKCokYHPzaDRCO9gIjAhf6fLPv5jprW8op/DRLrpDVQ6aGMGBc2XyA8b20/9wurdGxNx9rSceXkS5pnRpo4qjQYjLRe19XJX9AckfFJ0fgzprn3A68KMLVl6GA5eL/cocTo4o844y4kIjJ+fNxzCELPOXF8k+XHXPf5RKDthLoH33zi2MoNhi891He54mNgg6NoDzfYMvUpkkKsd/nUIKvAjwSFff4hvPNNv5Pi82/mtqlmU2YODpmMt8EdEOpk+erywaSeRoe3lbK0CXvlXnLmzhTUsdPRINe6pAQwiiEMl5fevU6RzInDHu8/PsSbmwtoMGXdcM4JyBlTJ19I3OKqQDwWDYfTpox5bT1To2vWC+w4XmuFBsN+ZOMca1N8wG+onnrN0rjgQZ6vwo2Ye0QRq58NmsCdwQENgOjVwagfAVFsYAjmkU/gzYcMrGAR3dNkCQhM94CF2YYtzcAqyS3NDlVVQipDMFY0RUG8nIsLp4gDwG6j/2qnXVyiW1nyMqP/xecUFF1e1I5SMLGxUja8qfpVIrKkT/TW6VuDnVaDa5NlOmgOXInQoS7fjykTxDg27n5KONmNGABqnJyQTF8qUasI+kxyA1pEKnOYeqDaDELPM857bEbuKcmks/icQzd7kSY1x87FtsCqf1gGssyJXcCR5fA1I+g+0rYct9QTtrIw+y6scyR1kS3wuBIB+RCWKj8/6wBeRXnWY33yv0x/PMPLjGlChCMlTSKKrYy4iwsSLPl03kiZWznSC4uVAK2wAQByfwWcSYqXj1h5RIT4Q+IytJk4CQVCs9JGyXl3jpYMD3dbR5Cj13LmUKdT6uMHz77oGxvEl+a36AQqq7FJszluOxKWQDlSl6chK03LfuJIyTdmmaBPtvJm2cTidbGxKErbOVxemsxBize2+yaLKN1rl65ccSuBb9RvF4EBaSJRjscPHoFWTC6PZUZl96HZg33obsUQKeYlZzzNXlFmkGO8PrHVnHHJUbAbZpFZhisyuOENu8S1rE+A17widg2xaPS5E0dO/mZ20vQK6+0vNoobARqhH0LZRrTJUbei6hfW3OZ5nJHdxI252hVesQs0SYtvbulvXy7KcnH6ukYuL8lkgG8PYoTQIFNxMGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01HPERaLmR74YCYHZUsTXxoe",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_pause",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 167,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 167,
+    "cache_read_input_tokens": 8697,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 114,
+    "output_tokens_details": {
+     "thinking_tokens": 85
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7fe9d839f30b1686489661bf397a9a5835aaba0c33b628011045a5fd334223d5",
+  "response": {
+   "content": [
+    {
+     "text": "Está bien, Carmen, no hay ninguna prisa. Se lo volveré a preguntar otro día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 151,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 151,
+    "cache_read_input_tokens": 8864,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 39,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

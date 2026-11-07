@@ -55,6 +55,10 @@ class ToolCall:
     result: dict
 
 
+AFTER_HELP = ("Don't repeat it, and don't say again that you're here or staying with them (it was just said): "
+              "add only one calm, simple question about what is happening.")
+
+
 @dataclass
 class Brain:
     ctx: tools.Context
@@ -65,6 +69,7 @@ class Brain:
     calls: list[ToolCall] = field(default_factory=list)
     responses: list[dict] = field(default_factory=list)
     dropped: list[str] = field(default_factory=list)  # text kept from the voice (notes in English), for Lea
+    code_actions: list[str] = field(default_factory=list)  # what the help path (code, not Claude) did, for the judge
     # The voice loop sets this to speak code's own lines (help) at once, before Claude answers.
     say_now: Callable[[str], None] | None = None
 
@@ -86,11 +91,13 @@ class Brain:
         s.begin_turn("")
         pending = [p for p in s.pending.values() if p.status == "pending" and p.kind == "send_help"]
         if pending:  # pressing the button answers "¿Aviso a Lucía?"
-            said = tools.run_by_code(self.ctx, pending[-1])["say"]
+            said = self._answer_help(pending[-1], "the help button")
             note = (f"The help button was pressed after Pepe asked whether to tell someone; the help path (code) "
-                    f"ran. Pepe already said: «{said}». Don't repeat it. Stay calm and with them.")
+                    f"ran. Pepe already said: «{said}». " + AFTER_HELP)
             return self._with(said, self._turn([{"type": "text", "text": note}]))
         out = self.ctx.link().call_for_help(s, "button")
+        self.code_actions.append(f"help path, after the help button: {out.summary()}"
+                                 + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
         note = (f"The help button was pressed. Help path (code): {out.summary()}. Pepe already said: «{out.say}». "
                 "Don't repeat it. Stay calm and with them; ask simply how they are.")
         return self._with(out.say, self._turn([{"type": "text", "text": note}]))
@@ -101,16 +108,25 @@ class Brain:
         pending = [p for p in s.pending.values() if p.status == "pending" and p.kind == "send_help"]
         kind = help_requested(text, [a for p in s.household for a in p.aliases])
         if pending and (is_affirmative(text) or kind):  # "¡ayuda!" answers "¿Aviso a Lucía?" too
-            said = tools.run_by_code(self.ctx, pending[-1])["say"]
-            return said, (f"They said yes, and the help path (code) ran. Pepe already said: «{said}». "
-                          "Don't repeat it. Stay calm and with them.")
+            said = self._answer_help(pending[-1], f"«{text}»")
+            return said, (f"They said yes, and the help path (code) ran. Pepe already said: «{said}». " + AFTER_HELP)
         if kind is None:
             return "", ""
         out = self.ctx.link().call_for_help(s, kind, text)
+        self.code_actions.append(f"help path, after «{text}» ({kind}): {out.summary()}"
+                                 + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
         return out.say, (f"Help path (code), after their words: {out.summary()}. Pepe already said: «{out.say}». "
                          "Don't repeat it or send anything else. "
                          + ("Wait for their answer to that question. " if out.asked else "")
                          + "Stay calm and with them; ask simply how they are.")
+
+    def _answer_help(self, action, answer: str) -> str:
+        """Code sends the help Pepe asked about: their yes, a help cry or the button answered it."""
+        r = tools.run_by_code(self.ctx, action)
+        done = (f"a message reached {', '.join(r['sent_to'])}" if r.get("sent_to")
+                else "no message could be sent yet; still trying" if r.get("still_trying") else "no message could be sent")
+        self.code_actions.append(f"help path, after {answer} answered Pepe's question: {done}")
+        return r["say"]
 
     def _with(self, said: str, reply: str) -> str:
         if not said:
@@ -191,6 +207,10 @@ class Brain:
             lines.append("They asked for quiet: answer only what they ask, very briefly.")
         people = {s.speaker_id: names[s.speaker_id]} if s.speaker_id is not None else names
         lines += feedback.prompt_lines(ctx.conn, ctx.clock, people)
+        helpers = family_msgs.help_contacts(ctx.conn, [s.speaker_id] if s.speaker_id is not None else list(names))
+        if helpers:
+            lines.append("Help contact" + ("s" if len(helpers) > 1 else "") + ": " + ", ".join(
+                f"{c['name']} ({c['relation']})" if c["relation"] else c["name"] for c in helpers) + ".")
         unread = family_msgs.unread(ctx.conn, s.speaker_id)
         if unread and not modes.active(ctx.conn, ctx.clock, "visitors"):
             senders = sorted({r["name"] for r in unread})

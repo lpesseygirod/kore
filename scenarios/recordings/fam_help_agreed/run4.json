@@ -1,0 +1,89 @@
+[
+ {
+  "request_hash": "a5a5a2970528c233a7e968a5059200cee3ede2af29b45a8ab133af171c2a8546",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Le puedo ayudar en algo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8363,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 47,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "29661ffd0416e772dafe6f96cec355621bf4f5008da781ac93acee98a97811c5",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, ¿cómo se encuentra ahora?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 223,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 223,
+    "cache_read_input_tokens": 8363,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 22,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "32ff9899cf18d46986dac203a4bc1b89b14cc0fe623d7ed56096c338d944ea9c",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, le duele el pecho y eso es importante. Llame ahora al 112 o pulse el botón de teleasistencia. Yo me quedo aquí con usted. ¿Puede hablar y respirar con normalidad?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 113,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 113,
+    "cache_read_input_tokens": 8586,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 79,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

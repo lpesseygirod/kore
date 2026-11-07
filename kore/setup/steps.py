@@ -97,3 +97,10 @@ STEPS = [
 ]
 
 BY_ID = {s.id: s for s in STEPS}
+
+
+# Steps whose whole answer is one permission. If that permission is already on record (given or refused,
+# in an earlier chat or by the family's setup), the step is answered: Pepe doesn't ask it again.
+PERMISSION_STEPS = {"health_info": "health_info", "listening": "listening", "presence_sensor": "presence",
+                    "family_missed_meds": "family_alerts", "emergency_path": "emergency",
+                    "share_with_partner": "share"}

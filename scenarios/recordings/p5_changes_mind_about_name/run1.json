@@ -1,0 +1,276 @@
+[
+ {
+  "request_hash": "889ec1dc61a5e1925a7e208f23c1aa6cc9e78530dd62f880dfe0f49206219ebf",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_018cRWQudnTo6MVhtcGcMpFP",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8265,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "836e21ff5ff95a37221914c03dcf8a22d081ca4c54b7df0c2cf028a0954fb543",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, soy Pepe, el asistente de esta casa. Estoy aquí para ayudarle con los recordatorios, resolver sus dudas o simplemente charlar un rato. Puede preguntarme lo que quiera y cambiar cualquier cosa solo con decírmelo. ¿Le apetece que nos conozcamos ahora, o prefiere otro día?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8445,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 130,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "39d9f4190e4cfce84f8c8d65f889b4eeecb299c678be63dedc0580e455dd0477",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_019GXoYanJDZNg27MUZYiCrL",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "step": "welcome"
+     },
+     "name": "setup_step_done",
+     "type": "tool_use"
+    },
+    {
+     "id": "toolu_01UrA6iizKpTBdknNoGwAf83",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 222,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 222,
+    "cache_read_input_tokens": 8445,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 76,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "362888d9eafd97866105ca10900f87383bcb878f28ae723300862872a66f974d",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien, gracias. ¿Cómo se llama usted, y cómo le gusta que le llame?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 251,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 251,
+    "cache_read_input_tokens": 8667,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 38,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "aced2f8c1e9ba2e6ce2cc8c07581a003486d12b876ebb96ecff9107a843b6dde",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQS5gUKEAgTGAI4AUIIdGhpbmtpbmcSDKRXyqyT1JvwkOJPDBoMj4Q273NZQi1xWYeEIjCr5ffpDsoxTcnaXHjVE/OtXC8W8T+7QP64/YTfQhsbBu6fKlzq47cIo0aSQvx90zoqgwUomJJcyWHin1/T4RyB8wA5xKotPGrM82F+PMzrv4/MKDyBoBZIY1fjM0GNnyF0bvJAgFBw8KNgodzdqHas8R787eCbHUR5XEbgih/Csvafr4nbBt1udB+XlFwUcb6uOBTgO1aThK4AaVW1ZJOAcEjHp+bZHM3g+Dg8dtCC8li0sT2KStKCNA6po5CP5gMT+tXmu1Sv4j8iVZGV0Qsn8GQwLwFp6FyppQWVc1QJJBc/iXyYOADpU+rYp975LxPZj8Er8L3L6HZex3XETQyYmGOxSury1v3K6kFrvK2/7gnAyYBj8c3RZDMXJ8qhh0E+IZTowheWSihD3lrm4yFOZM3yAFvJITsMMywX41h/gvXI577WBtntdre3fe8Ahwp8KZnobawbuXBEF76YFcQIjkTWWBB3+Mk3U+GwqHo5oB6W8/qWuuaSNyzOCkrGlr46yvLAtXXKlLZJF+Mt224+7oHFAPUDzPFD5KycGHjZt4PYcXekhQvTK0gTbxPlVremW/m6bUvtRkWUsBqbZ2rfwz9JvmIJHoxSRgXqb/N2nJ2hA93LHSq0Od399ADe/nWBIFrZAlCTDlX6C5y5S2BPIL9P7TnS3faMqnWpbiaGcaTgmy1kFmIqmv5jxQWgF4ricQb0GOrtdGj+nPZJzQF1oAcBgIlBrFzXbefZdJSFBow3cugRgdztzNZzzVg7DAceM/t6Uk9N0wZlywIF8hyRcmzDD45PIi+jojdFxy53UA5LaaezJ3uPZSQsIFtweTQRrFNJ3rvVh8HGH/iTdydXPQ4Ea+0H9cqZmOdozF0ky813euLnPAF1sis+imTg/VcN2WjQQVZ8NBoLFR9VJGx+Z/w241QvGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01LVS6SjzyKkas2w1Na7pk43",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "name": "Carmen",
+      "call_name": "Mari",
+      "is_speaker": true
+     },
+     "name": "propose_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 156,
+    "cache_read_input_tokens": 8918,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 123,
+    "output_tokens_details": {
+     "thinking_tokens": 21
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c3a024a2f2a37211f1367ead88ee6c4ad3c3e7dcb37dbba14f6ffe63a83606e3",
+  "response": {
+   "content": [
+    {
+     "text": "Entonces la llamaré Mari. ¿Es correcto?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 171,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 171,
+    "cache_read_input_tokens": 9074,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 24,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5fa980019a4681e580d66a27452cbd841b34dd60bbdb1c7b80dbc98e69e0809f",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01GCutv3r23vmKLBhWZwcf2T",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "confirm_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 112,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 112,
+    "cache_read_input_tokens": 9245,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "d4ce4d97db90a58dbdfebedafc6d8aa14003fe9b2cb16481b5649c7760d99f6d",
+  "response": {
+   "content": [
+    {
+     "text": "Encantado, Mari. ¿Vive alguien más con usted en casa?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 81,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 81,
+    "cache_read_input_tokens": 9357,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

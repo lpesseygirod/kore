@@ -1,0 +1,133 @@
+[
+ {
+  "request_hash": "0eebc3f86f181b735c9cb988fea86aaf42ef66b4bcbcb20d726ef152a75fa3ad",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_017dR1B7GaMcDgfnumoeqgpM",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "to": "Lucía",
+      "text": "Me han encantado las fotos del niño."
+     },
+     "name": "propose_message",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8202,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 85,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f9b3ed0ff5fc65bbf4a46c5a1619462e324af752d8b69cc04bc7946f32968df0",
+  "response": {
+   "content": [
+    {
+     "text": "Le mando a Lucía: «Me han encantado las fotos del niño». ¿Lo envío?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8355,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8f99c6719ab063e8eb0a0a01342510c68b07daa8da9d5f5a29e4987b5f14dc12",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01PBDvTbRi6SBbnNaNGMA8ch",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "confirm_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8465,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c10c0cc16ec61a9147574c7190df4fa7f4a55b9894d33307e727ea606cb08f08",
+  "response": {
+   "content": [
+    {
+     "text": "Hecho, ya se lo he enviado a Lucía.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8554,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 22,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

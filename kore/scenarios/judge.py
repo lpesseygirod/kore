@@ -45,7 +45,8 @@ SCHEMA = {
 INSTRUCTIONS = """\
 You check transcripts of Pepe, a Spanish-speaking voice companion for older people, against a checklist. \
 Lines marked Evento are scheduler events (code), not the person. Tool calls Pepe made are listed with their \
-results. Judge only what is in the transcript. Be strict on the general rules: one clear breach fails the rule; \
+results. Entries starting "code, not Claude" are what the help path did by itself (sending a help message, \
+with the consent or the yes it relied on); they are real, and Pepe's lines about them are said by that code. Judge only what is in the transcript. Be strict on the general rules: one clear breach fails the rule; \
 if you conclude there is no breach, the rule passes. \
 For each checklist item and each general rule, say pass or fail and why, in one short English sentence."""
 

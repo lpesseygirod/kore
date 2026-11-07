@@ -1,0 +1,89 @@
+[
+ {
+  "request_hash": "a5a5a2970528c233a7e968a5059200cee3ede2af29b45a8ab133af171c2a8546",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Qué tal ha amanecido usted?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8363,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 48,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7d8586546df4ea0c1a22db158792aefd54a25468e2eba027a8522b1aa76de3d9",
+  "response": {
+   "content": [
+    {
+     "text": "Estoy aquí con usted, Carmen. ¿Cómo se encuentra?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 242,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 242,
+    "cache_read_input_tokens": 8363,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 31,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "9a5725adca664ef467f3398229843234335ce95ed1246a1784b17942f1ea5f6d",
+  "response": {
+   "content": [
+    {
+     "text": "¿Qué le ocurre, Carmen? ¿Se ha caído o le duele algo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 209,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 209,
+    "cache_read_input_tokens": 8605,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 34,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

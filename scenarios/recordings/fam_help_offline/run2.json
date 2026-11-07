@@ -1,0 +1,89 @@
+[
+ {
+  "request_hash": "7bbeccaec87e765947f49cc0367491d623722555da412acf1ddd1e709170c95d",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8341,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "660c5e4f5d9ca4a2ad313c48cc0b0c495e7c0f2505f092866845edf17ab2d25d",
+  "response": {
+   "content": [
+    {
+     "text": "Estoy aquí con usted, Carmen. ¿Cómo se encuentra?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 244,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 244,
+    "cache_read_input_tokens": 8341,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 31,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "421a59839aed2b7cca69cfda4b1bf81a112c36ca0a30fad91296524bf430b448",
+  "response": {
+   "content": [
+    {
+     "text": "No lo sé, Carmen. No he podido avisar a nadie porque no hay conexión, así que no le puedo prometer que venga alguien. Llame con el teléfono o pulse el botón de la teleasistencia, o llame al 112 si es grave. Yo me quedo con usted. ¿Qué le ocurre?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 107,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 107,
+    "cache_read_input_tokens": 8585,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 110,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

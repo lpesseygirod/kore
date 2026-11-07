@@ -386,3 +386,18 @@ def test_health_no_also_covers_medicines_as_voice_reminders(s):
 def test_setup_next_says_complete_in_a_home_set_up_another_way(conn, clock, home):
     ctx = tools.Context(conn, clock, Session([]))
     assert tools.call(ctx, "setup_next", {})["complete"] is True
+
+
+def test_a_permission_already_on_record_is_not_asked_again(s):
+    """Live run 2026-11-07: health_info was already given, yet setup asked for it three times."""
+    welcome_and_name(s)
+    s.say("Vale", s.done("people"))
+    for step in ("address", "hearing", "wants", "chattiness", "nudges", "quiet_times"):
+        s.say("Vale", s.done(step))
+    carmen = s.person("Carmen")["id"]
+    store.set_consent(s.conn, s.clock, carmen, "health_info", True)   # given earlier, outside setup
+    store.set_consent(s.conn, s.clock, carmen, "listening", False)    # a no counts as an answer too
+    assert s.next()["step"] == "medicines"
+    for step in ("medicines", "dates", "help_contact"):
+        s.say("Vale", s.done(step))
+    assert s.next()["step"] == "presence"

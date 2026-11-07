@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "45611b8f6e47e3bf15780dad67cb233d9a15d8e7cee5634c73d058080c6753a4",
+  "response": {
+   "content": [
+    {
+     "text": "¿Cómo se encuentra? Estoy aquí con usted.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8292,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 25,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "325dd4dfc650d4792366fa3c0e6c1744794c055bad31683ff0a1617e30bdcb17",
+  "response": {
+   "content": [
+    {
+     "text": "Gracias por decírmelo, Toni. Siéntese con calma, no hace falta que se levante. ¿Le duele algo, el pecho o la cabeza?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8417,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 57,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "45611b8f6e47e3bf15780dad67cb233d9a15d8e7cee5634c73d058080c6753a4",
+  "response": {
+   "content": [
+    {
+     "text": "¿Cómo se encuentra ahora? Dígame con calma si le duele algo o qué ha pasado.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8292,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 39,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "1c41b4f2028942101d53d267c753983438a6982b8aef74e057a5534ea7429a92",
+  "response": {
+   "content": [
+    {
+     "text": "Gracias, Toni. Siéntese con tranquilidad, que estoy aquí con usted. ¿Se le ha pasado algo el mareo o sigue mareado?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 139,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 139,
+    "cache_read_input_tokens": 8292,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 60,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

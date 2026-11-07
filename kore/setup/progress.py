@@ -10,7 +10,7 @@ from dataclasses import dataclass
 
 from kore.memory.db import from_utc_iso, utc_iso
 from kore.scheduler.clock import Clock
-from kore.setup.steps import BY_ID, STEPS, Step
+from kore.setup.steps import BY_ID, PERMISSION_STEPS, STEPS, Step
 
 HOME = 0
 STATUSES = {"not_started", "in_progress", "paused", "complete"}
@@ -63,13 +63,19 @@ def mark(conn: sqlite3.Connection, clock: Clock, step_id: str, person_id: int | 
         set_status(conn, clock, "complete")
 
 
+def answered_permissions(conn: sqlite3.Connection) -> set[tuple[int, str]]:
+    """Permission steps already answered outside the step itself (a yes or a no on record)."""
+    return {(r["person_id"], PERMISSION_STEPS[r["kind"]]) for r in conn.execute("SELECT person_id, kind FROM consents")
+            if r["kind"] in PERMISSION_STEPS}
+
+
 def next_step(conn: sqlite3.Connection, speaker_id: int | None, people: list[int]) -> Next:
     """The next step for whoever is speaking, in the script's order.
 
     Each person answers their own steps; the closing steps (test, thanks) wait until
     everyone has done their part, which the other person can do another day.
     """
-    done = done_steps(conn)
+    done = done_steps(conn) | answered_permissions(conn)
     applicable = [s for s in STEPS if not (s.two_people_only and len(people) < 2)]
     total = sum(1 if s.scope == "home" else max(1, len(people)) for s in applicable)
     count = len([d for d in done if d[1] in {s.id for s in applicable}])

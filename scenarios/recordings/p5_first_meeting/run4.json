@@ -1,0 +1,296 @@
+[
+ {
+  "request_hash": "889ec1dc61a5e1925a7e208f23c1aa6cc9e78530dd62f880dfe0f49206219ebf",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01V4xnds7cSn9v69pjLXsxh4",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8265,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "267d240bd919930e69cb1b5d81e734409af58430223b23419449614a8d8da9fb",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Soy Pepe, el asistente de voz de esta casa. Estoy aquí para ayudarle con los recordatorios, resolver dudas o simplemente charlar un rato. Puede preguntarme lo que quiera y cambiar cualquier cosa solo con decírmelo. ¿Le apetece que nos conozcamos ahora o prefiere otro día?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8445,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 131,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5fa6acf694e35acc995a05baa7379eeaef1fb521cdadf6b567d9b62980bc439d",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01FNBjvi92tvgoj2BiVjn2KS",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "step": "welcome"
+     },
+     "name": "setup_step_done",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 243,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 243,
+    "cache_read_input_tokens": 8445,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "2f0ee8fa4be3d3e280eb19d70781ba2c979fd2b3a8bae040406f97e76686d8af",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01KwyP9iHno5jLx8ouVa2iHa",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "setup_next",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 66,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 66,
+    "cache_read_input_tokens": 8688,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 27,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "609411575d9409a05975ea84c4638402f8ee150352aad99227869b20b8a10cf0",
+  "response": {
+   "content": [
+    {
+     "text": "Soy Pepe, un asistente: una máquina que habla, no una persona. Vivo en este altavoz y estoy para ayudarle en casa. Encantado. ¿Cómo se llama usted, y cómo le gusta que le llamen?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 138,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 138,
+    "cache_read_input_tokens": 8754,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 84,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b81bbca938a6ab616098e50251b95db33ee9d5af785b7e2c958b4de3f7bf15f6",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_012pzjJa8AeuVzrQzEKtw5nX",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "name": "Carmen Ruiz",
+      "call_name": "Carmen",
+      "is_speaker": true
+     },
+     "name": "propose_person",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 189,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 189,
+    "cache_read_input_tokens": 8892,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 107,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "d1e76b3a0410e0bc8efb53193fe67deaf5240bd32ded1dce0fc3512a98b50bf6",
+  "response": {
+   "content": [
+    {
+     "text": "Entonces la llamaré Carmen. ¿Es correcto?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 156,
+    "cache_read_input_tokens": 9081,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 25,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5a9b0a2c8bf2ff957a07e2aa576528f5ceb3bb9f2293396174f0a13fcc042078",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01QYpmBQRdv3R46bUUHjToPh",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "action_id": 1
+     },
+     "name": "confirm_action",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 113,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 113,
+    "cache_read_input_tokens": 9237,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 51,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "cc903e0556ded66010faae3f138cb039f531ddb485bdc962ee4ada300ed787a8",
+  "response": {
+   "content": [
+    {
+     "text": "Muy bien, Carmen, ya la tengo apuntada. ¿Vive alguien más con usted en casa?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 81,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 81,
+    "cache_read_input_tokens": 9350,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 41,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

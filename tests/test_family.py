@@ -705,3 +705,30 @@ def test_a_family_message_cannot_raise_help(h):
     msgs.poll(h.conn, h.clock, h.tg)
     r = h.say("léeme los mensajes", ("read_messages", {}), ("propose_help_alert", {}))
     assert r[1]["error"] == "outside_text_this_turn"
+
+
+# --- what the judge is told the help path did (live run, 2026-11-07) -------------------------
+
+
+def test_code_actions_say_what_help_did_and_why(conn, clock, home):
+    """The judge saw "Ya he avisado a Lucía" with no tool call and called it invented. Code now records
+    what the help path did, and on which consent or yes."""
+    h = Home(conn, clock, home)
+    h.brain.hear("Pepe, ayuda")
+    assert h.brain.code_actions == ["help path, after «Pepe, ayuda» (help): a message reached Lucía; "
+                                    "sent without asking, as they agreed to at setup"]
+
+
+def test_code_actions_after_a_yes(conn, clock, home):
+    asked = Home(conn, clock, home, agreed=False)
+    asked.brain.hear("Pepe, ayuda")
+    asked.brain.hear("Sí")
+    assert "Pepe asked" in asked.brain.code_actions[0]
+    assert asked.brain.code_actions[1] == "help path, after «Sí» answered Pepe's question: a message reached Lucía"
+
+
+def test_the_state_names_the_help_contact(conn, clock, home):
+    """Live run 2026-11-07: Pepe offered to tell 'alguna persona de su familia' because it didn't know who."""
+    h = Home(conn, clock, home)
+    h.session.begin_turn("")
+    assert "Help contact: Lucía (hija)." in h.brain.state()
