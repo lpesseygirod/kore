@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 5
+SCHEMA_VERSION = 6
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -290,6 +290,13 @@ CREATE TABLE IF NOT EXISTS family_in (
 CREATE TABLE IF NOT EXISTS family_state (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
+);
+
+-- Weather and news (phase 6c): the home's place, the feeds, and the last answers fetched.
+CREATE TABLE IF NOT EXISTS info (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL,
+    at_utc TEXT NOT NULL
 );
 """
 

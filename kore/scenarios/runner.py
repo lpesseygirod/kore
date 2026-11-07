@@ -154,11 +154,34 @@ class Home:
                     if not (st.two_people_only and len(people) < 2):
                         progress.mark(self.conn, self.clock, st.id, pid)
         self.session = Session(people)
-        self.ctx = tools.Context(self.conn, self.clock, self.session, family=self.family)
+        self.info = self.make_info(h)
+        self.ctx = tools.Context(self.conn, self.clock, self.session, family=self.family, info=self.info)
         self.brain = Brain(self.ctx, client, forms=h.get("forms", {}))
         self.engine = Engine(self.conn, self.clock, hot_day=h.get("hot_day", False))
         self.manners = Manners(self.conn, self.clock)
         self.presence(h.get("presence", "moving"))
+
+    def make_info(self, h: dict):
+        """"weather": {"place": NAME, "days": {...fake_forecast...}, "offline": bool}, "news": [{"title", "summary",
+        "hours_ago"}]. Fakes: nothing leaves the computer. Without either key, Pepe has neither."""
+        if "weather" not in h and "news" not in h:
+            return None
+        from kore.info import Info, news, weather
+
+        out = Info()
+        if "weather" in h:
+            w = h["weather"]
+            self.fake_weather = weather.FakeWeather(weather.fake_forecast(self.clock.now(), w.get("days", {})),
+                                                    online=not w.get("offline"))
+            out.weather = weather.Weather(self.conn, self.clock, self.fake_weather)
+            if w.get("place"):
+                out.weather.set_place(weather.Place(w["place"], 40.4, -3.7))
+        if "news" in h:
+            now = self.clock.now()
+            items = [{"title": n["title"], "summary": n.get("summary", ""),
+                      "published": now - timedelta(hours=n.get("hours_ago", 2))} for n in h["news"]]
+            out.news = news.News(self.conn, self.clock, news.FakeNews(items))
+        return out
 
     def when(self, spec: str) -> datetime:
         """'HH:MM' on the start day, or 'D+n HH:MM'."""

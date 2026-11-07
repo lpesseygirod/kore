@@ -141,8 +141,15 @@ class Brain:
         if item.manner == "family":
             return None  # a message (phase 6), never spoken
         ev = item.event
+        data = ev.data
+        info = self.ctx.info
+        if ev.kind == "morning_greeting" and info and info.weather:
+            brief = info.weather.brief_today()  # from the cache: the greeting never waits for the network
+            if brief:
+                data = {**data, "weather_today": brief,
+                        "rules": data.get("rules", "") + " The weather: one short phrase at most, if useful."}
         note = (f"Event from the scheduler (code, not the person): {ev.kind}. Facts: "
-                f"{json.dumps(ev.data, ensure_ascii=False)}. {MANNER_NOTES[item.manner]}")
+                f"{json.dumps(data, ensure_ascii=False)}. {MANNER_NOTES[item.manner]}")
         return self._turn([{"type": "text", "text": note}])
 
     # --- the loop ------------------------------------------------------------------
