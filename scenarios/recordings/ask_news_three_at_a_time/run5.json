@@ -1,0 +1,123 @@
+[
+ {
+  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 62,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8445552d22bb411dd598ca5bf923a2e5b6c9d35f8f244e55b70c0ca0df2e813e",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_019edU8mD4WmCdn6vCrUvby4",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "get_news",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 151,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 151,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 26,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "9f5aa3096b519da985ac4dbe64c462ec1da9e65bbd0e4f8b69d9bb9b90373ae7",
+  "response": {
+   "content": [
+    {
+     "text": "Estos son los titulares de hoy, según El País.\n\nPrimero: el Gobierno aprueba la subida de las pensiones para 2027. Subirán un dos coma ocho por ciento en enero.\n\nSegundo: temporal de lluvia y viento en el norte de la península, con aviso naranja en Galicia y Asturias.\n\nTercero: el Atlético gana dos a cero al Sevilla, con dos goles en la segunda parte.\n\n¿Quiere que le lea más noticias?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 331,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 331,
+    "cache_read_input_tokens": 8963,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 165,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "77af24ffa7d71063a3f774ccdba6d532199e4b514d7bf171474b10f04f0c5cc4",
+  "response": {
+   "content": [
+    {
+     "text": "Solo tengo el resumen de El País: el Gobierno ha aprobado la subida de las pensiones para 2027, y será de un dos coma ocho por ciento en enero. No tengo más detalles. Para saber cómo le afecta a usted, puede consultar la Seguridad Social o preguntar a su familia. ¿Quiere que le lea más noticias?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 251,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 251,
+    "cache_read_input_tokens": 9294,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 124,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

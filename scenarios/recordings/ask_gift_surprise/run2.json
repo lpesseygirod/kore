@@ -1,0 +1,89 @@
+[
+ {
+  "request_hash": "e4458d54f59a543760ddd11397714fa7b46cd6c50d99a5813871c6d324b5696e",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9026,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8f207ebeb10df17328cbaf97be57da0ba74e78e2670df018abc7c94bd2191815",
+  "response": {
+   "content": [
+    {
+     "text": "Seguro que es un detalle bonito, Toni. Un pañuelo de seda suele gustar, sobre todo si es de un color que ella use a menudo. No puedo prometerle que lo guarde en secreto, pero yo no le diré nada a Carmen. ¿Quiere que le apunte una nota para acordarse de comprarlo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9208,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 117,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "6ae646992c389c845b7335b5cdea381f0bc06b86eecbd7fcaea2df8713b7ddf3",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, lo que cada uno me cuenta es personal, y no puedo hablarle de lo que me diga Toni. Si le apetece, puede preguntárselo a él directamente. ¿Quiere que le ayude con alguna otra cosa?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 243,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 243,
+    "cache_read_input_tokens": 9208,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 86,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

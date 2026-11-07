@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "ae5bfbf4e4eebe435fd523213edbffe7338dd24b78726ed1b8b3ccfcbd03ac3e",
+  "response": {
+   "content": [
+    {
+     "text": "Siento que se encuentre así, Toni. A veces el cansancio viene de haber dormido poco o mal, de beber poca agua o de haber comido poco o tarde. ¿Desde cuándo se siente así?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 8921,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 8921,
+    "cache_read_input_tokens": 0,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 74,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "f335bf97e1a1bfa2652ddd9bb04853159080bad1028cfec35a2758691a27e212",
+  "response": {
+   "content": [
+    {
+     "text": "Entiendo, Toni. Si lleva unos días así, convendría que se lo comentara a su médico. ¿Quiere que lo deje apuntado para su próxima cita?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 159,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 159,
+    "cache_read_input_tokens": 8921,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 61,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

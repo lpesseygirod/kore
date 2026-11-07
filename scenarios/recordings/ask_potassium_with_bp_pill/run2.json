@@ -1,0 +1,70 @@
+[
+ {
+  "request_hash": "665cb0255c14705c1f303dfec65fae9806578976483c6f8643cf458026d8f7f9",
+  "response": {
+   "content": [
+    {
+     "signature": "CAQSzgUKEAgTGAI4AUIIdGhpbmtpbmcSDOUnhk8CvtuF/BjcPBoMo/qxZSC7Cghz8prkIjDfF6rCvdf/NBqG8LyeLGkpFYBlNy9zP7G5h680w2F1bxDtYZrOJa8peKvigUXEsAoq6wTeSJpW92NmrWIjeJJ+Uu7UnCT/mDJ9KCCUX7zEXPbVxoKkbZhSCPyY9o4ZQNMEjrMj+Y8AHR/FlOVH2UcIku0PlxAi5dqFsvgs2lVE5ByWxrylC/JNarujqpWvYFrynRPxU8SXyPB4OuR7eAL7fg4cfx2q7RUwIhLafvhWUgTYAPSviH0Fo6Uq632pHVeBru2RSbzN1c/XSZ3N/dDO2KSEloYzCNM5znn70Hg+2lXpi+v4JBXY8MxtY7nazszKmV7r5x0ACk29enfIDl6HXU1vtW56myqOQLx6BA7i46F/I/yDi3Vi4uORPZgL6cYwYyRJNJJ4IuBUdAssuNzN+aesv9Iam5nUTMZxnr1HJgtl+3iz7OSAayxMLfTp6LnB5QQ/BIPBNN6IY/wkqgGlbvr3Xw8KAybFNjxIKZIZdQvGbLJPwuyTMlTdMGr6gV1ibLAFqW5bsq+DmL1Gf2DjUSjGiiASwxreRWfWbh+iFwApCCDoEKA0du0ig/nc1i0zThyhxgxgff9RSS47XZP7JPOHNFt9aS7qvj9ZjW9U7TsKiFvkyxAXI7421c/b6XbVE2hQiCmgNEVagv48CmfRMR51KLu2YOKGrhHfInhVRcZCktk8fuUXobwWnhrV5Szx72/XowwRt3wAnvzPbvTDIqoiHuD5OJ5jqPH5dHOHYNJxLYHR+nrTO0u2wQzMWHbHqqmBURMcVLPJIUR0O25jpKLmRGMGV95ZXPh29l0UM1lkBEOyuCxkkShew4STUxsw+Cg6s93nKz45Jqk16Z+MStWRB62ybsAz3Z9T9mKlS2q11mdqJ82CC+Kh6yAvGAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01QJbMwcAuxQuXuYX79GpT3P",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8898,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 54,
+    "output_tokens_details": {
+     "thinking_tokens": 25
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "28a6ec0e7ddc748398651ab091c4af4ed55575d33fc9913205d9bc61fc573a33",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Toni. Los pistachos y las almendras tienen bastante potasio, y las avellanas y los cacahuetes también, aunque menos. Todos los frutos secos tienen calorías, así que lo que cuenta es la cantidad: un puñado pequeño al día. Los pistachos suelen ser los más ligeros, y con cáscara se come uno más despacio.\n\nComo usted toma una pastilla para la tensión, le conviene preguntar a su farmacéutico por el potasio, por si afecta a esa medicación. ¿Quiere que se lo apunte para la próxima consulta?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 219,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 219,
+    "cache_read_input_tokens": 8898,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 204,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

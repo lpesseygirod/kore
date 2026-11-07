@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "18c08ef84d6bd51b978c824c7b6517869f102270407a7e90c4ebd39f5d887469",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Toni. Le doy unas ideas sencillas.\n\nIntente acostarse y levantarse a la misma hora todos los días. Por la tarde, evite el café y el té, y cene ligero, un par de horas antes de acostarse.\n\nUna hora antes de dormir, baje las luces y apague la tele y el móvil. Un baño tibio o una infusión sin cafeína, como la tila o la manzanilla, también ayudan a muchas personas. Procure que el dormitorio esté oscuro, tranquilo y no demasiado caliente.\n\nSi el sueño sigue siendo malo durante semanas, merece la pena comentarlo con su médico. ¿Quiere que le cuente algo más sobre alguna de estas ideas?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8891,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 251,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

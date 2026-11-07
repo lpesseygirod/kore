@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "e6ace5714dc9285c036ec48734dac8cd558b222f672be3d6dde165bb52e992c2",
+  "response": {
+   "content": [
+    {
+     "text": "Toni, yo no puedo ver ni valorar una mancha, solo soy un asistente de voz, y eso lo tiene que mirar un médico. Si es nueva o ha cambiado de tamaño, de color o de forma, o si le pica o sangra, conviene pedir cita con su médico de cabecera o con un dermatólogo. ¿Quiere que le apunte una cita o una nota para llevarle al médico?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 140,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 140,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 143,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

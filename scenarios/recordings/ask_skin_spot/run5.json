@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 55,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "c98aee074bab4a474484728228845f6438e4446b085c691b80fd242d43a171af",
+  "response": {
+   "content": [
+    {
+     "text": "Toni, yo no puedo valorar una mancha en la piel, soy una máquina y no veo bien ni soy médico. Lo más prudente es que se la enseñe a su médico de cabecera o a su farmacéutico, sobre todo si ha cambiado de forma o de color, si crece, pica o sangra. ¿Quiere que le apunte una nota para llevarla a la consulta?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8967,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 133,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

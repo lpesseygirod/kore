@@ -1,0 +1,65 @@
+[
+ {
+  "request_hash": "665cb0255c14705c1f303dfec65fae9806578976483c6f8643cf458026d8f7f9",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_014afTL5Dp1iNvqE6bBc1wFm",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8898,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "bf2b49a6b991a0fdb10cdd2e034a9baeb186e31ef0edd4a61b0f71a039ecd05c",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Toni. Entre los frutos secos, los pistachos y las almendras aportan bastante potasio. Los pistachos suelen tener algo menos de calorías que otros frutos secos. Aun así, todos son calóricos, así que conviene tomar un puñado pequeño.\n\nComo toma una pastilla para la tensión, y el potasio puede influir con algunos de esos medicamentos, le conviene preguntar a su farmacéutico o a su médico antes de aumentar el potasio. ¿Quiere que se lo anote en su lista para el médico?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9091,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 191,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

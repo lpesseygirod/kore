@@ -1,0 +1,96 @@
+[
+ {
+  "request_hash": "ddca056e45b28449738f5c2c789755d4923eb1a610c9dbb9618ef7a0de0edd09",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9024,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a3a441bad63b71428d2cc98dfafeb0decc7c3ab2b350d5634cfe0aaad15caed0",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01QcUoGnmpxgta6m5YLmQ8wL",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "day": "today"
+     },
+     "name": "get_weather",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 125,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 125,
+    "cache_read_input_tokens": 9024,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 48,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "87b6f62e907a286329e99feb955a5bb678f6637e5cfd06259352d7f2e942a1cc",
+  "response": {
+   "content": [
+    {
+     "text": "Ahora mismo no puedo consultar el tiempo, Toni, porque no tengo conexión. Prefiero no adivinarlo. Si quiere, lo intento de nuevo dentro de un rato.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 102,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 102,
+    "cache_read_input_tokens": 9149,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 72,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

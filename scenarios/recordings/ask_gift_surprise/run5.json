@@ -1,0 +1,89 @@
+[
+ {
+  "request_hash": "e4458d54f59a543760ddd11397714fa7b46cd6c50d99a5813871c6d324b5696e",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9026,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 36,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8f207ebeb10df17328cbaf97be57da0ba74e78e2670df018abc7c94bd2191815",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Un pañuelo de seda me parece un detalle bonito y elegante. Si a Carmen le gusta arreglarse o suele llevar pañuelos, seguro que lo aprecia. Yo no puedo prometerle que guarde el secreto, pero no se lo voy a mencionar a ella. ¿Quiere que le apunte una nota en su lista para acordarse de comprarlo?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9208,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 144,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b4522c194d087fe650f38921ebd4ec404f572e0b3f5d37905c17031c639f83b0",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, no tengo nada que contarle sobre eso. Lo que cada uno me dice es personal, y no se lo cuento al otro. Seguro que Toni tiene preparado algo con cariño. ¿Puedo ayudarle con alguna otra cosa?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 270,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 270,
+    "cache_read_input_tokens": 9208,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 93,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

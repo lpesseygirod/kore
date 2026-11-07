@@ -200,3 +200,20 @@ def test_spanish_is_always_spoken(spanish):
     from kore.brain.language import looks_english
 
     assert not looks_english(spanish)
+
+
+def test_never_says_from_a_step_checks_only_later_lines():
+    """The gift scenario: Pepe may say "pañuelo" to Toni, never once Carmen asks."""
+    sc = {"id": "t", "title": "t", "category": "other", "home": {"people": [{"name": "Carmen"}]},
+          "steps": [{"say": "Uno"}, {"say": "Dos"}],
+          "expect": {"pepe_never_says_from_step": [{"step": 1, "patterns": ["panuelo"]}]}}
+    def reply(answers):
+        def f(req):
+            last = str(req["messages"][-1]["content"])
+            return text(answers["Dos"] if "They say: Dos" in last else answers["Uno"] if "They say: Uno" in last
+                        else "Buenos días.")
+        return ScriptedClient(f)
+    run = runner.run_once(sc, 1, reply({"Uno": "Un pañuelo, qué bonito.", "Dos": "Pregúntaselo a Toni."}))
+    assert run.error is None and run.failures == []
+    run = runner.run_once(sc, 1, reply({"Uno": "Bien.", "Dos": "Te va a regalar un pañuelo."}))
+    assert run.failures and "from step 1" in run.failures[0]

@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "f84cf47d5dfd634d494df21c6d5003b94594f12f84b9b003bf4fe3838ae6438b",
+  "response": {
+   "content": [
+    {
+     "text": "Con mucho gusto, Toni, pero no tengo manera de buscar críticas de libros. Tampoco sé cuál es el último libro de su nieta, y no quiero inventarme nada.\n\nSi usted quiere, puede contarme de qué trata el libro y se lo apunto. ¿Cómo se titula?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 171,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 171,
+    "cache_read_input_tokens": 8511,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 108,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

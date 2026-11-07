@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "18c08ef84d6bd51b978c824c7b6517869f102270407a7e90c4ebd39f5d887469",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Toni. Le doy unas ideas sencillas.\n\nIntente acostarse y levantarse todos los días a la misma hora. Por la tarde, evite el café y el té, y cene ligero, un par de horas antes de acostarse.\n\nTambién ayuda bajar las luces y apagar la tele un rato antes de dormir. Un vaso de leche templada o una infusión suave, como la tila, le puede venir bien. Si le gusta, un paseo corto por la tarde también ayuda.\n\nSi el insomnio sigue muchos días, merece la pena comentarlo con su médico. ¿Quiere que le cuente alguna más?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8891,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 215,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "552c7aaccc061735d58b866354e0380cd2918717e226705443a7902570649bc4",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9024,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "eb93ae1f878aad59e7a3c0beddd58193d0e04ab51ccb7394d4451513725f0e15",
+  "response": {
+   "content": [
+    {
+     "text": "Lo siento, Toni, no lo sé. No tengo manera de saber qué vio anoche en la tele. Si quiere, puede mirar la guía de programación de ayer o preguntar a alguien que la viera con usted. Si me cuenta de qué trataba, quizá pueda ayudarle a recordarlo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9161,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 109,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

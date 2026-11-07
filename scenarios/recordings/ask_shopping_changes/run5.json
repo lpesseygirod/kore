@@ -1,0 +1,113 @@
+[
+ {
+  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 62,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7c7966ccb043a00501c85067473aec390e4d628bb0589c7364d2bba4ea0d400c",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_0191LfSSJYJSTUHM9By3dVbF",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "vinagre de arroz",
+       "leche entera"
+      ]
+     },
+     "name": "add_to_list",
+     "type": "tool_use"
+    },
+    {
+     "id": "toolu_01RLCTMWLFAsM4YGzKc74csz",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "copos de avena",
+       "leche desnatada"
+      ]
+     },
+     "name": "remove_from_list",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 177,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 177,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 125,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "8f498ff78ccc0978d983a88fed87e5735a34f06f0296df8781e61e451d23d080",
+  "response": {
+   "content": [
+    {
+     "text": "Hecho, Toni. He añadido el vinagre de arroz y la leche entera. He quitado los copos de avena y la leche desnatada.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 263,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 263,
+    "cache_read_input_tokens": 8989,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 50,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

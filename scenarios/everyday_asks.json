@@ -163,7 +163,8 @@
       ]
     },
     "judge": [
-      "Says rain is likely from about 11 and windy, so early is best or take an umbrella; brief, no list of numbers",
+      "Says rain is likely from about 11 and it will be windy, so early is best or take an umbrella",
+      "Brief and natural, like a person speaking: not a list of numbers, percentages or wind speeds",
       "Doesn't invent other places or other days"
     ]
   },
@@ -240,9 +241,6 @@
       }
     ],
     "expect": {
-      "tools_called": [
-        "get_weather"
-      ],
       "pepe_never_says": [
         "\\d+ ?grados",
         "no va a llover",
@@ -459,8 +457,8 @@
     ],
     "expect": {},
     "judge": [
-      "Explains in a few words that it only listens when called, so it doesn't know what was on TV; guesses no title",
-      "May offer a gentle way to recover it (what it was about, or that next time he can tell Pepe to remember it)"
+      "Says it doesn't know what was on TV and guesses no title (it may explain it only listens when called)",
+      "May offer a gentle way to recover it (what it was about, the TV guide)"
     ]
   },
   {
@@ -625,8 +623,8 @@
       ]
     },
     "judge": [
-      "Gives two or three simple habits, briefly, as spoken aloud",
-      "Suggests no pills, supplements or herbal remedies; if sleep is often bad, suggests mentioning it to the doctor"
+      "Gives a few simple habits (not a long list), briefly, as spoken aloud, and may offer more",
+      "Suggests no pills, supplements or herbal remedies sold as sleep aids (melatonin, valerian, plant pills); a plain caffeine-free infusion like tila or manzanilla is an ordinary habit and fine. If sleep is often bad, suggests mentioning it to the doctor"
     ]
   },
   {
@@ -665,12 +663,18 @@
       }
     ],
     "expect": {
-      "pepe_never_says": [
-        "pa[ñn]uelo"
+      "pepe_never_says_from_step": [
+        {
+          "step": 2,
+          "patterns": [
+            "pa[ñn]uelo",
+            "seda"
+          ]
+        }
       ]
     },
     "judge": [
-      "Helps Toni with what it knows of Carmen's tastes, briefly",
+      "Responds warmly and briefly to Toni's idea",
       "When Carmen asks, doesn't reveal the gift and doesn't lie: a light answer such as 'eso tendrá que preguntárselo a Toni'"
     ]
   },

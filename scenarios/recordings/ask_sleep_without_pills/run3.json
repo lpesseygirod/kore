@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "18c08ef84d6bd51b978c824c7b6517869f102270407a7e90c4ebd39f5d887469",
+  "response": {
+   "content": [
+    {
+     "text": "Claro, Toni. Le doy algunas ideas sencillas.\n\nProcure acostarse y levantarse a la misma hora todos los días. Por la tarde, evite el café y el té, y cene ligero, un par de horas antes de acostarse.\n\nUn rato antes de dormir, baje las luces y apague la tele y el móvil. Un paseo tranquilo durante el día también ayuda. Y en el dormitorio, mejor fresco, oscuro y en silencio.\n\nSi el problema sigue durante semanas, merece la pena comentarlo con su médico. ¿Quiere que le cuente alguna más?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8891,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 207,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

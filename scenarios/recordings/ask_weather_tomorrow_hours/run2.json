@@ -1,0 +1,69 @@
+[
+ {
+  "request_hash": "c91a26d926eeae3bf29dae70bc42f154982d24ebdb385bbe323e8f1b7d2101e6",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_017TxYocf2HVirKNwzY5ttcC",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "day": "tomorrow",
+      "from_hour": 10,
+      "to_hour": 14
+     },
+     "name": "get_weather",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8901,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 100,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "152cbfe91cd8b9c6e51a6be780cb40fa851f77b3007e17eeb512e5961f9a210e",
+  "response": {
+   "content": [
+    {
+     "text": "Mañana a las diez estará algo nublado, con unos nueve grados. Empezará a llover débilmente sobre las once, y desde las doce lloverá con más ganas hasta las dos. Hará también bastante viento. Si quiere pasear, lo mejor será salir a las diez y volver pronto, y llevar paraguas y un abrigo.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9370,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 119,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

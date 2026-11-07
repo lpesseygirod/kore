@@ -1,0 +1,175 @@
+[
+ {
+  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "7a5e2758b2db512893c0de471c1c4d98bc6e79254bd53a4567669c27d6ffeec9",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01WXPNWDVXhuVP52AMRyYNxb",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "vinagre de arroz"
+      ]
+     },
+     "name": "add_to_list",
+     "type": "tool_use"
+    },
+    {
+     "id": "toolu_011HfPDxPchLg5G7oAQGALdu",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "copos de avena"
+      ]
+     },
+     "name": "remove_from_list",
+     "type": "tool_use"
+    },
+    {
+     "id": "toolu_01L8miJJEtNR4JTFjyRehUXh",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "read_list",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 155,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 155,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 136,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "37f3c6cf1b8ed48a3e27ec0b93c465b29df5b37ec4dee2c9806f22941a9c311c",
+  "response": {
+   "content": [
+    {
+     "text": "Ahora cambio la leche.",
+     "type": "text"
+    },
+    {
+     "id": "toolu_01EfKwEsEQDUJ2fkkRADBUnQ",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "leche desnatada"
+      ]
+     },
+     "name": "remove_from_list",
+     "type": "tool_use"
+    },
+    {
+     "id": "toolu_013kuLBxELoT1svaE15P4Zth",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "items": [
+       "leche entera"
+      ]
+     },
+     "name": "add_to_list",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 324,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 324,
+    "cache_read_input_tokens": 8967,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 122,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b94b4c815822b797120233b9311fee709f85df335a057bad98da1c457c2484c3",
+  "response": {
+   "content": [
+    {
+     "text": "Hecho, Toni. He añadido el vinagre de arroz, he quitado los copos de avena y he cambiado la leche desnatada por leche entera.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 235,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 235,
+    "cache_read_input_tokens": 9291,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 54,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

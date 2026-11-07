@@ -1,0 +1,31 @@
+[
+ {
+  "request_hash": "f84cf47d5dfd634d494df21c6d5003b94594f12f84b9b003bf4fe3838ae6438b",
+  "response": {
+   "content": [
+    {
+     "text": "Me encantaría ayudarle, Toni, pero no tengo ninguna forma de buscar críticas de libros, y tampoco sé cuál es el último libro de su nieta Lucía. No quiero inventarme nada.\n\nSi usted me cuenta algo del libro, lo recuerdo para otra ocasión. ¿Cómo se titula?",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8682,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 119,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

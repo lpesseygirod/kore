@@ -154,6 +154,7 @@ class Home:
                     if not (st.two_people_only and len(people) < 2):
                         progress.mark(self.conn, self.clock, st.id, pid)
         self.session = Session(people)
+        self.step_starts: list[int] = []  # transcript length when each step began
         self.info = self.make_info(h)
         self.ctx = tools.Context(self.conn, self.clock, self.session, family=self.family, info=self.info)
         self.brain = Brain(self.ctx, client, forms=h.get("forms", {}))
@@ -240,6 +241,7 @@ def run_once(sc: dict, index: int, client) -> Run:
     try:
         home = Home(sc, client)
         for s in sc["steps"]:
+            home.step_starts.append(len(home.brain.transcript()))
             home.step(s)
     except StaleRecording as e:
         run.error = f"stale recording: {e}"
@@ -283,6 +285,12 @@ def check(expect: dict, home: Home) -> list[str]:
     for pattern in expect.get("pepe_never_says", []):
         if re.search(pattern, pepe):
             fails.append(f"Pepe said something matching {pattern!r}")
+    for rule in expect.get("pepe_never_says_from_step", []):  # {"step": N (0-based), "patterns": [...]}
+        later = home.brain.transcript()[home.step_starts[rule["step"]]:] if rule["step"] < len(home.step_starts) else []
+        text = " ".join(fold(t) for who, t in later if who == "Pepe")
+        for pattern in rule["patterns"]:
+            if re.search(pattern, text):
+                fails.append(f"Pepe said something matching {pattern!r} from step {rule['step']}")
     for pattern in expect.get("pepe_says", []):
         if not re.search(pattern, pepe):
             fails.append(f"Pepe never said anything matching {pattern!r}")

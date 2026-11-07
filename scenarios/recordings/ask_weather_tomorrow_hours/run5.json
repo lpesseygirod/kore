@@ -1,0 +1,69 @@
+[
+ {
+  "request_hash": "c91a26d926eeae3bf29dae70bc42f154982d24ebdb385bbe323e8f1b7d2101e6",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01MCeZoebkuv7fnfLcKFjWWT",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "day": "tomorrow",
+      "from_hour": 10,
+      "to_hour": 14
+     },
+     "name": "get_weather",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8901,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 100,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "bccab0972a73b1cdfe1e678aa817516f66ef235d4c971c10f20d28f068f27450",
+  "response": {
+   "content": [
+    {
+     "text": "Mañana a las diez estará parcialmente nublado, con unos nueve grados. A partir de las once empezará a llover débilmente, y desde las doce lloverá más, hasta las dos. Si quiere pasear sin mojarse, le conviene salir a las diez y volver pronto. Si sale, lleve paraguas o impermeable, y abrigo, porque también habrá algo de viento.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9370,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 134,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]

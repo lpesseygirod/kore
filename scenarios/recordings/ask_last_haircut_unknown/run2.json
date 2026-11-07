@@ -1,0 +1,60 @@
+[
+ {
+  "request_hash": "9a5afb4b9f50fa9129a4bf7260be2ec0b24b28d27424530345fb20cc05ec593b",
+  "response": {
+   "content": [
+    {
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8812,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 40,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "60324055396fefb3981b438c8eeb538aee7cdaf3c5ba5705612d6c9a2d5fe1c0",
+  "response": {
+   "content": [
+    {
+     "text": "Lo siento, Toni, no tengo anotado cuándo fue a la peluquería. No guardo ese dato. Si quiere, puedo apuntar la próxima cita para que no se le pase.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 8949,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 68,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ }
+]
