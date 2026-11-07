@@ -17,7 +17,9 @@ from datetime import datetime, timedelta
 
 from kore.brain import fallback, tools
 from kore.brain.session import Person, Session
-from kore.manners.gate import Manners
+from kore.family.channels import FakeChannel
+from kore.family.service import Family
+from kore.manners.gate import FAMILY, Manners
 from kore.memory import meds, store
 from kore.memory.db import connect
 from kore.scheduler.clock import HOME_TZ, FakeClock
@@ -91,7 +93,9 @@ def run_day(path=":memory:") -> tuple[list[Line], dict]:
     conn = connect(path)
     clock = FakeClock(DAY.replace(hour=6))
     session = setup(conn, clock)
-    ctx = tools.Context(conn, clock, session)
+    telegram = FakeChannel()  # nothing leaves the computer
+    family = Family(conn, clock, {"telegram": telegram})
+    ctx = tools.Context(conn, clock, session, family=family)
     engine = Engine(conn, clock)
     manners = Manners(conn, clock)
     transcript: list[Line] = []
@@ -115,13 +119,17 @@ def run_day(path=":memory:") -> tuple[list[Line], dict]:
                 for name, args in calls:
                     pepe(word(name, tools.call(ctx, name, args)))
         manners.submit(engine.tick())
+        manners.submit(family.tick())
         manners.tick()
         for item in manners.next_items():
-            pepe(fallback.phrase(item.event, item.manner))
+            if item.manner == FAMILY:
+                family.handle_item(item)  # a message, kept until sent
+            else:
+                pepe(fallback.phrase(item.event, item.manner))
             manners.mark_done(item)
     doses = {f"{r['name']} {r['slot_utc']}": r["status"] for r in conn.execute(
         "SELECT m.name, d.slot_utc, d.status FROM doses d JOIN medications m ON m.id = d.medication_id")}
-    return transcript, {"doses": doses, "list": store.list_items(conn)}
+    return transcript, {"doses": doses, "list": store.list_items(conn), "family_messages": telegram.sent}
 
 
 if __name__ == "__main__":

@@ -16,7 +16,8 @@ medicine records that a reminder was really said: only then can a dose with no
 answer count as "missed" (and towards a family alert).
 
 The rules, in order:
-  1. Family alerts are messages, not speech.
+  1. Family alerts are messages, not speech. How a call for help went is said at
+     once, whatever the time or mode (an emergency, PEPE.md 4).
   2. Nothing for people who are away. For someone out: their medicine reminder
      waits only while the room is empty (they may be back without saying so);
      other things for them wait until they're back.
@@ -62,7 +63,9 @@ AWAY_CHECK_WINDOW = timedelta(minutes=30)
 
 # Still said (short) in quiet mode; everything else waits until it ends.
 URGENT = {"medication_reminder", "appointment_same_day", "appointment_day_before", "reminder",
-          "clock_untrusted", "away_presence_check", "morning_greeting"}
+          "clock_untrusted", "away_presence_check", "morning_greeting", "message_not_sent"}
+# How a call for help went (kore/family): said at once, even at night or in quiet mode.
+HELP_NEWS = {"help_sent_late", "help_not_sent"}
 # Asked of an empty-looking home, or after someone comes back: not blocked by "away".
 IGNORES_AWAY = {"away_presence_check", "welcome_back"}
 
@@ -87,6 +90,8 @@ def decide(ev: Event, s: Snapshot) -> tuple[str, str | None, str]:
     k = ev.kind
     if k.startswith("family_"):
         return READY, FAMILY, "a message, not speech"
+    if k in HELP_NEWS:
+        return READY, SAY, "help"
 
     targets = set(ev.person_ids)
     if targets and k not in IGNORES_AWAY:

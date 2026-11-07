@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 4
+SCHEMA_VERSION = 5
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -87,9 +87,11 @@ CREATE TABLE IF NOT EXISTS contacts (
     relation TEXT NOT NULL DEFAULT '',
     birthday_md TEXT,                 -- "MM-DD"
     birthday_reminders INTEGER NOT NULL DEFAULT 1,
-    help_contact INTEGER NOT NULL DEFAULT 0,  -- the person to contact if they need help (phase 6 sends)
+    help_contact INTEGER NOT NULL DEFAULT 0,  -- the person to contact if they need help
     for_person INTEGER REFERENCES people(id),
-    created_at TEXT NOT NULL
+    created_at TEXT NOT NULL,
+    telegram_chat_id TEXT,            -- linked by pairing (python -m kore.family pair)
+    phone TEXT                        -- for the SMS in "help", E.164 (+34...)
 );
 
 CREATE TABLE IF NOT EXISTS reminders (
@@ -253,6 +255,42 @@ CREATE TABLE IF NOT EXISTS tool_log (
     args TEXT NOT NULL,
     result TEXT NOT NULL
 );
+
+-- Phase 6: messages to the family (and device messages to Lea). Kept until sent,
+-- so a power cut or a dead connection only delays them.
+CREATE TABLE IF NOT EXISTS family_out (
+    id INTEGER PRIMARY KEY,
+    created_at_utc TEXT NOT NULL,
+    kind TEXT NOT NULL,               -- help | missed_meds | stop_request | message | test | operator
+    contact_id INTEGER REFERENCES contacts(id),   -- NULL: to Lea (the operator)
+    channel TEXT NOT NULL CHECK (channel IN ('telegram', 'sms')),
+    text TEXT NOT NULL,
+    from_person INTEGER REFERENCES people(id),    -- who asked for it, to tell them how it went
+    status TEXT NOT NULL CHECK (status IN ('pending', 'sent', 'failed')),
+    attempts INTEGER NOT NULL DEFAULT 0,
+    next_try_utc TEXT NOT NULL,
+    expires_at_utc TEXT NOT NULL,
+    sent_at_utc TEXT,
+    error TEXT,
+    group_id INTEGER,                 -- one request (a call for help goes by Telegram and SMS)
+    told INTEGER NOT NULL DEFAULT 0   -- 0 nothing to tell, 1 they heard "not yet", 2 settled
+);
+CREATE INDEX IF NOT EXISTS family_out_pending ON family_out(status) WHERE status = 'pending';
+
+-- Messages from family (Telegram), read aloud only when asked. Quoted content.
+CREATE TABLE IF NOT EXISTS family_in (
+    id INTEGER PRIMARY KEY,
+    received_at_utc TEXT NOT NULL,
+    contact_id INTEGER NOT NULL REFERENCES contacts(id),
+    text TEXT NOT NULL,
+    read_at_utc TEXT
+);
+
+-- Small values: the Telegram update offset, Lea's chat, pairing codes.
+CREATE TABLE IF NOT EXISTS family_state (
+    key TEXT PRIMARY KEY,
+    value TEXT NOT NULL
+);
 """
 
 
@@ -281,6 +319,9 @@ def _migrate(conn: sqlite3.Connection) -> None:
     if "help_contact" not in cols:
         conn.execute("ALTER TABLE contacts ADD COLUMN help_contact INTEGER NOT NULL DEFAULT 0")
         conn.execute("ALTER TABLE contacts ADD COLUMN for_person INTEGER REFERENCES people(id)")
+    if "telegram_chat_id" not in cols:
+        conn.execute("ALTER TABLE contacts ADD COLUMN telegram_chat_id TEXT")
+        conn.execute("ALTER TABLE contacts ADD COLUMN phone TEXT")
 
 
 def utc_iso(dt: datetime) -> str:

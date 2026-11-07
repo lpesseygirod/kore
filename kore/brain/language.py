@@ -135,3 +135,92 @@ def looks_english(text: str) -> bool:
     en = sum(w in ENGLISH_WORDS for w in words)
     es = sum(fold(w) in SPANISH_WORDS for w in words)
     return en >= 3 and en > 2 * es
+
+
+# --- "Pepe, ayuda": the emergency phrase, recognised by code (BUILD-PLAN 0b.2) -----------------
+#
+# What counts sends a message at once if they agreed at setup, so both mistakes matter: a real call
+# missed, or "AYUDA" sent to the family for a picture falling off the wall. Rules:
+# - a help word near the start ("Pepe, ayuda, me duele el pecho", "¡Que alguien me ayude!"), unless it's
+#   a noun ("qué ayuda", "la ayuda a domicilio") or a task follows ("ayúdame con la compra", "ayuda a
+#   buscar las gafas"); "¿me ayuda?" is a question about something, not a call.
+# - "socorro"/"auxilio" only as a cry ("¡socorro!", "socorro, Pepe"), never "Ha venido Socorro".
+# - a fall said in the first person, or a person at home falling ("Toni se ha caído", "mi marido se ha
+#   caído"); never a thing ("el cuadro se ha caído"), a denial ("no me he caído") or an old story.
+# Anything else urgent ("no puedo respirar") is for Claude, which can only ask before anything is sent.
+
+HELP_WORDS = {"ayuda", "ayudame", "ayudeme", "ayude", "ayudenme", "ayudadme", "ayudarme", "help"}
+CRIES = {"socorro", "auxilio"}
+# Before the help word: "Pepe", greetings of panic, "que alguien me", "necesito", "soy Carmen".
+BEFORE_OK = {"pepe", "por", "favor", "que", "alguien", "me", "ya", "oh", "ay", "dios", "mio", "madre", "necesito",
+             "pide", "pidele", "llama", "avisa", "a", "mi", "hija", "hijo", "familia", "soy", "corre", "rapido",
+             "please", "i", "need", "urgente", "socorro", "auxilio"}
+NOUN_BEFORE = {"una", "la", "tu", "su", "mucha", "gran", "buena", "esta", "esa", "de", "sin", "con", "tanta",
+               "poca", "otra", "tus", "sus", "mas"}
+TASK_AFTER = {"con", "para", "en"}  # "ayúdame con la compra"; "a" is a task unless it's getting up
+CRY_AFTER_OK = {"pepe", "socorro", "auxilio", "ayuda", "ayudame", "por", "favor", "que", "me", "he", "caido",
+                "alguien", "ya", "rapido", "corre"}
+FALL_FIRST = ["me he caido", "me acabo de caer", "me he ido al suelo", "estoy en el suelo", "i fell",
+              "i've fallen", "i have fallen"]
+CANT_GET_UP = ["no me puedo levantar", "no puedo levantarme", "can't get up", "cannot get up"]
+NOT_NOW_AFTER = {"temprano", "pronto", "tan", "como", "sin", "de", "antes", "tarde", "bien", "solo", "sola"}
+FALL_NEGATIONS = {"no", "casi", "nunca", "not", "never", "almost", "si", "cuando", "vez"}
+SPOUSE = {"marido", "mujer", "esposo", "esposa", "pareja"}
+
+
+def help_requested(text: str, names: list[str] | None = None) -> str | None:
+    """'help' for the emergency phrase, 'fall' for a fall, else None. `names`: how people at home are called."""
+    words = fold(text).split()
+    if not words:
+        return None
+    if _fall(words, {w for n in (names or []) for w in fold(n).split()}):
+        return "fall"
+    for i, w in enumerate(words):
+        if w in CRIES:
+            rest = words[i + 1:]
+            if (i == 0 or all(b in BEFORE_OK for b in words[:i])) and all(x in CRY_AFTER_OK for x in rest[:3]):
+                return "help"
+        if w in HELP_WORDS and i <= 6:
+            before = words[:i]
+            after = words[i + 1:]
+            if before and (before[-1] in NOUN_BEFORE or (before[-1] == "que" and w == "ayuda")):
+                return None  # "una ayuda", "qué ayuda": the noun
+            if not all(b in BEFORE_OK or (k > 0 and before[k - 1] == "soy") for k, b in enumerate(before)):
+                continue
+            if w in ("ayuda", "help") and before and before[-1] == "me" and "que" not in before:
+                return None  # "¿me ayuda?" / "¿me ayuda a…?": a question, not a call
+            if after and after[0] in TASK_AFTER:
+                return None
+            if after and after[0] == "a" and not (len(after) > 1 and after[1].startswith("levant")):
+                return None
+            return "help"
+    return None
+
+
+def _fall(words: list[str], names: set[str]) -> bool:
+    padded = " " + " ".join(words) + " "
+    for phrases, check_after in ((FALL_FIRST, False), (CANT_GET_UP, True)):
+        for p in phrases:
+            i = padded.find(f" {p} ")
+            if i < 0:
+                continue
+            before = padded[:i].split()
+            after = padded[i + len(p) + 2:].split()
+            if not p.startswith("no ") and before and before[-1] in FALL_NEGATIONS:
+                continue
+            if check_after and after and after[0] in NOT_NOW_AFTER:
+                continue  # "ya no me puedo levantar temprano"
+            if p == "me he caido" and after[:2] in (["alguna", "vez"], ["muchas", "veces"]):
+                continue
+            return True
+    for p in ("se ha caido", "se acaba de caer"):
+        i = padded.find(f" {p} ")
+        if i < 0:
+            continue
+        before = padded[:i].split()
+        after = padded[i + len(p) + 2:].split()
+        if before and (before[-1] in names or before[-1] in SPOUSE):
+            return True
+        if not before and after and after[0] in names:  # "Se ha caído Toni"
+            return True
+    return False

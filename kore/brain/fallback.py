@@ -38,6 +38,8 @@ def spoken_date(d: date) -> str:
 
 
 def _join(items: list[str]) -> str:
+    if not items:
+        return "la familia"
     return items[0] if len(items) == 1 else ", ".join(items[:-1]) + " y " + items[-1]
 
 
@@ -103,6 +105,15 @@ def phrase(event, manner: str = "say") -> str | None:
         if d.get("person"):
             return f"Por cierto, ¿ha vuelto ya {d['person']}? Si es así, retomo sus recordatorios."
         return "Hola. Si ya hay alguien de vuelta en casa, basta con decírmelo y retomo los recordatorios."
+    if k == "help_sent_late":
+        return f"Ya he podido avisar a {_join(d['to'])}."
+    if k == "help_not_sent":
+        return ("Sigo sin poder avisar a nadie. Hay que llamar con el teléfono "
+                "o pulsar el botón de la teleasistencia.")
+    if k == "message_sent_late":
+        return f"Ya he podido mandar el mensaje a {_join(d['to'])}."
+    if k == "message_not_sent":
+        return f"Al final no he podido mandar el mensaje a {_join(d['to'])}. Se puede volver a intentar más tarde."
     return None  # family alerts etc. are messages, not speech
 
 

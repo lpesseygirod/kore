@@ -82,8 +82,8 @@ STEPS = [
          "Ask whether, if they miss their medicine several times in a row, you may let their help contact know.",
          "propose_permission family_missed_meds, or record_permission_no (either closes the step)."),
     Step("emergency", "person",
-         "Ask whether, if they say 'Pepe, ayuda' or press the button, you may message their help contact straight "
-         "away, without asking first.",
+         "Ask whether, if they say 'Pepe, ayuda', tell you they've fallen, or press the button, you may message "
+         "their help contact straight away, without asking first. (If not, you'll always ask first.)",
          "propose_permission emergency_path, or record_permission_no (either closes the step)."),
     Step("share", "person",
          "Ask whether the other person at home may hear from you whether they've taken their medicine.",

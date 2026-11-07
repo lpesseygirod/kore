@@ -14,7 +14,7 @@ from kore.scenarios import judge, runner
 from tests.conftest import at
 
 SCENARIOS = runner.load()
-STEP_KEYS = {"say", "at", "presence", "inbox", "end_conversation"}
+STEP_KEYS = {"say", "at", "presence", "inbox", "end_conversation", "online", "family_message", "button"}
 
 
 def chatty(req):

@@ -17,9 +17,11 @@ from __future__ import annotations
 
 import json
 from dataclasses import dataclass, field
+from typing import Callable
 
 from kore.brain import fallback, tools
-from kore.brain.language import looks_english
+from kore.brain.language import help_requested, is_affirmative, looks_english
+from kore.family import messages as family_msgs
 from kore.brain.prompt import SYSTEM_PROMPT, state_block
 from kore.feedback import store as feedback
 from kore.memory import settings
@@ -63,13 +65,60 @@ class Brain:
     calls: list[ToolCall] = field(default_factory=list)
     responses: list[dict] = field(default_factory=list)
     dropped: list[str] = field(default_factory=list)  # text kept from the voice (notes in English), for Lea
+    # The voice loop sets this to speak code's own lines (help) at once, before Claude answers.
+    say_now: Callable[[str], None] | None = None
 
-    # --- the two ways a turn starts ---------------------------------------------
+    # --- the ways a turn starts ---------------------------------------------------
 
     def hear(self, text: str) -> str:
         """The person said `text`. Returns what Pepe says."""
-        self.ctx.session.begin_turn(text)
-        return self._turn([{"type": "text", "text": f"They say: {text}"}])
+        s = self.ctx.session
+        s.begin_turn(text)
+        said, note = self._help_first(text)
+        content = [{"type": "text", "text": f"They say: {text}"}]
+        if note:
+            content.append({"type": "text", "text": note})
+        return self._with(said, self._turn(content))
+
+    def button(self) -> str:
+        """The help button was pressed. Code acts at once; Claude then keeps them company."""
+        s = self.ctx.session
+        s.begin_turn("")
+        pending = [p for p in s.pending.values() if p.status == "pending" and p.kind == "send_help"]
+        if pending:  # pressing the button answers "¿Aviso a Lucía?"
+            said = tools.run_by_code(self.ctx, pending[-1])["say"]
+            note = (f"The help button was pressed after Pepe asked whether to tell someone; the help path (code) "
+                    f"ran. Pepe already said: «{said}». Don't repeat it. Stay calm and with them.")
+            return self._with(said, self._turn([{"type": "text", "text": note}]))
+        out = self.ctx.link().call_for_help(s, "button")
+        note = (f"The help button was pressed. Help path (code): {out.summary()}. Pepe already said: «{out.say}». "
+                "Don't repeat it. Stay calm and with them; ask simply how they are.")
+        return self._with(out.say, self._turn([{"type": "text", "text": note}]))
+
+    def _help_first(self, text: str) -> tuple[str, str]:
+        """'Pepe, ayuda', a fall, or the yes to "¿Aviso a Lucía?": done by code before Claude sees the turn."""
+        s = self.ctx.session
+        pending = [p for p in s.pending.values() if p.status == "pending" and p.kind == "send_help"]
+        kind = help_requested(text, [a for p in s.household for a in p.aliases])
+        if pending and (is_affirmative(text) or kind):  # "¡ayuda!" answers "¿Aviso a Lucía?" too
+            said = tools.run_by_code(self.ctx, pending[-1])["say"]
+            return said, (f"They said yes, and the help path (code) ran. Pepe already said: «{said}». "
+                          "Don't repeat it. Stay calm and with them.")
+        if kind is None:
+            return "", ""
+        out = self.ctx.link().call_for_help(s, kind, text)
+        return out.say, (f"Help path (code), after their words: {out.summary()}. Pepe already said: «{out.say}». "
+                         "Don't repeat it or send anything else. "
+                         + ("Wait for their answer to that question. " if out.asked else "")
+                         + "Stay calm and with them; ask simply how they are.")
+
+    def _with(self, said: str, reply: str) -> str:
+        if not said:
+            return reply
+        if self.say_now is not None:
+            self.say_now(said)
+            return reply
+        return f"{said} {reply}".strip()
 
     def speak_event(self, item: Item) -> str | None:
         """Pepe speaks first: word an event from the scheduler, in the manner the gate chose."""
@@ -142,6 +191,11 @@ class Brain:
             lines.append("They asked for quiet: answer only what they ask, very briefly.")
         people = {s.speaker_id: names[s.speaker_id]} if s.speaker_id is not None else names
         lines += feedback.prompt_lines(ctx.conn, ctx.clock, people)
+        unread = family_msgs.unread(ctx.conn, s.speaker_id)
+        if unread and not modes.active(ctx.conn, ctx.clock, "visitors"):
+            senders = sorted({r["name"] for r in unread})
+            lines.append(f"Unread messages from family ({', '.join(senders)}): mention it once if it fits; "
+                         "read them with read_messages only when they ask.")
         when = f"{fallback.spoken_date(now.date())}, {now.strftime('%H:%M')}"
         forms = {names[p.id]: _form(settings.stored(ctx.conn, "address", p.id) or self.forms.get(p.name, "usted"))
                  for p in s.household}
@@ -162,6 +216,11 @@ class Brain:
                         out.append(("Persona", b["text"][len("They say: "):]))
                     elif b.get("type") == "text" and b["text"].startswith("Event from the scheduler"):
                         out.append(("Evento", b["text"]))
+                    elif b.get("type") == "text" and "Pepe already said: «" in b["text"]:
+                        if b["text"].startswith("The help button"):
+                            out.append(("Persona", "[pulsa el botón de ayuda]"))
+                        said = b["text"].split("Pepe already said: «", 1)[1].split("»", 1)[0]
+                        out.append(("Pepe", said))  # code's own line (help)
             else:
                 text = " ".join(speakable(b["text"])[0] for b in m["content"] if b.get("type") == "text").strip()
                 if text:

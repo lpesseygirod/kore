@@ -34,7 +34,10 @@ from kore.brain.costs import BudgetExceeded
 from kore.brain.conversation import Brain
 from kore.brain.language import fold
 from kore.brain.session import Person, Session
-from kore.manners.gate import Manners
+from kore.family import messages as family_msgs
+from kore.family.channels import FakeChannel
+from kore.family.service import Family
+from kore.manners.gate import FAMILY, Manners
 from kore.memory import meds, settings, store
 from kore.memory.db import connect
 from kore.scenarios import judge
@@ -113,8 +116,19 @@ class Home:
         for a in h.get("appointments", []):
             store.add_appointment(self.conn, self.clock, self.ids.get(a.get("person")), a["title"],
                                   self.when(a["at"]), a.get("location", ""))
+        # Family accounts are fakes: nothing leaves the computer. "offline": the internet is unplugged.
+        self.tg = FakeChannel("telegram", online=not h.get("offline"))
+        self.sms = FakeChannel("sms", online=not h.get("offline"))
+        self.family = Family(self.conn, self.clock, {"telegram": self.tg, "sms": self.sms})
+        self.chats: dict[str, str] = {}
         for c in h.get("contacts", []):
-            store.add_contact(self.conn, self.clock, c["name"], c.get("relation", ""), c.get("birthday"))
+            cid = store.add_contact(self.conn, self.clock, c["name"], c.get("relation", ""), c.get("birthday"),
+                                    help_contact=c.get("help", False), for_person=self.ids.get(c.get("for")))
+            if c.get("telegram"):
+                self.chats[c["name"]] = f"chat{cid}"
+                self.conn.execute("UPDATE contacts SET telegram_chat_id = ? WHERE id = ?", (f"chat{cid}", cid))
+            if c.get("phone"):
+                family_msgs.set_phone(self.conn, cid, c["phone"])
         if h.get("list"):
             store.add_to_list(self.conn, self.clock, h["list"])
         for key, value in h.get("settings", {}).items():
@@ -139,7 +153,7 @@ class Home:
                     if not (st.two_people_only and len(people) < 2):
                         progress.mark(self.conn, self.clock, st.id, pid)
         self.session = Session(people)
-        self.ctx = tools.Context(self.conn, self.clock, self.session)
+        self.ctx = tools.Context(self.conn, self.clock, self.session, family=self.family)
         self.brain = Brain(self.ctx, client, forms=h.get("forms", {}))
         self.engine = Engine(self.conn, self.clock, hot_day=h.get("hot_day", False))
         self.manners = Manners(self.conn, self.clock)
@@ -161,7 +175,10 @@ class Home:
 
     def speak_ready(self) -> None:
         for item in self.manners.next_items():
-            self.brain.speak_event(item)
+            if item.manner == FAMILY:
+                self.family.handle_item(item)  # a message, never spoken
+            else:
+                self.brain.speak_event(item)
             self.manners.mark_done(item)
 
     def advance_to(self, spec: str) -> None:
@@ -169,6 +186,7 @@ class Home:
         while self.clock.now() < until:
             self.clock.advance(minutes=1)
             self.manners.submit(self.engine.tick())
+            self.manners.submit(self.family.tick())
             self.manners.tick()
             self.speak_ready()
 
@@ -179,8 +197,16 @@ class Home:
             self.presence(s["presence"])
         if "inbox" in s:
             self.ctx.inbox = list(s["inbox"])
+        if "online" in s:
+            self.tg.online = self.sms.online = bool(s["online"])
+        if "family_message" in s:  # a family member writes to the bot
+            m = s["family_message"]
+            self.tg.push(self.chats[m["from"]], m["text"])
+            family_msgs.poll(self.conn, self.clock, self.tg)
         if s.get("end_conversation"):
             self.session.end_conversation()
+        if s.get("button"):
+            self.brain.button()
         if "say" in s:
             self.brain.hear(s["say"])
 
