@@ -10,6 +10,7 @@ Times are stored as UTC ISO strings, so they sort and compare as text.
 from __future__ import annotations
 
 import sqlite3
+import time
 from datetime import datetime, timezone
 from pathlib import Path
 
@@ -462,12 +463,12 @@ def connect(path: str | Path = ":memory:", shared: bool = False) -> sqlite3.Conn
         Path(path).parent.mkdir(parents=True, exist_ok=True)
     conn = sqlite3.connect(str(path), isolation_level=None, check_same_thread=not shared)  # explicit transactions
     conn.row_factory = sqlite3.Row
+    conn.execute("PRAGMA busy_timeout = 5000")  # the voice loop and the web page share the file
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA secure_delete = ON")
     if path != ":memory:":
-        conn.execute("PRAGMA journal_mode = WAL")
+        _wal(conn)
     conn.execute("PRAGMA synchronous = FULL")
-    conn.execute("PRAGMA busy_timeout = 5000")  # the voice loop and the web page share the file
     conn.executescript(SCHEMA)
     _migrate(conn)
     conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
@@ -491,6 +492,19 @@ def _needs_migration(conn: sqlite3.Connection) -> bool:
                 and {"help_contact", "telegram_chat_id", "whatsapp_number"} <= _cols(conn, "contacts")
                 and "contact_id" in _cols(conn, "web_codes") and "photo_id" in _cols(conn, "chat")
                 and _family_out_takes_whatsapp(conn))
+
+
+def _wal(conn: sqlite3.Connection) -> None:
+    """Switching a file to WAL doesn't wait for another program opening it at the same moment (the voice loop and
+    the web page starting together): retry for a few seconds. Once a file is in WAL it stays so."""
+    for attempt in range(50):
+        try:
+            conn.execute("PRAGMA journal_mode = WAL")
+            return
+        except sqlite3.OperationalError as e:
+            if "locked" not in str(e) or attempt == 49:
+                raise
+            time.sleep(0.1)
 
 
 def _migrate(conn: sqlite3.Connection) -> None:
