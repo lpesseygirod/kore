@@ -12,3 +12,5 @@ __pycache__/
 *.db-wal
 *.db-shm
 .pytest_cache/
+pepe-model/data/
+pepe-model/models/

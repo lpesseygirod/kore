@@ -1,5 +1,9 @@
 # KORE — Build Plan
 
+> **Two parts (Lea's decision, 2026-11-08).** Part 1, *Pepe the app*: this plan, with Claude as the brain.
+> Part 2, *Pepe's model*: an open model trained only to be Pepe, on Lea's hardware. It has its own plan in
+> `pepe-model/README.md` and meets part 1 through one adapter. Nothing in part 1 waits for part 2.
+
 How to turn the KORE design document into a working device (KORE is the product; Pepe is the companion's default name and wake word), built mostly by Claude Code on your Mac. It covers the architecture, the services to use, the risks, the phases with clear "done" checks, what only you can do, and a ready-to-paste starting prompt.
 
 ## 0. My verdict on your idea
