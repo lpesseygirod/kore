@@ -34,6 +34,7 @@ from pathlib import Path
 
 from kore.brain import fallback, tools
 from kore.brain.conversation import Brain
+from kore.brain.language import help_requested
 from kore.brain.session import Person, Session
 from kore.family import backup
 from kore.family import messages as family_msgs
@@ -53,6 +54,13 @@ NEW_CONVERSATION = timedelta(minutes=30) # Claude's copy of the conversation sta
 MAX_TURNS = 40
 REPLY_WAIT = timedelta(minutes=2)        # no answer to something Pepe started: "ignored"
 LOOKING = "A ver."
+# Something in the help path itself failed (a database error, a bug): never silence, and never a false "sent".
+HELP_UNSURE = "No sé si he podido avisar. Hay que llamar con el teléfono o pulsar el botón de la teleasistencia."
+BACKUP_EVERY_S = 60
+
+
+class HelpFirst(Exception):
+    """The help button was held during a turn: the turn stops so help goes at once."""
 
 REPEAT = re.compile(r"(?:pepe[,\s]*)?(?:¿\s*)?(?:qué|que|cómo|como|eh|perdona|perdón|repite|repítelo|repítemelo|"
                     r"no te he oído|no te he entendido|no te oigo|otra vez)(?:\s*\?)?[\s.!?]*", re.I)
@@ -86,7 +94,14 @@ class Home:
         self._in_turn = False
         self._t0: float | None = None
         self._first_word_ms: int | None = None
+        self._help_turn = False
+        self._worded: dict[int, str] = {}       # outbox id -> the words Claude chose, until really said
+        self._last_backup_check = -BACKUP_EVERY_S
+        # The box sets this: True while a help press is waiting, so a turn in progress stops for it.
+        self.help_waiting = lambda: False
+        self.progress = monotonic()             # last sign of life of the loop (for the systemd watchdog)
         self._new_conversation()
+        self._chat_mark = self._max_chat_id()
 
     # --- what the ears hand over --------------------------------------------------------------
 
@@ -103,6 +118,8 @@ class Home:
         text = " ".join(text.split())
         if not text:
             return None
+        if self.help_waiting():
+            return None  # help first; these words can wait
         self._start_turn(ended_at)
         if self.awaiting is not None:
             self.manners.note_reply("not_now" if NOT_NOW.search(text) else
@@ -110,8 +127,16 @@ class Home:
             self.awaiting = None
         try:
             reply = self.brain.hear(text)
+        except HelpFirst:
+            reply = ""
+            self._broken = True  # Claude's copy ends mid-turn: start afresh
         except Exception:  # no connection, the day's budget reached, an API error: say something true
-            reply = fallback.CONNECTION_PROBLEM
+            names = [a for p in self.session.household for a in p.aliases]
+            asked_for_help = help_requested(text, names) is not None or any(
+                p.status == "pending" and p.kind == "send_help" for p in self.session.pending.values())
+            reply = HELP_UNSURE if asked_for_help and not self._turn_lines else fallback.CONNECTION_PROBLEM
+            if asked_for_help and not self._turn_lines:
+                self._tell_lea_help_failed()
             self._broken = True
         if REPEAT.fullmatch(text):
             feedback.note_signal(self.conn, self.clock, self.session.speaker_id, "repeat_request")
@@ -122,14 +147,30 @@ class Home:
     def help_button(self, ended_at: float | None = None) -> str:
         """The help button. Code acts at once (Brain.button); Claude keeps them company after."""
         self._start_turn(ended_at)
+        self._help_turn = True
         try:
             reply = self.brain.button()
         except Exception:
-            reply = ""  # code's own line was already said; Claude's part is the one that failed
+            if self._turn_lines:
+                reply = ""  # code's own line was already said; Claude's part is the one that failed
+            else:  # the help path itself failed: say so, never silence
+                reply = HELP_UNSURE
+                self._tell_lea_help_failed()
             self._broken = True
-        self._say(reply)
+        finally:
+            self._help_turn = False
+        self._say(reply, help_line=True)
         self._end_turn("")
         return " ".join(self._turn_lines)
+
+    def _tell_lea_help_failed(self) -> None:
+        try:
+            family_msgs.queue(self.conn, self.clock, "operator", "telegram",
+                              "Pepe: alguien ha pedido ayuda y el aviso ha fallado por un error del aparato. "
+                              "Revisa el registro (journalctl -u kore-home).")
+            family_msgs.deliver(self.conn, self.clock, self.channels)
+        except Exception:
+            pass
 
     def presence(self, state: str) -> None:
         """The sensor: 'moving' | 'still' | 'absent'."""
@@ -147,7 +188,8 @@ class Home:
                 self.info.tick()  # never blocks: a finished fetch is stored next tick
             except Exception:
                 pass
-        if self.backups:
+        if self.backups and self.monotonic() - self._last_backup_check >= BACKUP_EVERY_S:
+            self._last_backup_check = self.monotonic()
             self._in_background("backup", self._backup)
         if self.heartbeat is not None:
             self._in_background("heartbeat", self.heartbeat.tick)
@@ -169,18 +211,30 @@ class Home:
                 continue
             if talking and item.event.kind not in HELP_NEWS:
                 continue  # not in the middle of a conversation; it stays ready
+            if self.help_waiting():
+                return  # help first
             if item.manner == SIGNAL:
                 self.voice.chime()
                 words = fallback.phrase(item.event, SIGNAL)  # private: no words about what it is
+            elif item.event.kind == "morning_greeting" and item.manner != "say":
+                # Short (quiet, night): code's own short line. Claude, with its tools, could look up and say
+                # someone's own medicines; a short line shouldn't hold anything private.
+                words = fallback.phrase(item.event, item.manner)
+            elif item.id in self._worded:
+                words = self._worded[item.id]  # worded before but not said yet: not asked again
             else:
+                self._fresh_if_stale(now)
                 try:
                     words = self.brain.speak_event(item)
                 except Exception:
                     words = None
                     self._broken = True
                 words = words or fallback.phrase(item.event, item.manner)
+                if words:
+                    self._worded[item.id] = words
             if words and not self.voice.say(words, self._voice_settings(item.event.person_ids)):
                 break  # not said (speaker broken, or talked over): it stays ready, said on a later tick
+            self._worded.pop(item.id, None)
             self.manners.mark_done(item)
             if words:
                 self.last_words = now
@@ -247,18 +301,31 @@ class Home:
         self.started = self.clock.now()
         self.turns = 0
         self._broken = False
-        row = self.conn.execute("SELECT max(id) FROM chat").fetchone()[0]
-        self._chat_mark = row or 0  # this conversation's lines in their history come after this
 
-    def _start_turn(self, ended_at: float | None) -> None:
-        now = self.clock.now()
+    def _max_chat_id(self) -> int:
+        return self.conn.execute("SELECT max(id) FROM chat").fetchone()[0] or 0
+
+    def _fresh_if_stale(self, now: datetime) -> bool:
+        """Claude's copy of the conversation starts afresh after a gap, on a new day, after many turns or an
+        error: before their turns and before Pepe speaks first (else it grows for days). True if it did."""
         pending = any(p.status == "pending" for p in self.session.pending.values())
         last = self.last_words
         gap = now - last if last is not None else None
         stale = gap is None or not timedelta(0) <= gap <= NEW_CONVERSATION
         if self._broken or self.turns >= MAX_TURNS or now.date() != self.started.date() or (stale and not pending):
             self._new_conversation()
-        elif gap is not None and gap > END_SILENCE:
+            return True
+        return False
+
+    def _start_turn(self, ended_at: float | None) -> None:
+        now = self.clock.now()
+        last = self.last_words
+        gap = now - last if last is not None else None
+        if gap is None or not timedelta(0) <= gap <= END_SILENCE:
+            # A new conversation for the people at home: "olvídalo" removes their lines from here on (Claude's
+            # copy may start afresh more often: after an error, at midnight, after many turns).
+            self._chat_mark = self._max_chat_id()
+        if not self._fresh_if_stale(now) and gap is not None and gap > END_SILENCE:
             self.session.end_conversation()  # who was speaking, and any open question, are forgotten
         self._t0 = ended_at if ended_at is not None else self.monotonic()
         self._first_word_ms = None
@@ -269,14 +336,21 @@ class Home:
 
     def _looking_it_up(self) -> None:
         """Claude needs a tool before answering: if nothing has been said yet in this turn, a short "A ver."
-        now, so they know they were heard (only in their own turns, not when Pepe speaks first)."""
+        now, so they know they were heard (only in their own turns, not when Pepe speaks first).
+        A help press waiting stops the turn here."""
+        self.progress = self.monotonic()
+        if self.help_waiting() and not self._help_turn:
+            raise HelpFirst()
         if self._t0 is not None and not self._turn_lines and self._in_turn:
             self._say(LOOKING)
 
-    def _say(self, text: str) -> None:
+    def _say(self, text: str, help_line: bool = False) -> None:
         text = (text or "").strip()
         if not text:
             return
+        self.progress = self.monotonic()
+        if self.help_waiting() and not (help_line or self._help_turn):
+            return  # help first: the rest of this answer isn't said
         if self._first_word_ms is None and self._t0 is not None:
             self._first_word_ms = int((self.monotonic() - self._t0) * 1000)
         self._turn_lines.append(text)

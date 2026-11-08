@@ -215,8 +215,11 @@ class ElevenVoice:
     talked over it: that needs the speakerphone's echo cancelling (phase 1, on the box)."""
 
     def __init__(self, api_key: str, voice_id: str = DEFAULT_VOICE_ID, model: str = TTS_MODEL, base: str = BASE,
-                 timeout: float = TIMEOUT_S, player=play_wav, language: str = "es"):
+                 timeout: float = TIMEOUT_S, player=play_wav, language: str = "es", cache_dir: Path | None = None):
         self._key = api_key
+        # Lines kept on the box (prepare): said from here, with no internet and at no cost. Only code's fixed
+        # lines (help outcomes, "I can't hear you"...), so Pepe is never silent when the connection is down.
+        self.cache_dir = cache_dir
         self.voice_id = voice_id
         self.model = model
         self._base = base.rstrip("/")
@@ -233,6 +236,52 @@ class ElevenVoice:
         if not text or not text.strip():
             return True
         settings = settings or {}
+        gain = VOLUMES.get(settings.get("volume", "normal"), VOLUMES["normal"])
+        kept = self._cached(text)
+        if kept is not None:
+            return self._play(_wav(_scaled(kept, gain), OUTPUT_RATE))
+        pcm = self._synth(text, settings)
+        if pcm is None:
+            return False
+        return self._play(_wav(_scaled(pcm, gain), OUTPUT_RATE))
+
+    def prepare(self, lines: list[str], settings: dict | None = None) -> int:
+        """Record these lines once, while online, to say them later without the internet. Returns how many are
+        kept now. Never raises."""
+        if self.cache_dir is None:
+            return 0
+        kept = 0
+        for line in lines:
+            if self._cached(line) is not None:
+                kept += 1
+                continue
+            pcm = self._synth(line, settings or {})
+            if pcm is None:
+                continue
+            try:
+                self.cache_dir.mkdir(parents=True, exist_ok=True)
+                tmp = self._cache_file(line).with_suffix(".tmp")
+                tmp.write_bytes(pcm)
+                tmp.replace(self._cache_file(line))
+                kept += 1
+            except OSError:
+                pass
+        return kept
+
+    def _cache_file(self, text: str) -> Path:
+        import hashlib
+        name = hashlib.sha256(f"{self.voice_id}|{self.model}|{text}".encode()).hexdigest()[:32]
+        return self.cache_dir / f"{name}.pcm"
+
+    def _cached(self, text: str) -> bytes | None:
+        if self.cache_dir is None:
+            return None
+        try:
+            return self._cache_file(text).read_bytes()
+        except OSError:
+            return None
+
+    def _synth(self, text: str, settings: dict) -> bytes | None:
         body = {"text": text, "model_id": self.model}
         if not self.model.startswith("eleven_multilingual_v2"):
             body["language_code"] = self.language
@@ -244,12 +293,11 @@ class ElevenVoice:
                                self._timeout)
         if status != 200:
             self.last_error = _error(status)
-            return False
+            return None
         if len(pcm) < 2:
             self.last_error = "no_audio"
-            return False
-        gain = VOLUMES.get(settings.get("volume", "normal"), VOLUMES["normal"])
-        return self._play(_wav(_scaled(pcm, gain), OUTPUT_RATE))
+            return None
+        return pcm
 
     def chime(self) -> None:
         """Two soft notes, made here: no sound file to ship."""
@@ -274,7 +322,7 @@ class ElevenVoice:
         return ok
 
 
-def from_env(env=None) -> tuple[ElevenSTT | None, ElevenVoice | None]:
+def from_env(env=None, cache_dir: Path | None = None) -> tuple[ElevenSTT | None, ElevenVoice | None]:
     """(ears, voice), or (None, None) until Lea sets ELEVENLABS_API_KEY."""
     env = os.environ if env is None else env
     key = (env.get(API_KEY_VAR) or "").strip()
@@ -282,4 +330,4 @@ def from_env(env=None) -> tuple[ElevenSTT | None, ElevenVoice | None]:
         return None, None
     voice_id = (env.get(VOICE_ID_VAR) or "").strip() or DEFAULT_VOICE_ID
     model = (env.get(TTS_MODEL_VAR) or "").strip() or TTS_MODEL
-    return ElevenSTT(key), ElevenVoice(key, voice_id=voice_id, model=model)
+    return ElevenSTT(key), ElevenVoice(key, voice_id=voice_id, model=model, cache_dir=cache_dir)

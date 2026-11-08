@@ -144,7 +144,7 @@ def _run_pi(a, clock, client) -> int:
     from kore.info.weather import OpenMeteo, Weather
     from kore.memory.db import connect
 
-    stt, eleven_voice = eleven.from_env()
+    stt, eleven_voice = eleven.from_env(cache_dir=Path(a.db).parent / "voice-lines")
     if eleven_voice is None:
         print("ELEVENLABS_API_KEY isn't set: Pepe can't hear or speak yet (kore-set-key ELEVENLABS_API_KEY).",
               file=sys.stderr)
@@ -160,12 +160,33 @@ def _run_pi(a, clock, client) -> int:
             from kore.home.mac import Heard
             return Heard("", error="stt_bad_key", on_device=False)
 
-    ears = PiEars(stt, on_ready=lit.chime) if stt is not None else NoEars()
+    from kore.home.pi_audio import arecord_frames, capture, until
+
+    def record():  # a help press while listening stops it at once
+        return capture(source=lambda: until(arecord_frames(), device.help_waiting))
+
+    ears = PiEars(stt, record=record, on_ready=lit.chime) if stt is not None else NoEars()
     box = Box(home, device, ears, lit)
+    if eleven_voice is not None:  # Pepe's lines that must work without the internet, recorded once while online
+        threading.Thread(target=eleven_voice.prepare, args=(_offline_lines(home),), daemon=True).start()
     signal.signal(signal.SIGTERM, lambda *_: box.stop.set())
     print("Pepe está en marcha en el aparato.", flush=True)
     box.run()
     return 0
+
+
+def _offline_lines(home) -> list[str]:
+    from kore.brain import fallback
+    from kore.family import messages as family_msgs
+    from kore.family import service
+    from kore.home import loop
+    from kore.home.pi import CANT_HEAR
+
+    lines = [service.NO_ONE, service.NOT_SENT, service.NOT_REACHED, loop.HELP_UNSURE, loop.LOOKING,
+             fallback.CONNECTION_PROBLEM, CANT_HEAR, "Sigo intentando avisar. " + service.PHONE_OR_TELEASISTENCIA]
+    names = sorted({c["name"] for c in family_msgs.help_contacts(home.conn, [p.id for p in home.session.household])})
+    lines += [f"Ya he avisado a {n} con un mensaje. Me quedo aquí." for n in names]
+    return lines
 
 
 if __name__ == "__main__":

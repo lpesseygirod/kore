@@ -15,6 +15,7 @@ from __future__ import annotations
 
 import io
 import math
+import select
 import subprocess
 import sys
 import time
@@ -27,6 +28,7 @@ from kore.home.mac import ERRORS as MAC_ERRORS
 from kore.home.mac import Heard
 
 RATE = 16000
+STALL_S = 2.0  # no sound data from the microphone for this long: stop
 FRAME_MS = 30
 FRAME_SAMPLES = RATE * FRAME_MS // 1000   # 480
 FRAME_BYTES = FRAME_SAMPLES * 2           # 960
@@ -154,6 +156,9 @@ def arecord_frames(device: str = "default", popen=subprocess.Popen) -> Iterator[
                  stdout=subprocess.PIPE, stderr=subprocess.DEVNULL)
     try:
         while True:
+            # A microphone that stops sending (unplugged, a stuck driver) must not hang Pepe: 2 s of nothing ends it.
+            if not _readable(proc.stdout, STALL_S):
+                return
             chunk = proc.stdout.read(FRAME_BYTES)
             if not chunk or len(chunk) < FRAME_BYTES:
                 return
@@ -164,6 +169,29 @@ def arecord_frames(device: str = "default", popen=subprocess.Popen) -> Iterator[
             proc.wait(timeout=2)
         except Exception:
             pass
+
+
+def _readable(f, timeout: float) -> bool:
+    """Data within `timeout` seconds? (Something without a file number, like a test's buffer, always is.)"""
+    try:
+        fd = f.fileno()
+    except (OSError, ValueError, AttributeError):
+        return True
+    return bool(select.select([fd], [], [], timeout)[0])
+
+
+def until(frames: Iterable[bytes], stop: Callable[[], bool]) -> Iterator[bytes]:
+    """The microphone until `stop()` (a help press while listening): listening ends at once."""
+    it = iter(frames)
+    try:
+        for chunk in it:
+            if stop():
+                return
+            yield chunk
+    finally:
+        close = getattr(it, "close", None)
+        if close:
+            close()
 
 
 def capture(source: Callable[[], Iterable[bytes]] | None = None,

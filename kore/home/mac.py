@@ -2,8 +2,8 @@
 Spanish voice as the mouth. Free, nothing to install or download.
 
 - MacEars: one turn of listening (after the key press, the stand-in for the button), by a small Swift helper built
-  on first use (kore/home/swift/ears.swift). Recognition runs on the Mac itself when macOS supports it for Spanish,
-  so the audio stays at home.
+  on first use (kore/home/swift/ears.swift). Recognition is Apple's service (the audio goes to Apple only after the
+  key press): on this Mac the on-device Spanish model gave empty or wrong text (see ears.swift).
 - MacVoice: macOS `say`, following their speed and volume settings. Blocking: Pepe never listens while talking,
   so he can't hear himself.
 """
@@ -50,6 +50,8 @@ ERRORS = {
     "mic_start": "No he podido abrir el micrófono. ¿Está conectado?",
     "build": "No he podido preparar el oído de Pepe (hace falta Xcode o sus herramientas de línea de comandos).",
     "timeout": "El oído de Pepe no ha contestado.",
+    "permission_timeout": "El Mac está preguntando si Pepe puede usar el micrófono: pulsa «Permitir» y vuelve a "
+                          "intentarlo.",
 }
 
 
@@ -64,7 +66,11 @@ def build(bin_dir: Path) -> Path:
     (app / "Contents" / "Info.plist").write_text(PLIST)
     subprocess.run(["swiftc", "-O", "-swift-version", "5", str(SOURCE), "-o", str(exe)], check=True,
                    capture_output=True, timeout=300)
-    subprocess.run(["codesign", "--force", "--sign", "-", str(app)], check=True, capture_output=True, timeout=60)
+    # Identified by its bundle id, not by this build's hash: macOS then keeps the microphone permission when the
+    # app is rebuilt, instead of asking again each time.
+    subprocess.run(["codesign", "--force", "--sign", "-", "--requirements",
+                    '=designated => identifier "com.kore.pepe.ears"', str(app)],
+                   check=True, capture_output=True, timeout=60)
     return app
 
 
@@ -87,7 +93,11 @@ class MacEars:
             app = build(self.bin_dir)
         except (OSError, subprocess.SubprocessError):
             return Heard("", error="build")
-        out = self.bin_dir / "heard.jsonl"
+        import os
+        import signal
+        import uuid
+
+        out = self.bin_dir / f"heard-{uuid.uuid4().hex}.jsonl"  # its own file: a late app can't answer another turn
         out.write_text("")
         try:  # through LaunchServices, so the app (not the terminal) is the one macOS asks about
             proc = subprocess.Popen(["open", "-W", "-n", "-g", "--stdout", str(out), "--stderr", "/dev/null",
@@ -97,6 +107,7 @@ class MacEars:
             return Heard("", error="build")
         result: dict = {}
         ready = False
+        pid = None
         deadline = time.monotonic() + 90  # the first time, the permission questions wait for a click
         while time.monotonic() < deadline:
             for line in out.read_text().splitlines():
@@ -104,7 +115,9 @@ class MacEars:
                     msg = json.loads(line)
                 except ValueError:
                     continue
-                if msg.get("ready") and not ready:
+                if "pid" in msg:
+                    pid = msg["pid"]
+                elif msg.get("ready") and not ready:
                     ready = True
                     if self.on_ready:
                         self.on_ready()
@@ -113,6 +126,11 @@ class MacEars:
             if result or proc.poll() is not None and not result and _settled(out):
                 break
             time.sleep(0.05)
+        if not result and pid:
+            try:
+                os.kill(pid, signal.SIGTERM)  # the app itself (stopping `open` alone would leave it running)
+            except OSError:
+                pass
         try:
             proc.wait(timeout=5)
         except subprocess.TimeoutExpired:
@@ -123,8 +141,12 @@ class MacEars:
                     msg = json.loads(line)
                 except ValueError:
                     continue
-                if not msg.get("ready"):
+                if not msg.get("ready") and "pid" not in msg:
                     result = msg
+        try:
+            out.unlink()
+        except OSError:
+            pass
         if not result:
             return Heard("", error="timeout")
         if result.get("error"):

@@ -22,6 +22,8 @@ from kore.manners import modes
 
 TICK_S = 5.0
 PUMP_S = 0.2
+CANT_HEAR = "Perdone, ahora no le he podido oír. Pruebe otra vez dentro de un momento."
+STUCK_S = 150  # no sign of life for this long: stop telling systemd we're alive, so it restarts Pepe
 
 
 class LitVoice:
@@ -38,8 +40,12 @@ class LitVoice:
             ok = self.voice.say(text, settings)
         finally:
             self.ring.show(self.idle)
-        if not ok:
+        if not ok:  # not even a kept line: at least a sound, and the light says something is wrong
             self.ring.show("error")
+            try:
+                self.voice.chime()
+            except Exception:
+                pass
         return ok
 
     def chime(self) -> None:
@@ -56,17 +62,19 @@ class Box:
         self.environ = environ
         self.stop = threading.Event()
         device.connect(home, talk=self.talk)
+        home.help_waiting = device.help_waiting  # a help press stops a turn in progress
 
     def talk(self) -> None:
         """A short press: one turn."""
         ring = self.device.ring
         ring.show("listening")
         heard = self.ears.listen()
+        if self.device.help_waiting():
+            return  # help was pressed while listening: help goes first
         if heard.error or not heard.text:
             ring.show(self._resting())
             if heard.error and heard.error != "no_speech":
-                self.home.voice.say("Perdone, ahora no le he podido oír. Pruebe otra vez dentro de un momento.",
-                                    {})
+                self.home.voice.say(CANT_HEAR, {})
             return
         ring.show("thinking")
         self.home.heard(heard.text, via="button", ended_at=heard.ended_at)
@@ -81,22 +89,47 @@ class Box:
 
     def run(self, max_ticks: int | None = None) -> None:
         systemd.ready(self.environ)
+        watchdog = threading.Thread(target=self._watchdog, daemon=True)
+        watchdog.start()
         ticks = 0
         next_tick = 0.0
         while not self.stop.is_set():
+            self._pump()  # help pressed while the last tick ran goes before the next tick
             now = self.monotonic()
+            self.home.progress = now
             if now >= next_tick:
-                self.home.tick()
-                resting = self._resting()
-                if self.lit is not None:
-                    self.lit.idle = resting
-                self.device.ring.show(resting)
-                systemd.alive(self.environ)
+                try:
+                    self.home.tick()
+                    resting = self._resting()
+                    if self.lit is not None:
+                        self.lit.idle = resting
+                    self.device.ring.show(resting)
+                except Exception as e:  # logged; help and the next tick still run
+                    _log("tick", e)
                 ticks += 1
                 next_tick = now + TICK_S
                 if max_ticks is not None and ticks >= max_ticks:
                     break
-            self.device.pump()
+            self._pump()
             self.stop.wait(PUMP_S)
         self.home.wait_for_background(2)
         self.device.close()
+
+    def _pump(self) -> None:
+        try:
+            self.device.pump()
+        except Exception as e:
+            _log("pump", e)
+
+    def _watchdog(self) -> None:
+        """Tell systemd we're alive while the loop shows signs of life (a long turn included); a stuck loop
+        stops the pings and gets restarted."""
+        while not self.stop.is_set():
+            if self.monotonic() - self.home.progress < STUCK_S:
+                systemd.alive(self.environ)
+            self.stop.wait(10)
+
+
+def _log(what: str, e: Exception) -> None:
+    import sys
+    print(f"kore: {what}: {type(e).__name__}: {e}", file=sys.stderr, flush=True)

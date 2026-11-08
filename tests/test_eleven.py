@@ -275,3 +275,14 @@ def test_default_player_picks_the_system_player(monkeypatch):
         raise FileNotFoundError(cmd[0])
 
     assert eleven.play_wav(wav, run=missing) is False
+
+
+def test_r_kept_lines_are_said_without_the_internet(tmp_path):
+    from kore.home.eleven import ElevenVoice
+    played = []
+    v = ElevenVoice("k", base="http://127.0.0.1:9", timeout=0.5, player=lambda w: played.append(w) or True,
+                    cache_dir=tmp_path)
+    assert v.prepare(["No he podido avisar a nadie."]) == 0  # offline: nothing to keep yet
+    (v._cache_file("No he podido avisar a nadie.")).write_bytes(b"\x00\x01" * 2400)  # as if kept while online
+    assert v.say("No he podido avisar a nadie.", {}) and played
+    assert not v.say("Otra frase", {})  # not kept, no internet

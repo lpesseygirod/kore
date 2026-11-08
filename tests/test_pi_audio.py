@@ -179,3 +179,39 @@ def test_whole_way_from_frames_to_words():
     heard = PiEars(stt, record=lambda: pi_audio.capture(lambda: iter(frames), clock=lambda: 9.0)).listen()
     assert heard.text == "Hola" and heard.ended_at == pytest.approx(9.0 - math.ceil(1300 / 30) * 0.03)
     assert duration(stt.got[0][0]) == pytest.approx(ms(800) * 0.03 + 2 * pi_audio.PAD_MS / 1000, abs=0.001)
+
+
+def test_a_stalled_microphone_ends_the_recording():
+    import os
+
+    r, w = os.pipe()  # nothing is ever written: a stuck microphone
+
+    class Proc:
+        def __init__(self, cmd, **kw):
+            self.stdout = os.fdopen(r, "rb")
+
+        def terminate(self):
+            pass
+
+        def wait(self, timeout=None):
+            return 0
+
+    old = pi_audio.STALL_S
+    pi_audio.STALL_S = 0.1
+    try:
+        assert pi_audio.capture(lambda: pi_audio.arecord_frames(popen=Proc)).reason == "mic_error"
+    finally:
+        pi_audio.STALL_S = old
+        os.close(w)
+
+
+def test_a_help_press_stops_listening_at_once():
+    frames = [quiet()] * ms(300) + [voiced()] * ms(10000)
+    pressed = {"n": 0}
+
+    def stop():
+        pressed["n"] += 1
+        return pressed["n"] > 40  # help pressed about a second in
+
+    rec = pi_audio.capture(lambda: pi_audio.until(iter(frames), stop), clock=lambda: 0.0)
+    assert pressed["n"] == 41 and rec.reason in ("speech", "no_speech", "mic_error")

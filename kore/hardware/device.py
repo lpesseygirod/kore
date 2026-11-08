@@ -59,9 +59,18 @@ class Device:
             else:
                 self._events.append(event)
 
+    def help_waiting(self) -> bool:
+        """A help press is queued: whatever the loop is doing stops for it."""
+        with self._lock:
+            return any(e[0] == "help" for e in self._events)
+
     def pump(self, now: float | None = None) -> int:
-        """Hand queued events to the Home, on the caller's thread. Returns how many."""
-        self.presence.poll(now)  # 'still' and 'absent' come from time passing, not from the pin
+        """Hand queued events to the Home, on the caller's thread. Returns how many. One event failing never
+        stops the others (help most of all)."""
+        try:
+            self.presence.poll(now)  # 'still' and 'absent' come from time passing, not from the pin
+        except Exception as e:
+            _log("presence", e)
         done = 0
         while True:
             with self._lock:
@@ -69,13 +78,16 @@ class Device:
                     return done
                 event = self._events.popleft()
             done += 1
-            if event[0] == "help":
-                self._home.help_button()
-            elif event[0] == "talk":
-                if self._talk:
-                    self._talk()
-            elif event[0] == "presence":
-                self._home.presence(event[1])
+            try:
+                if event[0] == "help":
+                    self._home.help_button()
+                elif event[0] == "talk":
+                    if self._talk:
+                        self._talk()
+                elif event[0] == "presence":
+                    self._home.presence(event[1])
+            except Exception as e:  # logged; the loop carries on (systemd restarts it only if it's stuck)
+                _log(event[0], e)
 
     def close(self) -> None:
         for part in (self.button, self.presence, self.ring):
@@ -86,10 +98,29 @@ class Device:
 
 
 def open_device(pins: Pins | None = None, real: bool | None = None) -> Device:
-    """The real parts on a Raspberry Pi; fakes anywhere else (or when real=False)."""
+    """The real parts on a Raspberry Pi; fakes anywhere else (or when real=False). A part that fails to start
+    (a loose light ring, a missing library) is replaced by its fake and logged: the rest of Pepe, help included,
+    keeps working (the self-test reports it)."""
     pins = pins or Pins.from_env()
     real = on_pi() if real is None else real
     if not real:
         return Device(FakeButton(pins.long_press_s), FakePresence(), FakeRing(pins.led_count, pins.led_brightness))
-    return Device(GpioButton(pins.button, pins.long_press_s), GpioPresence(pins.presence),
-                  SpiRing(pins.led_count, pins.led_brightness, pins.led_spi_bus, pins.led_spi_device))
+    return Device(_part("button", lambda: GpioButton(pins.button, pins.long_press_s),
+                        lambda: FakeButton(pins.long_press_s)),
+                  _part("presence", lambda: GpioPresence(pins.presence), FakePresence),
+                  _part("ring", lambda: SpiRing(pins.led_count, pins.led_brightness, pins.led_spi_bus,
+                                                pins.led_spi_device),
+                        lambda: FakeRing(pins.led_count, pins.led_brightness)))
+
+
+def _part(name: str, real, fake):
+    try:
+        return real()
+    except Exception as e:
+        _log(f"{name} not started", e)
+        return fake()
+
+
+def _log(what: str, e: Exception) -> None:
+    import sys
+    print(f"kore: {what}: {type(e).__name__}: {e}", file=sys.stderr, flush=True)

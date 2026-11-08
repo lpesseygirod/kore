@@ -197,8 +197,7 @@ def test_with_listening_declined_only_the_button_works(h):
 
 
 def test_every_turn_logs_its_timing_but_no_words(h, tmp_path):
-    ticks = iter([100.0, 100.8, 101.0, 101.0])
-    h.monotonic = lambda: next(ticks)
+    h.monotonic = lambda: 100.0
     h.claude.line = "Hola."
     h.heard("Hola Pepe", ended_at=99.5)
     entry = json.loads((tmp_path / "turns.jsonl").read_text().splitlines()[-1])
@@ -308,3 +307,99 @@ def test_no_a_ver_when_pepe_speaks_first_or_already_spoke(h):
     h.claude.client = _tool_then_text("Buenos días, Carmen.")
     h.brain.speak_event(Item(1, Event("morning_greeting", 1, [h.carmen], {"date": "2026-11-09"}), "say"))
     assert "A ver." not in h.v.said
+
+
+# --- from the review of the home loop and the box (2026-11-08) ---------------------------------------------
+
+
+def test_r_help_waiting_stops_a_turn_at_the_look_up(h):
+    pill(h, ["21:30"])
+    h.claude.client = _tool_then_text("Le toca a las nueve y media.")
+    waiting = {"now": False}
+    h.help_waiting = lambda: waiting["now"]
+    looking = h._looking_it_up
+
+    def press_then_look():  # the help button is held while Claude is looking something up
+        waiting["now"] = True
+        looking()
+    h._looking_it_up = press_then_look
+    h.heard("Soy Carmen. ¿A qué hora me toca la pastilla?")
+    assert h.v.said == []  # neither "A ver." nor the answer: help goes first
+    assert h.heard("¿Y mañana?") is None  # while help waits, nothing else starts
+
+
+def test_r_an_error_in_the_help_path_is_said_never_silence(h, monkeypatch):
+    def broken(*a, **k):
+        raise RuntimeError("database is locked")
+    monkeypatch.setattr(h.family, "call_for_help", broken)
+    h.help_button()
+    assert h.v.said == [__import__("kore.home.loop", fromlist=["x"]).HELP_UNSURE]
+    assert any("ha fallado" in r[0] for r in h.conn.execute("SELECT text FROM family_out WHERE kind = 'operator'"))
+    h.v.said.clear()
+    h.heard("Pepe, ayuda")
+    assert h.v.said[0].startswith("No sé si he podido avisar")
+
+
+def test_r_claudes_copy_starts_afresh_before_pepe_speaks_on_a_new_day(h):
+    pill(h)
+    h.clock.set(at(9, 0))
+    h.tick()
+    first = h.brain
+    h.clock.set(at(9, 0, day=10))
+    h.tick()
+    assert h.brain is not first and len(h.brain.messages) == 2  # just today's reminder
+
+
+def test_r_a_line_not_said_is_not_worded_again(h):
+    pill(h)
+    h.v.broken = True
+    h.clock.set(at(9, 0))
+    for _ in range(5):
+        h.tick()
+        h.clock.advance(seconds=5)
+    assert h.claude.calls == 1
+    h.v.broken = False
+    h.tick()
+    assert h.v.said == ["Carmen, es la hora de la pastilla de la tensión."]
+
+
+def test_r_olvidalo_removes_the_whole_conversation_even_after_claude_failed(h):
+    store.set_consent(h.conn, h.clock, h.carmen, "keep_conversations", True)
+    h.claude.line = "Claro."
+    h.heard("Soy Carmen. Mi vecino me debe dinero")
+    h.claude.down = True
+    h.heard("Y no me lo devuelve")
+    h.claude.down = False
+    from kore.brain.clients import tool_use
+    h.claude.client = ScriptedClient(lambda r: tool_use("forget", {"what": "conversation"})
+                                     if not any(b.get("type") == "tool_result" for b in r["messages"][-1]["content"])
+                                     else text("Olvidado."))
+    h.heard("Olvídalo")
+    assert h.conn.execute("SELECT count(*) FROM chat WHERE channel = 'voice'").fetchone()[0] == 0
+
+
+def test_r_a_short_greeting_is_codes_own_line(h):
+    from kore.scheduler.engine import Event
+    from kore.manners import modes
+    pill(h)
+    h.clock.set(at(8, 0))
+    modes.start(h.conn, h.clock, "quiet")
+    h.manners.submit([Event("morning_greeting", 1, [h.carmen], {"date": "2026-11-09", "people": {
+        "Carmen": {"medicine_times": ["09:00"], "appointments": []}}, "shared_appointments": [], "birthdays": []})])
+    calls = h.claude.calls
+    h.tick()
+    assert h.claude.calls == calls  # Claude (and its tools) not asked for a short greeting
+
+
+def test_r_the_backup_is_checked_once_a_minute_not_every_tick(setup, clock, tmp_path):
+    db, _, _ = setup
+    t = {"now": 0.0}
+    home = Home(db, clock, Claude(), FakeVoice(), {}, backups=True, backup_cert=tmp_path / "x.pem",
+                monotonic=lambda: t["now"])
+    runs = []
+    home._backup = lambda: runs.append(1)
+    for _ in range(12):
+        home.tick()
+        home.wait_for_background()
+        t["now"] += 5
+    assert len(runs) == 1

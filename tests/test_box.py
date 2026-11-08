@@ -79,4 +79,67 @@ def test_the_loop_ticks_and_tells_systemd(box, monkeypatch):
     monkeypatch.setattr(systemd, "ready", lambda env=None: sent.append("ready"))
     monkeypatch.setattr(systemd, "alive", lambda env=None: sent.append("alive"))
     box.run(max_ticks=1)
-    assert sent == ["ready", "alive"]
+    import time
+    for _ in range(50):
+        if "alive" in sent:
+            break
+        time.sleep(0.01)
+    assert sent[0] == "ready" and "alive" in sent
+
+
+def test_r_a_failing_tick_never_blocks_help(box, monkeypatch):
+    def broken():
+        raise RuntimeError("boom")
+    monkeypatch.setattr(box.home, "tick", broken)
+    calls = []
+    monkeypatch.setattr(box.home, "help_button", lambda *a, **k: calls.append(1))
+    box.device.button.press(2.5)
+    box.run(max_ticks=2)
+    assert calls == [1]
+
+
+def test_r_one_failing_event_doesnt_stop_the_rest(box, monkeypatch):
+    def broken(state):
+        raise RuntimeError("sensor")
+    monkeypatch.setattr(box.home, "presence", broken)
+    calls = []
+    monkeypatch.setattr(box.home, "help_button", lambda *a, **k: calls.append(1))
+    box.device.presence.on_change("moving")
+    box.device.button.press(2.5)
+    box.device.pump()
+    assert calls == [1]
+
+
+def test_r_help_pressed_while_listening_goes_first(box, monkeypatch):
+    calls = []
+    monkeypatch.setattr(box.home, "help_button", lambda *a, **k: calls.append("help"))
+
+    class Ears:
+        def listen(self):
+            box.device.button.press(2.5)  # held while Pepe listens
+            return Heard("Soy Carmen, hola", 1.0)
+    box.ears = Ears()
+    box.talk()
+    assert box.voice.said == []
+    box.device.pump()
+    assert calls == ["help"]
+
+
+def test_r_a_broken_light_ring_doesnt_stop_the_box(monkeypatch):
+    from kore.hardware import device as dev
+
+    monkeypatch.setattr(dev, "GpioButton", lambda *a: dev.FakeButton(2.0))
+    monkeypatch.setattr(dev, "GpioPresence", lambda *a: dev.FakePresence())
+
+    def no_ring(*a):
+        raise OSError("no SPI")
+    monkeypatch.setattr(dev, "SpiRing", no_ring)
+    d = dev.open_device(real=True)
+    assert isinstance(d.ring, dev.FakeRing)
+
+
+def test_r_with_no_voice_left_a_sound_and_the_error_light(box):
+    chimes = box.voice.chimes
+    box.voice.broken = True
+    box.lit.say("Hola", {})
+    assert box.voice.chimes == chimes + 1 and box.device.ring.state == "error"

@@ -1,6 +1,6 @@
 // Pepe's ears on the Mac, until the box's speakerphone: listen once (after the key press, the stand-in for the
 // button), stop when they stop talking, and print what was said as one JSON line.
-// Speech recognition runs on the Mac itself when it can (Apple's on-device model), so the audio stays at home.
+// Speech recognition: Apple's service (on-device only with KORE_EARS_ON_DEVICE=1; see below).
 //
 // Built by kore/home/mac.py with swiftc; usage: kore-ears [es-ES]
 // Output: {"ready": true} once listening, then {"text": "...", "on_device": true, "silence_ms": 1300}
@@ -11,6 +11,7 @@ import Foundation
 import Speech
 
 setvbuf(stdout, nil, _IONBF, 0)
+print("{\"pid\": \(getpid())}")  // so the caller can stop this app if it waits too long
 
 func emit(_ dict: [String: Any]) {
     if let data = try? JSONSerialization.data(withJSONObject: dict), let line = String(data: data, encoding: .utf8) {
@@ -35,7 +36,7 @@ SFSpeechRecognizer.requestAuthorization { status in
     speechOK = status == .authorized
     auth.signal()
 }
-auth.wait()
+if auth.wait(timeout: .now() + 60) == .timedOut { finish(["error": "permission_timeout"]) }
 if !speechOK { finish(["error": "speech_permission"]) }
 let mic = DispatchSemaphore(value: 0)
 var micOK = false
@@ -43,13 +44,15 @@ AVCaptureDevice.requestAccess(for: .audio) { granted in
     micOK = granted
     mic.signal()
 }
-mic.wait()
+if mic.wait(timeout: .now() + 60) == .timedOut { finish(["error": "permission_timeout"]) }
 if !micOK { finish(["error": "mic_permission"]) }
 
 guard let recognizer = SFSpeechRecognizer(locale: Locale(identifier: localeId)), recognizer.isAvailable else {
     finish(["error": "no_recognizer"])
 }
-let onDevice = recognizer.supportsOnDeviceRecognition
+// On-device only when asked (KORE_EARS_ON_DEVICE=1): on this Mac the on-device Spanish model gave empty or wrong
+// text while Apple's service was exact (2026-11-08). Audio goes to Apple only after the key press.
+let onDevice = recognizer.supportsOnDeviceRecognition && ProcessInfo.processInfo.environment["KORE_EARS_ON_DEVICE"] == "1"
 let request = SFSpeechAudioBufferRecognitionRequest()
 request.shouldReportPartialResults = true
 request.requiresOnDeviceRecognition = onDevice
@@ -78,7 +81,7 @@ input.installTap(onBus: 0, bufferSize: 1024, format: format) { buffer, _ in
     if Date().timeIntervalSince(started) < 0.3 {  // the room's own noise, before they start
         noise = (noise * Float(noiseFrames) + rms) / Float(noiseFrames + 1)
         noiseFrames += 1
-    } else if rms > max(0.012, noise * 3) {
+    } else if rms > max(0.006, noise * 2.5) {
         heard = true
         lastVoice = Date()
     }
