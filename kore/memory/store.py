@@ -46,6 +46,8 @@ def set_consent(conn: sqlite3.Connection, clock: Clock, person_id: int, kind: st
     )
     if kind == "keep_conversations" and not granted:  # a no, now or later: what was kept by voice goes
         conn.execute("DELETE FROM chat WHERE person_id = ? AND channel = 'voice'", (person_id,))
+    if kind == "lea_reads_conversations" and not granted:  # Lea's notes quoting them go too
+        conn.execute("DELETE FROM console_marks WHERE person_id = ?", (person_id,))
 
 
 def declined(conn: sqlite3.Connection, person_id: int, kind: str) -> bool:

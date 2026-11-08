@@ -58,8 +58,8 @@ def overview(d: dict) -> str:
              f'<a class="card stat" href="/console/calendar"><span class="label">Today’s doses</span>'
              f'<span class="big-number">{e(doses)}</span><span class="muted">{nxt}</span></a>',
              f'<a class="card stat" href="/console/chat"><span class="label">Web messages</span>'
-             f'<span class="big-number">{d["messages_today"]} today</span><span class="muted">Written to Pepe on '
-             f'their page</span></a>',
+             f'<span class="big-number">{"Not shared" if d["messages_today"] is None else str(d["messages_today"]) + " today"}'
+             f'</span><span class="muted">Written to Pepe on their page</span></a>',
              f'<a class="card stat {"hero" if d["needs_you"] else ""}" href="/console/feedback"><span class="label">'
              f'Needs you</span><span class="big-number">{d["needs_you"]} safety item{"s" if d["needs_you"] != 1 else ""}'
              f'</span><span class="muted">Open feedback</span></a>']
@@ -192,9 +192,10 @@ def chat(d: dict, note: str = "", bad: bool = False) -> str:
             '<p class="msg">No conversations in the last 7 days.</p>'))
     test = d["test"]
     test_lines = "".join(f'<div class="bubble{" me" if who == "you" else ""}">{e(text)}</div>' for who, text in test["lines"])
+    everyone = bool(d["people"]) and all(p["day"] for p in d["people"])
     pretend = "".join(f'<option value="{p["id"]}"{" selected" if p["id"] == test.get("as") else ""}>{e(p["name"])}</option>'
-                      for p in d["people"] if p["day"])
-    test_form = (f"""<form method="post" action="/console/chat/test" class="card tint">
+                      for p in d["people"]) if everyone else ""
+    test_form = (f"""<form method="post" action="/console/chat/test" class="card tint" id="test">
 <label class="f" for="test-msg" style="margin-top:0">Talk to Pepe as a test</label>
 <p class="muted">Test mode: the same rules and tools on a throwaway copy of the home's data. It never reaches the device or
 their memory{", and it spends a little of the web's daily share" if test["live"] else ""}.</p>
@@ -202,7 +203,8 @@ their memory{", and it spends a little of the web's daily share" if test["live"]
 <div style="display:flex;gap:.6rem;flex-wrap:wrap"><select class="f" name="as" aria-label="Pretend to be" style="width:10rem">{pretend}</select>
 <input class="f" id="test-msg" name="text" maxlength="600" placeholder="Pretend you’re them: “¿Me he tomado la pastilla?”" style="flex:1 1 300px" required>
 <button class="small" type="submit">Send</button></div></form>""" if test["available"] and pretend else
-                 '<p class="msg">The test chat needs the API key (or the test mode) and someone who agreed you can see their day.</p>')
+                 '<p class="msg">The test chat needs the API key (or the test mode), and everyone at home to have agreed '
+                 'you can see their day (it uses a copy of the whole home).</p>')
     return _page("Chat", "/console/chat", d["home"], f"""
 <h1>Chat</h1>
 <p class="muted" style="max-width:760px">Conversations from the last 7 days, kept only to fix problems, with their OK.

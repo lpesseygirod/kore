@@ -292,6 +292,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
 
     def elder_home_data(a) -> dict:
         now = clock.now()
+        fam._purge_photos(db(), clock, photo_dir)
         day = today.for_person(db(), clock, a.person_id)
         w = day.get("weather") or {}
         sky = (w.get("rest_of_today") or {}).get("sky") or w.get("sky")
@@ -382,9 +383,23 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 return go("/entrar")
             if f is None:
                 return html(pages.message("No se ha podido", BAD_FORM), 403)
+            pending_id = _small_int(f.get("id")) or 0
+            sending = agenda.kind_of(db(), a.person_id, pending_id) in ("send_message", "send_photo")
+        if sending:  # to family: outside the page lock (see own_connection)
             try:
-                where = agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0, family_links,
-                                       photo_dir)
+                where = await own_connection(
+                    lambda c: agenda.confirm(c, clock, a.person_id, pending_id, family_links, photo_dir))
+            except agenda.Refused as r:
+                with lock:
+                    return html(pages.message("No se ha guardado", str(r), "/mi-familia"), 409)
+            except Exception:
+                with lock:
+                    return html(pages.message("No se ha enviado", "Algo ha fallado y no se ha enviado nada. Pruebe "
+                                              "otra vez, o dígaselo a Pepe en voz alta.", "/mi-familia"), 500)
+            return go(where)
+        with lock:
+            try:
+                where = agenda.confirm(db(), clock, a.person_id, pending_id, family_links, photo_dir)
                 if where.startswith("code:"):  # family access: the code is shown once, here
                     _, code, name = where.split(":", 2)
                     return html(pages.family_code(a, name, code))
@@ -404,7 +419,9 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if a is None:
                 return go("/entrar")
             if f is not None:
-                agenda.cancel(db(), a.person_id, _small_int(f.get("id")) or 0)
+                dropped = agenda.cancel(db(), a.person_id, _small_int(f.get("id")) or 0)
+                if dropped and dropped["kind"] == "send_photo" and "/" not in dropped["file"]:
+                    (photo_dir / dropped["file"]).unlink(missing_ok=True)
         back = (f or {}).get("back")
         return go((back if back in BACKS else "/calendario") + "?hecho=anulado")
 
@@ -509,6 +526,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     def week_start(request) -> date:
         try:
             day = date.fromisoformat(request.query_params.get("week", ""))
+            if not 2000 <= day.year <= 2100:
+                raise ValueError(day)
         except ValueError:
             day = clock.now().date()
         return day - timedelta(days=day.weekday())
@@ -694,6 +713,26 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     def family_again(a, f, note):
         return pages.elder_family(a, [], elder.contacts(db(), a.person_id), note, bad=True)
 
+    async def decline_lea(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None or f is None:
+                return go("/entrar")
+            elder.decline_medicine_proposal(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+        return go("/")
+
+    def own_connection(work):
+        """Sending (Telegram, SMS) can take seconds: done on its own database connection, without the page lock,
+        so no other phone in the house waits for it."""
+        def run():
+            c = connect(db_path)
+            try:
+                return work(c)
+            finally:
+                c.close()
+        return asyncio.to_thread(run)
+
     async def help_page(request: Request):
         with lock:
             a = person(request)
@@ -709,7 +748,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 return go("/entrar")
             if f is None:  # a form from elsewhere can't call for help in their name
                 return html(pages.message("No se ha podido", BAD_FORM, "/ayuda"), 403)
-            said = elder.ask_for_help(db(), clock, a.person_id, family_links)
+        said = await own_connection(lambda c: elder.ask_for_help(c, clock, a.person_id, family_links))
+        with lock:
             return html(pages.elder_help(a, elder.help_names(db(), a.person_id), said))
 
     async def settings_page(request: Request):
@@ -740,6 +780,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             a = person(request)
             if a is None:
                 return go("/entrar")
+            fam._purge_photos(db(), clock, photo_dir)
             mine = [r["id"] for r in db().execute("SELECT id FROM photos WHERE person_id = ? ORDER BY id DESC LIMIT 30",
                                                   (a.person_id,))]
             family_photos = fam.photos_for_person(db(), clock, a.person_id)
@@ -873,6 +914,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         return family_form(f, note, bad, a)
 
     def thread_with_photos(a):
+        fam._purge_photos(db(), clock, photo_dir)
         return sorted(fam.thread(db(), clock, a.contact_id) + fam.photos_in_thread(db(), clock, a.contact_id),
                       key=lambda m: m["at"])[-60:]
 
@@ -1009,6 +1051,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/console/settings", console_page(lambda a, r: settings_view(a, r))),
         Route("/console/settings/quiet", console_action(act_quiet, "/console/settings"), methods=["POST"]),
         Route("/agenda", agenda_page), Route("/pastillas", pills_page),
+        Route("/propuesta-lea/no", decline_lea, methods=["POST"]),
         Route("/pastillas/tomada", take_pill, methods=["POST"]),
         Route("/mi-familia", family_page),
         Route("/mi-familia/responder", proposing(

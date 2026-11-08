@@ -230,6 +230,8 @@ def propose_medicine_change(conn, clock: Clock, medication_id: int, times_text: 
         raise agenda.Refused("Write the new times like 09:00, 21:30.") from None
     if not times:
         raise agenda.Refused("Write the new times like 09:00, 21:30.")
+    if times == json.loads(row["times"]):
+        raise agenda.Refused("Those are already its times.")
     conn.execute("UPDATE operator_proposals SET status = 'withdrawn' WHERE kind = 'medication' AND status = 'open' "
                  "AND json_extract(payload, '$.medication_id') = ?", (medication_id,))
     conn.execute("INSERT INTO operator_proposals (person_id, kind, payload, created_at) VALUES (?, 'medication', ?, ?)",
@@ -344,8 +346,11 @@ def delete_conversation(conn, clock: Clock, person_id: int, first_id: int) -> bo
     c = conversation(conn, clock, person_id, first_id)
     if c is None:
         return False
-    conn.execute("DELETE FROM chat WHERE person_id = ? AND id >= ? AND at_utc <= ?",
-                 (person_id, first_id, utc_iso(c["last"])))
+    last_id = max(r["id"] for r in conn.execute("SELECT id FROM chat WHERE person_id = ? AND id >= ? AND at_utc <= ?",
+                                                (person_id, first_id, utc_iso(c["last"]))))
+    conn.execute("DELETE FROM chat WHERE person_id = ? AND id BETWEEN ? AND ?", (person_id, first_id, last_id))
+    conn.execute("DELETE FROM console_marks WHERE person_id = ? AND chat_id BETWEEN ? AND ?",
+                 (person_id, first_id, last_id))  # Lea's notes about it go too (they may quote it)
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     return True
 
@@ -475,20 +480,27 @@ def set_quiet_times(conn, clock: Clock, start: str, end: str) -> None:
 
 
 def contacts(conn) -> list[dict]:
+    """Family contacts Lea may see: shared ones when everyone agreed, and those of people who agreed."""
     names = {p["id"]: p["name"] for p in people(conn)}
+    allowed, shared = _day_ok(conn), _shared_ok(conn)
     return [{"name": r["name"], "relation": r["relation"], "for": names.get(r["for_person"], "both"),
              "tg": bool(r["telegram_chat_id"]), "sms": bool(r["phone"]), "help": bool(r["help_contact"]),
              "web": conn.execute("SELECT 1 FROM web_logins l JOIN web_accounts a ON a.id = l.account_id WHERE "
                                  "a.role = 'family' AND a.contact_id = ? AND l.revoked_at IS NULL",
                                  (r["id"],)).fetchone() is not None}
             for r in conn.execute("SELECT * FROM contacts WHERE help_contact = 1 OR telegram_chat_id IS NOT NULL OR "
-                                  "id IN (SELECT contact_id FROM web_accounts WHERE role = 'family') ORDER BY name")]
+                                  "id IN (SELECT contact_id FROM web_accounts WHERE role = 'family') ORDER BY name")
+            if (r["for_person"] is None and shared) or r["for_person"] in allowed]
 
 
-def messages_today(conn, clock: Clock) -> int:
+def messages_today(conn, clock: Clock) -> int | None:
+    """Only for people who let Lea read their conversations (None: nobody did)."""
+    allowed = [p["id"] for p in people(conn) if p["chats"]]
+    if not allowed:
+        return None
     start = clock.now().replace(hour=0, minute=0, second=0, microsecond=0)
-    return conn.execute("SELECT count(*) FROM chat WHERE who = 'person' AND at_utc >= ?",
-                        (utc_iso(start),)).fetchone()[0]
+    return conn.execute("SELECT count(*) FROM chat WHERE who = 'person' AND at_utc >= ? AND person_id IN (%s)"
+                        % ",".join("?" * len(allowed)), (utc_iso(start), *allowed)).fetchone()[0]
 
 
 # --- numbers, events, version ---------------------------------------------------------------------------
@@ -548,6 +560,8 @@ class TestChat:
         self.as_person: int | None = None
         self.lines: list[tuple[str, str]] = []
         self.started = None
+        import threading
+        self.busy = threading.Lock()
 
     def prepare(self, src: sqlite3.Connection, clock: Clock, client, as_person: int) -> None:
         """Under the page's lock: check the permission, and copy the home if starting (or switching person)."""
@@ -557,8 +571,10 @@ class TestChat:
         from kore.family.service import Family
         from kore.memory.db import connect
 
-        if as_person not in _day_ok(src):
-            raise agenda.Refused("You can only pretend to be someone who agreed you can see their day.")
+        if as_person not in _day_ok(src) or not _shared_ok(src):
+            # The copy holds the whole home (shared list, shared appointments, a partner's doses): only when
+            # everyone at home agreed Lea may see their day.
+            raise agenda.Refused("The test chat needs everyone at home to have agreed you can see their day.")
         if self.brain is None or self.as_person != as_person or clock.now() - self.started > timedelta(minutes=30):
             self.copy = connect(":memory:", shared=True)
             src.backup(self.copy)
@@ -570,13 +586,18 @@ class TestChat:
             self.as_person, self.lines, self.started = as_person, [], clock.now()
 
     def reply(self, text: str) -> None:
-        """Outside the lock (Claude can take seconds): only the copy is touched."""
+        """Outside the page lock (Claude can take seconds): only the copy is touched, one message at a time."""
         text = agenda.clean(text, 600)
         if not text or self.brain is None:
             return
-        self.lines.append(("you", text))
+        if not self.busy.acquire(blocking=False):
+            return  # a second press while Pepe is answering: ignored
         try:
-            answer = self.brain.hear(text)
-        except Exception:
-            answer = "(Pepe couldn't answer: no connection, or today's budget reached.)"
-        self.lines.append(("pepe", answer or "(no answer)"))
+            self.lines.append(("you", text))
+            try:
+                answer = self.brain.hear(text)
+            except Exception:
+                answer = "(Pepe couldn't answer: no connection, or today's budget reached.)"
+            self.lines.append(("pepe", answer or "(no answer)"))
+        finally:
+            self.busy.release()

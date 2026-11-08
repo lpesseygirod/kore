@@ -224,14 +224,15 @@ def test_quiet_times_are_checked(lea, conn):
 
 def test_the_test_chat_never_touches_the_real_home(lea, conn, clock, day, script):
     store.set_consent(conn, clock, day["carmen"], "lea_sees_day", True)
+    r = lea.post("/console/chat/test", data={"as": str(day["carmen"]), "text": "hola"}, headers=ORIGIN)
+    assert r.status_code == 400  # the copy holds the whole home: Toni must have agreed too
+    store.set_consent(conn, clock, day["antonio"], "lea_sees_day", True)
     script.then(tool_use("add_to_list", {"items": ["leche"]}), text("Apuntada la leche."))
     r = lea.post("/console/chat/test", data={"as": str(day["carmen"]), "text": "Apunta leche"}, headers=ORIGIN)
     assert r.status_code == 303
     page = lea.get("/console/chat").text
     assert "Apunta leche" in page and "Apuntada la leche." in page
     assert store.list_items(conn) == ["panecillos"]  # the real list is untouched
-    r = lea.post("/console/chat/test", data={"as": str(day["antonio"]), "text": "hola"}, headers=ORIGIN)
-    assert r.status_code == 400  # Toni didn't agree
 
 
 def test_only_lea_gets_the_console_and_only_from_its_own_pages(app, lea, conn, clock, day):
@@ -242,3 +243,68 @@ def test_only_lea_gets_the_console_and_only_from_its_own_pages(app, lea, conn, c
         assert TestClient(app, follow_redirects=False).get(path).status_code == 303
     r = lea.post("/console/settings/quiet", data={"start": "23:00", "end": "08:30"})  # no Origin
     assert r.status_code == 403
+
+
+# --- from the fresh review of the design build ------------------------------------------------------------
+
+
+def test_r2_settings_hide_contacts_of_someone_who_didnt_agree(lea, conn, clock, day):
+    store.add_contact(conn, clock, "Pedro Secreto", "amigo", help_contact=True, for_person=day["antonio"])
+    assert "Pedro Secreto" not in lea.get("/console/settings").text
+    store.set_consent(conn, clock, day["antonio"], "lea_sees_day", True)
+    assert "Pedro Secreto" in lea.get("/console/settings").text
+
+
+def test_r3_message_counts_only_with_their_yes(lea, conn, clock, day):
+    for _ in range(3):
+        chats.add(conn, clock, day["antonio"], "person", "chat", "hola")
+    page = lea.get("/").text
+    assert "3 today" not in page and "Not shared" in page
+
+
+def test_r4_lea_marks_go_with_the_conversation(lea, conn, clock, day, app):
+    chats.add(conn, clock, day["carmen"], "person", "chat", "me duele el pecho")
+    store.set_consent(conn, clock, day["carmen"], "lea_reads_conversations", True)
+    first = conn.execute("SELECT min(id) FROM chat").fetchone()[0]
+    ref = {"p": str(day["carmen"]), "c": str(first)}
+    lea.post("/console/chat/mark", data={**ref, "note": "said: me duele el pecho"}, headers=ORIGIN)
+    lea.post("/console/chat/delete", data=ref, headers=ORIGIN)
+    assert conn.execute("SELECT count(*) FROM console_marks").fetchone()[0] == 0
+    chats.add(conn, clock, day["carmen"], "person", "chat", "otra")
+    first = conn.execute("SELECT min(id) FROM chat").fetchone()[0]
+    lea.post("/console/chat/mark", data={"p": str(day["carmen"]), "c": str(first), "note": "x"}, headers=ORIGIN)
+    store.set_consent(conn, clock, day["carmen"], "lea_reads_conversations", False)
+    assert conn.execute("SELECT count(*) FROM console_marks").fetchone()[0] == 0
+
+
+def test_r7_odd_weeks_dont_crash(lea):
+    for week in ("9999-12-31", "0001-01-01", "2026-13-01"):
+        assert lea.get(f"/console/calendar?week={week}").status_code == 200
+
+
+def test_r8_a_no_stops_pepe_asking_and_identical_times_are_refused(lea, app, conn, clock, day):
+    store.set_consent(conn, clock, day["carmen"], "lea_sees_day", True)
+    mid = meds.medications(conn, day["carmen"])[0]["id"]
+    assert lea.post("/console/calendar/medicine", data={"id": str(mid), "times": "09:00, 21:00"},
+                    headers=ORIGIN).status_code == 400
+    lea.post("/console/calendar/medicine", data={"id": str(mid), "times": "08:00"}, headers=ORIGIN)
+    pid = conn.execute("SELECT id FROM operator_proposals").fetchone()[0]
+    s = Session([Person(day["carmen"], "Carmen", "Carmen")], fixed_speaker=day["carmen"])
+    ctx = tools.Context(conn, clock, s)
+    s.begin_turn("No, prefiero preguntar a mi médico")
+    assert tools.call(ctx, "decline_lea_proposal", {"proposal_id": pid})["ok"]
+    assert "proposed changing" not in Brain(ctx, ScriptedClient(lambda r: text(""))).state()
+    lea.post("/console/calendar/medicine", data={"id": str(mid), "times": "08:30"}, headers=ORIGIN)
+    carmen = log_in(app, conn, day["carmen"])
+    pid2 = conn.execute("SELECT max(id) FROM operator_proposals").fetchone()[0]
+    carmen.post("/propuesta-lea/no", data={"id": str(pid2)}, headers=ORIGIN)
+    assert "Lea propone" not in carmen.get("/").text
+    toni = log_in(app, conn, day["antonio"])
+    s2 = Session([Person(day["antonio"], "Antonio", "Toni")], fixed_speaker=day["antonio"])
+    s2.begin_turn("no")
+    lea.post("/console/calendar/medicine", data={"id": str(mid), "times": "07:00"}, headers=ORIGIN)
+    pid3 = conn.execute("SELECT max(id) FROM operator_proposals").fetchone()[0]
+    r = tools.call(tools.Context(conn, clock, s2), "decline_lea_proposal", {"proposal_id": pid3})
+    assert r["error"] == "speaker_is_someone_else"
+    toni.post("/propuesta-lea/no", data={"id": str(pid3)}, headers=ORIGIN)
+    assert conn.execute("SELECT status FROM operator_proposals WHERE id = ?", (pid3,)).fetchone()[0] == "open"

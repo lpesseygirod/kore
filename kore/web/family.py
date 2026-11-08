@@ -460,9 +460,10 @@ def photos_in_thread(conn, clock: Clock, contact_id: int) -> list[dict]:
 def propose_photo_to_family(conn, clock: Clock, folder, person_id: int, contact_id: int, jpeg: bytes,
                             caption: str) -> agenda.Proposal:
     """Carmen chose a photo and who gets it: stored aside, sent only after "Sí, envíala"."""
+    from kore.web import elder
+
     c = _contact(conn, person_id, contact_id)
-    if not c["telegram_chat_id"] and not conn.execute(
-            "SELECT 1 FROM web_accounts WHERE role = 'family' AND contact_id = ?", (contact_id,)).fetchone():
+    if not c["telegram_chat_id"] and not elder._has_web(conn, contact_id):
         raise agenda.Refused(f"Todavía no se pueden mandar fotos a {c['name']}: tiene que conectarse primero.")
     import secrets
 

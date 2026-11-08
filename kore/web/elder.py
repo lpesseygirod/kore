@@ -141,7 +141,8 @@ def next_up(conn, clock: Clock, person_id: int) -> dict | None:
         return timed[0]
     if bday:
         name = bday["text"].replace("Cumpleaños de ", "")
-        phone = conn.execute("SELECT phone FROM contacts WHERE name = ? AND phone IS NOT NULL", (name,)).fetchone()
+        phone = conn.execute("SELECT phone FROM contacts WHERE name = ? AND phone IS NOT NULL AND "
+                             "(for_person IS NULL OR for_person = ?)", (name, person_id)).fetchone()
         return {**bday, "text": f"Hoy es el cumpleaños de {name}", "call": name, "phone": phone["phone"] if phone else None}
     return None
 
@@ -241,6 +242,11 @@ def who_sees_what(conn, person_id: int) -> dict:
 def medicine_proposals(conn, person_id: int) -> list[dict]:
     """Lea's proposed medicine changes, for the Inicio card. Pepe asks them; nothing changes without their yes."""
     import json
-    return [json.loads(r["payload"]) for r in conn.execute(
-        "SELECT payload FROM operator_proposals WHERE kind = 'medication' AND status = 'open' AND person_id = ?",
+    return [json.loads(r["payload"]) | {"id": r["id"]} for r in conn.execute(
+        "SELECT id, payload FROM operator_proposals WHERE kind = 'medication' AND status = 'open' AND person_id = ?",
         (person_id,))]
+
+
+def decline_medicine_proposal(conn, clock: Clock, person_id: int, proposal_id: int) -> None:
+    conn.execute("UPDATE operator_proposals SET status = 'declined', answered_at = ? WHERE id = ? AND person_id = ? "
+                 "AND kind = 'medication' AND status = 'open'", (utc_iso(clock.now()), proposal_id, person_id))

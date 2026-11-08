@@ -250,12 +250,13 @@ class Brain:
             lines.append(f"Unread messages from family ({', '.join(senders)}): mention it once if it fits; "
                          "read them with read_messages only when they ask.")
         if s.speaker_id is not None:
-            for r in ctx.conn.execute("SELECT payload FROM operator_proposals WHERE kind = 'medication' AND "
+            for r in ctx.conn.execute("SELECT id, payload FROM operator_proposals WHERE kind = 'medication' AND "
                                       "status = 'open' AND person_id = ?", (s.speaker_id,)):
                 p = json.loads(r["payload"])
-                lines.append(f"Lea (who looks after Pepe) proposed changing {p['name']} to {', '.join(p['times'])}. "
-                             "When it fits, tell them simply and ask; only if they agree, use "
-                             "propose_medication_change and wait for their yes. Their doctor's word wins.")
+                lines.append(f"Lea (who looks after Pepe) proposed changing {p['name']} to {', '.join(p['times'])} "
+                             f"(proposal {r['id']}). When it fits, tell them simply and ask, once; only if they agree, "
+                             "use propose_medication_change and wait for their yes. If they say no or want to ask "
+                             "their doctor first, call decline_lea_proposal. Their doctor's word wins.")
         when = f"{fallback.spoken_date(now.date())}, {now.strftime('%H:%M')}"
         forms = {names[p.id]: _form(settings.stored(ctx.conn, "address", p.id) or self.forms.get(p.name, "usted"))
                  for p in s.household}

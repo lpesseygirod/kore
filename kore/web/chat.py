@@ -89,6 +89,7 @@ def history(conn: sqlite3.Connection, clock: Clock, person_id: int, limit: int =
 def delete_all(conn: sqlite3.Connection, person_id: int, clock: Clock | None = None,
                photo_dir: Path | None = None) -> int:
     n = conn.execute("DELETE FROM chat WHERE person_id = ?", (person_id,)).rowcount
+    conn.execute("DELETE FROM console_marks WHERE person_id = ?", (person_id,))
     if photo_dir is not None and clock is not None:
         photos.drop_unused(conn, clock, photo_dir, person_id, grace=timedelta(0))
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")  # secure_delete is on; this clears the write-ahead log too
@@ -99,6 +100,8 @@ def purge(conn: sqlite3.Connection, clock: Clock, photo_dir: Path | None = None)
     now = clock.now()
     conn.execute("DELETE FROM chat_turns WHERE at_utc < ?", (utc_iso(now - timedelta(days=1)),))
     n = conn.execute("DELETE FROM chat WHERE at_utc < ?", (utc_iso(now - KEEP),)).rowcount
+    # Lea's notes about conversations that are gone (deleted, forgotten, or past 90 days) go too.
+    conn.execute("DELETE FROM console_marks WHERE chat_id NOT IN (SELECT id FROM chat)")
     if photo_dir is not None:
         photos.drop_unused(conn, clock, photo_dir)
     return n
@@ -247,6 +250,7 @@ class ChatWorker:
             reply = f"{code_lines} {claude}".strip() or CANT_ANSWER
         if brain.ctx.forget_up_to_turn is not None:  # "olvídalo": this conversation's lines go too
             conn.execute("DELETE FROM chat WHERE person_id = ? AND id >= ?", (person_id, talk.first_row))
+            conn.execute("DELETE FROM console_marks WHERE person_id = ? AND chat_id >= ?", (person_id, talk.first_row))
             if self.photo_dir is not None:  # its photos too
                 photos.drop_unused(conn, self.clock, self.photo_dir, person_id, grace=timedelta(0))
             conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")

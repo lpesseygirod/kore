@@ -329,9 +329,18 @@ def _open(conn, clock, person_id: int, pending_id: int) -> sqlite3.Row | None:
     return row
 
 
-def cancel(conn, person_id: int, pending_id: int) -> None:
+def cancel(conn, person_id: int, pending_id: int) -> dict | None:
+    """Their "No". Returns the payload of what was dropped (a photo chosen to send is then deleted by the page)."""
+    row = conn.execute("SELECT kind, payload FROM web_pending WHERE id = ? AND person_id = ? AND status = 'open'",
+                       (pending_id, person_id)).fetchone()
     conn.execute("UPDATE web_pending SET status = 'cancelled' WHERE id = ? AND person_id = ? AND status = 'open'",
                  (pending_id, person_id))
+    return {"kind": row["kind"], **json.loads(row["payload"])} if row else None
+
+
+def kind_of(conn, person_id: int, pending_id: int) -> str | None:
+    row = conn.execute("SELECT kind FROM web_pending WHERE id = ? AND person_id = ?", (pending_id, person_id)).fetchone()
+    return row["kind"] if row else None
 
 
 def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = None, photo_dir=None) -> str:
@@ -406,6 +415,10 @@ def _send_to_family(conn, clock, person_id: int, pending_row: int, p: dict, link
         ctx = tools.Context(conn, clock, _session(conn, person_id), family=Family(conn, clock, links or {}))
         r = tools.EXECUTORS["send_message"](ctx, p)
         return "/mi-familia?hecho=" + ("mandado" if r.get("sent") else "pendiente")
+    from kore.web import elder
+
+    if not elder._has_web(conn, c["id"]):  # her access was taken away meanwhile: nothing can reach her
+        return "/mi-familia?hecho=no_enviado"
     name = conn.execute("SELECT call_name FROM people WHERE id = ?", (person_id,)).fetchone()["call_name"]
     i = family_msgs.queue(conn, clock, "message", "telegram", f"{name} (con Pepe): {p['text']}", c["id"], person_id)
     conn.execute("UPDATE family_out SET status = 'sent', sent_at_utc = ?, told = 2, error = 'family app only' "
@@ -419,20 +432,26 @@ def _send_photo(conn, clock, person_id: int, pending_row: int, p: dict, links: d
     path = photo_dir / p["file"] if photo_dir is not None else None
     if path is None or not path.is_file():
         raise Refused("La foto ya no está. Elígela otra vez, por favor.")
+    from kore.web import elder
+
     c = conn.execute("SELECT * FROM contacts WHERE id = ?", (p["contact_id"],)).fetchone()
-    conn.execute("INSERT INTO family_photos (contact_id, person_id, direction, file, caption, created_at) "
-                 "VALUES (?, ?, 'to_family', ?, ?, ?)", (c["id"], person_id, p["file"], p["caption"],
-                                                         utc_iso(clock.now())))
-    sent = True
+    by_app = elder._has_web(conn, c["id"])  # she sees it in her app only while she has access
+    by_telegram = False
     tg = (links or {}).get("telegram")
     if c["telegram_chat_id"] and tg is not None and hasattr(tg, "send_document"):
         name = conn.execute("SELECT call_name FROM people WHERE id = ?", (person_id,)).fetchone()["call_name"]
         try:
-            sent = tg.send_document(c["telegram_chat_id"], "foto.jpg", path.read_bytes(),
-                                    f"{name} (con Pepe)" + (f": {p['caption']}" if p["caption"] else "")).ok
+            by_telegram = tg.send_document(c["telegram_chat_id"], "foto.jpg", path.read_bytes(),
+                                           f"{name} (con Pepe)" + (f": {p['caption']}" if p["caption"] else "")).ok
         except Exception:
-            sent = False
-    return "/fotos?hecho=" + ("mandado" if sent else "pendiente")
+            by_telegram = False
+    if not by_app and not by_telegram:  # say so: nothing reached anyone (and nothing is kept)
+        path.unlink(missing_ok=True)
+        return "/fotos?hecho=no_enviada"
+    conn.execute("INSERT INTO family_photos (contact_id, person_id, direction, file, caption, created_at) "
+                 "VALUES (?, ?, 'to_family', ?, ?, ?)", (c["id"], person_id, p["file"], p["caption"],
+                                                         utc_iso(clock.now())))
+    return "/fotos?hecho=mandado"
 
 
 def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:

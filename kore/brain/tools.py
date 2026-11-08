@@ -384,6 +384,19 @@ def _propose_reminder_stop(ctx: Context, args: dict) -> dict:
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
 
+@tool("decline_lea_proposal", "They said no (or not now) to a medicine change Lea proposed: Pepe stops asking.",
+      {"proposal_id": {"type": "integer"}}, writes=True, required=["proposal_id"])
+def _decline_lea(ctx: Context, args: dict) -> dict:
+    row = ctx.conn.execute("SELECT person_id FROM operator_proposals WHERE id = ? AND status = 'open'",
+                           (int(args["proposal_id"]),)).fetchone()
+    if row is None:
+        raise ValueError("no such open proposal")
+    ctx.session.require_speaker(row["person_id"])
+    ctx.conn.execute("UPDATE operator_proposals SET status = 'declined', answered_at = ? WHERE id = ?",
+                     (utc_iso(ctx.clock.now()), int(args["proposal_id"])))
+    return {"ok": True, "say": "Say simply it stays as it is; they can bring it up with their doctor."}
+
+
 @tool("get_appointments", "Upcoming appointments for the speaker (and shared ones).", {"person": PERSON})
 def _get_appts(ctx: Context, args: dict) -> dict:
     pid = _person_id(ctx, args)

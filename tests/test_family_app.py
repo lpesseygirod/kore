@@ -139,3 +139,39 @@ def test_the_family_tabs(ana_app):
     page = ana_app.get("/").text
     for href in ("/familia/calendario", "/familia/mensajes", "/familia/avisos"):
         assert f'href="{href}"' in page
+
+
+# --- from the fresh review of the design build ------------------------------------------------------------
+
+
+def test_r5_a_photo_that_reaches_no_one_says_so(app, conn, clock, home, ana, ana_app):
+    carmen = log_in(app, conn, home["carmen"])
+    page = carmen.post("/fotos/enviar", data={"to": str(ana)}, files={"photo": ("h.jpg", jpeg(40, 30), "image/jpeg")},
+                       headers=ORIGIN).text
+    carmen.post("/familia/quitar", data={"contact": str(ana)}, headers=ORIGIN)  # access taken away meanwhile
+    r = carmen.post("/confirmar", data={"id": pending_id(page)}, headers=ORIGIN)
+    assert r.headers["location"] == "/fotos?hecho=no_enviada"
+    assert conn.execute("SELECT count(*) FROM family_photos").fetchone()[0] == 0
+    r = carmen.post("/fotos/enviar", data={"to": str(ana)}, files={"photo": ("h.jpg", jpeg(40, 30), "image/jpeg")},
+                    headers=ORIGIN)
+    assert r.status_code == 400  # and no new proposal to someone who can't receive it
+
+
+def test_r6_a_photo_not_sent_is_deleted_on_no(app, conn, home, ana, ana_app, db_path):
+    from kore.web import photos
+    carmen = log_in(app, conn, home["carmen"])
+    page = carmen.post("/fotos/enviar", data={"to": str(ana)}, files={"photo": ("h.jpg", jpeg(40, 30), "image/jpeg")},
+                       headers=ORIGIN).text
+    assert list(photos.folder(db_path).glob("p*.jpg"))
+    carmen.post("/confirmar/no", data={"id": pending_id(page), "back": "/fotos"}, headers=ORIGIN)
+    assert not list(photos.folder(db_path).glob("p*.jpg"))
+
+
+def test_r6_family_photos_go_after_90_days_without_new_uploads(ana_app, app, conn, clock, home, db_path):
+    from kore.web import photos
+    ana_app.post("/familia/foto", data={"for": str(home["carmen"])},
+                 files={"photo": ("a.jpg", jpeg(40, 30), "image/jpeg")}, headers=ORIGIN)
+    clock.advance(days=91)
+    log_in(app, conn, home["carmen"]).get("/")
+    assert conn.execute("SELECT count(*) FROM family_photos").fetchone()[0] == 0
+    assert not list(photos.folder(db_path).glob("f*.jpg"))

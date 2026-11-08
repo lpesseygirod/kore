@@ -396,7 +396,9 @@ DONE = {"apuntado": "Hecho. Pepe lo recordará en voz alta cuando toque.", "quit
         "olvidado": "Hecho. Pepe lo ha olvidado.", "anulado": "No se ha cambiado nada.",
         "enviado": "Mensaje enviado. Pepe les dirá que tienen un mensaje suyo.",
         "propuesta": "Propuesta enviada. La verán en su página y decidirán si la apuntan.",
-        "mandado": "Enviado.", "foto": "Foto enviada. La verán en su página.", "pendiente": "Todavía no se ha podido enviar. Pepe lo sigue intentando y "
+        "mandado": "Enviado.", "foto": "Foto enviada. La verán en su página.",
+        "no_enviada": "No se ha podido enviar la foto: esa persona ya no está conectada. No se ha guardado.",
+        "no_enviado": "No se ha podido enviar: esa persona ya no está conectada.", "pendiente": "Todavía no se ha podido enviar. Pepe lo sigue intentando y "
         "avisará cuando salga."}
 
 
@@ -791,7 +793,9 @@ def elder_home(account, d: dict) -> str:
     for m in d.get("medicine_proposals") or []:
         parts.append(f'<div class="card tint"><b>Lea propone tomar {e(m["name"])} a las {e(", ".join(m["times"]))}'
                      f'</b><p class="muted" style="margin:.3rem 0 0">No cambia nada hasta que {t("se lo digas", "se lo diga")} '
-                     f'a Pepe. Lo que diga {t("tu", "su")} médico es lo que vale.</p></div>')
+                     f'a Pepe. Lo que diga {t("tu", "su")} médico es lo que vale.</p>'
+                     f'<form method="post" action="/propuesta-lea/no"><input type="hidden" name="id" value="{int(m["id"])}">'
+                     f'<button class="big second" type="submit">No, gracias</button></form></div>')
     if d.get("shopping"):
         parts.append(f'<a class="big-card" href="/compra"><span><b>La compra</b><br><span class="muted">'
                      f'{e(" · ".join(d["shopping"][:6]))}</span></span><span class="chev" aria-hidden="true">›</span></a>')
