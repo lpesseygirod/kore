@@ -165,6 +165,10 @@ class Brain:
             return None  # a message (phase 6), never spoken
         ev = item.event
         data = ev.data
+        if ev.kind == "morning_greeting" and item.manner != "say":
+            # Short (quiet, night) or a signal: only the shared part of the day goes to Claude, so nobody's own
+            # medicines or appointments can slip into a short line (state.md requirement).
+            data = {k: v for k, v in data.items() if k != "people"}
         info = self.ctx.info
         if ev.kind == "morning_greeting" and info and info.weather:
             brief = info.weather.brief_today()  # from the cache: the greeting never waits for the network

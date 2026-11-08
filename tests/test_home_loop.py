@@ -267,3 +267,17 @@ def test_the_heartbeat_runs_in_the_background(setup, clock):
     home.tick()
     home.wait_for_background()
     assert pings == [1]
+
+
+def test_a_short_greeting_gets_only_the_shared_part_of_the_day(h):
+    from kore.manners.gate import Item
+    from kore.scheduler.engine import Event
+    seen = []
+    h.claude.client = ScriptedClient(lambda r: (seen.append(json.dumps(r["messages"][-1], ensure_ascii=False)),
+                                                text("Buenos días."))[1])
+    ev = Event("morning_greeting", 1, [h.carmen], {"date": "2026-11-09", "people": {"Carmen": {
+        "medicine_times": ["09:00"], "appointments": ["el ginecólogo"]}}, "shared_appointments": []})
+    h.brain.speak_event(Item(1, ev, "short"))
+    assert "ginecólogo" not in seen[-1] and "shared_appointments" in seen[-1]
+    h.brain.speak_event(Item(2, ev, "say"))
+    assert "ginecólogo" in seen[-1]
