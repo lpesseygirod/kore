@@ -15,8 +15,9 @@ Who gives access: a contact of their own, or one shared by the home. The same pe
 
 from __future__ import annotations
 
+import json
 import sqlite3
-from datetime import timedelta
+from datetime import datetime, timedelta
 
 from kore.memory import store
 from kore.memory.db import from_utc_iso, utc_iso
@@ -179,9 +180,16 @@ def withdraw(conn, clock: Clock, contact_id: int, proposal_id: int) -> None:
 
 
 def waiting(conn, clock: Clock, person_id: int) -> list[dict]:
-    """Open proposals for this person (or for both), still in the future."""
+    """Open proposals for this person (or for both), still in the future: the family's, then Lea's (id "lea-N")."""
     today = clock.now().date()
     out = []
+    for r in conn.execute("SELECT * FROM operator_proposals WHERE kind = 'appointment' AND status = 'open' AND "
+                          "(person_id = ? OR person_id IS NULL)", (person_id,)):
+        p = json.loads(r["payload"])
+        at = datetime.fromisoformat(p["starts_at"])
+        if at > clock.now():
+            out.append({"id": f"lea-{r['id']}", "from": "Lea", "title": p["title"], "where": p["location"],
+                        "when": agenda._when_words(at, today), "shared": r["person_id"] is None})
     for r in conn.execute("SELECT p.*, c.name FROM family_proposals p JOIN contacts c ON c.id = p.contact_id "
                           "WHERE p.status = 'open' AND (p.person_id = ? OR p.person_id IS NULL) AND p.starts_at_utc > ? "
                           "ORDER BY p.starts_at_utc", (person_id, utc_iso(clock.now()))):
@@ -198,6 +206,52 @@ def _waiting_row(conn, clock: Clock, person_id: int, proposal_id: int) -> sqlite
             from_utc_iso(row["starts_at_utc"], clock.tz) <= clock.now():
         raise agenda.Refused("Esa propuesta ya no está.")
     return row
+
+
+def _lea_row(conn, clock: Clock, person_id: int, proposal_id: int) -> sqlite3.Row:
+    r = conn.execute("SELECT * FROM operator_proposals WHERE id = ? AND kind = 'appointment' AND status = 'open'",
+                     (proposal_id,)).fetchone()
+    if r is None or (r["person_id"] is not None and r["person_id"] != person_id) or \
+            datetime.fromisoformat(json.loads(r["payload"])["starts_at"]) <= clock.now():
+        raise agenda.Refused("Esa propuesta ya no está.")
+    return r
+
+
+def proposal_ref(value: str | None) -> tuple[str, int] | None:
+    """A proposal's id from a form: "12" (family) or "lea-12" (Lea)."""
+    value = value or ""
+    lea = value.startswith("lea-")
+    digits = value[4:] if lea else value
+    if digits.isascii() and digits.isdigit() and len(digits) <= 9:
+        return ("lea" if lea else "family", int(digits))
+    return None
+
+
+def propose_accept_any(conn, clock: Clock, person_id: int, ref: tuple[str, int] | None) -> agenda.Proposal:
+    if ref is None:
+        raise agenda.Refused("Esa propuesta ya no está.")
+    if ref[0] == "family":
+        return propose_accept(conn, clock, person_id, ref[1])
+    agenda._usable_clock(clock)
+    r = _lea_row(conn, clock, person_id, ref[1])
+    p = json.loads(r["payload"])
+    agenda._health_ok(conn, r["person_id"])
+    at = datetime.fromisoformat(p["starts_at"])
+    readback = (f"Cita propuesta por Lea: «{p['title']}», {agenda._when_words(at, clock.now().date())}"
+                f"{', en ' + p['location'] if p['location'] else ''}. {agenda._for_whom(r['person_id'])}")
+    return agenda._save(conn, clock, person_id, "add_appointment",
+                        {"person_id": r["person_id"], "title": p["title"], "starts_at": at.isoformat(),
+                         "location": p["location"], "operator_proposal_id": r["id"]}, readback)
+
+
+def decline_any(conn, clock: Clock, person_id: int, ref: tuple[str, int] | None) -> None:
+    if ref is None:
+        raise agenda.Refused("Esa propuesta ya no está.")
+    if ref[0] == "family":
+        return decline(conn, clock, person_id, ref[1])
+    _lea_row(conn, clock, person_id, ref[1])
+    conn.execute("UPDATE operator_proposals SET status = 'declined', answered_at = ? WHERE id = ?",
+                 (utc_iso(clock.now()), ref[1]))
 
 
 def propose_accept(conn, clock: Clock, person_id: int, proposal_id: int) -> agenda.Proposal:

@@ -73,6 +73,7 @@ button.big, a.big { display: block; width: 100%; font: inherit; font-size: 1.05r
       text-decoration: none; }
 a.big:hover, button.big:hover { background: var(--accent-dark); color: var(--on-accent); }
 button.big.second, a.big.second { background: var(--card); color: var(--accent); }
+a.small.here { background: var(--tint); border-color: var(--tint-line); }
 button.small, a.small { text-decoration: none; display: inline-flex; align-items: center; font: inherit;
       font-size: .8rem; font-weight: 600; padding: .35rem .8rem; min-height: 44px; border-radius: 10px;
       border: 1px solid var(--line); background: var(--card); color: var(--accent); cursor: pointer; }
@@ -708,6 +709,10 @@ def elder_home(account, d: dict) -> str:
         parts.append(f'<a class="big-card" href="/calendario#propuestas"><span><b>{e(names)} '
                      f'{t("te", "le")} propone una cita</b><br><span class="muted">Míralo y decide</span></span>'
                      f'<span class="chev" aria-hidden="true">›</span></a>')
+    for m in d.get("medicine_proposals") or []:
+        parts.append(f'<div class="card tint"><b>Lea propone tomar {e(m["name"])} a las {e(", ".join(m["times"]))}'
+                     f'</b><p class="muted" style="margin:.3rem 0 0">No cambia nada hasta que {t("se lo digas", "se lo diga")} '
+                     f'a Pepe. Lo que diga {t("tu", "su")} médico es lo que vale.</p></div>')
     if d.get("shopping"):
         parts.append(f'<a class="big-card" href="/compra"><span><b>La compra</b><br><span class="muted">'
                      f'{e(" · ".join(d["shopping"][:6]))}</span></span><span class="chev" aria-hidden="true">›</span></a>')

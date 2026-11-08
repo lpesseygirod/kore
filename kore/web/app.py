@@ -15,7 +15,8 @@ import asyncio
 import contextlib
 import threading
 import urllib.parse
-from datetime import timedelta
+from datetime import date, timedelta
+from pathlib import Path
 
 from starlette.applications import Starlette
 from starlette.middleware import Middleware
@@ -30,7 +31,8 @@ from kore.info import news, weather
 from kore.memory.db import connect, utc_iso
 from kore.scheduler.clock import Clock, SystemClock
 from kore.setup import progress
-from kore.web import accounts, agenda, elder, pages, photos, today
+from kore.brain.costs import CostLog
+from kore.web import accounts, agenda, console, elder, pages, pages_console, photos, today
 from kore.web import family as fam
 from kore.web import chat as chats
 
@@ -62,6 +64,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     lock = threading.Lock()
     holder: dict = {}
     photo_dir = photos.folder(db_path)
+    cost_log = CostLog()
+    test_chats: dict[int, console.TestChat] = {}
     if chat is not None and chat.photo_dir is None:
         chat.photo_dir = photo_dir
 
@@ -134,7 +138,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if a is None:
                 return RedirectResponse("/entrar", 303, headers=HEADERS)
             if a.role == "operator":
-                return html(pages.operator_home(a, _status(db(), clock)))
+                return html(pages_console.overview(overview_data()))
             if a.role == "family":
                 return html(pages.family_home(a, fam.thread(db(), clock, a.contact_id),
                                               pages.DONE.get(request.query_params.get("hecho", ""), "")))
@@ -292,7 +296,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 "weather": f"{sky.capitalize()}, {w.get('max_c')}°" if sky and w.get("max_c") is not None else "",
                 "next": elder.next_up(db(), clock, a.person_id), "pills": elder.pills(db(), clock, a.person_id),
                 "unread": elder.unread_count(db(), a.person_id), "proposals": day.get("family_proposals") or [],
-                "shopping": day.get("shopping") or []}
+                "shopping": day.get("shopping") or [],
+                "medicine_proposals": elder.medicine_proposals(db(), a.person_id)}
 
     def person(request: Request):
         """The logged-in person, or None (operator and strangers get no personal pages)."""
@@ -448,6 +453,198 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
 
     c, k = db, clock  # short names for the proposals below
 
+    # --- Lea's console ----------------------------------------------------------------------------
+
+    def lea(request: Request):
+        a = account(request)
+        return a if a is not None and a.role == "operator" else None
+
+    def base() -> dict:
+        return {"home": console.home_name(db()), "people": console.people(db())}
+
+    def overview_data() -> dict:
+        now = clock.now()
+        dev = console.device(db(), clock, cost_log)
+        need = console.needs_you(db(), clock)
+        summary = ("Something needs you." if need else "The voice loop isn't running yet (phase 1)." if not dev["loop"]
+                   else "Everything is running normally." if dev["loop"]["online"] else "The box hasn't been seen lately.")
+        return {**base(), "hour": now.hour, "date": now.strftime("%A %-d %B"), "summary": summary, "device": dev,
+                "today": console.today(db(), clock), "messages_today": console.messages_today(db(), clock),
+                "needs_you": need, "week_numbers": console.week_numbers(db(), clock, cost_log),
+                "shopping": console.shopping(db())}
+
+    def console_page(render):
+        async def handler(request: Request):
+            with lock:
+                a = lea(request)
+                if a is None:
+                    return go("/entrar")
+                return html(render(a, request))
+        return handler
+
+    def console_action(act, back: str):
+        """A console form: Lea's own change. `act(a, f)` returns a note for the page, or raises Refused."""
+        async def handler(request: Request):
+            f = await form(request)
+            with lock:
+                a = lea(request)
+                if a is None:
+                    return go("/entrar")
+                if f is None:
+                    return html(pages.message("Not done", "Go back to the page and try again.", back), 403)
+                try:
+                    result = act(a, f)
+                except agenda.Refused as r:
+                    return html(PAGES[back](a, None, str(r), True), 400)
+                if isinstance(result, Response):
+                    return result
+                return html(PAGES[back](a, None, result or "Done.", False))
+        return handler
+
+    def week_start(request) -> date:
+        try:
+            day = date.fromisoformat(request.query_params.get("week", ""))
+        except ValueError:
+            day = clock.now().date()
+        return day - timedelta(days=day.weekday())
+
+    def calendar_view(a, request, note="", bad=False):
+        start = week_start(request) if request is not None else clock.now().date() - timedelta(days=clock.now().weekday())
+        return pages_console.calendar({**base(), "week": console.week(db(), clock, start), "meds": console.med_schedule(db()),
+                                       "repeating": console.repeating(db()), "shared_ok": console._shared_ok(db()),
+                                       "proposals": console.lea_proposals(db(), clock)}, note, bad)
+
+    def chat_view(a, request, note="", bad=False):
+        d = {**base(), "conversations": console.conversations(db(), clock),
+             "anyone": any(p["chats"] for p in console.people(db()))}
+        if request is not None:
+            pid, first = _small_int(request.query_params.get("p")), _small_int(request.query_params.get("c"))
+            if pid is not None and first is not None:
+                d["open"] = console.conversation(db(), clock, pid, first)
+                if d["open"]:
+                    d["open"]["marks"] = console.marks(db(), pid, first)
+        t = test_chats.get(a.login_id)
+        d["test"] = {"available": chat is not None, "live": not dev, "lines": t.lines if t else [],
+                     "as": t.as_person if t else None}
+        return pages_console.chat(d, note, bad)
+
+    def feedback_view(a, request, note="", bad=False):
+        f = (request.query_params.get("f") if request is not None else None) or "all"
+        who, state = (f, "all") if f.isdigit() else ("all", f if f in ("active", "undone") else "all")
+        return pages_console.feedback({**base(), "items": console.feedback(db(), clock, who, state),
+                                       "filter": f if f in ("all", "active", "undone") or f.isdigit() else "all"},
+                                      note, bad)
+
+    def people_view(a, request, note="", bad=False):
+        return pages_console.people({**base(), "memory": console.memory(db(), clock),
+                                     "shared": console.shared_people(db())}, note)
+
+    def device_view(a, request, note="", bad=False):
+        return pages_console.device({**base(), "device": console.device(db(), clock, cost_log),
+                                     "events": console.events(db(), clock), "version": console.version()})
+
+    def settings_view(a, request, note="", bad=False):
+        return pages_console.settings({**base(), "permissions": console.permissions(db()),
+                                       "quiet": console.quiet_times(db()), "contacts": console.contacts(db())}, note, bad)
+
+    PAGES = {"/console/calendar": calendar_view, "/console/chat": chat_view, "/console/feedback": feedback_view,
+             "/console/people": people_view, "/console/settings": settings_view}
+
+    def act_medicine(a, f):
+        return console.propose_medicine_change(db(), clock, _small_int(f.get("id")) or 0, f.get("times") or "")
+
+    def act_appointment(a, f):
+        return console.propose_appointment(db(), clock, f)
+
+    def chat_ref(f):
+        pid, first = _small_int(f.get("p")), _small_int(f.get("c"))
+        if pid is None or first is None:
+            raise agenda.Refused("That conversation isn't there any more.")
+        return pid, first
+
+    def act_mark(a, f):
+        pid, first = chat_ref(f)
+        if not console.mark_problem(db(), clock, pid, first, f.get("note") or ""):
+            raise agenda.Refused("That conversation isn't there any more.")
+        return go(f"/console/chat?p={pid}&c={first}")
+
+    def act_scenario(a, f):
+        pid, first = chat_ref(f)
+        path = console.save_as_scenario_draft(db(), clock, pid, first, Path(db_path).resolve().parent.parent
+                                              / "private" / "scenario_drafts")
+        if path is None:
+            raise agenda.Refused("That conversation isn't there any more.")
+        return f"Saved as a draft in private/scenario_drafts/{path.name} (kept out of git). Rewrite it with made-up names."
+
+    def act_delete(a, f):
+        pid, first = chat_ref(f)
+        if not console.delete_conversation(db(), clock, pid, first):
+            raise agenda.Refused("That conversation isn't there any more.")
+        if chat is not None:
+            chat.forget(pid)
+        return "Deleted."
+
+    def act_undo(a, f):
+        from kore.feedback import store as fb
+        fid = _small_int(f.get("id"))
+        if fid is None or not any(x["id"] == fid for x in console.feedback(db(), clock)):
+            raise agenda.Refused("That feedback isn't there (or isn't shared with you).")
+        try:
+            fb.undo(db(), clock, fid, misunderstood=bool(f.get("misunderstood")))
+        except fb.FeedbackError as err:
+            raise agenda.Refused(str(err)) from None
+        return "Undone. It takes effect on the next turn."
+
+    def act_reword(a, f):
+        from kore.feedback import store as fb
+        fid = _small_int(f.get("id"))
+        if fid is None or not any(x["id"] == fid for x in console.feedback(db(), clock)):
+            raise agenda.Refused("That feedback isn't there (or isn't shared with you).")
+        try:
+            fb.reword(db(), fid, f.get("text") or "")
+        except fb.FeedbackError as err:
+            raise agenda.Refused(str(err)) from None
+        return "Reworded."
+
+    def act_quiet(a, f):
+        console.set_quiet_times(db(), clock, (f.get("start") or "").strip(), (f.get("end") or "").strip())
+        return "Saved."
+
+    async def forget_note(request: Request):
+        f = await form(request)
+        with lock:
+            a = lea(request)
+            if a is None or f is None:
+                return go("/entrar")
+            pid, nid = _small_int(f.get("person")), _small_int(f.get("id"))
+            row = db().execute("SELECT n.id, n.text, p.call_name FROM notes n JOIN people p ON p.id = n.person_id "
+                               "WHERE n.id = ? AND n.person_id = ?", (nid or 0, pid or 0)).fetchone()
+            if row is None or pid not in {p["id"] for p in console.people(db()) if p["day"]}:
+                return html(people_view(a, None, "That isn't there any more."), 400)
+            if not f.get("sure"):
+                return html(pages_console.people(base(), confirm={"person_id": pid, "id": nid, "text": row["text"],
+                                                                  "person": row["call_name"]}))
+            console.forget_note(db(), pid, nid)
+        if chat is not None:
+            chat.forget(pid)
+        return go("/console/people")
+
+    async def test_talk(request: Request):
+        f = await form(request)
+        with lock:
+            a = lea(request)
+            if a is None:
+                return go("/entrar")
+            if f is None or chat is None:
+                return html(chat_view(a, None, "The test chat isn't available.", True), 400)
+            t = test_chats.setdefault(a.login_id, console.TestChat())
+            try:
+                t.prepare(db(), clock, chat.client, _small_int(f.get("as")) or 0)
+            except agenda.Refused as r:
+                return html(chat_view(a, None, str(r), True), 400)
+        await asyncio.to_thread(t.reply, f.get("text") or "")
+        return go("/console/chat#test-msg")
+
     # --- Carmen and Antonio's app ---------------------------------------------------------------
 
     async def agenda_page(request: Request):
@@ -586,7 +783,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if a is None or f is None:
                 return go("/entrar")
             try:
-                fam.decline(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+                fam.decline_any(db(), clock, a.person_id, fam.proposal_ref(f.get("id")))
             except agenda.Refused:
                 pass
         return go("/calendario?hecho=anulado")
@@ -676,6 +873,22 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/compra/quitar", shopping_change(shop_remove), methods=["POST"]),
         Route("/compra/volver", shopping_change(shop_back), methods=["POST"]),
         Route("/foto", photo),
+        Route("/console/calendar", console_page(lambda a, r: calendar_view(a, r))),
+        Route("/console/calendar/medicine", console_action(act_medicine, "/console/calendar"), methods=["POST"]),
+        Route("/console/calendar/add", console_action(act_appointment, "/console/calendar"), methods=["POST"]),
+        Route("/console/chat", console_page(lambda a, r: chat_view(a, r))),
+        Route("/console/chat/mark", console_action(act_mark, "/console/chat"), methods=["POST"]),
+        Route("/console/chat/scenario", console_action(act_scenario, "/console/chat"), methods=["POST"]),
+        Route("/console/chat/delete", console_action(act_delete, "/console/chat"), methods=["POST"]),
+        Route("/console/chat/test", test_talk, methods=["POST"]),
+        Route("/console/feedback", console_page(lambda a, r: feedback_view(a, r))),
+        Route("/console/feedback/undo", console_action(act_undo, "/console/feedback"), methods=["POST"]),
+        Route("/console/feedback/reword", console_action(act_reword, "/console/feedback"), methods=["POST"]),
+        Route("/console/people", console_page(lambda a, r: people_view(a, r))),
+        Route("/console/people/forget", forget_note, methods=["POST"]),
+        Route("/console/device", console_page(lambda a, r: device_view(a, r))),
+        Route("/console/settings", console_page(lambda a, r: settings_view(a, r))),
+        Route("/console/settings/quiet", console_action(act_quiet, "/console/settings"), methods=["POST"]),
         Route("/agenda", agenda_page), Route("/pastillas", pills_page),
         Route("/pastillas/tomada", take_pill, methods=["POST"]),
         Route("/mi-familia", family_page),
@@ -690,7 +903,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                                             lambda a, f, n: pages.invite(a, fam.people_to_invite(c(), a.person_id), n)),
               methods=["POST"]),
         Route("/familia/quitar", take_access, methods=["POST"]),
-        Route("/calendario/propuesta", proposing(lambda a, f: fam.propose_accept(c(), k, a.person_id, the_id(f)), None),
+        Route("/calendario/propuesta", proposing(
+            lambda a, f: fam.propose_accept_any(c(), k, a.person_id, fam.proposal_ref(f.get("id"))), None),
               methods=["POST"]),
         Route("/calendario/propuesta/no", decline, methods=["POST"]),
         Route("/familia/escribir", family_change(fam_write, home_page), methods=["POST"]),

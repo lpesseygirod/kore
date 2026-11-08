@@ -236,3 +236,11 @@ def who_sees_what(conn, person_id: int) -> dict:
                 ("Tus conversaciones de los últimos 7 días", yes("lea_reads_conversations"))],
         "partner": [("Si te has tomado la pastilla, si te lo pregunta a Pepe", yes("share_with_partner"))],
     }
+
+
+def medicine_proposals(conn, person_id: int) -> list[dict]:
+    """Lea's proposed medicine changes, for the Inicio card. Pepe asks them; nothing changes without their yes."""
+    import json
+    return [json.loads(r["payload"]) for r in conn.execute(
+        "SELECT payload FROM operator_proposals WHERE kind = 'medication' AND status = 'open' AND person_id = ?",
+        (person_id,))]

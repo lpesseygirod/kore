@@ -372,6 +372,9 @@ def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = N
             if p.get("family_proposal_id"):
                 conn.execute("UPDATE family_proposals SET status = 'accepted', answered_at = ? WHERE id = ?",
                              (utc_iso(clock.now()), p["family_proposal_id"]))
+            if p.get("operator_proposal_id"):
+                conn.execute("UPDATE operator_proposals SET status = 'accepted', answered_at = ? WHERE id = ?",
+                             (utc_iso(clock.now()), p["operator_proposal_id"]))
         elif kind == "stop_birthday":
             store.stop_birthday(conn, p["contact_id"])
         elif kind == "add_note":
@@ -418,6 +421,10 @@ def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:
         if p.get("family_proposal_id"):
             row = conn.execute("SELECT person_id FROM family_proposals WHERE id = ? AND status = 'open'",
                                (p["family_proposal_id"],)).fetchone()
+            _mine(row, row and row["person_id"], person_id, "Esa propuesta ya no está.")
+        if p.get("operator_proposal_id"):
+            row = conn.execute("SELECT person_id FROM operator_proposals WHERE id = ? AND status = 'open'",
+                               (p["operator_proposal_id"],)).fetchone()
             _mine(row, row and row["person_id"], person_id, "Esa propuesta ya no está.")
     elif kind == "move_appointment":
         _appointment(conn, clock, person_id, p["appointment_id"])

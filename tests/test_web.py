@@ -241,7 +241,7 @@ def test_lea_logs_in_with_a_printed_code_and_sees_status_only(app, conn, clock, 
     c.get("/entrar")
     assert c.post("/entrar", data={"code": code}, headers=ORIGIN).status_code == 303
     page = c.get("/").text
-    assert "Estado de Pepe" in page and "Personas en casa" in page and "tensión" not in page
+    assert "Good" in page and "Lea" in page and "Not shared" in page and "tensión" not in page
     assert conn.execute("SELECT count(*) FROM say_queue").fetchone()[0] == 0  # never spoken
 
 

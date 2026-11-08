@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 9
+SCHEMA_VERSION = 10
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -394,6 +394,27 @@ CREATE TABLE IF NOT EXISTS family_proposals (
     created_at TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'accepted', 'declined', 'withdrawn')),
     answered_at TEXT
+);
+
+-- Lea's console: a medicine change or an appointment she proposes. It changes nothing by itself: the person sees
+-- it (and Pepe mentions a medicine change) and saves it only with their own read-back and yes.
+CREATE TABLE IF NOT EXISTS operator_proposals (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER REFERENCES people(id),    -- NULL: for both
+    kind TEXT NOT NULL CHECK (kind IN ('medication', 'appointment')),
+    payload TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'accepted', 'declined', 'withdrawn', 'lapsed')),
+    answered_at TEXT
+);
+
+-- Lea's console: "Mark a problem" on a conversation she may read. Deleted with it, never backed up.
+CREATE TABLE IF NOT EXISTS console_marks (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id),
+    chat_id INTEGER NOT NULL,
+    note TEXT NOT NULL,
+    at_utc TEXT NOT NULL
 );
 
 -- A change made on the web page, waiting for the person's "Sí" (the read-back page). Only the latest one per
