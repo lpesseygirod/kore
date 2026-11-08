@@ -9,6 +9,10 @@ with Claude's recommendation for each.
 
 ## 1. A phone app is the first step for anything on the phone
 
+**Decided (Lea, 2026-11-08): "Web app is enough."** No phone app. Carmen and Antonio use the web app in their
+phone's browser. What only an app could do (search their photos, read their calls) stays out. Calls work through
+the "Llamar" button, and photos through the family app and "Fotos".
+
 The home page (the web) can't reach the phone's photos library, call history or contacts. A real app can, with the
 person's permission, and only partly:
 
@@ -106,9 +110,8 @@ Meta's current price list). Plain replies within 24 hours have no Meta charge. A
 
 ## Questions for Lea
 
-1. A phone app (instead of the web page) for Carmen and Antonio: yes, later, or no? It's a bigger project than the
-   rest of version 1 together. Do they use a Windows computer? Then "install as an app" from the browser is the
-   cheap way to have Pepe there too.
+1. ~~A phone app~~ Decided 2026-11-08: no, the web app is enough. Still open: "install as an app" on a Windows
+   computer, if they use one (free).
 2. "Llama a…" from the web page with a call button, and Pepe noting the calls it starts: OK? (Free, no app.)
 3. Family photos: shared on purpose (family app → Carmen's Fotos), not by searching their phone: OK?
 4. TV: what TV and decoder do they have? And may Pepe look things up on the internet (the TV guide)?
