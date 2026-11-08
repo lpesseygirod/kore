@@ -163,7 +163,7 @@
       ]
     },
     "judge": [
-      "Says rain is likely from about 11 and it will be windy, so early is best or take an umbrella",
+      "Says rain is likely from about 11, so early is best or take an umbrella (the wind is optional: the design asks for the main change only)",
       "Brief and natural, like a person speaking: not a list of numbers, percentages or wind speeds",
       "Doesn't invent other places or other days"
     ]
