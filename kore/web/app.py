@@ -30,7 +30,8 @@ from kore.info import news, weather
 from kore.memory.db import connect, utc_iso
 from kore.scheduler.clock import Clock, SystemClock
 from kore.setup import progress
-from kore.web import accounts, agenda, pages, today
+from kore.web import accounts, agenda, pages, photos, today
+from kore.web import family as fam
 from kore.web import chat as chats
 
 SESSION = "kore"
@@ -58,6 +59,9 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     clock = clock or SystemClock()
     lock = threading.Lock()
     holder: dict = {}
+    photo_dir = photos.folder(db_path)
+    if chat is not None and chat.photo_dir is None:
+        chat.photo_dir = photo_dir
 
     def db():
         if "conn" not in holder:
@@ -86,6 +90,28 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 return None
         return {k: v[0] for k, v in urllib.parse.parse_qs(body.decode("utf-8", "replace")).items()}
 
+    async def upload(request: Request) -> dict | None:
+        """The chat form: text and maybe a photo (multipart). None if it isn't from this page or is too big."""
+        if not _same_origin(request):
+            return None
+        limit = photos.MAX_UPLOAD + 64 * 1024
+        try:
+            if int(request.headers.get("content-length") or 0) > limit:
+                return None
+        except ValueError:
+            return None
+        body = b""
+        async for chunk in request.stream():
+            body += chunk
+            if len(body) > limit:
+                return None
+        kind = request.headers.get("content-type", "")
+        if kind.lower().startswith("multipart/form-data"):
+            return await asyncio.to_thread(photos.parse_multipart, kind, body)
+        if len(body) > MAX_FORM:
+            return None
+        return {k: v[0] for k, v in urllib.parse.parse_qs(body.decode("utf-8", "replace")).items()}
+
     def client(request: Request) -> str:
         return request.client.host if request.client else "unknown"
 
@@ -103,6 +129,9 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 return RedirectResponse("/entrar", 303, headers=HEADERS)
             if a.role == "operator":
                 return html(pages.operator_home(a, _status(db(), clock)))
+            if a.role == "family":
+                return html(pages.family_home(a, fam.thread(db(), clock, a.contact_id),
+                                              pages.DONE.get(request.query_params.get("hecho", ""), "")))
             return html(pages.today(a, today.for_person(db(), clock, a.person_id)))
 
     async def entrar(request: Request):
@@ -158,7 +187,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             a = account(request)
             if a is None:
                 return RedirectResponse("/entrar", 303, headers=HEADERS)
-            return html(pages.devices(a, accounts.logins(db(), clock, a)))
+            return html(pages.devices(a, accounts.logins(db(), clock, a),
+                                      fam.people_to_invite(db(), a.person_id) if a.role == "person" else None))
 
     async def close_device(request: Request):
         f = await form(request)
@@ -188,29 +218,41 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             a = account(request)
             if a is None or a.role != "person":
                 return RedirectResponse("/entrar" if a is None else "/", 303, headers=HEADERS)
-            rows = chats.history(db(), clock, a.person_id)
+            rows = chats.history(db(), clock, a.person_id, photo_dir=photo_dir)
         return html(pages.chat(a, rows, chat is not None))
 
     async def talk(request: Request):
-        f = await form(request)
         with lock:
             a = account(request)
         if a is None or a.role != "person":
             return RedirectResponse("/entrar", 303, headers=HEADERS)
+        f = await upload(request)
         if f is None:
-            return html(pages.message("No se ha podido", "Vuelva a la página de Pepe y pruebe otra vez."), 403)
-        text = (f.get("text") or "").strip()
-        if chat is not None and text:
+            return html(pages.message("No se ha podido", "Vuelva a la página de Pepe y pruebe otra vez. Si mandaba una "
+                                      "foto, quizá era demasiado grande."), 403)
+        text = f.get("text") if isinstance(f.get("text"), str) else ""
+        text = text.strip()
+        data = f.get("photo") if isinstance(f.get("photo"), bytes) else b""
+
+        def again(note: str, status: int = 400):
+            with lock:
+                rows = chats.history(db(), clock, a.person_id, photo_dir=photo_dir)
+            return html(pages.chat(a, rows, chat is not None, note), status)
+        if chat is not None and (text or data):
             if len(text) > chats.MAX_CHARS:
-                with lock:
-                    rows = chats.history(db(), clock, a.person_id)
-                return html(pages.chat(a, rows, True, "El mensaje es demasiado largo. Escríbalo en dos partes."), 400)
+                return again("El mensaje es demasiado largo. Escríbalo en dos partes.")
+            photo = None
+            if data:
+                try:
+                    jpeg, w, h = await asyncio.to_thread(photos.shrink, data)  # outside the lock: it takes a moment
+                    with lock:
+                        photo = (photos.save(db(), clock, photo_dir, a.person_id, jpeg, w, h), jpeg)
+                except photos.Refused as r:
+                    return again(str(r))
             try:  # the page waits; other pages and the other person don't
-                await asyncio.wait_for(asyncio.wrap_future(chat.submit(a.person_id, text)), REPLY_WAIT_S)
+                await asyncio.wait_for(asyncio.wrap_future(chat.submit(a.person_id, text, photo)), REPLY_WAIT_S)
             except asyncio.TimeoutError:
-                with lock:
-                    rows = chats.history(db(), clock, a.person_id)
-                return html(pages.chat(a, rows, True, "Pepe sigue pensando. Vuelva a mirar en un momento."))
+                return again("Pepe sigue pensando. Vuelva a mirar en un momento.", 200)
         return RedirectResponse("/hablar#escribir", 303, headers=HEADERS)
 
     async def delete_page(request: Request):
@@ -225,7 +267,9 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         with lock:
             a = account(request)
             if a is not None and a.role == "person" and f is not None:
-                chats.delete_all(db(), a.person_id)
+                chats.delete_all(db(), a.person_id, clock, photo_dir)
+                if chat is not None:
+                    chat.forget(a.person_id)
         return RedirectResponse("/hablar", 303, headers=HEADERS)
 
     # --- W3: calendar, shopping list, what Pepe knows ---------------------------------------------
@@ -313,7 +357,13 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if f is None:
                 return html(pages.message("No se ha podido", BAD_FORM), 403)
             try:
-                return go(agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0))
+                where = agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+                if where.startswith("code:"):  # family access: the code is shown once, here
+                    _, code, name = where.split(":", 2)
+                    return html(pages.family_code(a, name, code))
+                if where.startswith("/sabe?hecho=olvidado") and chat is not None:
+                    chat.forget(a.person_id)  # nor in the conversation Claude still holds
+                return go(where)
             except agenda.Refused as r:
                 return html(pages.message("No se ha guardado", str(r), "/calendario"), 409)
             except Exception:
@@ -381,6 +431,103 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
 
     c, k = db, clock  # short names for the proposals below
 
+    # --- W4: photos, family ---------------------------------------------------------------------
+
+    async def photo(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return Response(status_code=404, headers=HEADERS)
+            data = photos.read(db(), photo_dir, a.person_id, _small_int(request.query_params.get("id")) or 0)
+        if data is None:
+            return Response(status_code=404, headers=HEADERS)
+        return Response(data, media_type="image/jpeg", headers={**HEADERS, "Content-Disposition": "inline"})
+
+    def relative(request: Request):
+        a = account(request)
+        return a if a is not None and a.role == "family" else None
+
+    async def invite_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.invite(a, fam.people_to_invite(db(), a.person_id)))
+
+    async def take_access(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None or f is None:
+                return go("/entrar")
+            cid = _small_int(f.get("contact"))
+            if cid is not None:
+                try:
+                    fam.take_access(db(), clock, a.person_id, cid)
+                except agenda.Refused:
+                    pass
+        return go("/dispositivos")
+
+    async def decline(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None or f is None:
+                return go("/entrar")
+            try:
+                fam.decline(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+            except agenda.Refused:
+                pass
+        return go("/calendario?hecho=anulado")
+
+    def family_form(f: dict | None = None, note: str = "", bad: bool = False, a=None):
+        return pages.family_propose(a, fam.household(db(), a.contact_id), fam.my_proposals(db(), clock, a.contact_id),
+                                    today_iso(),
+                                    f, note, bad)
+
+    async def family_cita_page(request: Request):
+        with lock:
+            a = relative(request)
+            if a is None:
+                return go("/entrar")
+            return html(family_form(note=pages.DONE.get(request.query_params.get("hecho", ""), ""), bad=False, a=a))
+
+    def family_change(change, page):
+        async def handler(request: Request):
+            f = await form(request)
+            with lock:
+                a = relative(request)
+                if a is None:
+                    return go("/entrar")
+                if f is None:
+                    return html(pages.message("No se ha podido", BAD_FORM), 403)
+                try:
+                    where = change(a, f)
+                except agenda.Refused as r:
+                    return html(page(a, f, str(r)), 400)
+                return go(where)  # a redirect: reloading the page doesn't send it twice
+        return handler
+
+    def cita_page(a, f, note, bad=True):
+        return family_form(f, note, bad, a)
+
+    def home_page(a, f, note, bad=True):
+        return pages.family_home(a, fam.thread(db(), clock, a.contact_id), note, bad)
+
+    def fam_write(a, f):
+        fam.write(db(), clock, a.contact_id, f.get("text"))
+        return "/?hecho=enviado"
+
+    def fam_propose(a, f):
+        fam.propose(db(), clock, a.contact_id, f)
+        return "/familia/cita?hecho=propuesta"
+
+    def fam_withdraw(a, f):
+        i = _small_int(f.get("id"))
+        if i is not None:
+            fam.withdraw(db(), clock, a.contact_id, i)
+        return "/familia/cita"
+
     async def health(request: Request):
         return PlainTextResponse("ok", headers=HEADERS)
 
@@ -417,6 +564,19 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/compra", shopping_page), Route("/compra/anadir", shopping_change(shop_add), methods=["POST"]),
         Route("/compra/quitar", shopping_change(shop_remove), methods=["POST"]),
         Route("/compra/volver", shopping_change(shop_back), methods=["POST"]),
+        Route("/foto", photo),
+        Route("/familia/invitar", invite_page),
+        Route("/familia/invitar", proposing(lambda a, f: fam.propose_access(c(), k, a.person_id, f),
+                                            lambda a, f, n: pages.invite(a, fam.people_to_invite(c(), a.person_id), n)),
+              methods=["POST"]),
+        Route("/familia/quitar", take_access, methods=["POST"]),
+        Route("/calendario/propuesta", proposing(lambda a, f: fam.propose_accept(c(), k, a.person_id, the_id(f)), None),
+              methods=["POST"]),
+        Route("/calendario/propuesta/no", decline, methods=["POST"]),
+        Route("/familia/escribir", family_change(fam_write, home_page), methods=["POST"]),
+        Route("/familia/cita", family_cita_page),
+        Route("/familia/cita", family_change(fam_propose, cita_page), methods=["POST"]),
+        Route("/familia/cita/retirar", family_change(fam_withdraw, cita_page), methods=["POST"]),
         Route("/sabe", known_page),
         Route("/sabe/anadir", proposing(lambda a, f: agenda.propose_note(c(), k, a.person_id, f),
                                         None, "/sabe"), methods=["POST"]),
@@ -430,7 +590,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             chat.shutdown()
 
     return Starlette(routes=routes, middleware=[Middleware(TrustedHostMiddleware, allowed_hosts=hosts or DEFAULT_HOSTS)],
-                     lifespan=lifespan, max_body_size=MAX_FORM * 4)
+                     lifespan=lifespan, max_body_size=photos.MAX_UPLOAD + 64 * 1024)
 
 
 def _small_int(value) -> int | None:

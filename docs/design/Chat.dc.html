@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE Console — Chat</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F">
+<header style="background: #FFFFFF; border-bottom: 1px solid #E6D7DC">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
+<a href="Overview.dc.html" style="font-size: 22px; font-weight: 700; letter-spacing: 0.18em; color: #6E1E35; text-decoration: none">KORE</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Overview.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Overview</a>
+<a href="Calendar.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Calendar</a>
+<a href="Chat.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; font-weight: 600; color: #6E1E35; background: #F3E6EA; text-decoration: none">Chat</a>
+<a href="Console.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Feedback</a>
+<a href="People.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">People</a>
+<a href="Device.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Device</a>
+<a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Settings</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #E6D7DC; border-radius: 999px; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F6B4F"></span>Carmen &amp; Antonio’s home</div>
+</div>
+</header>
+<main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 64px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700">Chat</h1>
+<p style="margin: 0; font-size: 17px; line-height: 26px; color: #6F5A61; max-width: 760px">Conversations from the last 7 days, kept only to fix problems, with Carmen and Antonio’s OK. Anything they asked Pepe not to save never appears here.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<nav aria-label="Conversations" style="flex: 1 1 300px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 12px; display: flex; flex-direction: column; gap: 4px">
+<div style="padding: 8px 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">TODAY</div>
+<a href="#" style="padding: 12px; border-radius: 10px; text-decoration: none; color: #2A1A1F; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Pill reminder</span><span style="font-size: 14px; color: #6F5A61">09:00 · Carmen &amp; Antonio</span></a>
+<a href="#" style="padding: 12px; border-radius: 10px; text-decoration: none; color: #2A1A1F; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">“Stop reminding me” <span style="padding: 2px 8px; border-radius: 999px; background: #6E1E35; color: #FFFFFF; font-size: 11px; font-weight: 700">SAFETY</span></span><span style="font-size: 14px; color: #6F5A61">10:12 · Carmen</span></a>
+<a href="#" style="padding: 12px; border-radius: 10px; text-decoration: none; color: #2A1A1F; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Weather and news</span><span style="font-size: 14px; color: #6F5A61">11:30 · Antonio</span></a>
+<a href="#" style="padding: 12px; border-radius: 10px; text-decoration: none; color: #2A1A1F; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Quiet mode</span><span style="font-size: 14px; color: #6F5A61">16:05 · Antonio</span></a>
+<a href="#" aria-current="true" style="padding: 12px; border-radius: 10px; text-decoration: none; color: #2A1A1F; background: #F3E6EA; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Her book</span><span style="font-size: 14px; color: #6F5A61">17:20 · Carmen</span></a>
+<div style="padding: 8px 12px; font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">YESTERDAY</div>
+<a href="#" style="padding: 12px; border-radius: 10px; text-decoration: none; color: #2A1A1F; display: flex; flex-direction: column; gap: 2px"><span style="font-size: 15px; font-weight: 600">Speak more slowly</span><span style="font-size: 14px; color: #6F5A61">18:40 · Antonio</span></a>
+</nav>
+<section aria-label="Conversation: Her book" style="flex: 999 1 560px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; align-items: center">
+<h2 style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Her book · 17:20</h2>
+<span style="font-size: 14px; color: #6F5A61">Started by Pepe (conversation starter, allowed for Carmen)</span>
+</div>
+<div style="align-self: flex-end; max-width: 78%; background: #6E1E35; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 12px 16px; font-size: 16px; line-height: 24px">Carmen, ¿qué tal va el libro? Me dijiste que ibas por la mitad.</div>
+<div style="align-self: flex-start; max-width: 78%; background: #FBF7F5; border: 1px solid #E6D7DC; border-radius: 16px 16px 16px 4px; padding: 12px 16px; font-size: 16px; line-height: 24px">Ay, muy bien. Ya casi lo termino, está en lo más interesante.</div>
+<div style="align-self: flex-end; max-width: 78%; background: #6E1E35; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 12px 16px; font-size: 16px; line-height: 24px">¡Qué bien! ¿Quieres contarme qué ha pasado, o prefieres no destriparlo?</div>
+<div style="align-self: flex-end; font-size: 12px; color: #6F5A61">First word after 2.1 s</div>
+<div style="align-self: flex-start; max-width: 78%; background: #FBF7F5; border: 1px solid #E6D7DC; border-radius: 16px 16px 16px 4px; padding: 12px 16px; font-size: 16px; line-height: 24px">Mejor no, que luego te lo cuento entero.</div>
+<div style="align-self: flex-end; max-width: 78%; background: #6E1E35; color: #FFFFFF; border-radius: 16px 16px 4px 16px; padding: 12px 16px; font-size: 16px; line-height: 24px">Me parece perfecto. Aquí estaré cuando quieras.</div>
+<div style="align-self: center; padding: 6px 14px; border-radius: 999px; background: #EFEAEC; color: #4F464A; font-size: 13px">Saved to memory: Carmen is close to finishing her book</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px; padding-top: 8px; border-top: 1px solid #EFE4E8">
+<button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Mark a problem</button>
+<button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Make it a test scenario</button>
+<button type="button" style="min-height: 44px; padding: 0 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Delete conversation</button>
+</div>
+</section>
+</div>
+<form style="background: #F3E6EA; border: 1px solid #E2C9D1; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<label for="test-msg" style="font-size: 17px; font-weight: 700">Talk to Pepe as a test</label>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #4F3D44">Test mode: it uses the same rules and voice settings, but never reaches the device or their memory.</p>
+<div style="display: flex; flex-wrap: wrap; gap: 12px">
+<input id="test-msg" type="text" placeholder="Pretend you’re Carmen: “¿Me he tomado la pastilla?”" style="flex: 1 1 360px; min-width: 0; min-height: 48px; padding: 0 14px; border: 1px solid #D9C4CB; border-radius: 10px; font: inherit; font-size: 16px; background: #FFFFFF">
+<button type="submit" style="min-height: 48px; padding: 0 22px; border-radius: 10px; border: 1px solid #6E1E35; background: #6E1E35; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Send</button>
+</div>
+</form>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE Console — Calendar</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F">
+<header style="background: #FFFFFF; border-bottom: 1px solid #E6D7DC">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
+<a href="Overview.dc.html" style="font-size: 22px; font-weight: 700; letter-spacing: 0.18em; color: #6E1E35; text-decoration: none">KORE</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Overview.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Overview</a>
+<a href="Calendar.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; font-weight: 600; color: #6E1E35; background: #F3E6EA; text-decoration: none">Calendar</a>
+<a href="Chat.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Chat</a>
+<a href="Console.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Feedback</a>
+<a href="People.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">People</a>
+<a href="Device.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Device</a>
+<a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Settings</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #E6D7DC; border-radius: 999px; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F6B4F"></span>Carmen &amp; Antonio’s home</div>
+</div>
+</header>
+<main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 64px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700">Calendar</h1>
+<p style="margin: 0; font-size: 17px; line-height: 26px; color: #6F5A61">2 – 8 November. Everything Pepe will remind them about, and what happened.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" aria-label="Previous week" style="min-height: 44px; min-width: 44px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 18px; cursor: pointer">‹</button>
+<button type="button" style="min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 15px; cursor: pointer">This week</button>
+<button type="button" aria-label="Next week" style="min-height: 44px; min-width: 44px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 18px; cursor: pointer">›</button>
+<button type="button" style="min-height: 44px; padding: 0 18px; border-radius: 10px; border: 1px solid #6E1E35; background: #6E1E35; color: #FFFFFF; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Add to calendar</button>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px 20px; font-size: 14px; color: #4F3D44">
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #F3E6EA; border: 1px solid #E2C9D1"></span>Medication</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #FBEFDF; border: 1px solid #F0D8B4"></span>Appointment</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #6E1E35"></span>Birthday</span>
+<span style="display: flex; align-items: center; gap: 8px"><span style="width: 14px; height: 14px; border-radius: 4px; background: #EFEAEC; border: 1px solid #DDD3D7"></span>Reminder</span>
+</div>
+<div style="overflow-x: auto; border: 1px solid #E6D7DC; border-radius: 16px; background: #FFFFFF">
+<div style="min-width: 980px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr))">
+<div style="border-right: 1px solid #EFE4E8; padding: 14px 10px; display: flex; flex-direction: column; gap: 8px; min-height: 360px">
+<div style="font-size: 13px; font-weight: 600; color: #6F5A61">MON 2</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #245640">Taken</span></div>
+</div>
+<div style="border-right: 1px solid #EFE4E8; padding: 14px 10px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; color: #6F5A61">TUE 3</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #FBEFDF; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>11:00</b> Doctor · Antonio<br>Centro de salud</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #245640">Taken</span></div>
+</div>
+<div style="border-right: 1px solid #EFE4E8; padding: 14px 10px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; color: #6F5A61">WED 4</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #7A410C">Taken late, 22:40</span></div>
+</div>
+<div style="border-right: 1px solid #EFE4E8; padding: 14px 10px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; color: #6F5A61">THU 5</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #EFEAEC; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>20:00</b> Rubbish out<br>Every Thursday</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #245640">Taken</span></div>
+</div>
+<div style="border-right: 1px solid #EFE4E8; padding: 14px 10px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; color: #6F5A61">FRI 6</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #FBEFDF; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>12:00</b> Hairdresser · Carmen</div>
+<div style="background: #EFEAEC; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>18:00</b> Water the plants<br>Every 3 days</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #245640">Taken</span></div>
+</div>
+<div style="border-right: 1px solid #EFE4E8; padding: 14px 10px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; color: #6F5A61">SAT 7</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #FBEFDF; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>17:00</b> Sister visits · Carmen</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #245640">Taken</span></div>
+</div>
+<div style="padding: 14px 10px; display: flex; flex-direction: column; gap: 8px; background: #FDF9FA">
+<div style="font-size: 13px; font-weight: 700; color: #6E1E35">SUN 8 · TODAY</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>09:00</b> Pills · both<br><span style="color: #245640">Taken</span></div>
+<div style="background: #6E1E35; color: #FFFFFF; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>18:00</b> Lucía’s birthday<br>Pepe will offer a call</div>
+<div style="background: #F3E6EA; border-radius: 8px; padding: 8px; font-size: 13px; line-height: 18px"><b>21:30</b> Pill · Carmen<br><span style="color: #6F5A61">Upcoming</span></div>
+</div>
+</div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-labelledby="meds" style="flex: 999 1 520px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 14px">
+<h2 id="meds" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Medication schedule</h2>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid #EFE4E8; font-size: 16px"><span><b>Carmen</b> · blood pressure, white pill</span><span>09:00</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid #EFE4E8; font-size: 16px"><span><b>Carmen</b> · with lunch</span><span>14:00</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 0; border-bottom: 1px solid #EFE4E8; font-size: 16px"><span><b>Carmen</b> · evening</span><span>21:30</span></div>
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; gap: 8px; padding: 10px 0; font-size: 16px"><span><b>Antonio</b> · morning</span><span>09:00</span></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">You can propose a change here. Pepe confirms it with them out loud before it starts, and never moves a dose on its own.</p>
+<button type="button" style="align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #6E1E35; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Propose a change</button>
+</section>
+<section aria-labelledby="rep" style="flex: 1 1 320px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="rep" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Repeating &amp; birthdays</h2>
+<div style="font-size: 16px; line-height: 24px">Rubbish out · Thursdays 20:00</div>
+<div style="font-size: 16px; line-height: 24px">Water the plants · every 3 days</div>
+<div style="font-size: 16px; line-height: 24px">Lucía · 8 November</div>
+<div style="font-size: 16px; line-height: 24px">Ana (daughter) · 21 January</div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">Most of these were added by voice.</p>
+</section>
+</div>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

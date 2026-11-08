@@ -1,0 +1,95 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE Console — Device</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F">
+<header style="background: #FFFFFF; border-bottom: 1px solid #E6D7DC">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
+<a href="Overview.dc.html" style="font-size: 22px; font-weight: 700; letter-spacing: 0.18em; color: #6E1E35; text-decoration: none">KORE</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Overview.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Overview</a>
+<a href="Calendar.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Calendar</a>
+<a href="Chat.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Chat</a>
+<a href="Console.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Feedback</a>
+<a href="People.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">People</a>
+<a href="Device.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; font-weight: 600; color: #6E1E35; background: #F3E6EA; text-decoration: none">Device</a>
+<a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Settings</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #E6D7DC; border-radius: 999px; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F6B4F"></span>Carmen &amp; Antonio’s home</div>
+</div>
+</header>
+<main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 64px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700">Device</h1>
+<p style="margin: 0; font-size: 17px; line-height: 26px; color: #6F5A61">The KORE speaker in their living room.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #6E1E35; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Run self-test</button>
+<button type="button" style="min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #6E1E35; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Restart tonight</button>
+</div>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">CONNECTION</span><span style="font-size: 20px; font-weight: 700; color: #2F6B4F">Online</span><span style="font-size: 14px; color: #6F5A61">Wi-Fi strong · heartbeat 2 min ago</span></div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">CLOCK</span><span style="font-size: 20px; font-weight: 700; color: #2F6B4F">Trusted</span><span style="font-size: 14px; color: #6F5A61">RTC battery charged</span></div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">MICROPHONE</span><span style="font-size: 20px; font-weight: 700">On</span><span style="font-size: 14px; color: #6F5A61">Mute button not pressed</span></div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">LAST BACKUP</span><span style="font-size: 20px; font-weight: 700">03:12 today</span><span style="font-size: 14px; color: #6F5A61">Encrypted, off the device</span></div>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-labelledby="speed" style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="speed" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Speed &amp; cost</h2>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Median reply (end of speech to first word)</span><b>2.4 s</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Slowest today</span><b>3.8 s</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Cost today</span><b>€0.61</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Cost this month</span><b>€4.90</b></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">Target: under 3 s for 9 replies in 10.</p>
+</section>
+<section aria-labelledby="wake" style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="wake" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Wake word “Pepe”</h2>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Woken by mistake today</span><b>1</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Times they had to repeat “Pepe”</span><b>2</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Woken by the button</span><b>5</b></div>
+<label for="sens" style="font-size: 15px; font-weight: 600; margin-top: 4px">Sensitivity</label>
+<input id="sens" type="range" min="1" max="10" value="6" style="accent-color: #6E1E35">
+</section>
+<section aria-labelledby="soft" style="flex: 1 1 340px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 12px">
+<h2 id="soft" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Software</h2>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Version</span><b>0.6.2</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Last update</span><b>5 Nov, 03:00</b></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Next check</span><b>Tonight, 03:00</b></div>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">Updates install only at night and roll back by themselves if the self-test fails.</p>
+<button type="button" style="align-self: flex-start; min-height: 44px; padding: 0 16px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Pause updates</button>
+</section>
+</div>
+<section aria-labelledby="log" style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 4px">
+<h2 id="log" style="margin: 0 0 8px; font-size: 20px; line-height: 28px; font-weight: 700">Recent events</h2>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 10px 0; border-bottom: 1px solid #EFE4E8; font-size: 15px"><span style="width: 120px; color: #6F5A61">Today 03:12</span><span>Nightly backup finished</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 10px 0; border-bottom: 1px solid #EFE4E8; font-size: 15px"><span style="width: 120px; color: #6F5A61">Sat 21:58</span><span>Internet lost for 6 minutes. Reminders kept running.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 10px 0; border-bottom: 1px solid #EFE4E8; font-size: 15px"><span style="width: 120px; color: #6F5A61">Thu 15:40</span><span>Woken by the TV (“Pepe” in a film). Ignored after 4 s of silence.</span></div>
+<div style="display: flex; flex-wrap: wrap; gap: 4px 16px; padding: 10px 0; font-size: 15px"><span style="width: 120px; color: #6F5A61">Thu 03:00</span><span>Updated to 0.6.2, self-test passed</span></div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1240}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

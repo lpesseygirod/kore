@@ -1,0 +1,112 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE Console — People and memory</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F">
+<header style="background: #FFFFFF; border-bottom: 1px solid #E6D7DC">
+<div style="max-width: 1200px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
+<a href="Overview.dc.html" style="font-size: 22px; font-weight: 700; letter-spacing: 0.18em; color: #6E1E35; text-decoration: none">KORE</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Overview.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Overview</a>
+<a href="Calendar.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Calendar</a>
+<a href="Chat.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Chat</a>
+<a href="Console.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Feedback</a>
+<a href="People.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; font-weight: 600; color: #6E1E35; background: #F3E6EA; text-decoration: none">People</a>
+<a href="Device.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Device</a>
+<a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Settings</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #E6D7DC; border-radius: 999px; font-size: 14px"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F6B4F"></span>Carmen &amp; Antonio’s home</div>
+</div>
+</header>
+<main style="max-width: 1200px; margin: 0 auto; padding: 40px 24px 64px; display: flex; flex-direction: column; gap: 28px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700">People &amp; memory</h1>
+<p style="margin: 0; font-size: 17px; line-height: 26px; color: #6F5A61; max-width: 760px">What Pepe knows about each of them. It’s the same list they hear when they ask “What do you know about me?”, and anything here can be forgotten.</p>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start">
+<section aria-labelledby="carmen" style="flex: 1 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 16px">
+<div aria-hidden="true" style="width: 56px; height: 56px; border-radius: 50%; background: #6E1E35; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700">C</div>
+<div style="display: flex; flex-direction: column; gap: 2px"><h2 id="carmen" style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 700">Carmen</h2><span style="font-size: 15px; color: #6F5A61">Likes to be called Carmen · mornings start at 9:15</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">INTERESTS &amp; LIFE</div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 16px"><span>Loves reading; close to finishing her book</span><button type="button" style="min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; cursor: pointer">Forget</button></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 16px"><span>Grew up in Valladolid</span><button type="button" style="min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; cursor: pointer">Forget</button></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 16px"><span>Spare keys are in the blue drawer</span><button type="button" style="min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; cursor: pointer">Forget</button></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">PEOPLE IN HER LIFE</div>
+<div style="font-size: 16px; line-height: 24px">Pilar, her sister · visits on Saturdays<br>Lucía, granddaughter · birthday 8 November</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">RULES FROM HER FEEDBACK</div>
+<div style="background: #F3E6EA; border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 22px">Enjoys talking about what she’s reading; ask now and then.</div>
+<div style="background: #F3E6EA; border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 22px">Don’t wake her before 9:15.</div>
+<a href="Console.dc.html" style="font-size: 15px; font-weight: 600">See all feedback</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="padding: 6px 12px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 13px; font-weight: 600">Conversation starters: on</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 13px; font-weight: 600">Family alerts: on</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: #EFEAEC; color: #4F464A; font-size: 13px; font-weight: 600">Offer help unasked: off</span>
+</div>
+</section>
+<section aria-labelledby="antonio" style="flex: 1 1 460px; min-width: 0; background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 28px; display: flex; flex-direction: column; gap: 20px">
+<div style="display: flex; align-items: center; gap: 16px">
+<div aria-hidden="true" style="width: 56px; height: 56px; border-radius: 50%; background: #4A1224; color: #FFFFFF; display: flex; align-items: center; justify-content: center; font-size: 22px; font-weight: 700">A</div>
+<div style="display: flex; flex-direction: column; gap: 2px"><h2 id="antonio" style="margin: 0; font-size: 24px; line-height: 32px; font-weight: 700">Antonio</h2><span style="font-size: 15px; color: #6F5A61">Likes to be called Antonio · speaks with Pepe slowed down</span></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">INTERESTS &amp; LIFE</div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 16px"><span>Follows football and the morning news</span><button type="button" style="min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; cursor: pointer">Forget</button></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 16px"><span>Worked as a carpenter for 40 years</span><button type="button" style="min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; cursor: pointer">Forget</button></div>
+<div style="display: flex; justify-content: space-between; gap: 12px; align-items: center; font-size: 16px"><span>Rests after lunch, around 4</span><button type="button" style="min-height: 36px; padding: 0 12px; border-radius: 8px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; cursor: pointer">Forget</button></div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">PEOPLE IN HIS LIFE</div>
+<div style="font-size: 16px; line-height: 24px">Ana, his daughter · family contact for alerts<br>Luis, friend · plays cards on Wednesdays</div>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">RULES FROM HIS FEEDBACK</div>
+<div style="background: #F3E6EA; border-radius: 10px; padding: 12px 14px; font-size: 15px; line-height: 22px">Speak more slowly.</div>
+<a href="Console.dc.html" style="font-size: 15px; font-weight: 600">See all feedback</a>
+</div>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<span style="padding: 6px 12px; border-radius: 999px; background: #EFEAEC; color: #4F464A; font-size: 13px; font-weight: 600">Conversation starters: off</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 13px; font-weight: 600">Family alerts: on</span>
+<span style="padding: 6px 12px; border-radius: 999px; background: #EFEAEC; color: #4F464A; font-size: 13px; font-weight: 600">Offer help unasked: off</span>
+</div>
+</section>
+</div>
+<section aria-labelledby="shared" style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 28px; display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px">
+<h2 id="shared" style="grid-column: 1 / -1; margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Shared by both</h2>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">FAMILY CONTACT</div><div style="font-size: 16px; line-height: 24px">Ana (daughter), Telegram and SMS</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">REGULAR VISITORS</div><div style="font-size: 16px; line-height: 24px">Rosa, cleaner, Tuesdays · Pepe stays discreet</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">SHOPPING LIST</div><div style="font-size: 16px; line-height: 24px">Milk, bread, eggs, tomatoes</div></div>
+<div style="display: flex; flex-direction: column; gap: 6px"><div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">PRIVATE BETWEEN THEM</div><div style="font-size: 16px; line-height: 24px">Each one’s health notes and rules stay theirs</div></div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1400}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

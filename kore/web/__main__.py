@@ -124,7 +124,8 @@ def _chat_worker(db: str, clock, dev: bool = False):
     def context(conn, session):
         return tools.Context(conn, clock, session, family=Family(conn, clock, links),
                              info=Info(Weather(conn, clock, OpenMeteo()), News(conn, clock, Rss())))
-    return ChatWorker(lambda: connect(db), clock, client, context)
+    from kore.web import photos
+    return ChatWorker(lambda: connect(db), clock, client, context, photo_dir=photos.folder(db))
 
 
 if __name__ == "__main__":

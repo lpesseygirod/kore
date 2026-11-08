@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 8
+SCHEMA_VERSION = 9
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -321,7 +321,8 @@ CREATE TABLE IF NOT EXISTS web_codes (
     created_at TEXT NOT NULL,
     expires_at TEXT NOT NULL,
     tries INTEGER NOT NULL DEFAULT 0,
-    status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'used', 'burned', 'cancelled'))
+    status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'used', 'burned', 'cancelled')),
+    contact_id INTEGER REFERENCES contacts(id)   -- role family: who it lets in
 );
 
 -- The conversation a person sees on the web page: what they wrote in the chat and Pepe's answers, and (only
@@ -332,7 +333,8 @@ CREATE TABLE IF NOT EXISTS chat (
     who TEXT NOT NULL CHECK (who IN ('person', 'pepe')),
     channel TEXT NOT NULL CHECK (channel IN ('chat', 'voice')),
     text TEXT NOT NULL,
-    at_utc TEXT NOT NULL
+    at_utc TEXT NOT NULL,
+    photo_id INTEGER REFERENCES photos(id)      -- a photo they sent with this line (W4)
 );
 CREATE INDEX IF NOT EXISTS chat_person ON chat (person_id, at_utc);
 
@@ -360,6 +362,38 @@ CREATE TABLE IF NOT EXISTS say_queue (
     created_at TEXT NOT NULL,
     said_at TEXT,
     code_id INTEGER REFERENCES web_codes(id)
+);
+
+-- Photos sent to Pepe on the web page (W4): the file (shrunk, without location or other metadata) is in the
+-- photos folder next to the database, named by `file`. Deleted with the conversation line that holds it.
+CREATE TABLE IF NOT EXISTS photos (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id),
+    file TEXT NOT NULL UNIQUE,
+    width INTEGER NOT NULL,
+    height INTEGER NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+-- One row per photo sent, for the daily limit (deleting the conversation doesn't reset it). Two days kept.
+CREATE TABLE IF NOT EXISTS photo_log (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id),
+    at_utc TEXT NOT NULL
+);
+
+-- An appointment a family member proposed on the web page (W4). Never saved by itself: the person sees it and
+-- confirms it like their own (read-back and "Sí"), or says no. Family words are outside text.
+CREATE TABLE IF NOT EXISTS family_proposals (
+    id INTEGER PRIMARY KEY,
+    contact_id INTEGER NOT NULL REFERENCES contacts(id),
+    person_id INTEGER REFERENCES people(id),    -- for whom; NULL: for both
+    title TEXT NOT NULL,
+    starts_at_utc TEXT NOT NULL,
+    location TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'accepted', 'declined', 'withdrawn')),
+    answered_at TEXT
 );
 
 -- A change made on the web page, waiting for the person's "Sí" (the read-back page). Only the latest one per
@@ -414,6 +448,10 @@ def _migrate(conn: sqlite3.Connection) -> None:
     if "telegram_chat_id" not in cols:
         conn.execute("ALTER TABLE contacts ADD COLUMN telegram_chat_id TEXT")
         conn.execute("ALTER TABLE contacts ADD COLUMN phone TEXT")
+    if "contact_id" not in {r["name"] for r in conn.execute("PRAGMA table_info(web_codes)")}:
+        conn.execute("ALTER TABLE web_codes ADD COLUMN contact_id INTEGER REFERENCES contacts(id)")
+    if "photo_id" not in {r["name"] for r in conn.execute("PRAGMA table_info(chat)")}:
+        conn.execute("ALTER TABLE chat ADD COLUMN photo_id INTEGER REFERENCES photos(id)")
 
 
 def utc_iso(dt: datetime) -> str:

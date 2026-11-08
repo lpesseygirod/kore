@@ -351,11 +351,25 @@ def confirm(conn, clock, person_id: int, pending_id: int) -> str:
         conn.execute("UPDATE web_pending SET status = 'done' WHERE id = ?", (row["id"],))
         store.forget_note(conn, person_id, p["note_id"])  # also blanks the read-backs here that held it
         return "/sabe?hecho=olvidado"
+    if kind == "family_access":  # the code is shown on the page that answers this yes, never stored
+        from kore.web import family
+        conn.execute("BEGIN IMMEDIATE")
+        try:
+            code, name = family.grant(conn, clock, person_id, p)
+            conn.execute("UPDATE web_pending SET status = 'done' WHERE id = ?", (row["id"],))
+            conn.execute("COMMIT")
+        except BaseException:
+            conn.execute("ROLLBACK")
+            raise
+        return f"code:{code}:{name}"
     ctx = tools.Context(conn, clock, _session(conn, person_id))
     conn.execute("BEGIN IMMEDIATE")
     try:
         if kind in tools.EXECUTORS:
             tools.EXECUTORS[kind](ctx, p)
+            if p.get("family_proposal_id"):
+                conn.execute("UPDATE family_proposals SET status = 'accepted', answered_at = ? WHERE id = ?",
+                             (utc_iso(clock.now()), p["family_proposal_id"]))
         elif kind == "stop_birthday":
             store.stop_birthday(conn, p["contact_id"])
         elif kind == "add_note":
@@ -378,6 +392,10 @@ def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:
     if kind == "add_appointment":
         _health_ok(conn, p["person_id"])
         _future(clock, datetime.fromisoformat(p["starts_at"]))
+        if p.get("family_proposal_id"):
+            row = conn.execute("SELECT person_id FROM family_proposals WHERE id = ? AND status = 'open'",
+                               (p["family_proposal_id"],)).fetchone()
+            _mine(row, row and row["person_id"], person_id, "Esa propuesta ya no está.")
     elif kind == "move_appointment":
         _appointment(conn, clock, person_id, p["appointment_id"])
         _future(clock, datetime.fromisoformat(p["starts_at"]))
@@ -422,7 +440,9 @@ def calendar(conn, clock, person_id: int) -> dict:
               "shared": b["for_person"] is None, "next": _next_birthday(b["md"], today)}
              for b in store.birthdays(conn, person_id)]
     bdays.sort(key=lambda b: b["next"])
+    from kore.web import family
     return {"appointments": appts, "reminders": rems, "birthdays": bdays, "clock_ok": clock.trusted(),
+            "proposals": family.waiting(conn, clock, person_id),
             "today": today.isoformat()}
 
 

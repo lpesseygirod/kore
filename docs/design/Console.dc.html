@@ -1,0 +1,174 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE Console — Feedback</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F">
+<header style="background: #FFFFFF; border-bottom: 1px solid #E6D7DC">
+<div style="max-width: 1120px; margin: 0 auto; padding: 16px 24px; display: flex; flex-wrap: wrap; align-items: center; gap: 16px 32px">
+<a href="Overview.dc.html" style="font-size: 22px; font-weight: 700; letter-spacing: 0.18em; color: #6E1E35; text-decoration: none">KORE</a>
+<nav aria-label="Main" style="display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto">
+<a href="Overview.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Overview</a>
+<a href="Calendar.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Calendar</a>
+<a href="Chat.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Chat</a>
+<a href="Console.dc.html" aria-current="page" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; font-weight: 600; color: #6E1E35; background: #F3E6EA; text-decoration: none">Feedback</a>
+<a href="People.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">People</a>
+<a href="Device.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Device</a>
+<a href="Settings.dc.html" style="padding: 10px 12px; border-radius: 8px; font-size: 15px; color: #6F5A61; text-decoration: none">Settings</a>
+</nav>
+<div style="display: flex; align-items: center; gap: 8px; padding: 8px 14px; border: 1px solid #E6D7DC; border-radius: 999px; font-size: 14px; color: #2A1A1F"><span style="width: 8px; height: 8px; border-radius: 50%; background: #2F6B4F"></span>Carmen &amp; Antonio’s home</div>
+</div>
+</header>
+<main style="max-width: 1120px; margin: 0 auto; padding: 40px 24px 64px; display: flex; flex-direction: column; gap: 32px">
+<div style="display: flex; flex-direction: column; gap: 8px">
+<h1 style="margin: 0; font-size: 36px; line-height: 44px; font-weight: 700">Feedback</h1>
+<p style="margin: 0; font-size: 17px; line-height: 26px; color: #6F5A61; max-width: 720px">What Carmen and Antonio told Pepe about how it behaves, how Pepe understood it, and what changed. Undo or reword anything; it takes effect on the next turn.</p>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px">
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">DEVICE</div>
+<div style="font-size: 22px; font-weight: 700; color: #2F6B4F">Online</div>
+<div style="font-size: 14px; color: #6F5A61">Last heartbeat 2 minutes ago</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">TODAY’S DOSES</div>
+<div style="font-size: 22px; font-weight: 700">Carmen 2 of 3 · Antonio 1 of 1</div>
+<div style="font-size: 14px; color: #6F5A61">Next: Carmen, 21:30</div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #6F5A61">ACTIVE CHANGES</div>
+<div style="font-size: 22px; font-weight: 700">3</div>
+<div style="font-size: 14px; color: #6F5A61">1 waiting for an answer</div>
+</div>
+<div style="background: #6E1E35; border: 1px solid #6E1E35; border-radius: 14px; padding: 20px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.04em; color: #F3E0E6">NEEDS YOU</div>
+<div style="font-size: 22px; font-weight: 700">1 safety item</div>
+<div style="font-size: 14px; color: #F3E0E6">A medication reminder</div>
+</div>
+</div>
+<section aria-labelledby="needs-you" style="display: flex; flex-direction: column; gap: 12px">
+<h2 id="needs-you" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">Needs you</h2>
+<article style="background: #F3E6EA; border: 1px solid #E2C9D1; border-radius: 14px; padding: 24px; display: flex; flex-wrap: wrap; gap: 20px 32px; align-items: flex-start">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px; font-size: 14px; color: #6F5A61"><span style="padding: 4px 10px; border-radius: 999px; background: #6E1E35; color: #FFFFFF; font-size: 12px; font-weight: 700; letter-spacing: 0.04em">SAFETY</span><span>Carmen · Today, 10:12</span></div>
+<p style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 600">“Deja de recordarme la pastilla blanca.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Pepe understood:</b> she wants to stop her 9:00 blood pressure reminder.</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>What Pepe did:</b> kept the reminder, made it shorter and quieter, and suggested mentioning it to her doctor. Nothing changes unless she confirms on a second day.</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 10px 16px; border-radius: 10px; border: 1px solid #6E1E35; background: #6E1E35; color: #FFFFFF; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Keep the reminder</button>
+<button type="button" style="min-height: 44px; padding: 10px 16px; border-radius: 10px; border: 1px solid #6E1E35; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 15px; font-weight: 600; cursor: pointer">Message the family</button>
+</div>
+</article>
+</section>
+<section aria-labelledby="all-changes" style="display: flex; flex-direction: column; gap: 12px">
+<div style="display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 12px">
+<h2 id="all-changes" style="margin: 0; font-size: 20px; line-height: 28px; font-weight: 700">All feedback</h2>
+<div role="group" aria-label="Filter" style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" aria-pressed="true" style="min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid #6E1E35; background: #6E1E35; color: #FFFFFF; font: inherit; font-size: 14px; cursor: pointer">All</button>
+<button type="button" aria-pressed="false" style="min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 14px; cursor: pointer">Carmen</button>
+<button type="button" aria-pressed="false" style="min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 14px; cursor: pointer">Antonio</button>
+<button type="button" aria-pressed="false" style="min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 14px; cursor: pointer">Active</button>
+<button type="button" aria-pressed="false" style="min-height: 40px; padding: 8px 14px; border-radius: 999px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 14px; cursor: pointer">Undone</button>
+</div>
+</div>
+<article style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; color: #6F5A61">Antonio · Yesterday, 18:40</div>
+<p style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">“Habla más despacio, que no te pillo.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Understood:</b> speak more slowly. <b>Changed:</b> speaking speed for Antonio, slower. <b>Scope:</b> from now on, Antonio only.</p>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">Check planned in 3 days: “I’ve been speaking more slowly. Is that better?”</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span style="padding: 4px 10px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 13px; font-weight: 600">Active</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Undo</button>
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Reword</button>
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Misunderstood</button>
+</div>
+</div>
+</article>
+<article style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; color: #6F5A61">Carmen · Yesterday, 08:31</div>
+<p style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">“No me despiertes tan pronto.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Follow-up:</b> “¿Solo hoy, o siempre?” → “Siempre.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Changed:</b> Carmen’s morning greeting moved later. <b>Scope:</b> from now on, Carmen only.</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span style="padding: 4px 10px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 13px; font-weight: 600">Active</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Undo</button>
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Reword</button>
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Misunderstood</button>
+</div>
+</div>
+</article>
+<article style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; color: #6F5A61">Carmen · 5 November, 17:05</div>
+<p style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">“Me gusta que me preguntes por mi libro.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Rule added:</b> “Carmen enjoys talking about what she’s reading. Ask about it now and then.”</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span style="padding: 4px 10px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 13px; font-weight: 600">Active</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Undo</button>
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Reword</button>
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Misunderstood</button>
+</div>
+</div>
+</article>
+<article style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; color: #6F5A61">Antonio · Noticed over 3 afternoons</div>
+<p style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">Said “calla” around 16:00, three days in a row</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Suggested, not applied:</b> “You often rest around 4. Shall I stay quiet then?”</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span style="padding: 4px 10px; border-radius: 999px; background: #FBEFDF; color: #7A410C; font-size: 13px; font-weight: 600">Waiting for Antonio</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Cancel suggestion</button>
+</div>
+</div>
+</article>
+<article style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 14px; padding: 24px; display: flex; flex-wrap: wrap; gap: 16px 32px">
+<div style="flex: 1 1 520px; min-width: 0; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 14px; color: #6F5A61">Antonio · 4 November, 12:20</div>
+<p style="margin: 0; font-size: 18px; line-height: 26px; font-weight: 600">“Eso ha sido muy largo.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Follow-up:</b> “¿Prefieres respuestas más cortas siempre?” → “Solo con las noticias.”</p>
+<p style="margin: 0; font-size: 15px; line-height: 22px"><b>Changed:</b> news read as 3 headlines at most. <b>Scope:</b> from now on, Antonio only.</p>
+</div>
+<div style="flex: 0 1 240px; display: flex; flex-direction: column; gap: 8px; align-items: flex-start">
+<span style="padding: 4px 10px; border-radius: 999px; background: #EFEAEC; color: #4F464A; font-size: 13px; font-weight: 600">Undone by Lea</span>
+<div style="display: flex; flex-wrap: wrap; gap: 8px">
+<button type="button" style="min-height: 44px; padding: 8px 14px; border-radius: 10px; border: 1px solid #E6D7DC; background: #FFFFFF; color: #6E1E35; font: inherit; font-size: 14px; font-weight: 600; cursor: pointer">Restore</button>
+</div>
+</div>
+</article>
+</section>
+<p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">Only the feedback sentence is stored, never the conversation around it. Carmen and Antonio agreed at setup that you can see this page.</p>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1440,"height":1560}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

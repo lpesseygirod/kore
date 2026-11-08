@@ -51,6 +51,7 @@ input.code { font: inherit; font-size: 2rem; letter-spacing: .4em; text-align: c
 .bubble { max-width: 85%; padding: .6rem .85rem; border-radius: 16px; border: 1px solid var(--line);
           background: var(--card); white-space: pre-wrap; overflow-wrap: anywhere; }
 .bubble.me { align-self: flex-end; background: var(--bg); border-color: var(--accent); }
+.bubble img { display: block; max-width: 100%; height: auto; border-radius: 10px; margin-bottom: .3rem; }
 .bubble .when { display: block; font-size: .75rem; color: var(--muted); margin-top: .2rem; }
 textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .7rem; border-radius: 14px;
                border: 2px solid var(--line); background: var(--card); color: var(--fg); }
@@ -82,7 +83,10 @@ def layout(title: str, body: str, nav: str = "") -> str:
 
 def menu(here: str, account) -> str:
     mine = [("/hablar", "Hablar"), ("/calendario", "Calendario"), ("/compra", "La compra"), ("/sabe", "Sobre mí")]
-    items = [("/", "Hoy")] + (mine if account.role == "person" else []) + [("/dispositivos", "Dispositivos")]
+    if account.role == "family":
+        items = [("/", "Mensajes"), ("/familia/cita", "Proponer una cita"), ("/dispositivos", "Dispositivos")]
+    else:
+        items = [("/", "Hoy")] + (mine if account.role == "person" else []) + [("/dispositivos", "Dispositivos")]
     links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}">{e(label)}</a>' for href, label in items)
     return (f'<nav aria-label="Menú">{links}<form method="post" action="/salir">'
             f'<button type="submit">Salir</button></form></nav>')
@@ -155,6 +159,12 @@ def today(account, day: dict) -> str:
         if items:
             rows = "".join(f'<li><span class="time">{e(fmt(i)[0])}</span><span>{e(fmt(i)[1])}</span></li>' for i in items)
             parts.append(f'<h2>{title}</h2><div class="card"><ul class="plain">{rows}</ul></div>')
+    if day.get("family_proposals"):
+        names = sorted({p["from"] for p in day["family_proposals"]})
+        parts.append(f'<p class="msg">{e(" y ".join(names))} le '
+                     f'{"ha" if len(day["family_proposals"]) == 1 else "han"} propuesto '
+                     f'{"una cita" if len(day["family_proposals"]) == 1 else "citas"}. '
+                     '<a href="/calendario#propuestas">Mírelas en el calendario</a>.</p>')
     shop = day.get("shopping") or []
     if shop:
         parts.append(f'<h2>La compra</h2><div class="card"><ul class="plain">'
@@ -171,7 +181,7 @@ def operator_home(account, status: dict) -> str:
                   menu("/", account))
 
 
-def devices(account, rows: list[dict]) -> str:
+def devices(account, rows: list[dict], family: list[dict] | None = None) -> str:
     items = "".join(
         f'<li><span>{e(r["device"])}{" — " + e(r["who"]) if account.role == "operator" else ""}'
         f'<br><span class="muted">desde el {e(r["since"].strftime("%d/%m/%Y"))}, usado el '
@@ -182,7 +192,8 @@ def devices(account, rows: list[dict]) -> str:
     return layout("Pepe — Dispositivos",
                   f"<h1>Dispositivos</h1><p class='muted'>Los móviles y tabletas que pueden entrar"
                   f"{' en la página de esta casa' if account.role == 'operator' else ' con su nombre'}. Si alguno no es "
-                  f"suyo, ciérrelo.</p><div class='card'><ul class='plain'>{items}</ul></div>",
+                  f"suyo, ciérrelo.</p><div class='card'><ul class='plain'>{items}</ul></div>"
+                  + (_family_access(family) if family is not None else ""),
                   menu("/dispositivos", account))
 
 
@@ -196,13 +207,19 @@ def message(title: str, text: str, back: str = "/") -> str:
 
 def chat(account, rows: list[dict], available: bool, note: str = "") -> str:
     bubbles = "".join(
-        f'<div class="bubble{" me" if r["who"] == "person" else ""}">{e(r["text"])}'
+        f'<div class="bubble{" me" if r["who"] == "person" else ""}">'
+        + (f'<img src="/foto?id={int(r["photo_id"])}" alt="Foto que mandó a Pepe">' if r.get("photo_id") else "")
+        + f'{e(r["text"])}'
         f'<span class="when">{"Usted" if r["who"] == "person" else "Pepe"}, {e(r["at"].strftime("%d/%m %H:%M"))}'
         f'{" (en voz alta)" if r["channel"] == "voice" else ""}</span></div>' for r in rows)
-    form = (f'<form method="post" action="/hablar" id="escribir"><label for="t" class="muted">Escriba a Pepe</label>'
-            f'<textarea class="say" id="t" name="text" maxlength="600" required autofocus></textarea>'
+    form = (f'<form method="post" action="/hablar" id="escribir" enctype="multipart/form-data">'
+            f'<label for="t" class="muted">Escriba a Pepe</label>'
+            f'<textarea class="say" id="t" name="text" maxlength="600" autofocus></textarea>'
+            f'<label class="f" for="photo">Una foto (si quiere)</label>'
+            f'<input class="f" type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/webp,image/gif">'
             f'<button class="big" type="submit">Enviar</button></form>'
-            '<p class="muted">Pepe tarda unos segundos en contestar.</p>') if available else (
+            '<p class="muted">Pepe tarda unos segundos en contestar. Las fotos se guardan solo en Pepe, sin el lugar '
+            'donde se hicieron, y solo las ve usted.</p>') if available else (
             '<p class="msg">Ahora no se puede escribir a Pepe desde aquí. Puede hablarle en voz alta.</p>')
     notice = f'<p class="msg bad" role="status">{e(note)}</p>' if note else ""
     empty = '<p class="muted">Todavía no hay nada escrito. Puede preguntarle lo mismo que en voz alta.</p>'
@@ -229,7 +246,9 @@ la compra, lo que sabe de usted) no se borra.</p>
 # --- calendar, shopping list, what Pepe knows (W3) ----------------------------------------------
 
 DONE = {"apuntado": "Hecho. Pepe lo recordará en voz alta cuando toque.", "quitado": "Hecho, quitado.",
-        "olvidado": "Hecho. Pepe lo ha olvidado.", "anulado": "No se ha cambiado nada."}
+        "olvidado": "Hecho. Pepe lo ha olvidado.", "anulado": "No se ha cambiado nada.",
+        "enviado": "Mensaje enviado. Pepe les dirá que tienen un mensaje suyo.",
+        "propuesta": "Propuesta enviada. La verán en su página y decidirán si la apuntan."}
 
 
 def _notice(note: str, bad: bool = False, good: bool = False) -> str:
@@ -251,6 +270,14 @@ def calendar(account, cal: dict, note: str = "", bad: bool = False) -> str:
     parts = [f"<h1>Calendario</h1>{_notice(note, bad, good=not bad)}"]
     if not cal["clock_ok"]:
         parts.append(_notice("La hora de Pepe no es fiable ahora mismo: se puede mirar, pero no cambiar.", bad=True))
+    props = "".join(
+        f'<li><span class="what"><b>{e(p["title"])}</b><br><span class="muted">{e(p["when"])}'
+        f'{" — " + e(p["where"]) if p["where"] else ""}. La propone {e(p["from"])}.</span></span>'
+        f'{_who_tag(p["shared"])}{_post_button("/calendario/propuesta", "id", p["id"], "Apuntarla")}'
+        f'{_post_button("/calendario/propuesta/no", "id", p["id"], "No")}</li>' for p in cal.get("proposals", []))
+    if props:
+        parts.append(f'<h2 id="propuestas">Propuestas de la familia</h2><div class="card"><ul class="plain">{props}'
+                     '</ul></div><p class="muted">No se apuntan hasta que usted lo confirme.</p>')
     appts = "".join(
         f'<li><span class="what"><b>{e(a["title"])}</b><br><span class="muted">{e(a["when"])}'
         f'{" — " + e(a["where"]) if a["where"] else ""}</span></span>{_who_tag(a["shared"])}'
@@ -420,3 +447,87 @@ Sus medicinas y citas están en «Hoy» y en «Calendario».</p>
 <label class="f" for="kind">Qué es</label>
 <select class="f" id="kind" name="kind">{kinds}</select>
 <button class="big" type="submit">Seguir</button></form>""", menu("/sabe", account))
+
+
+# --- family (W4) -------------------------------------------------------------------------------------
+
+
+def _family_access(people: list[dict]) -> str:
+    rows = "".join(
+        f'<li><span class="what">{e(p["name"])}{" (" + e(p["relation"]) + ")" if p["relation"] else ""}</span>'
+        + (_post_button("/familia/quitar", "contact", p["id"], "Quitar acceso") if p["access"] else
+           '<span class="tag">sin acceso</span>') + "</li>" for p in people)
+    return ("<h2>La familia en la página</h2><p class='muted'>Quien tiene acceso puede escribirle mensajes y "
+            "proponerle citas. No ve sus medicinas, citas, notas ni conversaciones.</p>"
+            + (f"<div class='card'><ul class='plain'>{rows}</ul></div>" if rows else "")
+            + '<a class="big" href="/familia/invitar">Dar acceso a alguien de la familia</a>')
+
+
+def invite(account, people: list[dict], note: str = "") -> str:
+    options = "".join(f'<label class="check"><input type="radio" name="contact" value="{p["id"]}" required> '
+                      f'{e(p["name"])}{" (" + e(p["relation"]) + ")" if p["relation"] else ""}</label>' for p in people)
+    return layout("Pepe — Dar acceso", f"""
+<h1>Dar acceso a la familia</h1>{_notice(note, bad=True)}
+{f'<form method="post" action="/familia/invitar"><p><b>¿A quién?</b></p>{options}<button class="big" type="submit">Seguir</button></form>' if options else ''}
+<h2>{'O a otra persona' if options else '¿A quién?'}</h2>
+<form method="post" action="/familia/invitar">
+<label class="f" for="name">Nombre</label><input class="f" id="name" name="name" maxlength="60" required>
+<label class="f" for="relation">¿Quién es para usted?</label>
+<input class="f" id="relation" name="relation" maxlength="40" placeholder="hija">
+<button class="big" type="submit">Seguir</button></form>
+<a href="/dispositivos">Volver</a>""", menu("/dispositivos", account))
+
+
+def family_code(account, name: str, code: str) -> str:
+    spaced = " ".join(code[i:i + 3] for i in (0, 3))
+    return layout("Pepe — Código para la familia", f"""
+<h1>Código para {e(name)}</h1>
+<div class="card"><p class="readback" style="font-size:2rem;letter-spacing:.2em;text-align:center">{e(spaced)}</p></div>
+<p>Désele a {e(name)} (en persona o por teléfono). Tiene media hora para entrar: en la página de Pepe, «¿Tiene ya
+un código?», y escribirlo. Funciona una sola vez.</p>
+<p class="muted">Solo funciona en la wifi de casa. Puede quitarle el acceso cuando quiera en «Dispositivos».</p>
+<a class="big" href="/dispositivos">Hecho</a>""", menu("/dispositivos", account))
+
+
+def family_home(account, messages: list[dict], note: str = "", bad: bool = False) -> str:
+    bubbles = "".join(
+        f'<div class="bubble{" me" if m["who"] == "me" else ""}">{e(m["text"])}'
+        f'<span class="when">{"Usted" if m["who"] == "me" else "Desde casa"}, {e(m["at"].strftime("%d/%m %H:%M"))}'
+        f'{" — " + e(m["state"]) if m["state"] else ""}</span></div>' for m in messages)
+    return layout("Pepe — Mensajes", f"""
+<h1>Hola, {e(account.name)}</h1>{_notice(note, bad, good=not bad)}
+<p class="muted">Los mensajes que le han mandado desde casa con Pepe, y los suyos. Pepe les dice que tienen un mensaje
+y se lo lee cuando se lo piden.</p>
+<div class="chat">{bubbles or '<p class="muted">Todavía no hay mensajes.</p>'}</div>
+<form method="post" action="/familia/escribir"><label for="t" class="muted">Escribir a casa</label>
+<textarea class="say" id="t" name="text" maxlength="500" required></textarea>
+<button class="big" type="submit">Enviar</button></form>
+<p class="muted">Pepe no hace caso de órdenes escritas en los mensajes: solo los lee.</p>""", menu("/", account))
+
+
+def family_propose(account, people: list[dict], mine: list[dict], today: str, f: dict | None = None,
+                   note: str = "", bad: bool = False) -> str:
+    f = f or {}
+    who = "".join(f'<label class="check"><input type="radio" name="for" value="{p["id"]}" required'
+                  f'{" checked" if f.get("for") == str(p["id"]) else ""}> {e(p["call_name"])}</label>' for p in people)
+    who += (f'<label class="check"><input type="radio" name="for" value="both" required'
+            f'{" checked" if f.get("for") == "both" else ""}> Los dos</label>') if len(people) > 1 else ""
+    rows = "".join(
+        f'<li><span class="what"><b>{e(p["title"])}</b><br><span class="muted">{e(p["when"])}, para {e(p["for"])}'
+        f'</span></span><span class="tag">{e(p["state"])}</span>'
+        + (_post_button("/familia/cita/retirar", "id", p["id"], "Retirar") if p["open"] else "") + "</li>"
+        for p in mine)
+    return layout("Pepe — Proponer una cita", f"""
+<h1>Proponer una cita</h1>{_notice(note, bad, good=not bad)}
+<p class="muted">La persona la verá en su página y decidirá si la apunta. Hasta entonces no se apunta nada.</p>
+<form method="post" action="/familia/cita">
+<p><b>¿Para quién?</b></p>{who}
+<label class="f" for="title">¿Qué es?</label>
+<input class="f" id="title" name="title" maxlength="120" placeholder="Médico de cabecera" value="{e(f.get('title', ''))}"
+ required>
+{_date_time(f, today)}
+<label class="f" for="where">¿Dónde? (si quiere)</label>
+<input class="f" id="where" name="where" maxlength="120" value="{e(f.get('where', ''))}">
+<button class="big" type="submit">Proponer</button></form>
+{f'<h2>Sus propuestas</h2><div class="card"><ul class="plain">{rows}</ul></div>' if rows else ''}""",
+                  menu("/familia/cita", account))

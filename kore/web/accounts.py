@@ -22,6 +22,11 @@ cancelled or expired (and the voice loop deletes it once said).
 
 Lea's operator code is printed on the box's terminal, never spoken (`python -m kore.web invite`).
 
+Family (W4): a person at home gives a family member access from their own page, with a read-back and a
+yes; the code then shows on that person's screen (30 minutes) to pass on, and works in any browser
+(like Lea's). Wrong guesses count against it like any other code. During a home-wide pause only Lea's
+code works. A family login sees nothing private (web/family.py).
+
 By design (v1, no voice recognition): anyone in the home who hears the code can log in as that
 person. Each person's Dispositivos page shows every device logged in with their name.
 """
@@ -43,6 +48,7 @@ from kore.memory.db import from_utc_iso, utc_iso
 from kore.scheduler.clock import Clock
 
 CODE_LIFE = timedelta(minutes=10)
+FAMILY_CODE_LIFE = timedelta(minutes=30)  # passed on by phone or in person
 TRIES_PER_CODE = 3
 SAME_PERSON_AGAIN = timedelta(minutes=1)    # asking again this soon doesn't make Pepe say a new code
 CODES_PER_CLIENT_HOUR = 3
@@ -74,6 +80,7 @@ class Account:
     person_id: int | None
     name: str
     login_id: int
+    contact_id: int | None = None  # role family
 
 
 class Refused(Exception):
@@ -185,6 +192,18 @@ def operator_code(conn: sqlite3.Connection, clock: Clock) -> str:
     return code
 
 
+def family_code(conn: sqlite3.Connection, clock: Clock, contact_id: int) -> str:
+    """After the person's yes: a code for this family member, shown on the person's screen (never spoken)."""
+    now = clock.now()
+    conn.execute("UPDATE web_codes SET status = 'cancelled' WHERE role = 'family' AND contact_id = ? AND status = 'open'",
+                 (contact_id,))
+    code = f"{secrets.randbelow(10**6):06d}"
+    conn.execute("INSERT INTO web_codes (role, person_id, contact_id, code_hash, ticket_hash, created_at, expires_at) "
+                 "VALUES ('family', NULL, ?, ?, NULL, ?, ?)",
+                 (contact_id, digest(code), utc_iso(now), utc_iso(now + FAMILY_CODE_LIFE)))
+    return code
+
+
 def _wrong(conn: sqlite3.Connection, clock: Clock, client: str) -> None:
     _note(conn, clock, "wrong", client)
     if _count(conn, clock, "wrong", WINDOW) >= WRONG_PER_HOME and not _home_locked(conn, clock):
@@ -208,15 +227,17 @@ def use_code(conn: sqlite3.Connection, clock: Clock, code: str, ticket: str | No
     code = "".join(c for c in (code or "") if c in "0123456789")
     # During a home-wide pause only Lea's printed code works (so she can always get in to see what's going on).
     rows = conn.execute("SELECT * FROM web_codes WHERE status = 'open' AND expires_at > ? AND "
-                        "((ticket_hash IS NULL AND role = 'operator') OR (ticket_hash = ? AND ?)) ORDER BY id DESC",
-                        (utc_iso(now), digest(ticket) if ticket else "", int(not home_locked))).fetchall()
+                        "((ticket_hash IS NULL AND role = 'operator') OR (ticket_hash IS NULL AND role = 'family' AND ?) "
+                        "OR (ticket_hash = ? AND ?)) ORDER BY id DESC",
+                        (utc_iso(now), int(not home_locked), digest(ticket) if ticket else "",
+                         int(not home_locked))).fetchall()
     match = None
     for r in rows:  # compare with every candidate, in constant time
         if hmac.compare_digest(r["code_hash"], digest(code)) and len(code) == 6:
             match = match or r
     if match is None:
         for r in rows:  # the guess was checked against each of these: each one counts it
-            if r["ticket_hash"] is None:
+            if r["role"] == "operator":
                 continue  # Lea's code: guarded by the per-device and home limits, never burned by strangers
             conn.execute("UPDATE web_codes SET tries = tries + 1, status = CASE WHEN tries + 1 >= ? THEN 'burned' "
                          "ELSE status END WHERE id = ? AND status = 'open'", (TRIES_PER_CODE, r["id"]))
@@ -224,14 +245,14 @@ def use_code(conn: sqlite3.Connection, clock: Clock, code: str, ticket: str | No
         if home_locked:
             raise Refused(TOO_MANY)
         burned = any(conn.execute("SELECT status FROM web_codes WHERE id = ?", (r["id"],)).fetchone()[0] == "burned"
-                     for r in rows if r["ticket_hash"] is not None)
+                     for r in rows if r["ticket_hash"] is not None)  # (a family code burned by others: not "yours")
         if burned:
             raise Refused("Ese código ya no vale. Pida uno nuevo.")
         raise Refused("El código no es correcto. Escuche a Pepe y pruebe otra vez.")
     if conn.execute("UPDATE web_codes SET status = 'used' WHERE id = ? AND status = 'open'",
                     (match["id"],)).rowcount != 1:
         raise Refused("Ese código ya no vale. Pida uno nuevo.")
-    account = _account_for(conn, clock, match["role"], match["person_id"])
+    account = _account_for(conn, clock, match["role"], match["person_id"], match["contact_id"])
     token = new_token()
     conn.execute("INSERT INTO web_logins (account_id, token_hash, device, created_at, last_seen_at) "
                  "VALUES (?, ?, ?, ?, ?)", (account, digest(token), device[:60], utc_iso(now), utc_iso(now)))
@@ -239,7 +260,16 @@ def use_code(conn: sqlite3.Connection, clock: Clock, code: str, ticket: str | No
     return token
 
 
-def _account_for(conn: sqlite3.Connection, clock: Clock, role: str, person_id: int | None) -> int:
+def _account_for(conn: sqlite3.Connection, clock: Clock, role: str, person_id: int | None,
+                 contact_id: int | None = None) -> int:
+    if role == "family":
+        row = conn.execute("SELECT id FROM web_accounts WHERE role = 'family' AND contact_id = ?",
+                           (contact_id,)).fetchone()
+        if row:
+            return row["id"]
+        name = conn.execute("SELECT name FROM contacts WHERE id = ?", (contact_id,)).fetchone()[0]
+        return conn.execute("INSERT INTO web_accounts (role, contact_id, name, created_at) VALUES ('family', ?, ?, ?)",
+                            (contact_id, name, utc_iso(clock.now()))).lastrowid
     if role == "person":
         row = conn.execute("SELECT id FROM web_accounts WHERE role = 'person' AND person_id = ?", (person_id,)).fetchone()
         if row:
@@ -273,9 +303,12 @@ def who(conn: sqlite3.Connection, clock: Clock, token: str | None) -> Account | 
     if row["role"] == "person" and conn.execute("SELECT 1 FROM people WHERE id = ?",
                                                 (row["person_id"],)).fetchone() is None:
         return None
+    if row["role"] == "family" and conn.execute("SELECT 1 FROM contacts WHERE id = ?",
+                                                (row["contact_id"],)).fetchone() is None:
+        return None
     if now - seen > SEEN_EVERY or seen > now:
         conn.execute("UPDATE web_logins SET last_seen_at = ? WHERE id = ?", (utc_iso(now), row["login_id"]))
-    return Account(row["id"], row["role"], row["person_id"], row["name"], row["login_id"])
+    return Account(row["id"], row["role"], row["person_id"], row["name"], row["login_id"], row["contact_id"])
 
 
 def logins(conn: sqlite3.Connection, clock: Clock, account: Account) -> list[dict]:

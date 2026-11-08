@@ -36,6 +36,8 @@ def for_person(conn: sqlite3.Connection, clock: Clock, person_id: int) -> dict:
     out["reminders"] = _reminders_today(conn, person_id, today)
     out["birthdays"] = _birthdays(conn, person_id, today)
     out["shopping"] = store.list_items(conn)
+    from kore.web import family
+    out["family_proposals"] = family.waiting(conn, clock, person_id)
     w = Weather(conn, clock, OpenMeteo()).brief_today()  # from the cache only: the page never waits
     out["weather"] = w
     return out

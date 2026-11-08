@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE family app — Home</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F; display: flex; flex-direction: column; overflow: hidden">
+<div style="flex: 1 1 auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 18px; overflow: hidden">
+<div style="display: flex; align-items: center; justify-content: space-between"><span style="font-size: 18px; font-weight: 700; letter-spacing: 0.18em; color: #6E1E35">KORE</span><span style="font-size: 14px; color: #6F5A61">Sunday 8 November</span></div>
+<div style="display: flex; flex-direction: column; gap: 4px"><h1 style="margin: 0; font-size: 26px; line-height: 32px; font-weight: 700">Carmen &amp; Antonio</h1><p style="margin: 0; font-size: 14px; line-height: 20px; color: #6F5A61">Shown only what they agreed to share.</p></div>
+<div style="background: #6E1E35; border-radius: 18px; padding: 22px; color: #FFFFFF; display: flex; flex-direction: column; gap: 6px"><div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #F3E0E6">TODAY</div><div style="font-size: 26px; line-height: 32px; font-weight: 700">All good</div><div style="font-size: 15px; line-height: 22px; color: #F3E0E6">KORE is online. No alerts today.</div></div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 12px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">MEDICATION</div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Carmen</span><span style="font-weight: 600">2 of 3 taken</span></div>
+<div style="height: 1px; background: #EFE4E8"></div>
+<div style="display: flex; justify-content: space-between; font-size: 16px"><span>Antonio</span><span style="font-weight: 600">Not shared</span></div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 8px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">COMING UP</div>
+<div style="font-size: 16px; line-height: 24px"><b>18:00</b> Lucía’s birthday. Pepe will offer to call her.</div>
+<a href="FamilyCalendar.dc.html" style="font-size: 15px; font-weight: 600">See the week</a>
+</div>
+<p style="margin: 0; font-size: 13px; line-height: 19px; color: #6F5A61">KORE is not an alarm system. In an emergency, their teleasistencia button and 112 come first.</p>
+</div>
+<nav aria-label="Family app" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #E6D7DC; padding: 8px 8px 20px">
+<a href="Family.dc.html" aria-current="page" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #6E1E35; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L12 4 L21 11"/><path d="M5 10 V20 H19 V10"/></svg>Home</a>
+<a href="FamilyCalendar.dc.html" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; color: #6F5A61; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10 H21 M8 3 V7 M16 3 V7"/></svg>Calendar</a>
+<a href="FamilyChat.dc.html" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; color: #6F5A61; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 H20 V16 H9 L4 20 Z"/></svg>Messages</a>
+<a href="FamilyAlerts.dc.html" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; color: #6F5A61; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z"/><path d="M10 21 H14"/></svg>Alerts</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

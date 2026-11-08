@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE family app — Alerts</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F; display: flex; flex-direction: column; overflow: hidden">
+<div style="flex: 1 1 auto; padding: 24px 20px; display: flex; flex-direction: column; gap: 16px; overflow: hidden">
+<h1 style="margin: 0; font-size: 26px; line-height: 32px; font-weight: 700">Alerts</h1>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 18px; display: flex; flex-direction: column; gap: 6px">
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">YOU GET ALERTS FOR</div>
+<div style="font-size: 15px; line-height: 22px">“Pepe, help” or the button · Carmen’s missed doses · KORE offline for an hour</div>
+<div style="font-size: 13px; line-height: 19px; color: #6F5A61">They chose these, and can change them by voice.</div>
+</div>
+<div style="font-size: 13px; font-weight: 600; letter-spacing: 0.06em; color: #6F5A61">THIS WEEK</div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><b style="font-size: 15px">Missed dose · Carmen</b><span style="font-size: 13px; color: #6F5A61">Wed 22:10</span></div>
+<div style="font-size: 14px; line-height: 20px; color: #4F3D44">Evening pill not confirmed after 3 reminders.</div>
+<div style="display: flex; align-items: center; gap: 8px; margin-top: 4px"><span style="padding: 3px 10px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 12px; font-weight: 600">Resolved</span><span style="font-size: 13px; color: #6F5A61">Taken at 22:40</span></div>
+</div>
+<div style="background: #FFFFFF; border: 1px solid #E6D7DC; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 4px">
+<div style="display: flex; justify-content: space-between; gap: 8px"><b style="font-size: 15px">KORE offline</b><span style="font-size: 13px; color: #6F5A61">Sat 21:58</span></div>
+<div style="font-size: 14px; line-height: 20px; color: #4F3D44">Internet lost for 6 minutes. Reminders kept working.</div>
+<div style="display: flex; align-items: center; gap: 8px; margin-top: 4px"><span style="padding: 3px 10px; border-radius: 999px; background: #E4F0EA; color: #245640; font-size: 12px; font-weight: 600">Resolved</span></div>
+</div>
+<div style="margin-top: auto; background: #F3E6EA; border: 1px solid #E2C9D1; border-radius: 16px; padding: 16px 18px; display: flex; flex-direction: column; gap: 6px">
+<b style="font-size: 15px">When a help alert comes in</b>
+<div style="font-size: 14px; line-height: 20px; color: #4F3D44">Call them first. If they don’t answer, call 112. KORE is not an alarm system.</div>
+</div>
+</div>
+<nav aria-label="Family app" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #FFFFFF; border-top: 1px solid #E6D7DC; padding: 8px 8px 20px">
+<a href="Family.dc.html" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; color: #6F5A61; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L12 4 L21 11"/><path d="M5 10 V20 H19 V10"/></svg>Home</a>
+<a href="FamilyCalendar.dc.html" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; color: #6F5A61; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10 H21 M8 3 V7 M16 3 V7"/></svg>Calendar</a>
+<a href="FamilyChat.dc.html" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; color: #6F5A61; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 H20 V16 H9 L4 20 Z"/></svg>Messages</a>
+<a href="FamilyAlerts.dc.html" aria-current="page" style="min-height: 52px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 12px; font-weight: 700; color: #6E1E35; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z"/><path d="M10 21 H14"/></svg>Alerts</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

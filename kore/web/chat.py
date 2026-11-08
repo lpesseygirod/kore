@@ -13,7 +13,9 @@ and the other way round. Only the door changes:
 - whatever happens, what code did (a help message sent, a question asked, a confirmed action)
   is shown: if Claude fails afterwards, the page says what was done and that Pepe can't go on;
 - limits: 600 characters a message, 30 messages an hour per person (a separate counter that
-  deleting the conversation doesn't reset); help is never limited.
+  deleting the conversation doesn't reset); help is never limited;
+- a photo (W4, web/photos.py) goes with the message: Claude sees it as outside content, and nothing
+  can be changed in that turn. It is deleted with its line.
 
 What is stored (the `chat` table): their messages and Pepe's answers here, always (it is the
 conversation they see), and voice turns only with their "keep_conversations" permission
@@ -32,6 +34,8 @@ from dataclasses import dataclass, field
 from datetime import datetime, timedelta
 from typing import Callable
 
+from pathlib import Path
+
 from kore.brain import tools
 from kore.brain.conversation import Brain
 from kore.brain.language import help_requested
@@ -39,6 +43,7 @@ from kore.brain.session import Person, Session
 from kore.memory import store
 from kore.memory.db import from_utc_iso, utc_iso
 from kore.scheduler.clock import Clock
+from kore.web import photos
 
 KEEP = timedelta(days=90)
 CONVERSATION_GAP = timedelta(minutes=30)
@@ -50,14 +55,16 @@ SHOWN = 60
 CANT_ANSWER = "Ahora no puedo contestar por escrito. Pruebe un poco más tarde, o hábleme en voz alta."
 DONE_THEN_FAILED = "Lo que me ha confirmado ya está hecho, pero ahora no puedo seguir contestando por escrito."
 TOO_MANY = "Hemos hablado mucho esta hora. Sigamos un poco más tarde, o hábleme en voz alta."
+FORGET = object()  # a job that drops the person's conversation from memory (after "Borrar" or a forgotten note)
 
 
 # --- storage ---------------------------------------------------------------------------------
 
 
-def add(conn: sqlite3.Connection, clock: Clock, person_id: int, who: str, channel: str, text: str) -> int:
-    return conn.execute("INSERT INTO chat (person_id, who, channel, text, at_utc) VALUES (?, ?, ?, ?, ?)",
-                        (person_id, who, channel, text, utc_iso(clock.now()))).lastrowid
+def add(conn: sqlite3.Connection, clock: Clock, person_id: int, who: str, channel: str, text: str,
+        photo_id: int | None = None) -> int:
+    return conn.execute("INSERT INTO chat (person_id, who, channel, text, at_utc, photo_id) VALUES (?, ?, ?, ?, ?, ?)",
+                        (person_id, who, channel, text, utc_iso(clock.now()), photo_id)).lastrowid
 
 
 def log_voice(conn: sqlite3.Connection, clock: Clock, person_id: int | None, heard: str, said: str) -> bool:
@@ -71,23 +78,30 @@ def log_voice(conn: sqlite3.Connection, clock: Clock, person_id: int | None, hea
     return True
 
 
-def history(conn: sqlite3.Connection, clock: Clock, person_id: int, limit: int = SHOWN) -> list[dict]:
-    purge(conn, clock)  # the 90 days hold even if nobody writes
+def history(conn: sqlite3.Connection, clock: Clock, person_id: int, limit: int = SHOWN,
+            photo_dir: Path | None = None) -> list[dict]:
+    purge(conn, clock, photo_dir)  # the 90 days hold even if nobody writes
     rows = conn.execute("SELECT * FROM chat WHERE person_id = ? ORDER BY id DESC LIMIT ?", (person_id, limit)).fetchall()
-    return [{"who": r["who"], "channel": r["channel"], "text": r["text"],
+    return [{"who": r["who"], "channel": r["channel"], "text": r["text"], "photo_id": r["photo_id"],
              "at": from_utc_iso(r["at_utc"], clock.tz)} for r in reversed(rows)]
 
 
-def delete_all(conn: sqlite3.Connection, person_id: int) -> int:
+def delete_all(conn: sqlite3.Connection, person_id: int, clock: Clock | None = None,
+               photo_dir: Path | None = None) -> int:
     n = conn.execute("DELETE FROM chat WHERE person_id = ?", (person_id,)).rowcount
+    if photo_dir is not None and clock is not None:
+        photos.drop_unused(conn, clock, photo_dir, person_id, grace=timedelta(0))
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")  # secure_delete is on; this clears the write-ahead log too
     return n
 
 
-def purge(conn: sqlite3.Connection, clock: Clock) -> int:
+def purge(conn: sqlite3.Connection, clock: Clock, photo_dir: Path | None = None) -> int:
     now = clock.now()
     conn.execute("DELETE FROM chat_turns WHERE at_utc < ?", (utc_iso(now - timedelta(days=1)),))
-    return conn.execute("DELETE FROM chat WHERE at_utc < ?", (utc_iso(now - KEEP),)).rowcount
+    n = conn.execute("DELETE FROM chat WHERE at_utc < ?", (utc_iso(now - KEEP),)).rowcount
+    if photo_dir is not None:
+        photos.drop_unused(conn, clock, photo_dir)
+    return n
 
 
 def turns_last_hour(conn: sqlite3.Connection, clock: Clock, person_id: int) -> int:
@@ -123,11 +137,11 @@ class _Lane:
             job = self.jobs.get()
             if job is None:
                 return
-            text, fut = job
+            text, photo, fut = job
             if not fut.set_running_or_notify_cancel():
                 continue
             try:
-                fut.set_result(run(person_id, text))
+                fut.set_result(run(person_id, text, photo))
             except BaseException as e:  # never kill the lane
                 fut.set_exception(e)
 
@@ -140,19 +154,26 @@ class ChatWorker:
     clock: Clock
     client: object
     make_context: Callable[[sqlite3.Connection, Session], tools.Context] | None = None
+    photo_dir: Path | None = None  # where photos are kept (for deleting them with their lines)
     _lanes: dict[int, _Lane] = field(default_factory=dict)
     _local: threading.local = field(default_factory=threading.local)
     _talks: dict[int, _Conversation] = field(default_factory=dict)
     _guard: threading.Lock = field(default_factory=threading.Lock)
 
-    def submit(self, person_id: int, text: str) -> Future:
+    def submit(self, person_id: int, text: str, photo: tuple[int, bytes] | None = None) -> Future:
+        """photo: (its id in `photos`, the clean JPEG), already saved by the page."""
         fut: Future = Future()
         with self._guard:
             lane = self._lanes.get(person_id)
             if lane is None:
                 lane = self._lanes[person_id] = _Lane(self._turn, person_id)
-        lane.jobs.put((text, fut))
+        lane.jobs.put((text, photo, fut))
         return fut
+
+    def forget(self, person_id: int) -> Future:
+        """Claude's copy of the conversation goes too (deleted lines and photos are never sent again). Queued
+        behind a turn already running, so it can't be undone by that turn."""
+        return self.submit(person_id, FORGET)  # type: ignore[arg-type]
 
     def shutdown(self) -> None:
         with self._guard:
@@ -165,9 +186,12 @@ class ChatWorker:
             self._local.conn = self.connect()
         return self._local.conn
 
-    def _turn(self, person_id: int, text: str) -> str:
+    def _turn(self, person_id: int, text: str, photo: tuple[int, bytes] | None = None) -> str:
+        if text is FORGET:
+            self._talks.pop(person_id, None)
+            return ""
         try:
-            return self._turn_inner(person_id, text)
+            return self._turn_inner(person_id, text, photo)
         except Exception:  # a database error, a broken context: say so, never a broken page
             try:
                 add(self._conn(), self.clock, person_id, "pepe", "chat", CANT_ANSWER)
@@ -176,11 +200,14 @@ class ChatWorker:
             self._talks.pop(person_id, None)
             return CANT_ANSWER
 
-    def _turn_inner(self, person_id: int, text: str) -> str:
+    def _turn_inner(self, person_id: int, text: str, photo: tuple[int, bytes] | None = None) -> str:
         conn = self._conn()
         now = self.clock.now()
         text = " ".join(text.split())[:MAX_CHARS]
-        if not text:
+        if photo is not None and conn.execute("SELECT 1 FROM photos WHERE id = ? AND person_id = ?",
+                                              (photo[0], person_id)).fetchone() is None:
+            photo = None  # deleted while it waited ("Borrar la conversación" in another tab): only the words go
+        if not text and photo is None:
             return ""
         talk = self._talks.get(person_id)
         help_pending = bool(talk and any(p.status == "pending" and p.kind == "send_help"
@@ -194,7 +221,7 @@ class ChatWorker:
                 add(conn, self.clock, person_id, "pepe", "chat", TOO_MANY)
             return TOO_MANY
         conn.execute("INSERT INTO chat_turns (person_id, at_utc) VALUES (?, ?)", (person_id, utc_iso(now)))
-        row = add(conn, self.clock, person_id, "person", "chat", text)
+        row = add(conn, self.clock, person_id, "person", "chat", text, photo[0] if photo else None)
         if talk is None or self._should_end(talk, now):
             talk = self._new(conn, person_id, now)
         talk.first_row = talk.first_row or row
@@ -204,7 +231,7 @@ class ChatWorker:
         brain = talk.brain
         calls_before = len(brain.calls)
         try:
-            claude = brain.hear(text)
+            claude = brain.hear(text, photo[1] if photo else None)
             failed = False
         except Exception:  # budget reached, no connection, an API error
             claude, failed = "", True
@@ -220,11 +247,18 @@ class ChatWorker:
             reply = f"{code_lines} {claude}".strip() or CANT_ANSWER
         if brain.ctx.forget_up_to_turn is not None:  # "olvídalo": this conversation's lines go too
             conn.execute("DELETE FROM chat WHERE person_id = ? AND id >= ?", (person_id, talk.first_row))
+            if self.photo_dir is not None:  # its photos too
+                photos.drop_unused(conn, self.clock, self.photo_dir, person_id, grace=timedelta(0))
             conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
             brain.ctx.forget_up_to_turn = None
             talk.first_row = None
+            forgotten = True
+        else:
+            forgotten = False
         add(conn, self.clock, person_id, "pepe", "chat", reply)
-        purge(conn, self.clock)
+        if forgotten:  # Claude's copy goes too: what was forgotten is never sent again
+            self._talks.pop(person_id, None)
+        purge(conn, self.clock, self.photo_dir)
         return reply
 
     @staticmethod
