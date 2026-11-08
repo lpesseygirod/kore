@@ -1,0 +1,39 @@
+# KORE: Pepe himself (the home loop: listening, reminders, family messages). Installed by install.sh.
+# Logs: journalctl -u kore-home    State: systemctl status kore-home
+[Unit]
+Description=KORE: Pepe, the voice companion (home loop)
+Documentation=file:///opt/kore/current/docs/DEVICE.md
+# No network-online here on purpose: reminders must start even when the Wi-Fi is down.
+After=sound.target time-sync.target
+# Never give up restarting, however often it crashes.
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=kore
+Group=kore
+WorkingDirectory=/var/lib/kore
+EnvironmentFile=/etc/kore/kore.env
+Environment=PYTHONUNBUFFERED=1
+# --pi: the speakerphone, the button, the sensor and the light ring (kore/hardware). See docs/DEVICE.md.
+ExecStart=/opt/kore/current/.venv/bin/python -m kore.home --db /var/lib/kore/kore.db --pi
+Restart=always
+RestartSec=5
+TimeoutStopSec=20
+# Watchdog: switch on once the loop calls kore.hardware.systemd.ready() and .alive() on every tick
+# (replace Type=simple above with these three lines). A loop stuck for 60 s is then killed and restarted.
+#Type=notify
+#NotifyAccess=main
+#WatchdogSec=60
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kore-home
+# Pepe can write only his data folder; the code and the system are read-only to him.
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+ReadWritePaths=/var/lib/kore
+
+[Install]
+WantedBy=multi-user.target

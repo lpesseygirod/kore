@@ -1,0 +1,13 @@
+# KORE: look for a new version every night. kore-update itself does nothing outside 03:30-04:30 (box time,
+# Europe/Madrid). If the box was off at 03:30 it waits for the next night (Persistent=false), never daytime.
+[Unit]
+Description=KORE: nightly check for a new version
+
+[Timer]
+OnCalendar=*-*-* 03:30:00
+RandomizedDelaySec=10min
+AccuracySec=1min
+Persistent=false
+
+[Install]
+WantedBy=timers.target

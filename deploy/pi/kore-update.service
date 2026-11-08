@@ -1,0 +1,15 @@
+# KORE: install a new version if one is waiting in /var/lib/kore/incoming. Started by kore-update.timer at night.
+# What it did: journalctl -u kore-update
+[Unit]
+Description=KORE: night update with self-test and automatic rollback
+After=network-online.target
+Wants=network-online.target
+
+[Service]
+Type=oneshot
+ExecStart=/usr/local/sbin/kore-update
+TimeoutStartSec=45min
+Nice=10
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kore-update

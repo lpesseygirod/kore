@@ -29,6 +29,8 @@ def main(argv: list[str] | None = None) -> int:
     ap.add_argument("--db", default="data/kore.db")
     ap.add_argument("--offline", action="store_true", help="no Claude: nothing is spent")
     ap.add_argument("--voz", action="store_true", help="the Mac's microphone and voice")
+    ap.add_argument("--pi", action="store_true",
+                    help="the box: its button, sensor, light ring, microphone and ElevenLabs (started by systemd)")
     a = ap.parse_args(argv)
 
     import os
@@ -75,6 +77,8 @@ def main(argv: list[str] | None = None) -> int:
         mac_voice = mac.MacVoice()
         voice = Both()
         ears = mac.MacEars(on_ready=lambda: (mac_voice.chime(), print("  (te escucho...)", flush=True)))
+    if a.pi:
+        return _run_pi(a, clock, client)
     conn = connect(a.db)
     info = Info(Weather(conn, clock, OpenMeteo()), News(conn, clock, Rss()))
     home = Home(a.db, clock, client, voice, channels.from_env(), info=info,
@@ -121,6 +125,46 @@ def main(argv: list[str] | None = None) -> int:
                 print(f"Tú: {heard.text}", flush=True)
                 home.heard(heard.text, via="button", ended_at=heard.ended_at)
     home.wait_for_background(2)
+    return 0
+
+
+def _run_pi(a, clock, client) -> int:
+    import signal
+
+    from kore.family import channels
+    from kore.family.heartbeat import Heartbeat
+    from kore.hardware.device import open_device
+    from kore.home import eleven
+    from kore.home.loop import Home
+    from kore.home.pi import Box, LitVoice
+    from kore.home.pi_audio import PiEars
+    from kore.home.voice import PrintVoice
+    from kore.info import Info
+    from kore.info.news import News, Rss
+    from kore.info.weather import OpenMeteo, Weather
+    from kore.memory.db import connect
+
+    stt, eleven_voice = eleven.from_env()
+    if eleven_voice is None:
+        print("ELEVENLABS_API_KEY isn't set: Pepe can't hear or speak yet (kore-set-key ELEVENLABS_API_KEY).",
+              file=sys.stderr)
+    device = open_device()
+    lit = LitVoice(eleven_voice or PrintVoice(), device.ring)
+    conn = connect(a.db)
+    info = Info(Weather(conn, clock, OpenMeteo()), News(conn, clock, Rss()))
+    home = Home(a.db, clock, client, lit, channels.from_env(), info=info, heartbeat=Heartbeat.from_env(clock),
+                turn_log=Path(a.db).parent / "turns.jsonl")
+
+    class NoEars:
+        def listen(self):
+            from kore.home.mac import Heard
+            return Heard("", error="stt_bad_key", on_device=False)
+
+    ears = PiEars(stt, on_ready=lit.chime) if stt is not None else NoEars()
+    box = Box(home, device, ears, lit)
+    signal.signal(signal.SIGTERM, lambda *_: box.stop.set())
+    print("Pepe está en marcha en el aparato.", flush=True)
+    box.run()
     return 0
 
 

@@ -1,0 +1,33 @@
+# KORE: the home web page (the family app and Lea's console). Installed by install.sh.
+# Logs: journalctl -u kore-web
+[Unit]
+Description=KORE: the home web page
+Documentation=file:///opt/kore/current/docs/DEVICE.md
+After=network.target
+StartLimitIntervalSec=0
+
+[Service]
+Type=simple
+User=kore
+Group=kore
+WorkingDirectory=/var/lib/kore
+EnvironmentFile=/etc/kore/kore.env
+Environment=PYTHONUNBUFFERED=1
+# %H is the box's name (for example kore-abuelos): the page answers to it, to <name>.local on the home Wi-Fi,
+# and to the same name over Tailscale. Any other name is refused.
+ExecStart=/opt/kore/current/.venv/bin/python -m kore.web --db /var/lib/kore/kore.db serve --host 0.0.0.0 --port 8080 --name %H --name %H.local
+Restart=always
+RestartSec=5
+TimeoutStopSec=15
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=kore-web
+NoNewPrivileges=yes
+ProtectSystem=strict
+ProtectHome=yes
+PrivateTmp=yes
+PrivateDevices=yes
+ReadWritePaths=/var/lib/kore
+
+[Install]
+WantedBy=multi-user.target
