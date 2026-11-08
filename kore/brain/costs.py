@@ -58,14 +58,14 @@ class CostLog:
             f.write(json.dumps(entry) + "\n")
         return usd
 
-    def today_usd(self) -> float:
+    def today_usd(self, purpose: str | None = None) -> float:
         if not self.path.exists():
             return 0.0
         today = datetime.now(timezone.utc).date().isoformat()
         total = 0.0
         for line in self.path.read_text().splitlines():
             entry = json.loads(line)
-            if entry["at"].startswith(today):
+            if entry["at"].startswith(today) and (purpose is None or entry.get("purpose") == purpose):
                 total += entry["usd"]
         return total
 

@@ -324,6 +324,25 @@ CREATE TABLE IF NOT EXISTS web_codes (
     status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'used', 'burned', 'cancelled'))
 );
 
+-- The conversation a person sees on the web page: what they wrote in the chat and Pepe's answers, and (only
+-- with their "keep_conversations" permission) what was said by voice. Deleted after 90 days.
+CREATE TABLE IF NOT EXISTS chat (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id),
+    who TEXT NOT NULL CHECK (who IN ('person', 'pepe')),
+    channel TEXT NOT NULL CHECK (channel IN ('chat', 'voice')),
+    text TEXT NOT NULL,
+    at_utc TEXT NOT NULL
+);
+CREATE INDEX IF NOT EXISTS chat_person ON chat (person_id, at_utc);
+
+-- One row per message written to Pepe, for the hourly limit (deleting the conversation doesn't reset it).
+CREATE TABLE IF NOT EXISTS chat_turns (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id),
+    at_utc TEXT NOT NULL
+);
+
 -- Login attempts and code requests, by client (a hash of its address), for the limits.
 CREATE TABLE IF NOT EXISTS web_attempts (
     id INTEGER PRIMARY KEY,

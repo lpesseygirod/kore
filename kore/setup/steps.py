@@ -88,6 +88,10 @@ STEPS = [
     Step("share", "person",
          "Ask whether the other person at home may hear from you whether they've taken their medicine.",
          "propose_permission share_with_partner, or record_permission_no (either closes the step).", two_people_only=True),
+    Step("conversation_log", "person",
+         "Ask whether you may keep what you talk about, so they can read it later on their phone or tablet; it's "
+         "deleted after 90 days. Make clear the answer can be no.",
+         "propose_permission keep_conversations, or record_permission_no (either closes the step)."),
     Step("test", "home",
          "Suggest a short test: they say 'Pepe, ¿qué hora es?' and you answer.",
          "setup_step_done after the test (or if they'd rather not)."),
@@ -103,4 +107,4 @@ BY_ID = {s.id: s for s in STEPS}
 # in an earlier chat or by the family's setup), the step is answered: Pepe doesn't ask it again.
 PERMISSION_STEPS = {"health_info": "health_info", "listening": "listening", "presence_sensor": "presence",
                     "family_missed_meds": "family_alerts", "emergency_path": "emergency",
-                    "share_with_partner": "share"}
+                    "share_with_partner": "share", "keep_conversations": "conversation_log"}

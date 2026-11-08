@@ -54,6 +54,25 @@ def snapshot(conn: sqlite3.Connection, dest: Path) -> None:
         out.close()
 
 
+# Not in the backup: the web conversations (each person's own; Lea's view never shows them, and "deleted after
+# 90 days" must hold), and the web's codes, logins and attempts (a restored box makes everyone log in again).
+NOT_BACKED_UP = ("chat", "chat_turns", "say_queue", "web_codes", "web_attempts", "web_logins")
+
+
+def _leave_out_private(path: Path) -> None:
+    c = sqlite3.connect(str(path))
+    try:
+        c.execute("PRAGMA secure_delete = ON")
+        tables = {r[0] for r in c.execute("SELECT name FROM sqlite_master WHERE type = 'table'")}
+        for t in NOT_BACKED_UP:
+            if t in tables:
+                c.execute(f"DELETE FROM {t}")
+        c.commit()
+        c.execute("VACUUM")  # rewrite the file: nothing deleted stays in free pages
+    finally:
+        c.close()
+
+
 def encrypt(src: Path, cert: Path, dest: Path) -> None:
     r = subprocess.run([openssl(), "cms", "-encrypt", "-binary", "-aes-256-gcm", "-in", str(src), "-out", str(dest),
                         "-outform", "DER", "-recip", str(cert)], capture_output=True)
@@ -80,6 +99,7 @@ def make(conn: sqlite3.Connection, clock: Clock, cert: Path, folder: Path = DIR,
         with tempfile.TemporaryDirectory(prefix="kore-backup-") as tmp:  # private to this user, removed after
             plain = Path(tmp) / "kore.db"
             snapshot(conn, plain)
+            _leave_out_private(plain)
             encrypt(plain, cert, out)
         for old in sorted(folder.glob("kore-*.db.cms"))[:-keep]:
             old.unlink()  # the device's own old backups

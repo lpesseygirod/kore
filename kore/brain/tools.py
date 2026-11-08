@@ -786,7 +786,8 @@ def _setup_step_done(ctx: Context, args: dict) -> dict:
 # Answers that close their setup step by themselves (the permission or setting is the answer).
 STEP_FOR_PERMISSION = {"conversation_starters": "chattiness", "health_info": "health_info", "listening": "listening",
                        "presence_sensor": "presence", "family_missed_meds": "family_alerts",
-                       "emergency_path": "emergency", "share_with_partner": "share"}
+                       "emergency_path": "emergency", "share_with_partner": "share",
+                       "keep_conversations": "conversation_log"}
 
 
 def _close_step(ctx: Context, step_id: str, person_id: int | None) -> None:
@@ -910,6 +911,7 @@ PERMISSION_TEXT = {
     "family_missed_meds": "let your help contact know if you miss your medicine several times in a row",
     "emergency_path": "message your help contact straight away, without asking first, if you say 'Pepe, ayuda', tell me you've fallen, or press the button",
     "share_with_partner": "tell the other person at home whether you've taken your medicine, if they ask",
+    "keep_conversations": "keep what we talk about, so you can read it later on your phone; it's deleted after 90 days",
 }
 
 

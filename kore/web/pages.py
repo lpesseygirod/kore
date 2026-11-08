@@ -47,6 +47,13 @@ button.small { font: inherit; font-size: .9rem; padding: .3rem .7rem; border-rad
       border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
 input.code { font: inherit; font-size: 2rem; letter-spacing: .4em; text-align: center; width: 100%;
       padding: .6rem; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--fg); }
+.chat { display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
+.bubble { max-width: 85%; padding: .6rem .85rem; border-radius: 16px; border: 1px solid var(--line);
+          background: var(--card); white-space: pre-wrap; overflow-wrap: anywhere; }
+.bubble.me { align-self: flex-end; background: var(--bg); border-color: var(--accent); }
+.bubble .when { display: block; font-size: .75rem; color: var(--muted); margin-top: .2rem; }
+textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .7rem; border-radius: 14px;
+               border: 2px solid var(--line); background: var(--card); color: var(--fg); }
 .msg { padding: .8rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
 .msg.bad { border-color: var(--warn); }
 """
@@ -64,7 +71,8 @@ def layout(title: str, body: str, nav: str = "") -> str:
 
 
 def menu(here: str, account) -> str:
-    items = [("/", "Hoy"), ("/dispositivos", "Dispositivos")]
+    items = [("/", "Hoy")] + ([("/hablar", "Hablar")] if account.role == "person" else []) + \
+        [("/dispositivos", "Dispositivos")]
     links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}">{e(label)}</a>' for href, label in items)
     return (f'<nav aria-label="Menú">{links}<form method="post" action="/salir">'
             f'<button type="submit">Salir</button></form></nav>')
@@ -170,3 +178,38 @@ def devices(account, rows: list[dict]) -> str:
 
 def message(title: str, text: str) -> str:
     return layout(f"Pepe — {title}", f"<h1>{e(title)}</h1><p class='msg'>{e(text)}</p><p><a href='/'>Volver</a></p>")
+
+
+# --- talking -----------------------------------------------------------------------------------
+
+
+def chat(account, rows: list[dict], available: bool, note: str = "") -> str:
+    bubbles = "".join(
+        f'<div class="bubble{" me" if r["who"] == "person" else ""}">{e(r["text"])}'
+        f'<span class="when">{"Usted" if r["who"] == "person" else "Pepe"}, {e(r["at"].strftime("%d/%m %H:%M"))}'
+        f'{" (en voz alta)" if r["channel"] == "voice" else ""}</span></div>' for r in rows)
+    form = (f'<form method="post" action="/hablar" id="escribir"><label for="t" class="muted">Escriba a Pepe</label>'
+            f'<textarea class="say" id="t" name="text" maxlength="600" required autofocus></textarea>'
+            f'<button class="big" type="submit">Enviar</button></form>'
+            '<p class="muted">Pepe tarda unos segundos en contestar.</p>') if available else (
+            '<p class="msg">Ahora no se puede escribir a Pepe desde aquí. Puede hablarle en voz alta.</p>')
+    notice = f'<p class="msg bad" role="status">{e(note)}</p>' if note else ""
+    empty = '<p class="muted">Todavía no hay nada escrito. Puede preguntarle lo mismo que en voz alta.</p>'
+    return layout("Pepe — Hablar", f"""
+<h1>Hablar con Pepe</h1>
+{notice}
+<div class="chat" id="ultimo">{bubbles or empty}</div>
+{form}
+<p class="muted" style="margin-top:2rem">Lo escrito aquí se guarda 90 días. Lo hablado en voz alta solo aparece si usted
+lo ha permitido. <a href="/hablar/borrar">Borrar la conversación</a></p>
+""", menu("/hablar", account))
+
+
+def confirm_delete(account) -> str:
+    return layout("Pepe — Borrar", """
+<h1>¿Borrar la conversación?</h1>
+<p>Se borra todo lo escrito y lo hablado que aparece en «Hablar». Lo que Pepe tiene apuntado (medicinas, citas,
+la compra, lo que sabe de usted) no se borra.</p>
+<form method="post" action="/hablar/borrar"><button class="big" type="submit">Sí, borrar</button></form>
+<a class="big" href="/hablar">No, volver</a>
+""", menu("/hablar", account))

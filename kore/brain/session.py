@@ -67,6 +67,8 @@ class Session:
     speaker_id: int | None = None
     identity_question: tuple[int | None, int] | None = None  # (candidate, asked at turn)
     pending: dict[int, PendingAction] = field(default_factory=dict)
+    # The web chat: the login says who is writing, and nothing they type ("soy Carmen") changes it.
+    fixed_speaker: int | None = None
     _ids: itertools.count = field(default_factory=lambda: itertools.count(1))
 
     def __post_init__(self):
@@ -103,7 +105,7 @@ class Session:
     def add_person(self, person: Person, speaking: bool) -> None:
         """Someone new at home (setup). If they introduced themselves, they're the speaker now."""
         self.household.append(person)
-        if speaking:
+        if speaking and self.fixed_speaker is None:
             self.speaker_id = person.id
             self.identity_question = None
         # No _auto_speaker here: someone they told us about never becomes "the speaker".
@@ -135,11 +137,13 @@ class Session:
             raise SpeakerMismatch(self.speaker_id, person_id)
 
     def _auto_speaker(self) -> None:
-        if len(self.household) == 1:
+        if self.fixed_speaker is not None:
+            self.speaker_id = self.fixed_speaker
+        elif len(self.household) == 1:
             self.speaker_id = self.household[0].id
 
     def _resolve_identity(self, text: str) -> None:
-        if len(self.household) == 1:
+        if len(self.household) == 1 or self.fixed_speaker is not None:
             return
         names = {p.id: p.aliases for p in self.household}
         q = self.identity_question

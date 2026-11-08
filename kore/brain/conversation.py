@@ -70,6 +70,7 @@ class Brain:
     responses: list[dict] = field(default_factory=list)
     dropped: list[str] = field(default_factory=list)  # text kept from the voice (notes in English), for Lea
     code_actions: list[str] = field(default_factory=list)  # what the help path (code, not Claude) did, for the judge
+    channel: str = "voice"  # "chat": the home web page, in text
     # The voice loop sets this to speak code's own lines (help) at once, before Claude answers.
     say_now: Callable[[str], None] | None = None
 
@@ -83,7 +84,7 @@ class Brain:
         content = [{"type": "text", "text": f"They say: {text}"}]
         if note:
             content.append({"type": "text", "text": note})
-        return self._with(said, self._turn(content))
+        return self._with(said, lambda: self._turn(content))
 
     def button(self) -> str:
         """The help button was pressed. Code acts at once; Claude then keeps them company."""
@@ -94,13 +95,13 @@ class Brain:
             said = self._answer_help(pending[-1], "the help button")
             note = (f"The help button was pressed after Pepe asked whether to tell someone; the help path (code) "
                     f"ran. Pepe already said: «{said}». " + AFTER_HELP)
-            return self._with(said, self._turn([{"type": "text", "text": note}]))
+            return self._with(said, lambda: self._turn([{"type": "text", "text": note}]))
         out = self.ctx.link().call_for_help(s, "button")
         self.code_actions.append(f"help path, after the help button: {out.summary()}"
                                  + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
         note = (f"The help button was pressed. Help path (code): {out.summary()}. Pepe already said: «{out.say}». "
                 "Don't repeat it. Stay calm and with them; ask simply how they are.")
-        return self._with(out.say, self._turn([{"type": "text", "text": note}]))
+        return self._with(out.say, lambda: self._turn([{"type": "text", "text": note}]))
 
     def _help_first(self, text: str) -> tuple[str, str]:
         """'Pepe, ayuda', a fall, or the yes to "¿Aviso a Lucía?": done by code before Claude sees the turn."""
@@ -112,7 +113,8 @@ class Brain:
             return said, (f"They said yes, and the help path (code) ran. Pepe already said: «{said}». " + AFTER_HELP)
         if kind is None:
             return "", ""
-        out = self.ctx.link().call_for_help(s, kind, text)
+        # In text, a typed "ayuda" often means "help me with this page": always ask first. Falls go as by voice.
+        out = self.ctx.link().call_for_help(s, kind, text, ask_first=self.channel == "chat" and kind == "help")
         self.code_actions.append(f"help path, after «{text}» ({kind}): {out.summary()}"
                                  + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
         return out.say, (f"Help path (code), after their words: {out.summary()}. Pepe already said: «{out.say}». "
@@ -128,13 +130,14 @@ class Brain:
         self.code_actions.append(f"help path, after {answer} answered Pepe's question: {done}")
         return r["say"]
 
-    def _with(self, said: str, reply: str) -> str:
-        if not said:
-            return reply
-        if self.say_now is not None:
+    def _with(self, said: str, make_reply: Callable[[], str]) -> str:
+        """Code's own line first (spoken at once by the voice loop, before Claude is even asked, so a slow or
+        failing Claude can never hold it back), then Claude's reply."""
+        if said and self.say_now is not None:
             self.say_now(said)
-            return reply
-        return f"{said} {reply}".strip()
+            return make_reply()
+        reply = make_reply()
+        return f"{said} {reply}".strip() if said else reply
 
     def speak_event(self, item: Item) -> str | None:
         """Pepe speaks first: word an event from the scheduler, in the manner the gate chose."""
@@ -203,6 +206,9 @@ class Brain:
         names = {p.id: p.call_name for p in s.household}
         lines = ["Lives here: " + ", ".join(
             p.name if p.name == p.call_name else f"{p.name} (called {p.call_name})" for p in s.household) + "."]
+        if self.channel == "chat":
+            lines.append("They are writing on the home web page, in text (their login says who it is). Reply in "
+                         "the same few, plain sentences you would say aloud: no lists, no emojis.")
         if s.speaker_id is not None:
             lines.append(f"Speaking: {names[s.speaker_id]}.")
         elif len(s.household) > 1:

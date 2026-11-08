@@ -10,6 +10,8 @@ Starlette, no scripts on the pages, forms only. Guards on every request:
 
 from __future__ import annotations
 
+import asyncio
+import contextlib
 import threading
 import urllib.parse
 from datetime import timedelta
@@ -28,12 +30,14 @@ from kore.memory.db import connect, utc_iso
 from kore.scheduler.clock import Clock, SystemClock
 from kore.setup import progress
 from kore.web import accounts, pages, today
+from kore.web import chat as chats
 
 SESSION = "kore"
 TICKET = "kore_ticket"
 SESSION_AGE = int(timedelta(days=365).total_seconds())
 TICKET_AGE = int(timedelta(minutes=30).total_seconds())
 MAX_FORM = 4096
+REPLY_WAIT_S = 90
 DEFAULT_HOSTS = ["localhost", "127.0.0.1"]  # plus the box's own name(s), given when serving
 
 HEADERS = {
@@ -48,7 +52,8 @@ HEADERS = {
 
 
 def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, hosts: list[str] | None = None,
-               dev: bool = False) -> Starlette:
+               dev: bool = False, chat: chats.ChatWorker | None = None) -> Starlette:
+    """chat: the worker that talks to Claude (None: the Hablar page says writing isn't available now)."""
     clock = clock or SystemClock()
     lock = threading.Lock()
     holder: dict = {}
@@ -177,6 +182,51 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         resp.delete_cookie(SESSION, path="/")
         return resp
 
+    async def talk_page(request: Request):
+        with lock:
+            a = account(request)
+            if a is None or a.role != "person":
+                return RedirectResponse("/entrar" if a is None else "/", 303, headers=HEADERS)
+            rows = chats.history(db(), clock, a.person_id)
+        return html(pages.chat(a, rows, chat is not None))
+
+    async def talk(request: Request):
+        f = await form(request)
+        with lock:
+            a = account(request)
+        if a is None or a.role != "person":
+            return RedirectResponse("/entrar", 303, headers=HEADERS)
+        if f is None:
+            return html(pages.message("No se ha podido", "Vuelva a la página de Pepe y pruebe otra vez."), 403)
+        text = (f.get("text") or "").strip()
+        if chat is not None and text:
+            if len(text) > chats.MAX_CHARS:
+                with lock:
+                    rows = chats.history(db(), clock, a.person_id)
+                return html(pages.chat(a, rows, True, "El mensaje es demasiado largo. Escríbalo en dos partes."), 400)
+            try:  # the page waits; other pages and the other person don't
+                await asyncio.wait_for(asyncio.wrap_future(chat.submit(a.person_id, text)), REPLY_WAIT_S)
+            except asyncio.TimeoutError:
+                with lock:
+                    rows = chats.history(db(), clock, a.person_id)
+                return html(pages.chat(a, rows, True, "Pepe sigue pensando. Vuelva a mirar en un momento."))
+        return RedirectResponse("/hablar#escribir", 303, headers=HEADERS)
+
+    async def delete_page(request: Request):
+        with lock:
+            a = account(request)
+        if a is None or a.role != "person":
+            return RedirectResponse("/entrar", 303, headers=HEADERS)
+        return html(pages.confirm_delete(a))
+
+    async def delete(request: Request):
+        f = await form(request)
+        with lock:
+            a = account(request)
+            if a is not None and a.role == "person" and f is not None:
+                chats.delete_all(db(), a.person_id)
+        return RedirectResponse("/hablar", 303, headers=HEADERS)
+
     async def health(request: Request):
         return PlainTextResponse("ok", headers=HEADERS)
 
@@ -185,8 +235,17 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/entrar/codigo", code_page), Route("/entrar", use_code, methods=["POST"]),
         Route("/dispositivos", devices), Route("/dispositivos/cerrar", close_device, methods=["POST"]),
         Route("/salir", logout, methods=["POST"]), Route("/salud", health),
+        Route("/hablar", talk_page), Route("/hablar", talk, methods=["POST"]),
+        Route("/hablar/borrar", delete_page), Route("/hablar/borrar", delete, methods=["POST"]),
     ]
-    return Starlette(routes=routes, middleware=[Middleware(TrustedHostMiddleware, allowed_hosts=hosts or DEFAULT_HOSTS)])
+    @contextlib.asynccontextmanager
+    async def lifespan(app):
+        yield
+        if chat is not None:
+            chat.shutdown()
+
+    return Starlette(routes=routes, middleware=[Middleware(TrustedHostMiddleware, allowed_hosts=hosts or DEFAULT_HOSTS)],
+                     lifespan=lifespan, max_body_size=MAX_FORM * 4)
 
 
 def _small_int(value) -> int | None:

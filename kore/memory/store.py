@@ -29,6 +29,7 @@ CONSENTS = {
     "conversation_starters",  # category 2
     "listening",              # listens after the wake word or the button (told and agreed at setup)
     "presence_sensor",        # notices when they're up or moving
+    "keep_conversations",     # keep what we say by voice, to read on the web page (90 days)
 }
 
 
@@ -40,6 +41,8 @@ def set_consent(conn: sqlite3.Connection, clock: Clock, person_id: int, kind: st
         "ON CONFLICT (person_id, kind) DO UPDATE SET granted = excluded.granted, at = excluded.at",
         (person_id, kind, int(granted), utc_iso(clock.now())),
     )
+    if kind == "keep_conversations" and not granted:  # a no, now or later: what was kept by voice goes
+        conn.execute("DELETE FROM chat WHERE person_id = ? AND channel = 'voice'", (person_id,))
 
 
 def declined(conn: sqlite3.Connection, person_id: int, kind: str) -> bool:
@@ -163,6 +166,8 @@ def forget_note(conn: sqlite3.Connection, person_id: int, note_id: int) -> bool:
     escaped = json.dumps(row["text"], ensure_ascii=False)[1:-1]
     for form in {row["text"], escaped}:
         conn.execute("DELETE FROM tool_log WHERE instr(args, ?) > 0 OR instr(result, ?) > 0", (form, form))
+    # And any line of their conversation on the web page that holds it.
+    conn.execute("DELETE FROM chat WHERE person_id = ? AND instr(lower(text), lower(?)) > 0", (person_id, row["text"]))
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     return True
 

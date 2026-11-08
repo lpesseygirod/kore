@@ -34,7 +34,8 @@ def request_hash(request: dict) -> str:
 
 
 class LiveClient:
-    def __init__(self, purpose: str, cost_log: CostLog | None = None, run_cap_usd: float | None = None):
+    def __init__(self, purpose: str, cost_log: CostLog | None = None, run_cap_usd: float | None = None,
+                 daily_cap_usd: float | None = None):
         import anthropic  # only for live runs (dependency group "live")
 
         # A call that hangs must not stall a run (or, later, a conversation): give up after a minute.
@@ -42,10 +43,13 @@ class LiveClient:
         self.purpose = purpose
         self.costs = cost_log or CostLog()
         self.run_cap_usd = run_cap_usd
+        self.daily_cap_usd = daily_cap_usd  # this purpose's own share of the day (the web chat can't eat the rest)
         self.spent = 0.0
 
     def create(self, request: dict) -> dict:
         self.costs.check_budget()  # the daily limit, across everything
+        if self.daily_cap_usd is not None and self.costs.today_usd(self.purpose) >= self.daily_cap_usd:
+            raise BudgetCap(f"today's {self.purpose} spend reached its cap of ${self.daily_cap_usd:.2f}")
         if self.run_cap_usd is not None and self.spent >= self.run_cap_usd:
             raise BudgetCap(f"this run reached its cap of ${self.run_cap_usd:.2f}")
         resp = self.sdk.messages.create(**request)
