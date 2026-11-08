@@ -65,10 +65,20 @@ def _reminders_today(conn: sqlite3.Connection, person_id: int, today: date) -> l
 
 
 def _birthdays(conn: sqlite3.Connection, person_id: int, today: date) -> list[dict]:
-    soon = {(today + timedelta(days=i)).strftime("%m-%d"): i for i in range(8)}
+    soon = {}
+    for i in range(8):
+        day = today + timedelta(days=i)
+        soon[day.strftime("%m-%d")] = i
+        if day.month == 2 and day.day == 28 and not _leap(day.year):
+            soon["02-29"] = i  # said on the 28th in a normal year, like the engine does
     out = []
     for c in conn.execute("SELECT name, relation, birthday_md FROM contacts WHERE birthday_md IS NOT NULL AND "
+                          "birthday_reminders = 1 AND "
                           "(for_person IS NULL OR for_person = ?)", (person_id,)):
         if c["birthday_md"] in soon:
             out.append({"name": c["name"], "relation": c["relation"], "in_days": soon[c["birthday_md"]]})
     return sorted(out, key=lambda b: b["in_days"])
+
+
+def _leap(year: int) -> bool:
+    return year % 4 == 0 and (year % 100 != 0 or year % 400 == 0)

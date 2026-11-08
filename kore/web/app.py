@@ -1,4 +1,5 @@
-"""The home web page's server (WEB-PLAN.md; step W1: logging in, Hoy, Dispositivos).
+"""The home web page's server (WEB-PLAN.md; W1: logging in, Hoy, Dispositivos; W2: Hablar; W3: Calendario,
+La compra, Sobre mí).
 
 Starlette, no scripts on the pages, forms only. Guards on every request:
 - the Host header must be one of the box's own names (no DNS-rebinding tricks);
@@ -29,7 +30,7 @@ from kore.info import news, weather
 from kore.memory.db import connect, utc_iso
 from kore.scheduler.clock import Clock, SystemClock
 from kore.setup import progress
-from kore.web import accounts, pages, today
+from kore.web import accounts, agenda, pages, today
 from kore.web import chat as chats
 
 SESSION = "kore"
@@ -227,6 +228,159 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 chats.delete_all(db(), a.person_id)
         return RedirectResponse("/hablar", 303, headers=HEADERS)
 
+    # --- W3: calendar, shopping list, what Pepe knows ---------------------------------------------
+
+    BAD_FORM = "Vuelva a la página de Pepe y pruebe otra vez."
+    BACKS = ("/calendario", "/sabe")
+
+    def person(request: Request):
+        """The logged-in person, or None (operator and strangers get no personal pages)."""
+        a = account(request)
+        return a if a is not None and a.role == "person" else None
+
+    def go(where: str) -> RedirectResponse:
+        return RedirectResponse(where, 303, headers=HEADERS)
+
+    def today_iso() -> str:
+        return clock.now().date().isoformat()
+
+    async def calendar_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            note = pages.DONE.get(request.query_params.get("hecho", ""), "")
+            return html(pages.calendar(a, agenda.calendar(db(), clock, a.person_id), note))
+
+    def proposing(make, page_again, back: str = "/calendario"):
+        """A form that proposes a change: the read-back page, or the form again with what's wrong."""
+        async def handler(request: Request):
+            f = await form(request)
+            with lock:
+                a = person(request)
+                if a is None:
+                    return go("/entrar")
+                if f is None:
+                    return html(pages.message("No se ha podido", BAD_FORM, back), 403)
+                try:
+                    proposal = make(a, f)
+                except agenda.Refused as r:
+                    if page_again is None:
+                        return html(pages.calendar(a, agenda.calendar(db(), clock, a.person_id), str(r), bad=True)
+                                    if back == "/calendario" else
+                                    pages.known(a, agenda.known(db(), clock, a.person_id), str(r), bad=True), 400)
+                    return html(page_again(a, f, str(r)), 400)
+                return html(pages.confirm(a, proposal, back))
+        return handler
+
+    def form_page(render):
+        async def handler(request: Request):
+            with lock:
+                a = person(request)
+            return go("/entrar") if a is None else html(render(a))
+        return handler
+
+    def the_id(f: dict) -> int:
+        i = _small_int(f.get("id"))
+        if i is None:
+            raise agenda.Refused("No se ha encontrado. Vuelva a la lista.")
+        return i
+
+    async def appointment_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            try:
+                appt = agenda.appointment(db(), clock, a.person_id, _small_int(request.query_params.get("id")) or 0)
+            except agenda.Refused as r:
+                return html(pages.calendar(a, agenda.calendar(db(), clock, a.person_id), str(r), bad=True), 404)
+            return html(pages.change_appointment(a, appt, today_iso()))
+
+    def move_again(a, f, note):
+        try:
+            appt = agenda.appointment(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+        except agenda.Refused as r:
+            return pages.calendar(a, agenda.calendar(db(), clock, a.person_id), str(r), bad=True)
+        return pages.change_appointment(a, appt, today_iso(), note)
+
+    async def confirm(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            if f is None:
+                return html(pages.message("No se ha podido", BAD_FORM), 403)
+            try:
+                return go(agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0))
+            except agenda.Refused as r:
+                return html(pages.message("No se ha guardado", str(r), "/calendario"), 409)
+            except Exception:
+                return html(pages.message("No se ha guardado", "Algo ha fallado y no se ha guardado nada. Pruebe "
+                                          "otra vez, o dígaselo a Pepe en voz alta.", "/calendario"), 500)
+
+    async def confirm_no(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            if f is not None:
+                agenda.cancel(db(), a.person_id, _small_int(f.get("id")) or 0)
+        back = (f or {}).get("back")
+        return go((back if back in BACKS else "/calendario") + "?hecho=anulado")
+
+    async def shopping_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            removed = None
+            gone = _small_int(request.query_params.get("quitado"))
+            if gone is not None:
+                item = agenda.shopping_item(db(), gone)
+                removed = item if item and item["status"] == "done" else None
+            return html(pages.shopping(a, agenda.shopping(db()), removed=removed))
+
+    def shopping_change(change):
+        async def handler(request: Request):
+            f = await form(request)
+            with lock:
+                a = person(request)
+                if a is None:
+                    return go("/entrar")
+                if f is None:
+                    return html(pages.message("No se ha podido", BAD_FORM, "/compra"), 403)
+                try:
+                    return go(change(f) or "/compra")
+                except agenda.Refused as r:
+                    return html(pages.shopping(a, agenda.shopping(db()), str(r), bad=True), 400)
+        return handler
+
+    def shop_add(f):
+        agenda.shopping_add(db(), clock, f.get("item"))
+
+    def shop_remove(f):
+        i = _small_int(f.get("id"))
+        if i is not None and agenda.shopping_remove(db(), i) is not None:
+            return f"/compra?quitado={i}"
+
+    def shop_back(f):
+        i = _small_int(f.get("id"))
+        if i is not None:
+            agenda.shopping_put_back(db(), clock, i)
+
+    async def known_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            note = pages.DONE.get(request.query_params.get("hecho", ""), "")
+            return html(pages.known(a, agenda.known(db(), clock, a.person_id), note))
+
+    c, k = db, clock  # short names for the proposals below
+
     async def health(request: Request):
         return PlainTextResponse("ok", headers=HEADERS)
 
@@ -237,6 +391,37 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/salir", logout, methods=["POST"]), Route("/salud", health),
         Route("/hablar", talk_page), Route("/hablar", talk, methods=["POST"]),
         Route("/hablar/borrar", delete_page), Route("/hablar/borrar", delete, methods=["POST"]),
+        Route("/calendario", calendar_page),
+        Route("/calendario/nueva-cita", form_page(lambda a: pages.new_appointment(a, today_iso()))),
+        Route("/calendario/nueva-cita", proposing(
+            lambda a, f: agenda.propose_appointment(c(), k, a.person_id, f),
+            lambda a, f, n: pages.new_appointment(a, today_iso(), f, n)), methods=["POST"]),
+        Route("/calendario/cita", appointment_page),
+        Route("/calendario/cita", proposing(
+            lambda a, f: agenda.propose_move(c(), k, a.person_id, the_id(f), f), move_again), methods=["POST"]),
+        Route("/calendario/cita/anular", proposing(
+            lambda a, f: agenda.propose_cancel(c(), k, a.person_id, the_id(f)), None), methods=["POST"]),
+        Route("/calendario/nuevo-recordatorio", form_page(lambda a: pages.new_reminder(a, today_iso()))),
+        Route("/calendario/nuevo-recordatorio", proposing(
+            lambda a, f: agenda.propose_reminder(c(), k, a.person_id, f),
+            lambda a, f, n: pages.new_reminder(a, today_iso(), f, n)), methods=["POST"]),
+        Route("/calendario/recordatorio/quitar", proposing(
+            lambda a, f: agenda.propose_reminder_stop(c(), k, a.person_id, the_id(f)), None), methods=["POST"]),
+        Route("/calendario/nuevo-cumple", form_page(lambda a: pages.new_birthday(a))),
+        Route("/calendario/nuevo-cumple", proposing(
+            lambda a, f: agenda.propose_birthday(c(), k, a.person_id, f),
+            lambda a, f, n: pages.new_birthday(a, f, n)), methods=["POST"]),
+        Route("/calendario/cumple/quitar", proposing(
+            lambda a, f: agenda.propose_birthday_stop(c(), k, a.person_id, the_id(f)), None), methods=["POST"]),
+        Route("/confirmar", confirm, methods=["POST"]), Route("/confirmar/no", confirm_no, methods=["POST"]),
+        Route("/compra", shopping_page), Route("/compra/anadir", shopping_change(shop_add), methods=["POST"]),
+        Route("/compra/quitar", shopping_change(shop_remove), methods=["POST"]),
+        Route("/compra/volver", shopping_change(shop_back), methods=["POST"]),
+        Route("/sabe", known_page),
+        Route("/sabe/anadir", proposing(lambda a, f: agenda.propose_note(c(), k, a.person_id, f),
+                                        None, "/sabe"), methods=["POST"]),
+        Route("/sabe/olvidar", proposing(lambda a, f: agenda.propose_forget(c(), k, a.person_id, the_id(f)),
+                                         None, "/sabe"), methods=["POST"]),
     ]
     @contextlib.asynccontextmanager
     async def lifespan(app):

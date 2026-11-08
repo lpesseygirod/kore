@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 7
+SCHEMA_VERSION = 8
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -360,6 +360,18 @@ CREATE TABLE IF NOT EXISTS say_queue (
     created_at TEXT NOT NULL,
     said_at TEXT,
     code_id INTEGER REFERENCES web_codes(id)
+);
+
+-- A change made on the web page, waiting for the person's "Sí" (the read-back page). Only the latest one per
+-- person can be confirmed; it lapses after 15 minutes and is deleted after a day.
+CREATE TABLE IF NOT EXISTS web_pending (
+    id INTEGER PRIMARY KEY,
+    person_id INTEGER NOT NULL REFERENCES people(id),
+    kind TEXT NOT NULL,
+    payload TEXT NOT NULL,
+    readback TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'done', 'cancelled', 'expired', 'failed'))
 );
 
 -- Weather and news (phase 6c): the home's place, the feeds, and the last answers fetched.

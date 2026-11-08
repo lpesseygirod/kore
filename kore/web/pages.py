@@ -43,7 +43,7 @@ nav form { margin-left: auto; }
 button.big, a.big { display: block; width: 100%; font: inherit; font-size: 1.1rem; font-weight: 600; text-align: center;
       padding: .9rem 1rem; margin: .6rem 0; border-radius: 14px; border: 2px solid var(--accent);
       background: var(--card); color: var(--fg); cursor: pointer; text-decoration: none; }
-button.small { font: inherit; font-size: .9rem; padding: .3rem .7rem; border-radius: 10px;
+button.small, a.small { text-decoration: none; display: inline-block; font: inherit; font-size: .9rem; padding: .3rem .7rem; border-radius: 10px;
       border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
 input.code { font: inherit; font-size: 2rem; letter-spacing: .4em; text-align: center; width: 100%;
       padding: .6rem; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--fg); }
@@ -56,6 +56,16 @@ textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .7rem; b
                border: 2px solid var(--line); background: var(--card); color: var(--fg); }
 .msg { padding: .8rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
 .msg.bad { border-color: var(--warn); }
+.msg.good { border-color: var(--ok); }
+label.f { display: block; margin: .8rem 0 .25rem; font-weight: 600; }
+input.f, select.f { font: inherit; width: 100%; padding: .6rem .7rem; border-radius: 12px; border: 2px solid var(--line);
+      background: var(--card); color: var(--fg); }
+.check { display: flex; gap: .5rem; align-items: center; margin: .6rem 0; font-size: 1rem; }
+.check input { width: 1.4rem; height: 1.4rem; }
+.days { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+.readback { font-size: 1.2rem; font-weight: 600; }
+ul.plain li form { margin-left: auto; }
+ul.plain li .what { flex: 1; }
 """
 
 
@@ -71,8 +81,8 @@ def layout(title: str, body: str, nav: str = "") -> str:
 
 
 def menu(here: str, account) -> str:
-    items = [("/", "Hoy")] + ([("/hablar", "Hablar")] if account.role == "person" else []) + \
-        [("/dispositivos", "Dispositivos")]
+    mine = [("/hablar", "Hablar"), ("/calendario", "Calendario"), ("/compra", "La compra"), ("/sabe", "Sobre mí")]
+    items = [("/", "Hoy")] + (mine if account.role == "person" else []) + [("/dispositivos", "Dispositivos")]
     links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}">{e(label)}</a>' for href, label in items)
     return (f'<nav aria-label="Menú">{links}<form method="post" action="/salir">'
             f'<button type="submit">Salir</button></form></nav>')
@@ -176,8 +186,9 @@ def devices(account, rows: list[dict]) -> str:
                   menu("/dispositivos", account))
 
 
-def message(title: str, text: str) -> str:
-    return layout(f"Pepe — {title}", f"<h1>{e(title)}</h1><p class='msg'>{e(text)}</p><p><a href='/'>Volver</a></p>")
+def message(title: str, text: str, back: str = "/") -> str:
+    return layout(f"Pepe — {title}",
+                  f"<h1>{e(title)}</h1><p class='msg'>{e(text)}</p><p><a href='{e(back)}'>Volver</a></p>")
 
 
 # --- talking -----------------------------------------------------------------------------------
@@ -213,3 +224,199 @@ la compra, lo que sabe de usted) no se borra.</p>
 <form method="post" action="/hablar/borrar"><button class="big" type="submit">Sí, borrar</button></form>
 <a class="big" href="/hablar">No, volver</a>
 """, menu("/hablar", account))
+
+
+# --- calendar, shopping list, what Pepe knows (W3) ----------------------------------------------
+
+DONE = {"apuntado": "Hecho. Pepe lo recordará en voz alta cuando toque.", "quitado": "Hecho, quitado.",
+        "olvidado": "Hecho. Pepe lo ha olvidado.", "anulado": "No se ha cambiado nada."}
+
+
+def _notice(note: str, bad: bool = False, good: bool = False) -> str:
+    if not note:
+        return ""
+    return f'<p class="msg{" bad" if bad else " good" if good else ""}" role="status">{e(note)}</p>'
+
+
+def _who_tag(shared: bool) -> str:
+    return '<span class="tag">los dos</span>' if shared else ""
+
+
+def _post_button(action: str, field: str, value, label: str) -> str:
+    return (f'<form method="post" action="{action}"><input type="hidden" name="{field}" value="{e(value)}">'
+            f'<button class="small" type="submit">{e(label)}</button></form>')
+
+
+def calendar(account, cal: dict, note: str = "", bad: bool = False) -> str:
+    parts = [f"<h1>Calendario</h1>{_notice(note, bad, good=not bad)}"]
+    if not cal["clock_ok"]:
+        parts.append(_notice("La hora de Pepe no es fiable ahora mismo: se puede mirar, pero no cambiar.", bad=True))
+    appts = "".join(
+        f'<li><span class="what"><b>{e(a["title"])}</b><br><span class="muted">{e(a["when"])}'
+        f'{" — " + e(a["where"]) if a["where"] else ""}</span></span>{_who_tag(a["shared"])}'
+        f'<a class="small" href="/calendario/cita?id={a["id"]}">Cambiar</a></li>' for a in cal["appointments"])
+    parts.append("<h2>Citas</h2>" + (f'<div class="card"><ul class="plain">{appts}</ul></div>' if appts else
+                                      '<p class="muted">No hay citas apuntadas.</p>')
+                 + '<a class="big" href="/calendario/nueva-cita">Apuntar una cita</a>')
+    rems = "".join(
+        f'<li><span class="what">{e(r["text"])}<br><span class="muted">{e(r["when"])}</span></span>'
+        f'{_who_tag(r["shared"])}{_post_button("/calendario/recordatorio/quitar", "id", r["id"], "Quitar")}</li>'
+        for r in cal["reminders"])
+    parts.append("<h2>Recordatorios</h2>" + (f'<div class="card"><ul class="plain">{rems}</ul></div>' if rems else
+                                              '<p class="muted">No hay recordatorios.</p>')
+                 + '<a class="big" href="/calendario/nuevo-recordatorio">Apuntar un recordatorio</a>')
+    bdays = "".join(
+        f'<li><span class="what">{e(b["name"])}{" (" + e(b["relation"]) + ")" if b["relation"] else ""}'
+        f'<br><span class="muted">{e(b["when"])}</span></span>{_who_tag(b["shared"])}'
+        f'{_post_button("/calendario/cumple/quitar", "id", b["id"], "Quitar")}</li>' for b in cal["birthdays"])
+    parts.append("<h2>Cumpleaños</h2>" + (f'<div class="card"><ul class="plain">{bdays}</ul></div>' if bdays else
+                                           '<p class="muted">No hay cumpleaños apuntados.</p>')
+                 + '<a class="big" href="/calendario/nuevo-cumple">Apuntar un cumpleaños</a>')
+    parts.append('<p class="muted">Lo que se apunta aquí, Pepe lo recuerda en voz alta, y lo que se le dice a Pepe '
+                 "aparece aquí. Las medicinas solo se cambian hablando con Pepe.</p>")
+    return layout("Pepe — Calendario", "".join(parts), menu("/calendario", account))
+
+
+def _shared_box(checked: bool = False) -> str:
+    return (f'<label class="check"><input type="checkbox" name="shared" value="1"{" checked" if checked else ""}> '
+            "Para los dos (también para la otra persona de casa)</label>")
+
+
+def _date_time(f: dict, today: str) -> str:
+    return (f'<label class="f" for="day">Día</label><input class="f" type="date" id="day" name="day" min="{e(today)}" '
+            f'value="{e(f.get("day", ""))}" required>'
+            f'<label class="f" for="time">Hora</label><input class="f" type="time" id="time" name="time" '
+            f'value="{e(f.get("time", ""))}" required>')
+
+
+def new_appointment(account, today: str, f: dict | None = None, note: str = "") -> str:
+    f = f or {}
+    return layout("Pepe — Nueva cita", f"""
+<h1>Apuntar una cita</h1>{_notice(note, bad=True)}
+<form method="post" action="/calendario/nueva-cita">
+<label class="f" for="title">¿Qué es?</label>
+<input class="f" id="title" name="title" maxlength="120" placeholder="Médico de cabecera" value="{e(f.get('title', ''))}"
+ required>
+{_date_time(f, today)}
+<label class="f" for="where">¿Dónde? (si quiere)</label>
+<input class="f" id="where" name="where" maxlength="120" value="{e(f.get('where', ''))}">
+{_shared_box(bool(f.get('shared')))}
+<button class="big" type="submit">Seguir</button>
+</form>
+<p class="muted">Antes de guardarla, verá cómo queda para confirmarla.</p>
+<a href="/calendario">Volver</a>""", menu("/calendario", account))
+
+
+def change_appointment(account, a: dict, today: str, note: str = "") -> str:
+    return layout("Pepe — Cambiar cita", f"""
+<h1>{e(a['title'])}</h1>{_notice(note, bad=True)}
+<p>Ahora: {e(a['when'])}{' — ' + e(a['where']) if a['where'] else ''}.</p>
+<h2>Cambiar el día o la hora</h2>
+<form method="post" action="/calendario/cita"><input type="hidden" name="id" value="{a['id']}">
+{_date_time({'day': a['day'], 'time': a['time']}, today)}
+<button class="big" type="submit">Seguir</button></form>
+<h2>Anular la cita</h2>
+<form method="post" action="/calendario/cita/anular"><input type="hidden" name="id" value="{a['id']}">
+<button class="big" type="submit">Anular esta cita</button></form>
+<a href="/calendario">Volver</a>""", menu("/calendario", account))
+
+
+def new_reminder(account, today: str, f: dict | None = None, note: str = "") -> str:
+    from kore.brain.fallback import WEEKDAYS
+    f = f or {}
+    how = f.get("how", "")
+    codes = ["MON", "TUE", "WED", "THU", "FRI", "SAT", "SUN"]
+    days = "".join(f'<label class="check"><input type="checkbox" name="d_{c}" value="1"'
+                   f'{" checked" if f.get("d_" + c) else ""}> {e(WEEKDAYS[i])}</label>' for i, c in enumerate(codes))
+
+    def radio(value, label):
+        return (f'<label class="check"><input type="radio" name="how" value="{value}"'
+                f'{" checked" if how == value else ""} required> {label}</label>')
+    return layout("Pepe — Nuevo recordatorio", f"""
+<h1>Apuntar un recordatorio</h1>{_notice(note, bad=True)}
+<form method="post" action="/calendario/nuevo-recordatorio">
+<label class="f" for="text">¿Qué le recuerda Pepe?</label>
+<input class="f" id="text" name="text" maxlength="120" placeholder="Sacar la basura" value="{e(f.get('text', ''))}" required>
+<label class="f" for="time">¿A qué hora?</label>
+<input class="f" type="time" id="time" name="time" value="{e(f.get('time', ''))}" required>
+<p class="f"><b>¿Cuándo?</b></p>
+{radio('once', 'Un solo día:')}
+<input class="f" type="date" name="day" min="{e(today)}" value="{e(f.get('day', ''))}" aria-label="Día">
+{radio('daily', 'Todos los días')}
+{radio('weekly', 'Algunos días de la semana:')}
+<div class="days">{days}</div>
+{_shared_box(bool(f.get('shared')))}
+<button class="big" type="submit">Seguir</button>
+</form>
+<a href="/calendario">Volver</a>""", menu("/calendario", account))
+
+
+def new_birthday(account, f: dict | None = None, note: str = "") -> str:
+    from kore.brain.fallback import MONTHS
+    f = f or {}
+    months = "".join(f'<option value="{i}"{" selected" if f.get("month") == str(i) else ""}>{e(m)}</option>'
+                     for i, m in enumerate(MONTHS, 1))
+    return layout("Pepe — Nuevo cumpleaños", f"""
+<h1>Apuntar un cumpleaños</h1>{_notice(note, bad=True)}
+<form method="post" action="/calendario/nuevo-cumple">
+<label class="f" for="name">¿De quién?</label>
+<input class="f" id="name" name="name" maxlength="60" value="{e(f.get('name', ''))}" required>
+<label class="f" for="relation">¿Quién es para usted? (si quiere)</label>
+<input class="f" id="relation" name="relation" maxlength="40" placeholder="nieta" value="{e(f.get('relation', ''))}">
+<label class="f" for="bday">Día</label>
+<input class="f" type="number" id="bday" name="day" min="1" max="31" inputmode="numeric" value="{e(f.get('day', ''))}"
+ required>
+<label class="f" for="month">Mes</label>
+<select class="f" id="month" name="month" required><option value="">—</option>{months}</select>
+{_shared_box(bool(f.get('shared')))}
+<button class="big" type="submit">Seguir</button>
+</form>
+<a href="/calendario">Volver</a>""", menu("/calendario", account))
+
+
+def confirm(account, proposal, back: str) -> str:
+    return layout("Pepe — ¿Está bien?", f"""
+<h1>¿Está bien así?</h1>
+<div class="card"><p class="readback">{e(proposal.readback)}</p></div>
+<form method="post" action="/confirmar"><input type="hidden" name="id" value="{proposal.id}">
+<button class="big" type="submit">{e(proposal.question)}</button></form>
+<form method="post" action="/confirmar/no"><input type="hidden" name="id" value="{proposal.id}">
+<input type="hidden" name="back" value="{e(back)}">
+<button class="big" type="submit">No, déjalo</button></form>
+<p class="muted">Hasta que diga que sí, no se guarda nada.</p>""", menu(back, account))
+
+
+def shopping(account, items: list[dict], note: str = "", bad: bool = False, removed: dict | None = None) -> str:
+    rows = "".join(f'<li><span class="what">{e(i["item"])}</span>'
+                   f'{_post_button("/compra/quitar", "id", i["id"], "Ya está")}</li>' for i in items)
+    undo = ""
+    if removed:
+        undo = (f'<div class="msg good" role="status">Quitado: {e(removed["item"])}. '
+                f'{_post_button("/compra/volver", "id", removed["id"], "Volver a ponerlo")}</div>')
+    return layout("Pepe — La compra", f"""
+<h1>La compra</h1>{_notice(note, bad)}{undo}
+<p class="muted">La lista de casa, la misma que le dice Pepe.</p>
+{f'<div class="card"><ul class="plain">{rows}</ul></div>' if rows else '<p class="msg">La lista está vacía.</p>'}
+<form method="post" action="/compra/anadir">
+<label class="f" for="item">Añadir a la lista</label>
+<input class="f" id="item" name="item" maxlength="60" placeholder="leche" required>
+<button class="big" type="submit">Añadir</button></form>""", menu("/compra", account))
+
+
+def known(account, notes: list[dict], note: str = "", bad: bool = False) -> str:
+    from kore.web.agenda import NOTE_KINDS
+    rows = "".join(f'<li><span class="what">{e(n["text"])}<br><span class="muted">{e(n["kind"])}</span></span>'
+                   f'{_post_button("/sabe/olvidar", "id", n["id"], "Olvídalo")}</li>' for n in notes)
+    kinds = "".join(f'<option value="{k}">{e(v)}</option>' for k, v in NOTE_KINDS.items())
+    return layout("Pepe — Sobre mí", f"""
+<h1>Lo que Pepe sabe de usted</h1>{_notice(note, bad, good=not bad)}
+<p class="muted">Lo que le ha contado a Pepe y él ha apuntado para otras conversaciones. Solo usted lo ve aquí.
+Sus medicinas y citas están en «Hoy» y en «Calendario».</p>
+{f'<div class="card"><ul class="plain">{rows}</ul></div>' if rows else '<p class="msg">Pepe todavía no tiene nada apuntado sobre usted.</p>'}
+<h2>Contarle algo a Pepe</h2>
+<form method="post" action="/sabe/anadir">
+<label class="f" for="text">Lo que quiere que Pepe sepa</label>
+<input class="f" id="text" name="text" maxlength="300" placeholder="Mi nieta se llama Ana" required>
+<label class="f" for="kind">Qué es</label>
+<select class="f" id="kind" name="kind">{kinds}</select>
+<button class="big" type="submit">Seguir</button></form>""", menu("/sabe", account))

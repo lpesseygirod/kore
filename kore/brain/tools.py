@@ -356,9 +356,31 @@ def _propose_reminder(ctx: Context, args: dict) -> dict:
     store._check_rule(args["rule"])
     time = meds._valid_times([args["time"]])[0]
     first = date.fromisoformat(args["first_day"]) if args.get("first_day") else ctx.clock.now().date()
+    if args["rule"] == "once" and local_at(first, time, ctx.clock.tz) <= ctx.clock.now():
+        raise ValueError("that time has already passed: ask which day they mean")
     readback = f"I'll remind you: '{args['text']}' at {time} ({args['rule']}). Is that right?"
     a = ctx.session.propose("add_reminder", {"person_id": pid, "text": args["text"], "time": time,
                                              "rule": args["rule"], "anchor": first.isoformat()}, readback)
+    return {"ok": True, "action_id": a.id, "say_and_wait": readback}
+
+
+@tool("get_reminders", "The reminders Pepe says (made by voice or on the web page): the speaker's and shared ones.",
+      {"person": PERSON})
+def _get_reminders(ctx: Context, args: dict) -> dict:
+    return {"ok": True, "reminders": store.reminders(ctx.conn, _person_id(ctx, args))}
+
+
+@tool("propose_reminder_stop", "Prepare to stop a reminder ('ya no me recuerdes lo de la basura'). Use the id from "
+      "get_reminders. Needs the person's yes.", {"reminder_id": {"type": "integer"}}, writes=True,
+      required=["reminder_id"])
+def _propose_reminder_stop(ctx: Context, args: dict) -> dict:
+    row = ctx.conn.execute("SELECT * FROM reminders WHERE id = ? AND active = 1", (int(args["reminder_id"]),)).fetchone()
+    if row is None:
+        raise ValueError("no such reminder")
+    if row["person_id"] is not None:
+        ctx.session.require_speaker(row["person_id"])  # someone's own reminder: only they stop it
+    readback = f"I'll stop reminding: '{row['text']}'. Is that right?"
+    a = ctx.session.propose("stop_reminder", {"reminder_id": row["id"]}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
 
@@ -495,8 +517,20 @@ def _exec_go_away(ctx, p):
 
 @executor("add_reminder")
 def _exec_add_reminder(ctx, p):
-    return {"reminder_id": store.add_reminder(ctx.conn, ctx.clock, p["person_id"], p["text"], p["time"], p["rule"],
-                                              date.fromisoformat(p["anchor"]))}
+    anchor = date.fromisoformat(p["anchor"])
+    rid = store.add_reminder(ctx.conn, ctx.clock, p["person_id"], p["text"], p["time"], p["rule"], anchor)
+    now = ctx.clock.now()
+    if p["rule"] != "once" and anchor <= now.date() and local_at(now.date(), p["time"], ctx.clock.tz) <= now:
+        # Today's time has passed: it starts next time, not "now" (the engine's catch-up is for outages).
+        ctx.conn.execute("INSERT OR IGNORE INTO event_log (key, fired_at_utc) VALUES (?, ?)",
+                         (f"rem:{rid}:{now.date()}", utc_iso(now)))
+    return {"reminder_id": rid}
+
+
+@executor("stop_reminder")
+def _exec_stop_reminder(ctx, p):
+    store.stop_reminder(ctx.conn, p["reminder_id"])
+    return {}
 
 
 @tool("confirm_action", "Carry out a proposed action after the person clearly said yes to the read-back. "

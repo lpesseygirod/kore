@@ -273,7 +273,7 @@ class Engine:
         mds = {day.strftime("%m-%d")}
         if day.month == 2 and day.day == 28 and not _is_leap(day.year):
             mds.add("02-29")
-        return [{"name": c["name"], "relation": c["relation"]} for c in self.conn.execute(
+        return [{"name": c["name"], "relation": c["relation"], "for_person": c["for_person"]} for c in self.conn.execute(
             "SELECT * FROM contacts WHERE birthday_reminders = 1 AND birthday_md IN (%s)" % ",".join("?" * len(mds)),
             sorted(mds))]
 
@@ -282,8 +282,9 @@ class Engine:
             return []
         out = []
         for b in self._birthdays_on(now.date()):
-            if self._once(f"birthday:{b['name']}:{now.date()}"):
-                out.append(Event("birthday", 1, self._everyone(), b,
+            only = b.pop("for_person")  # one person's: said to them only, not in front of visitors
+            if self._once(f"birthday:{b['name']}:{now.date()}" + (f":{only}" if only else "")):
+                out.append(Event("birthday", 1, [only] if only else self._everyone(), b, private=only is not None,
                                  expires_at=local_at(now.date() + timedelta(days=1), "00:00", self.clock.tz)))
         return out
 

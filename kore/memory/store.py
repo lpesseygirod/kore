@@ -166,6 +166,10 @@ def forget_note(conn: sqlite3.Connection, person_id: int, note_id: int) -> bool:
     escaped = json.dumps(row["text"], ensure_ascii=False)[1:-1]
     for form in {row["text"], escaped}:
         conn.execute("DELETE FROM tool_log WHERE instr(args, ?) > 0 OR instr(result, ?) > 0", (form, form))
+    # And any read-back on the web page still holding it (pending, cancelled or done).
+    for form in {row["text"], escaped}:
+        conn.execute("UPDATE web_pending SET readback = '', payload = '{}' WHERE person_id = ? AND "
+                     "(instr(readback, ?) > 0 OR instr(payload, ?) > 0)", (person_id, form, form))
     # And any line of their conversation on the web page that holds it.
     conn.execute("DELETE FROM chat WHERE person_id = ? AND instr(lower(text), lower(?)) > 0", (person_id, row["text"]))
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
@@ -275,3 +279,33 @@ def reminder_occurs_on(rule: str, anchor: date, day: date) -> bool:
     if rule.startswith("every:"):
         return (day - anchor).days % int(rule[6:]) == 0
     return False
+
+
+def reminders(conn: sqlite3.Connection, person_id: int | None = None) -> list[dict]:
+    """Active reminders made by voice or on the web: the person's own and the shared ones (all, if no person)."""
+    sql, args = "SELECT * FROM reminders WHERE active = 1", []
+    if person_id is not None:
+        sql += " AND (person_id = ? OR person_id IS NULL)"
+        args.append(person_id)
+    return [{"id": r["id"], "person_id": r["person_id"], "text": r["text"], "time": r["time_hhmm"],
+             "rule": r["rule"], "first_day": r["anchor_date"]}
+            for r in conn.execute(sql + " ORDER BY time_hhmm, id", args).fetchall()]
+
+
+def stop_reminder(conn: sqlite3.Connection, reminder_id: int) -> bool:
+    return conn.execute("UPDATE reminders SET active = 0 WHERE id = ? AND active = 1", (reminder_id,)).rowcount == 1
+
+
+def birthdays(conn: sqlite3.Connection, person_id: int) -> list[dict]:
+    """Birthdays Pepe reminds this person of (theirs and shared), in calendar order."""
+    rows = conn.execute("SELECT id, name, relation, birthday_md, for_person FROM contacts WHERE birthday_md IS NOT NULL "
+                        "AND birthday_reminders = 1 AND (for_person IS NULL OR for_person = ?) ORDER BY birthday_md, id",
+                        (person_id,)).fetchall()
+    return [{"id": r["id"], "name": r["name"], "relation": r["relation"], "md": r["birthday_md"],
+             "for_person": r["for_person"]} for r in rows]
+
+
+def stop_birthday(conn: sqlite3.Connection, contact_id: int) -> bool:
+    """Pepe stops reminding the birthday. The person stays (they may be the help contact)."""
+    return conn.execute("UPDATE contacts SET birthday_reminders = 0 WHERE id = ? AND birthday_reminders = 1",
+                        (contact_id,)).rowcount == 1
