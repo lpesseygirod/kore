@@ -294,7 +294,7 @@ def people(d: dict, note: str = "", confirm: dict | None = None) -> str:
     shared_html = ""
     if shared:
         contacts = "".join(f'<li>{e(c["name"])}{" (" + e(c["relation"]) + ")" if c["relation"] else ""}'
-                           f'{" · Telegram" if c["tg"] else ""}{" · SMS" if c["sms"] else ""}</li>' for c in shared["contacts"])
+                           f'{" · Telegram" if c["tg"] else ""}{" · WhatsApp" if c["wa"] else ""}{" · SMS" if c["sms"] else ""}</li>' for c in shared["contacts"])
         shared_html = (f'<section class="card tint"><h2 style="margin-top:0">Shared by both</h2><div class="label">Family contacts</div>'
                        f'<ul class="plain">{contacts or "<li class=muted>None.</li>"}</ul><div class="label" style="margin-top:1rem">'
                        f'Shopping list</div><p>{e(", ".join(shared["shopping"]) or "Empty")}</p>'
@@ -355,7 +355,7 @@ def settings(d: dict, note: str = "", bad: bool = False) -> str:
     q = d["quiet"]
     contacts = "".join(f'<li><span class="what"><b>{e(c["name"])}</b>{" (" + e(c["relation"]) + ")" if c["relation"] else ""}'
                        f' · for {e(c["for"])}</span><span class="muted">'
-                       f'{" · ".join(x for x in ("Telegram" if c["tg"] else "", "SMS" if c["sms"] else "", "family app" if c["web"] else "") if x) or "not connected"}'
+                       f'{" · ".join(x for x in ("Telegram" if c["tg"] else "", "WhatsApp" if c["wa"] else "", "SMS" if c["sms"] else "", "family app" if c["web"] else "") if x) or "not connected"}'
                        f'{" · gets help alerts" if c["help"] else ""}</span></li>' for c in d["contacts"])
     return _page("Settings", "/console/settings", d["home"], f"""
 <div style="max-width:880px"><h1>Settings</h1>{_notice(note, bad)}

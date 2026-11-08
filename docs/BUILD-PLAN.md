@@ -37,7 +37,7 @@ I went back through this plan as if someone else had written it. These are the r
 ### Cost and complexity (would make it slow or expensive)
 
 11. **I underestimated the Claude cost.** The design rules make a long system prompt, sent with every turn, plus memory and the conversation. ElliQ's users talk to it about 20 times a day, and Pepe also speaks first. Without caching, Claude becomes the biggest cost. **Fix:** prompt caching from day one (section 5).
-12. **WhatsApp Business is heavy for a trial with two people.** It needs Meta business verification, a dedicated number and pre-approved templates. **Fix:** the trial uses a Telegram bot (free, instant, and family can reply, so Pepe can read replies aloud), plus an SMS for "help". WhatsApp comes before selling.
+12. **WhatsApp Business is heavy for a trial with two people.** It needs Meta business verification, a dedicated number and pre-approved templates. **Fix:** the trial uses a Telegram bot (free, instant, and family can reply, so Pepe can read replies aloud), plus an SMS for "help". WhatsApp comes before selling. *(2026-11-08, Lea: "build it, switched off". The WhatsApp channel is built, off until she sets it up; help keeps Telegram and SMS. See docs/PHONE-AND-TV.md 1c.)*
 13. **Supabase isn't needed in v1.** **Fix:** a free heartbeat monitor and an encrypted nightly backup. Supabase comes back when there are many devices.
 
 ### Building it hands-off (your main goal)

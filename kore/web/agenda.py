@@ -402,7 +402,7 @@ def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = N
 
 
 def _send_to_family(conn, clock, person_id: int, pending_row: int, p: dict, links: dict | None) -> str:
-    """Their yes to "Le mando a Ana: «…»". By Telegram if Ana has it (as by voice); a family member who only uses the
+    """Their yes to "Le mando a Ana: «…»". By WhatsApp or Telegram if Ana has it (as by voice); one who only uses the
     family app reads it there, so it is stored as delivered to her page."""
     from kore.family import messages as family_msgs
     from kore.family.service import Family
@@ -411,7 +411,7 @@ def _send_to_family(conn, clock, person_id: int, pending_row: int, p: dict, link
     c = conn.execute("SELECT * FROM contacts WHERE id = ?", (p["contact_id"],)).fetchone()
     if c is None:
         raise Refused("No se ha encontrado a esa persona.")
-    if c["telegram_chat_id"]:
+    if family_msgs.writing_channel(c):
         ctx = tools.Context(conn, clock, _session(conn, person_id), family=Family(conn, clock, links or {}))
         r = tools.EXECUTORS["send_message"](ctx, p)
         return "/mi-familia?hecho=" + ("mandado" if r.get("sent") else "pendiente")

@@ -445,7 +445,8 @@ def shared_people(conn) -> dict | None:
     if not _shared_ok(conn):
         return None
     return {"contacts": [dict(r) for r in conn.execute(
-        "SELECT name, relation, help_contact, telegram_chat_id IS NOT NULL AS tg, phone IS NOT NULL AS sms "
+        "SELECT name, relation, help_contact, telegram_chat_id IS NOT NULL AS tg, phone IS NOT NULL AS sms, "
+        "whatsapp_number IS NOT NULL AS wa "
         "FROM contacts WHERE for_person IS NULL ORDER BY name")], "shopping": store.list_items(conn)}
 
 
@@ -485,10 +486,12 @@ def contacts(conn) -> list[dict]:
     allowed, shared = _day_ok(conn), _shared_ok(conn)
     return [{"name": r["name"], "relation": r["relation"], "for": names.get(r["for_person"], "both"),
              "tg": bool(r["telegram_chat_id"]), "sms": bool(r["phone"]), "help": bool(r["help_contact"]),
+             "wa": bool(r["whatsapp_number"]),
              "web": conn.execute("SELECT 1 FROM web_logins l JOIN web_accounts a ON a.id = l.account_id WHERE "
                                  "a.role = 'family' AND a.contact_id = ? AND l.revoked_at IS NULL",
                                  (r["id"],)).fetchone() is not None}
-            for r in conn.execute("SELECT * FROM contacts WHERE help_contact = 1 OR telegram_chat_id IS NOT NULL OR "
+            for r in conn.execute("SELECT * FROM contacts WHERE help_contact = 1 OR telegram_chat_id IS NOT NULL OR whatsapp_number IS NOT NULL "
+                                  "OR "
                                   "id IN (SELECT contact_id FROM web_accounts WHERE role = 'family') ORDER BY name")
             if (r["for_person"] is None and shared) or r["for_person"] in allowed]
 

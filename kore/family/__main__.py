@@ -6,7 +6,7 @@ never printed. Every command that sends something real needs --yes.
   status                         what is set up, what is missing, what is waiting
   contacts                       the saved family contacts and their links
   add-contact NAME [--relation R] [--help-for PERSON]   e.g. yourself, as a test contact
-  pair --contact ID | --lea      link a Telegram chat with a one-time code (waits up to 10 minutes)
+  pair --contact ID | --lea      link a Telegram chat (or, once set up, a WhatsApp number) with a one-time code
   phone ID +34600111222          the phone number for the SMS in "help"
   test-send ID --yes [--sms]     one test message of each kind to that contact (use your own phone first)
   heartbeat --yes                one ping now
@@ -52,6 +52,7 @@ def main(argv: list[str] | None = None) -> int:
     p = sub.add_parser("test-send")
     p.add_argument("contact", type=int)
     p.add_argument("--sms", action="store_true")
+    p.add_argument("--whatsapp", action="store_true", help="also one by WhatsApp (needs the contact linked there)")
     p.add_argument("--yes", action="store_true")
     for name in ("heartbeat", "backup"):
         sub.add_parser(name).add_argument("--yes", action="store_true")
@@ -85,7 +86,8 @@ def main(argv: list[str] | None = None) -> int:
         if a.cmd == "contacts":
             for c in conn.execute("SELECT * FROM contacts ORDER BY id"):
                 print(f"#{c['id']:<3} {c['name']:12} {c['relation'] or '':10} help={'yes' if c['help_contact'] else 'no':3}"
-                      f" telegram={'linked' if c['telegram_chat_id'] else '-':6} phone={'set' if c['phone'] else '-'}")
+                      f" telegram={'linked' if c['telegram_chat_id'] else '-':6} whatsapp={'linked' if c['whatsapp_number'] else '-':6}"
+                      f" phone={'set' if c['phone'] else '-'}")
             return 0
         if a.cmd == "add-contact":
             pid = None
@@ -109,7 +111,7 @@ def main(argv: list[str] | None = None) -> int:
             print("This sends something real. Add --yes to go ahead.", file=sys.stderr)
             return 2
         if a.cmd == "test-send":
-            return _test_send(conn, clock, fam, a.contact, a.sms)
+            return _test_send(conn, clock, fam, a.contact, a.sms, a.whatsapp)
         if a.cmd == "heartbeat":
             hb = heartbeat.Heartbeat.from_env(clock)
             if not hb.configured:
@@ -139,14 +141,14 @@ def main(argv: list[str] | None = None) -> int:
 def _status(conn, clock, chans) -> int:
     print("Keys in .env (names only):")
     for var in (channels.TELEGRAM_TOKEN_VAR, channels.TWILIO_SID_VAR, channels.TWILIO_TOKEN_VAR,
-                channels.TWILIO_FROM_VAR, heartbeat.URL_VAR):
+                channels.TWILIO_FROM_VAR, channels.WHATSAPP_FROM_VAR, channels.WHATSAPP_TEMPLATE_VAR, heartbeat.URL_VAR):
         print(f"  {var:22} {'set' if os.environ.get(var) else 'missing'}")
     print(f"Lea's chat linked: {'yes' if msgs.get_state(conn, msgs.OPERATOR_CHAT) else 'no'}")
     helpers = conn.execute("SELECT * FROM contacts WHERE help_contact = 1").fetchall()
     if not helpers:
         print("No help contact saved yet (setup asks for one).")
     for c in helpers:
-        missing = [w for w, ok in (("Telegram", c["telegram_chat_id"]), ("phone", c["phone"])) if not ok]
+        missing = [w for w, ok in (("Telegram or WhatsApp", msgs.writing_channel(c)), ("phone", c["phone"])) if not ok]
         print(f"Help contact #{c['id']} {c['name']}: " + ("ready" if not missing else "missing " + ", ".join(missing)))
     for r in conn.execute("SELECT kind, status, count(*) AS n FROM family_out GROUP BY kind, status"):
         print(f"  {r['kind']:12} {r['status']:8} {r['n']}")
@@ -156,16 +158,23 @@ def _status(conn, clock, chans) -> int:
 
 
 def _pair(conn, clock, chans, contact_id) -> int:
-    if "telegram" not in chans:
+    wa = chans.get("whatsapp") if contact_id is not None else None  # Lea's own link stays Telegram
+    if "telegram" not in chans and wa is None:
         print(f"Set {channels.TELEGRAM_TOKEN_VAR} in .env first.", file=sys.stderr)
         return 1
     code = msgs.start_pairing(conn, clock, contact_id)
     who = "you" if contact_id is None else msgs.contact_name(conn, contact_id)
-    print(f"Ask {who} to open the bot in Telegram and send this code: {code}  (valid 30 minutes)")
+    where = " or ".join(w for w, on in (("the bot in Telegram", "telegram" in chans),
+                                        ("Pepe's WhatsApp number", wa is not None)) if on)
+    print(f"Ask {who} to send this code to {where}: {code}  (valid 30 minutes)")
     print("Waiting... (Ctrl-C to stop)")
     deadline = time.time() + 600
     while time.time() < deadline:
-        stats = msgs.poll(conn, clock, chans["telegram"])
+        stats = {"linked": 0}
+        if "telegram" in chans:
+            stats = msgs.poll(conn, clock, chans["telegram"])
+        if wa is not None and not stats["linked"]:
+            stats = msgs.poll_whatsapp(conn, clock, wa)
         if stats["linked"]:
             print("Linked.")
             return 0
@@ -174,7 +183,7 @@ def _pair(conn, clock, chans, contact_id) -> int:
     return 1
 
 
-def _test_send(conn, clock, fam: Family, contact_id: int, sms: bool) -> int:
+def _test_send(conn, clock, fam: Family, contact_id: int, sms: bool, whatsapp: bool = False) -> int:
     name = msgs.contact_name(conn, contact_id)
     if name is None:
         print(f"No contact {contact_id}", file=sys.stderr)
@@ -189,9 +198,16 @@ def _test_send(conn, clock, fam: Family, contact_id: int, sms: bool) -> int:
                ("message", "telegram", tag + "Carmen (con Pepe): Me han encantado las fotos.")]
     if sms:
         samples.append(("help", "sms", tag + "AYUDA: Carmen ha pedido ayuda a Pepe a las 10:42. Llama en cuanto puedas."))
+    if whatsapp:
+        samples.append(("message", "whatsapp", tag + "Carmen (con Pepe): Me han encantado las fotos."))
     ids = [msgs.queue(conn, clock, "test", ch, text, contact_id) for _, ch, text in samples]
     for a, (kind, ch, _) in zip(msgs.deliver(conn, clock, fam.channels, ids), samples):
         print(f"  {kind:12} {ch:8} {'sent' if a.ok else 'NOT sent: ' + str(a.error)}")
+    if whatsapp and "whatsapp" in fam.channels:
+        time.sleep(8)  # Twilio accepts first and may fail it a few seconds later
+        late = msgs.check_whatsapp(conn, clock, fam.channels["whatsapp"])
+        print("  whatsapp: " + ("NOT delivered (no WhatsApp on that number, or the template isn't approved)"
+                                if late else "no failure reported so far"))
     return 0
 
 

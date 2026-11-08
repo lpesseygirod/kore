@@ -49,6 +49,51 @@ can be added as one more without touching the rest. The ways to do it:
 For help alerts, reliability comes first: keep Telegram and SMS as the help path even if WhatsApp is added, since a
 WhatsApp template or account problem must never stop "Pepe, ayuda".
 
+### Decided and built (Lea, 2026-11-08: "Build it, switched off")
+
+Built in `kore/family/channels.py` (`TwilioWhatsApp`) and `kore/family/messages.py`, tested with fake accounts
+(`tests/test_whatsapp.py`). **Off** until Lea sets `TWILIO_WHATSAPP_FROM` and `TWILIO_WHATSAPP_TEMPLATE`: nothing
+changes for the trial before that.
+
+- **Through Twilio, not Meta directly.** Meta's own service delivers the family's replies only to a web address
+  reachable from the internet, and the box stays on the home Wi-Fi (WEB-PLAN decision 1). Twilio keeps the replies
+  and the box asks for them every few seconds, as it does with Telegram. It is also the account the SMS already uses.
+- **Linking:** a family member sends the usual pairing code (`python -m kore.family pair --contact N`) to Pepe's
+  WhatsApp number. That message is also their agreement to get messages there, which Meta requires.
+- **Once linked:** Pepe's messages to that person (the ones Carmen and Antonio dictate, and the missed-medicine
+  alerts they agreed to) go by WhatsApp instead of Telegram. Their replies are kept and read like Telegram ones.
+- **Help goes every way they have:** Telegram, WhatsApp and SMS. If WhatsApp is down, help still goes by the other two.
+- **Within 24 hours of their last message:** plain text. **After that:** WhatsApp only takes the approved template,
+  with the message as its one variable.
+- **Failures after acceptance:** Twilio can accept a message and fail it seconds later, for example when the number
+  has no WhatsApp or the template was rejected. The box checks for the next 6 hours.
+  - A message or alert that didn't arrive goes again by Telegram when the person has it.
+  - If nothing got through in the end, it is said out loud as "no se ha podido enviar", including a call for help
+    that seemed sent by WhatsApp alone. Lea gets a note.
+  - "Al final sí se ha enviado" is said only once WhatsApp confirms it arrived.
+- **Not by WhatsApp:**
+  - Photos: Twilio needs them at a public web address, and the box has none. Photos keep going through the family
+    app and Telegram.
+  - Lea's own device messages and backups stay on Telegram.
+
+**Lea's steps, when she wants it on (paid; real messages to real people):**
+1. Twilio console → Messaging → Senders → WhatsApp senders: register a sender. This connects a Meta business account
+   ("Meta Business Portfolio"; Meta may ask to verify the business). It needs a phone number not already on WhatsApp;
+   a Twilio number works.
+2. Twilio → Content Template Builder: a template in Spanish, category **Utility**, with one variable. Suggested body:
+   `Mensaje de Pepe, el asistente de casa de Carmen y Antonio: {{1}}`. Submit it for WhatsApp approval, which usually
+   takes minutes to a day. Meta may class it as marketing, which is dearer; if so, tell me and I'll split it into
+   separate templates (help, medicine, messages).
+3. Type in `.env`: `TWILIO_WHATSAPP_FROM=+34…` (the sender) and `TWILIO_WHATSAPP_TEMPLATE=HX…` (the template's id).
+4. Link yourself first, as a test contact:
+   `uv run --env-file .env python -m kore.family --db data/test-family.db pair --contact 1`, then send the code to
+   Pepe's WhatsApp number from your phone.
+5. Check: `uv run --env-file .env python -m kore.family --db data/test-family.db test-send 1 --yes --whatsapp`.
+   It says whether WhatsApp failed the message afterwards.
+
+Cost: Twilio's fee per WhatsApp message plus Meta's charge per template message (a few cents in Spain; check
+Meta's current price list). Plain replies within 24 hours have no Meta charge. A home sends a handful a day, so a few euros a month.
+
 ## 2. The TV
 
 | Way | What Pepe could know | Privacy and cost | Recommendation |
@@ -67,5 +112,4 @@ WhatsApp template or account problem must never stop "Pepe, ayuda".
 2. "Llama a…" from the web page with a call button, and Pepe noting the calls it starts: OK? (Free, no app.)
 3. Family photos: shared on purpose (family app → Carmen's Fotos), not by searching their phone: OK?
 4. TV: what TV and decoder do they have? And may Pepe look things up on the internet (the TV guide)?
-5. WhatsApp: add Meta's WhatsApp Business service as a message channel (a number for the box, a few cents per
-   message), keeping Telegram and SMS for help? Now, after the trial, or not?
+5. ~~WhatsApp~~ Decided 2026-11-08: built, switched off (section 1c). Your steps are there when you want it on.

@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 11
+SCHEMA_VERSION = 12
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -91,7 +91,8 @@ CREATE TABLE IF NOT EXISTS contacts (
     for_person INTEGER REFERENCES people(id),
     created_at TEXT NOT NULL,
     telegram_chat_id TEXT,            -- linked by pairing (python -m kore.family pair)
-    phone TEXT                        -- for the SMS in "help", E.164 (+34...)
+    phone TEXT,                       -- for the SMS in "help", E.164 (+34...)
+    whatsapp_number TEXT              -- linked by pairing on WhatsApp (they wrote the code to the box), +34...
 );
 
 CREATE TABLE IF NOT EXISTS reminders (
@@ -263,7 +264,7 @@ CREATE TABLE IF NOT EXISTS family_out (
     created_at_utc TEXT NOT NULL,
     kind TEXT NOT NULL,               -- help | missed_meds | stop_request | message | test | operator
     contact_id INTEGER REFERENCES contacts(id),   -- NULL: to Lea (the operator)
-    channel TEXT NOT NULL CHECK (channel IN ('telegram', 'sms')),
+    channel TEXT NOT NULL CHECK (channel IN ('telegram', 'sms', 'whatsapp')),
     text TEXT NOT NULL,
     from_person INTEGER REFERENCES people(id),    -- who asked for it, to tell them how it went
     status TEXT NOT NULL CHECK (status IN ('pending', 'sent', 'failed')),
@@ -273,7 +274,9 @@ CREATE TABLE IF NOT EXISTS family_out (
     sent_at_utc TEXT,
     error TEXT,
     group_id INTEGER,                 -- one request (a call for help goes by Telegram and SMS)
-    told INTEGER NOT NULL DEFAULT 0   -- 0 nothing to tell, 1 they heard "not yet", 2 settled
+    told INTEGER NOT NULL DEFAULT 0,  -- 0 nothing to tell, 1 they heard "not yet", 2 settled,
+                                      -- 3 they heard "sent" but WhatsApp failed it after: say it only if all fails
+    provider_ref TEXT                 -- WhatsApp: Twilio's id while it can still fail after being accepted
 );
 CREATE INDEX IF NOT EXISTS family_out_pending ON family_out(status) WHERE status = 'pending';
 
@@ -471,22 +474,59 @@ def connect(path: str | Path = ":memory:", shared: bool = False) -> sqlite3.Conn
     return conn
 
 
+V11_FAMILY_OUT = ("id, created_at_utc, kind, contact_id, channel, text, from_person, status, attempts, next_try_utc, "
+                  "expires_at_utc, sent_at_utc, error, group_id, told")
+
+
+def _cols(conn: sqlite3.Connection, table: str) -> set[str]:
+    return {r["name"] for r in conn.execute(f"PRAGMA table_info({table})")}
+
+
+def _family_out_takes_whatsapp(conn: sqlite3.Connection) -> bool:
+    return "'whatsapp'" in conn.execute("SELECT sql FROM sqlite_master WHERE name = 'family_out'").fetchone()["sql"]
+
+
+def _needs_migration(conn: sqlite3.Connection) -> bool:
+    return not ("spoken" in _cols(conn, "reminder_attempts")
+                and {"help_contact", "telegram_chat_id", "whatsapp_number"} <= _cols(conn, "contacts")
+                and "contact_id" in _cols(conn, "web_codes") and "photo_id" in _cols(conn, "chat")
+                and _family_out_takes_whatsapp(conn))
+
+
 def _migrate(conn: sqlite3.Connection) -> None:
-    """Columns added after a table existed (CREATE IF NOT EXISTS doesn't add them)."""
-    cols = {r["name"] for r in conn.execute("PRAGMA table_info(reminder_attempts)")}
-    if "spoken" not in cols:
-        conn.execute("ALTER TABLE reminder_attempts ADD COLUMN spoken INTEGER NOT NULL DEFAULT 0")
-    cols = {r["name"] for r in conn.execute("PRAGMA table_info(contacts)")}
-    if "help_contact" not in cols:
-        conn.execute("ALTER TABLE contacts ADD COLUMN help_contact INTEGER NOT NULL DEFAULT 0")
-        conn.execute("ALTER TABLE contacts ADD COLUMN for_person INTEGER REFERENCES people(id)")
-    if "telegram_chat_id" not in cols:
-        conn.execute("ALTER TABLE contacts ADD COLUMN telegram_chat_id TEXT")
-        conn.execute("ALTER TABLE contacts ADD COLUMN phone TEXT")
-    if "contact_id" not in {r["name"] for r in conn.execute("PRAGMA table_info(web_codes)")}:
-        conn.execute("ALTER TABLE web_codes ADD COLUMN contact_id INTEGER REFERENCES contacts(id)")
-    if "photo_id" not in {r["name"] for r in conn.execute("PRAGMA table_info(chat)")}:
-        conn.execute("ALTER TABLE chat ADD COLUMN photo_id INTEGER REFERENCES photos(id)")
+    """Columns added after a table existed (CREATE IF NOT EXISTS doesn't add them). In one write transaction,
+    checked again inside it: the voice loop and the web server may open an old file at the same moment."""
+    if not _needs_migration(conn):
+        return
+    conn.execute("BEGIN IMMEDIATE")
+    try:
+        if "spoken" not in _cols(conn, "reminder_attempts"):
+            conn.execute("ALTER TABLE reminder_attempts ADD COLUMN spoken INTEGER NOT NULL DEFAULT 0")
+        cols = _cols(conn, "contacts")
+        if "help_contact" not in cols:
+            conn.execute("ALTER TABLE contacts ADD COLUMN help_contact INTEGER NOT NULL DEFAULT 0")
+            conn.execute("ALTER TABLE contacts ADD COLUMN for_person INTEGER REFERENCES people(id)")
+        if "telegram_chat_id" not in cols:
+            conn.execute("ALTER TABLE contacts ADD COLUMN telegram_chat_id TEXT")
+            conn.execute("ALTER TABLE contacts ADD COLUMN phone TEXT")
+        if "whatsapp_number" not in cols:
+            conn.execute("ALTER TABLE contacts ADD COLUMN whatsapp_number TEXT")
+        if "contact_id" not in _cols(conn, "web_codes"):
+            conn.execute("ALTER TABLE web_codes ADD COLUMN contact_id INTEGER REFERENCES contacts(id)")
+        if "photo_id" not in _cols(conn, "chat"):
+            conn.execute("ALTER TABLE chat ADD COLUMN photo_id INTEGER REFERENCES photos(id)")
+        if not _family_out_takes_whatsapp(conn):  # SQLite can't change a CHECK: copy the table over
+            new = SCHEMA[SCHEMA.index("CREATE TABLE IF NOT EXISTS family_out ("):]
+            new = new[:new.index(");") + 2].replace("IF NOT EXISTS family_out (", "family_out_v12 (")
+            conn.execute(new)
+            conn.execute(f"INSERT INTO family_out_v12 ({V11_FAMILY_OUT}) SELECT {V11_FAMILY_OUT} FROM family_out")
+            conn.execute("DROP TABLE family_out")  # nothing points at it
+            conn.execute("ALTER TABLE family_out_v12 RENAME TO family_out")
+            conn.execute("CREATE INDEX IF NOT EXISTS family_out_pending ON family_out(status) WHERE status = 'pending'")
+        conn.execute("COMMIT")
+    except BaseException:
+        conn.execute("ROLLBACK")
+        raise
 
 
 def utc_iso(dt: datetime) -> str:

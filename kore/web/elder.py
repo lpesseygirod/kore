@@ -152,11 +152,11 @@ def next_up(conn, clock: Clock, person_id: int) -> dict | None:
 
 def contacts(conn, person_id: int) -> list[dict]:
     rows = conn.execute("SELECT * FROM contacts WHERE (for_person IS NULL OR for_person = ?) AND "
-                        "(phone IS NOT NULL OR telegram_chat_id IS NOT NULL OR help_contact = 1 OR id IN "
+                        "(phone IS NOT NULL OR telegram_chat_id IS NOT NULL OR whatsapp_number IS NOT NULL OR help_contact = 1 OR id IN "
                         "(SELECT contact_id FROM web_accounts WHERE role = 'family')) ORDER BY name",
                         (person_id,)).fetchall()
     return [{"id": r["id"], "name": r["name"], "relation": r["relation"], "phone": _tel(r["phone"]),
-             "can_write": bool(r["telegram_chat_id"]) or _has_web(conn, r["id"])} for r in rows]
+             "can_write": bool(family_msgs.writing_channel(r)) or _has_web(conn, r["id"])} for r in rows]
 
 
 def _tel(phone: str | None) -> str | None:
@@ -190,7 +190,7 @@ def propose_reply(conn, clock: Clock, person_id: int, contact_id: int, text: str
     words = agenda.clean(text, tools.MAX_MESSAGE)
     if not words:
         raise agenda.Refused("Escribe el mensaje.")
-    if not row["telegram_chat_id"] and not _has_web(conn, contact_id):
+    if not family_msgs.writing_channel(row) and not _has_web(conn, contact_id):
         raise agenda.Refused(f"Todavía no se pueden mandar mensajes a {row['name']}: la familia tiene que "
                              "conectarse primero.")
     return agenda._save(conn, clock, person_id, "send_message",
@@ -202,7 +202,7 @@ def propose_reply(conn, clock: Clock, person_id: int, contact_id: int, text: str
 
 
 def help_names(conn, person_id: int) -> list[str]:
-    return [c["name"] for c in family_msgs.help_contacts(conn, [person_id]) if c["telegram_chat_id"] or c["phone"]]
+    return [c["name"] for c in family_msgs.help_contacts(conn, [person_id]) if family_msgs.help_ways(c)]
 
 
 def ask_for_help(conn, clock: Clock, person_id: int, links: dict | None) -> str:

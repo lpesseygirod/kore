@@ -1060,7 +1060,7 @@ def _propose_message(ctx: Context, args: dict) -> dict:
     if not text or len(text) > MAX_MESSAGE:
         raise ValueError("a short message, please")
     c = _find_contact(ctx, args["to"])
-    if not c["telegram_chat_id"]:
+    if not family_msgs.writing_channel(c):
         return {"ok": False, "error": "no_link", "say": f"Say kindly you can't send messages to {c['name']} yet: "
                 f"the family needs to set that up first."}
     readback = f"Le mando a {c['name']}: «{text}». ¿Lo envío?"

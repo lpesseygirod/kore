@@ -4,11 +4,11 @@ Plain code, no Claude (BUILD-PLAN 0b.2): who is contacted, when, and what is
 said out loud about it. Claude only keeps them company afterwards.
 
 - Help (the phrase, a fall, the button): if they agreed to the emergency path at
-  setup, their help contacts get a message at once, by Telegram and SMS. If not,
+  setup, their help contacts get a message at once, every way they have (Telegram, WhatsApp, SMS). If not,
   Pepe asks first ("¿Aviso ahora a Lucía?") and a clear yes sends it.
   If nothing could be sent, Pepe says so straight away and points them to their
   phone or their teleasistencia button (0b.7); it keeps trying, and says when it got through.
-- Missed medicine: only if they agreed; Telegram only, no details beyond the fact.
+- Missed medicine: only if they agreed; by WhatsApp or Telegram, no details beyond the fact.
 - Lea (the operator) gets only device messages.
 
 Spoken lines avoid tú and usted, like the other fixed phrases.
@@ -76,7 +76,8 @@ class Family:
         reachable = self._reachable(msgs.help_contacts(self.conn, people))
         if not reachable:
             msgs.queue(self.conn, self.clock, "operator", "telegram",
-                       "Pepe: alguien ha pedido ayuda y no hay ningún contacto de ayuda con Telegram o teléfono. "
+                       "Pepe: alguien ha pedido ayuda y no hay ningún contacto de ayuda con Telegram, WhatsApp "
+                       "o teléfono. "
                        "Revisa: uv run python -m kore.family status")
             msgs.deliver(self.conn, self.clock, self.channels)
             return HelpOutcome(NO_ONE, none=True)
@@ -115,11 +116,10 @@ class Family:
         group = None
         ids = []
         for c in contacts:
-            for channel, addr in (("telegram", c["telegram_chat_id"]), ("sms", c["phone"])):
-                if addr:
-                    i = msgs.queue(self.conn, self.clock, "help", channel, text, c["id"], from_person, group)
-                    group = group or i
-                    ids.append(i)
+            for channel in msgs.help_ways(c, self.channels):
+                i = msgs.queue(self.conn, self.clock, "help", channel, text, c["id"], from_person, group)
+                group = group or i
+                ids.append(i)
         attempts = msgs.deliver(self.conn, self.clock, self.channels, ids)
         sent = sorted({a.contact for a in attempts if a.ok and a.contact})
         msgs.told(self.conn, group, settled=bool(sent))
@@ -159,14 +159,16 @@ class Family:
 
     @staticmethod
     def _reachable(contacts: list[sqlite3.Row]) -> list[sqlite3.Row]:
-        return [c for c in contacts if c["telegram_chat_id"] or c["phone"]]
+        return [c for c in contacts if msgs.help_ways(c)]
 
     # --- messages they ask for -------------------------------------------------------------
 
     def send_message(self, contact_id: int, text: str, from_person: int) -> dict:
         """A message they dictated, after their clear yes. Sent now if possible, else kept and retried."""
         body = f"{self._call_name(from_person)} (con Pepe): {text}"
-        i = msgs.queue(self.conn, self.clock, "message", "telegram", body, contact_id, from_person)
+        c = self.conn.execute("SELECT * FROM contacts WHERE id = ?", (contact_id,)).fetchone()
+        channel = (msgs.writing_channel(c, self.channels) if c else None) or "telegram"
+        i = msgs.queue(self.conn, self.clock, "message", channel, body, contact_id, from_person)
         ok = any(a.ok for a in msgs.deliver(self.conn, self.clock, self.channels, [i]))
         msgs.told(self.conn, i, settled=ok)
         name = msgs.contact_name(self.conn, contact_id)
@@ -178,7 +180,7 @@ class Family:
     # --- alerts agreed at setup ---------------------------------------------------------------
 
     def missed_meds(self, person_id: int, missed_in_a_row: int) -> list[int]:
-        """Tell their help contacts (Telegram) that doses went unanswered. Only called if they agreed."""
+        """Tell their help contacts (WhatsApp or Telegram) that doses went unanswered. Only if they agreed."""
         name = self._call_name(person_id)
         text = (f"Pepe: {name} no ha contestado a los recordatorios de sus últimas {missed_in_a_row} tomas de "
                 f"medicación. {name} aceptó que te avisara en estos casos. Quizá puedas llamar.")
@@ -192,13 +194,14 @@ class Family:
         return self._to_help_contacts("stop_request", person_id, text)
 
     def _to_help_contacts(self, kind: str, person_id: int, text: str) -> list[int]:
-        contacts = [c for c in msgs.help_contacts(self.conn, [person_id]) if c["telegram_chat_id"]]
+        contacts = [c for c in msgs.help_contacts(self.conn, [person_id]) if msgs.writing_channel(c, self.channels)]
         if not contacts:
             ids = [msgs.queue(self.conn, self.clock, "operator", "telegram",
-                              f"Pepe: un aviso a la familia ({kind}) no tiene contacto con Telegram. "
+                              f"Pepe: un aviso a la familia ({kind}) no tiene contacto con Telegram ni WhatsApp. "
                               "Revisa: uv run python -m kore.family status")]
         else:
-            ids = [msgs.queue(self.conn, self.clock, kind, "telegram", text, c["id"]) for c in contacts]
+            ids = [msgs.queue(self.conn, self.clock, kind, msgs.writing_channel(c, self.channels), text, c["id"])
+                   for c in contacts]
         msgs.deliver(self.conn, self.clock, self.channels, ids)
         return ids
 
@@ -219,6 +222,10 @@ class Family:
         tg = self.channels.get("telegram")
         if tg is not None and hasattr(tg, "poll"):
             msgs.poll(self.conn, self.clock, tg)
+        wa = self.channels.get("whatsapp")
+        if wa is not None and hasattr(wa, "received"):
+            msgs.check_whatsapp(self.conn, self.clock, wa)
+            msgs.poll_whatsapp(self.conn, self.clock, wa)
         everyone = [r["id"] for r in self.conn.execute("SELECT id FROM people ORDER BY id")]
         return msgs.follow_ups(self.conn, self.clock, everyone)
 

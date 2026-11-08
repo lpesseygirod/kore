@@ -8,6 +8,12 @@ Messages a person asked for are followed up out loud: "sent after all" or
 In: only messages from a family chat linked by pairing (a one-time code Lea
 gives the family member) are kept; anything else reaching the bot is ignored.
 They are read aloud only when asked, as quoted content.
+
+WhatsApp (off until Lea sets it up): a family member links their number by sending
+the same pairing code to the box's WhatsApp number. That message is also their
+agreement to get messages there (Meta's rule). Once linked, their messages from
+Pepe go by WhatsApp instead of Telegram; a call for help goes by every way they
+have, so it never depends on WhatsApp alone.
 """
 
 from __future__ import annotations
@@ -19,7 +25,7 @@ import sqlite3
 from dataclasses import dataclass
 from datetime import datetime, timedelta, timezone
 
-from kore.family.channels import Channel, Sent
+from kore.family.channels import WHATSAPP_BAD, WHATSAPP_OK, Channel, Sent
 from kore.memory.db import utc_iso
 from kore.scheduler.clock import Clock
 from kore.scheduler.engine import Event
@@ -41,6 +47,9 @@ PHONE = re.compile(r"^\+[1-9]\d{7,14}$")
 
 OPERATOR_CHAT = "operator_chat"   # Lea's own Telegram chat: device messages and backups
 TG_OFFSET = "telegram_offset"
+WA_WINDOW = timedelta(hours=23)   # WhatsApp allows plain text 24 h after they last wrote; keep a margin
+WA_CHECK_FOR = timedelta(hours=6) # how long a WhatsApp message accepted by Twilio is checked for a late failure
+WA_SEEN_KEEP = timedelta(days=3)
 
 
 @dataclass
@@ -80,13 +89,39 @@ def told(conn: sqlite3.Connection, group_id: int, settled: bool) -> None:
     conn.execute("UPDATE family_out SET told = ? WHERE group_id = ?", (2 if settled else 1, group_id))
 
 
+COLUMN = {"telegram": "telegram_chat_id", "sms": "phone", "whatsapp": "whatsapp_number"}
+
+
 def address(conn: sqlite3.Connection, contact_id: int | None, channel: str) -> str | None:
     if contact_id is None:
         return get_state(conn, OPERATOR_CHAT) if channel == "telegram" else None
-    row = conn.execute("SELECT telegram_chat_id, phone FROM contacts WHERE id = ?", (contact_id,)).fetchone()
+    row = conn.execute("SELECT telegram_chat_id, phone, whatsapp_number FROM contacts WHERE id = ?",
+                       (contact_id,)).fetchone()
     if row is None:
         return None
-    return row["telegram_chat_id"] if channel == "telegram" else row["phone"]
+    return row[COLUMN[channel]]
+
+
+def writing_channel(contact: sqlite3.Row, channels: dict | None = None) -> str | None:
+    """How Pepe writes to this family member (not help: help goes every way): WhatsApp once they linked it,
+    else Telegram. With `channels` (what is set up now), WhatsApp only while it is on. None: no way."""
+    wa_on = channels is None or "whatsapp" in channels
+    if contact["whatsapp_number"] and wa_on:
+        return "whatsapp"
+    if contact["telegram_chat_id"]:
+        return "telegram"
+    return "whatsapp" if contact["whatsapp_number"] else None
+
+
+def help_ways(contact: sqlite3.Row, channels: dict | None = None) -> list[str]:
+    """Every way a call for help reaches them (with `channels`: WhatsApp only while it is on)."""
+    return [ch for ch, col in (("telegram", "telegram_chat_id"), ("whatsapp", "whatsapp_number"), ("sms", "phone"))
+            if contact[col] and (ch != "whatsapp" or channels is None or "whatsapp" in channels)]
+
+
+def wa_window_open(conn: sqlite3.Connection, clock: Clock, contact_id: int | None) -> bool:
+    last = get_state(conn, f"wa_last_in:{contact_id}") if contact_id is not None else None
+    return bool(last) and last > utc_iso(_utc(clock.now()) - WA_WINDOW)
 
 
 def deliver(conn: sqlite3.Connection, clock: Clock, channels: dict[str, Channel],
@@ -117,13 +152,16 @@ def deliver(conn: sqlite3.Connection, clock: Clock, channels: dict[str, Channel]
             result = Sent(False, "not_configured")  # Lea may still set it up: keep it until it expires
         else:
             try:
-                result = ch.send(to, r["text"])
+                if r["channel"] == "whatsapp":
+                    result = ch.send(to, r["text"], in_window=wa_window_open(conn, clock, r["contact_id"]))
+                else:
+                    result = ch.send(to, r["text"])
             except Exception:  # one broken channel must never stop the other (help goes by both)
                 result = Sent(False, "channel_error")
         attempts = r["attempts"] + 1
         if result.ok:
-            conn.execute("UPDATE family_out SET status = 'sent', attempts = ?, sent_at_utc = ?, error = NULL "
-                         "WHERE id = ?", (attempts, utc_iso(now), r["id"]))
+            conn.execute("UPDATE family_out SET status = 'sent', attempts = ?, sent_at_utc = ?, error = NULL, "
+                         "provider_ref = ? WHERE id = ?", (attempts, utc_iso(now), result.ref, r["id"]))
         elif result.permanent:
             conn.execute("UPDATE family_out SET status = 'failed', attempts = ?, error = ? WHERE id = ?",
                          (attempts, result.error, r["id"]))
@@ -135,6 +173,47 @@ def deliver(conn: sqlite3.Connection, clock: Clock, channels: dict[str, Channel]
     return out
 
 
+def check_whatsapp(conn: sqlite3.Connection, clock: Clock, channel) -> int:
+    """WhatsApp messages Twilio accepted but that failed afterwards (no WhatsApp on that number, a template
+    problem) are failures after all. A message or alert goes again by Telegram when the contact has it; a request
+    someone heard "sent" about is said "couldn't be sent" if, in the end, nothing of it got through.
+    Returns how many turned out failed."""
+    now = _utc(clock.now())
+    failed = 0
+    for r in conn.execute("SELECT * FROM family_out WHERE channel = 'whatsapp' AND status = 'sent' AND "
+                          "provider_ref IS NOT NULL ORDER BY id").fetchall():
+        st = channel.status(r["provider_ref"])
+        if st is None:
+            break  # Twilio unreachable: try again next time, without waiting on every message
+        if st in WHATSAPP_OK or (st not in WHATSAPP_BAD and (r["sent_at_utc"] or "") < utc_iso(now - WA_CHECK_FOR)):
+            conn.execute("UPDATE family_out SET provider_ref = NULL WHERE id = ?", (r["id"],))
+            continue
+        if st not in WHATSAPP_BAD:
+            continue
+        failed += 1
+        conn.execute("UPDATE family_out SET status = 'failed', error = 'undelivered', provider_ref = NULL "
+                     "WHERE id = ?", (r["id"],))
+        group = r["group_id"]
+        tg = conn.execute("SELECT telegram_chat_id FROM contacts WHERE id = ?", (r["contact_id"],)).fetchone()
+        if r["kind"] in ("message", "missed_meds", "stop_request") and tg and tg["telegram_chat_id"]:
+            i = queue(conn, clock, r["kind"], "telegram", r["text"], r["contact_id"], r["from_person"], group)
+            if r["kind"] != "message":  # an alert: the Telegram copy carries it now (and Lea's note if it fails)
+                conn.execute("UPDATE family_out SET told = 2 WHERE id = ?", (r["id"],))
+                conn.execute("UPDATE family_out SET told = 0 WHERE id = ?", (i,))
+        if r["kind"] in ("help", "message"):
+            rows = conn.execute("SELECT status, told FROM family_out WHERE group_id = ?", (group,)).fetchall()
+            if not any(x["status"] == "sent" for x in rows):
+                # They heard "not yet" (1): follow_ups still settles it. They heard "sent" (2): now say it only
+                # if, in the end, nothing got through (3).
+                state = 1 if any(x["told"] == 1 for x in rows) and r["told"] != 2 else 3
+                conn.execute("UPDATE family_out SET told = ? WHERE group_id = ?", (state, group))
+        if r["kind"] in ("help", "message", "test"):  # failed alerts already reach Lea through follow_ups
+            queue(conn, clock, "operator", "telegram",
+                  f"Pepe: un WhatsApp a {contact_name(conn, r['contact_id']) or 'la familia'} no ha llegado "
+                  "(número sin WhatsApp o plantilla rechazada). Revisa: uv run python -m kore.family status")
+    return failed
+
+
 def follow_ups(conn: sqlite3.Connection, clock: Clock, everyone: list[int]) -> list[Event]:
     """Tell people how a message they asked for (or a call for help) went, after they heard "not yet".
 
@@ -142,11 +221,17 @@ def follow_ups(conn: sqlite3.Connection, clock: Clock, everyone: list[int]) -> l
     every part has failed for good. Family alerts that fail for good become a note to Lea.
     """
     events = []
-    for g in conn.execute("SELECT DISTINCT group_id FROM family_out WHERE told = 1").fetchall():
+    for g in conn.execute("SELECT group_id, max(told) AS told FROM family_out WHERE told IN (1, 3) "
+                          "GROUP BY group_id").fetchall():
         rows = conn.execute("SELECT * FROM family_out WHERE group_id = ?", (g["group_id"],)).fetchall()
         kind, person = rows[0]["kind"], rows[0]["from_person"]
-        sent = sorted({contact_name(conn, r["contact_id"]) or "" for r in rows if r["status"] == "sent"} - {""})
-        if any(r["status"] == "sent" for r in rows):
+        # A WhatsApp message Twilio accepted can still fail for a few hours: it isn't "it went" until it arrived.
+        sure = [r for r in rows if r["status"] == "sent" and not (r["channel"] == "whatsapp" and r["provider_ref"])]
+        sent = sorted({contact_name(conn, r["contact_id"]) or "" for r in sure} - {""})
+        if sure:
+            if g["told"] == 3:  # they heard "sent" already, and it did go
+                told(conn, g["group_id"], settled=True)
+                continue
             ev = f"{kind}_sent_late"
         elif all(r["status"] == "failed" for r in rows):
             ev = f"{kind}_not_sent"
@@ -206,6 +291,53 @@ def poll(conn: sqlite3.Connection, clock: Clock, channel) -> dict:
     return stats
 
 
+def poll_whatsapp(conn: sqlite3.Connection, clock: Clock, channel) -> dict:
+    """Fetch new WhatsApp messages to the box's number. As with Telegram: a pairing code links the number,
+    messages from linked numbers are kept, anything else is ignored."""
+    now = _utc(clock.now())
+    since = (now - timedelta(days=1)).strftime("%Y-%m-%d")
+    incoming, reached = channel.received(since)
+    stats = {"reached": reached, "kept": 0, "linked": 0, "ignored": 0}
+    for m in incoming:
+        if get_state(conn, f"wa_seen:{m.ref}") is not None:
+            continue
+        set_state(conn, f"wa_seen:{m.ref}", utc_iso(now))
+        if not PHONE.match(m.number or ""):
+            stats["ignored"] += 1
+            continue
+        if _pair(conn, clock, m.number, m.text or "", "whatsapp"):
+            stats["linked"] += 1
+            continue
+        row = conn.execute("SELECT id FROM contacts WHERE whatsapp_number = ?", (m.number,)).fetchone()
+        if row is None:
+            stats["ignored"] += 1
+            continue
+        wrote = _sent_at(m.sent_at_utc, now)
+        if wrote > (get_state(conn, f"wa_last_in:{row['id']}") or ""):
+            set_state(conn, f"wa_last_in:{row['id']}", wrote)
+        text = (m.text or "").strip()[:MAX_IN_TEXT] or "[una foto o un audio, que no puedo mostrar]"
+        conn.execute("INSERT INTO family_in (received_at_utc, contact_id, text) VALUES (?, ?, ?)",
+                     (utc_iso(now), row["id"], text))
+        stats["kept"] += 1
+    if reached and clock.trusted():  # a clock that jumped ahead must not forget what was already kept
+        conn.execute("DELETE FROM family_state WHERE key LIKE 'wa_seen:%' AND value < ?",
+                     (utc_iso(now - WA_SEEN_KEEP),))
+    return stats
+
+
+def _sent_at(raw: str, now: datetime) -> str:
+    """When they wrote (Twilio's date, RFC 2822), for WhatsApp's 24 hours; never later than now."""
+    from email.utils import parsedate_to_datetime
+
+    try:
+        when = parsedate_to_datetime(raw)
+        if when.tzinfo is None:
+            raise ValueError
+        return utc_iso(min(_utc(when), now))
+    except (TypeError, ValueError, IndexError):
+        return utc_iso(now)
+
+
 def unread(conn: sqlite3.Connection, person_id: int | None) -> list[sqlite3.Row]:
     """Unread messages for this person: from their own contacts and the home's shared ones.
     With nobody known (two at home), only the shared ones."""
@@ -259,7 +391,8 @@ def start_pairing(conn: sqlite3.Connection, clock: Clock, contact_id: int | None
     return code
 
 
-def _pair(conn: sqlite3.Connection, clock: Clock, chat_id: str, text: str) -> bool:
+def _pair(conn: sqlite3.Connection, clock: Clock, chat_id: str, text: str, channel: str = "telegram") -> bool:
+    """chat_id: the Telegram chat, or the WhatsApp number (+34...)."""
     m = re.fullmatch(r"\s*(?:/start\s+)?(\d{6})\s*", text)
     if not m:
         return False
@@ -275,16 +408,21 @@ def _pair(conn: sqlite3.Connection, clock: Clock, chat_id: str, text: str) -> bo
             conn.execute("DELETE FROM family_state WHERE key LIKE 'pair:%'")
             set_state(conn, "pair_wrong_all", "0")
         return False
-    conn.execute("DELETE FROM family_state WHERE key = ?", (f"pair:{m.group(1)}",))  # one use only
     info = json.loads(raw)
+    if info["contact_id"] is None and channel != "telegram":
+        return False  # Lea's own link (device messages, backups) is Telegram only; the code stays usable there
+    conn.execute("DELETE FROM family_state WHERE key = ?", (f"pair:{m.group(1)}",))  # one use only
     if info["expires"] <= utc_iso(clock.now()):
         return False
     if info["contact_id"] is None:
         set_state(conn, OPERATOR_CHAT, chat_id)
     else:
-        # One chat, one contact: a chat linked before is unlinked from the old one.
-        conn.execute("UPDATE contacts SET telegram_chat_id = NULL WHERE telegram_chat_id = ?", (chat_id,))
-        conn.execute("UPDATE contacts SET telegram_chat_id = ? WHERE id = ?", (chat_id, info["contact_id"]))
+        # One chat (or number), one contact: linked before to another contact, it is unlinked from it.
+        col = COLUMN[channel]
+        conn.execute(f"UPDATE contacts SET {col} = NULL WHERE {col} = ?", (chat_id,))
+        conn.execute(f"UPDATE contacts SET {col} = ? WHERE id = ?", (chat_id, info["contact_id"]))
+        if channel == "whatsapp":
+            set_state(conn, f"wa_last_in:{info['contact_id']}", utc_iso(clock.now()))
     return True
 
 
