@@ -1,7 +1,8 @@
 # KORE — The home web page (plan, phase 6b)
 
-Written 2026-11-07, after Lea's idea and the grandfather's list "PARA LEA". **Status: proposed.** Nothing here is
-built yet. The decisions in section 9 are Lea's. Until she answers them, BUILD-PLAN.md still wins.
+Written 2026-11-07, after Lea's idea and the grandfather's list "PARA LEA". **Status: agreed 2026-11-08** ("use
+your recommendations"). The decisions are recorded in section 9. This page is now part of version 1, and
+BUILD-PLAN.md section 1 points here.
 
 ## 1. The idea in one paragraph
 
@@ -117,7 +118,23 @@ URLs or logs, and a fresh reviewer at the end.
 **Cost.** A chat message costs about the same as a voice turn, without the speech costs. A photo adds roughly
 1,500 input tokens, a fraction of a cent. The software and hosting add nothing while it stays on the home Wi-Fi.
 
-## 9. Lea's decisions (needed before starting)
+## 9. Lea's decisions
+
+**Decided 2026-11-08 (Lea: "use your recommendations"):**
+1. Home Wi-Fi only for the trial. A relay comes later.
+2. A domain of her own for https (Lea buys it, about €12 a year, before the trial). Until then, building and
+   testing on the Mac use plain http on this computer only.
+3. Voice conversations are kept to show on the web only for a person who says yes at setup. Off by default, kept
+   90 days.
+4. Family logins: yes, in step W4, limited to messages and proposals the person confirms. This one had no
+   recommendation; Claude chose it.
+5. The operator view shows status only, no chats or notes unless the person agrees.
+6. The free libraries are accepted: Starlette and Uvicorn (BSD), Pillow (HPND), segno (BSD). Also httpx (BSD), for
+   tests only.
+7. Web search: not decided (it had no recommendation). Not built. Ask Lea when it matters.
+
+The options as they were put to Lea:
+
 
 1. **Where the page can be reached.** Home Wi-Fi only for the trial (recommended), or from anywhere now (a paid
    relay, more security work, a later trial).

@@ -50,6 +50,9 @@ I went back through this plan as if someone else had written it. These are the r
 
 ## 1. What version 1 includes (and what waits)
 
+> **Added 2026-11-08 (Lea agreed):** a private web page for each box, reached on the home Wi-Fi (chat, photos,
+> calendar, the same memory as the voice). The plan is in WEB-PLAN.md. A family app beyond that still waits.
+
 Version 1 is the scope from your plan (section 8 of the Pepe doc), for your grandparents only:
 
 - Talking by voice in one language (the variety they speak at home), with one voice and a fixed wake word, plus the button

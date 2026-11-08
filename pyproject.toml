@@ -3,10 +3,17 @@ name = "kore"
 version = "0.1.0"
 description = "KORE: a voice companion speaker for older people (companion: Pepe)"
 requires-python = ">=3.12"
-dependencies = []
+dependencies = [
+    "segno>=1.6.6",
+    "starlette>=1.10.0",
+    "uvicorn>=0.54.0",
+]
 
 [dependency-groups]
-dev = ["pytest>=8"]
+dev = [
+    "httpx>=0.28.1",
+    "pytest>=8",
+]
 # Only for live API runs (experiments, recording test answers). Apache-2.0 licence.
 live = ["anthropic>=1.0"]
 

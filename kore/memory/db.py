@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 6
+SCHEMA_VERSION = 7
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -292,6 +292,57 @@ CREATE TABLE IF NOT EXISTS family_state (
     value TEXT NOT NULL
 );
 
+-- The home web page (WEB-PLAN.md): who can log in, their logged-in devices, the one-time login codes.
+CREATE TABLE IF NOT EXISTS web_accounts (
+    id INTEGER PRIMARY KEY,
+    role TEXT NOT NULL CHECK (role IN ('person', 'family', 'operator')),
+    person_id INTEGER REFERENCES people(id),     -- role person
+    contact_id INTEGER REFERENCES contacts(id),  -- role family
+    name TEXT NOT NULL,
+    created_at TEXT NOT NULL
+);
+
+CREATE TABLE IF NOT EXISTS web_logins (
+    id INTEGER PRIMARY KEY,
+    account_id INTEGER NOT NULL REFERENCES web_accounts(id),
+    token_hash TEXT NOT NULL UNIQUE,              -- only a hash of the cookie is kept
+    device TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    last_seen_at TEXT NOT NULL,
+    revoked_at TEXT
+);
+
+CREATE TABLE IF NOT EXISTS web_codes (
+    id INTEGER PRIMARY KEY,
+    role TEXT NOT NULL,
+    person_id INTEGER REFERENCES people(id),
+    code_hash TEXT NOT NULL,
+    ticket_hash TEXT,                             -- the browser that asked for it; NULL: any (Lea's, from the box)
+    created_at TEXT NOT NULL,
+    expires_at TEXT NOT NULL,
+    tries INTEGER NOT NULL DEFAULT 0,
+    status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'used', 'burned', 'cancelled'))
+);
+
+-- Login attempts and code requests, by client (a hash of its address), for the limits.
+CREATE TABLE IF NOT EXISTS web_attempts (
+    id INTEGER PRIMARY KEY,
+    kind TEXT NOT NULL CHECK (kind IN ('wrong', 'code')),
+    client TEXT NOT NULL,
+    at_utc TEXT NOT NULL
+);
+
+-- Lines code wants Pepe to say out loud (a login code). The voice loop speaks them, then deletes them;
+-- a login code's line is also deleted once the code is used, burned, cancelled or expired.
+CREATE TABLE IF NOT EXISTS say_queue (
+    id INTEGER PRIMARY KEY,
+    kind TEXT NOT NULL,
+    text TEXT NOT NULL,
+    created_at TEXT NOT NULL,
+    said_at TEXT,
+    code_id INTEGER REFERENCES web_codes(id)
+);
+
 -- Weather and news (phase 6c): the home's place, the feeds, and the last answers fetched.
 CREATE TABLE IF NOT EXISTS info (
     key TEXT PRIMARY KEY,
@@ -301,16 +352,19 @@ CREATE TABLE IF NOT EXISTS info (
 """
 
 
-def connect(path: str | Path = ":memory:") -> sqlite3.Connection:
+def connect(path: str | Path = ":memory:", shared: bool = False) -> sqlite3.Connection:
+    """shared: the connection may be used from several threads (the web server), one at a time (the caller
+    holds a lock)."""
     if path != ":memory:":
         Path(path).parent.mkdir(parents=True, exist_ok=True)
-    conn = sqlite3.connect(str(path), isolation_level=None)  # explicit transactions
+    conn = sqlite3.connect(str(path), isolation_level=None, check_same_thread=not shared)  # explicit transactions
     conn.row_factory = sqlite3.Row
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA secure_delete = ON")
     if path != ":memory:":
         conn.execute("PRAGMA journal_mode = WAL")
     conn.execute("PRAGMA synchronous = FULL")
+    conn.execute("PRAGMA busy_timeout = 5000")  # the voice loop and the web page share the file
     conn.executescript(SCHEMA)
     _migrate(conn)
     conn.execute(f"PRAGMA user_version = {SCHEMA_VERSION}")
