@@ -397,8 +397,11 @@ def test_pending_changes_are_not_backed_up(conn):
 
 def test_menu_shows_the_new_pages(app, conn, home):
     page = log_in(app, conn, home["carmen"]).get("/").text
-    for href in ("/calendario", "/compra", "/sabe"):
+    for href in ("/hablar", "/agenda", "/mi-familia", "/ajustes", "/ayuda"):
         assert f'href="{href}"' in page
+    agenda_page = log_in(app, conn, home["carmen"]).get("/agenda").text
+    for href in ("/calendario", "/compra"):
+        assert f'href="{href}"' in agenda_page
 
 
 @pytest.mark.parametrize("rule, words", [

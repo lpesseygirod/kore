@@ -108,7 +108,8 @@ def test_talkative_person_everything_saved(s):
     s.say("Sí", CONFIRM, s.done("help_contact"))
     for kind, step in (("listening", "listening"), ("presence_sensor", "presence"),
                        ("family_missed_meds", "family_alerts"), ("emergency_path", "emergency"),
-                       ("keep_conversations", "conversation_log")):
+                       ("keep_conversations", "conversation_log"), ("lea_sees_day", "lea_day"),
+                       ("lea_reads_conversations", "lea_chats")):
         s.say("Sí, claro.", yes_to(kind))
         s.say("Sí", CONFIRM, s.done(step))
     s.say("Pepe, ¿qué hora es?", s.done("test"))
@@ -123,7 +124,8 @@ def test_talkative_person_everything_saved(s):
     assert sorted(m["name"] for m in meds.medications(s.conn)) == ["colesterol", "tensión"]
     granted = {k for k in store.CONSENTS if store.has_consent(s.conn, c["id"], k)}
     assert granted == {"conversation_starters", "water_nudges", "health_info", "listening", "presence_sensor",
-                       "family_missed_meds", "emergency_path", "keep_conversations"}
+                       "family_missed_meds", "emergency_path", "keep_conversations", "lea_sees_day",
+                       "lea_reads_conversations"}
     assert store.declined(s.conn, c["id"], "movement_nudges")
     contacts = {r["name"]: r for r in s.conn.execute("SELECT * FROM contacts")}
     assert contacts["Lucía"]["birthday_md"] == "03-14" and contacts["Elena"]["help_contact"] == 1
@@ -150,7 +152,8 @@ def test_short_answers_and_noes(s):
     s.say("No.", s.done("help_contact", skipped=True))
     for kind, step in (("listening", "listening"), ("presence_sensor", "presence"),
                        ("family_missed_meds", "family_alerts"), ("emergency_path", "emergency"),
-                       ("keep_conversations", "conversation_log")):
+                       ("keep_conversations", "conversation_log"), ("lea_sees_day", "lea_day"),
+                       ("lea_reads_conversations", "lea_chats")):
         s.say("No.", ("record_permission_no", {"kind": kind}), s.done(step))
     s.say("Vale.", s.done("test", skipped=True))
     s.say("Vale.", s.done("finish"))
@@ -219,7 +222,7 @@ def test_two_people_each_do_their_own_part(s):
     assert s.session.speaker_id == s.person("Carmen")["id"]  # still Carmen talking
     for step in ("address", "hearing", "wants", "chattiness", "nudges", "quiet_times", "health_info", "medicines",
                  "dates", "help_contact", "listening", "presence", "family_alerts", "emergency", "share",
-                 "conversation_log"):
+                 "conversation_log", "lea_day", "lea_chats"):
         assert s.next()["step"] == step
         s.say("Vale", s.done(step))
     r = s.next()

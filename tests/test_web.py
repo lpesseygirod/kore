@@ -65,10 +65,11 @@ def test_carmen_sees_her_own_day_and_not_tonis(app, conn, clock, home):
     store.add_to_list(conn, clock, ["pan"])
     c = log_in(app, conn, home["carmen"])
     page = c.get("/").text
-    assert "Hola, Carmen" in page and "la pastilla de la tensión" in page and "pan" in page
-    assert "azúcar" not in page
+    assert "Hola, Carmen" in page and "Pastillas de hoy" in page and "pan" in page
+    pills = c.get("/pastillas").text
+    assert "la pastilla de la tensión" in pills and "azúcar" not in page + pills
     toni = log_in(app, conn, home["antonio"])
-    assert "la del azúcar" in toni.get("/").text and "tensión" not in toni.get("/").text
+    assert "la del azúcar" in toni.get("/pastillas").text and "tensión" not in toni.get("/pastillas").text
 
 
 def test_a_code_works_only_in_the_browser_that_asked(app, conn, home):

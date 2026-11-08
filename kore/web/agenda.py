@@ -334,7 +334,7 @@ def cancel(conn, person_id: int, pending_id: int) -> None:
                  (pending_id, person_id))
 
 
-def confirm(conn, clock, person_id: int, pending_id: int) -> str:
+def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = None) -> str:
     """The person pressed "Sí": check again, then do it. Returns where the page goes next.
     Raises Refused (with what to say) if it can't be done."""
     row = _open(conn, clock, person_id, pending_id)
@@ -362,6 +362,8 @@ def confirm(conn, clock, person_id: int, pending_id: int) -> str:
             conn.execute("ROLLBACK")
             raise
         return f"code:{code}:{name}"
+    if kind == "send_message":  # to family: sent (and retried) outside a transaction, like by voice
+        return _send_to_family(conn, clock, person_id, row["id"], p, links)
     ctx = tools.Context(conn, clock, _session(conn, person_id))
     conn.execute("BEGIN IMMEDIATE")
     try:
@@ -383,6 +385,27 @@ def confirm(conn, clock, person_id: int, pending_id: int) -> str:
         raise
     return "/sabe?hecho=apuntado" if kind == "add_note" else "/calendario?hecho=" + (
         "quitado" if kind in ("cancel_appointment", "stop_reminder", "stop_birthday") else "apuntado")
+
+
+def _send_to_family(conn, clock, person_id: int, pending_row: int, p: dict, links: dict | None) -> str:
+    """Their yes to "Le mando a Ana: «…»". By Telegram if Ana has it (as by voice); a family member who only uses the
+    family app reads it there, so it is stored as delivered to her page."""
+    from kore.family import messages as family_msgs
+    from kore.family.service import Family
+
+    conn.execute("UPDATE web_pending SET status = 'done' WHERE id = ?", (pending_row,))
+    c = conn.execute("SELECT * FROM contacts WHERE id = ?", (p["contact_id"],)).fetchone()
+    if c is None:
+        raise Refused("No se ha encontrado a esa persona.")
+    if c["telegram_chat_id"]:
+        ctx = tools.Context(conn, clock, _session(conn, person_id), family=Family(conn, clock, links or {}))
+        r = tools.EXECUTORS["send_message"](ctx, p)
+        return "/mi-familia?hecho=" + ("mandado" if r.get("sent") else "pendiente")
+    name = conn.execute("SELECT call_name FROM people WHERE id = ?", (person_id,)).fetchone()["call_name"]
+    i = family_msgs.queue(conn, clock, "message", "telegram", f"{name} (con Pepe): {p['text']}", c["id"], person_id)
+    conn.execute("UPDATE family_out SET status = 'sent', sent_at_utc = ?, told = 2, error = 'family app only' "
+                 "WHERE id = ?", (utc_iso(clock.now()), i))
+    return "/mi-familia?hecho=mandado"
 
 
 def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:
@@ -410,6 +433,9 @@ def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:
         _reminder(conn, person_id, p["reminder_id"])
     elif kind == "stop_birthday":
         _birthday(conn, person_id, p["contact_id"])
+    elif kind == "send_message":
+        c = conn.execute("SELECT for_person FROM contacts WHERE id = ?", (p["contact_id"],)).fetchone()
+        _mine(c, c and c["for_person"], person_id, "No se ha encontrado a esa persona.")
 
 
 def _session(conn, person_id: int) -> Session:

@@ -358,7 +358,7 @@ def test_a_family_proposal_is_saved_only_with_the_persons_yes(app, conn, clock, 
     assert r.headers["location"] == "/familia/cita?hecho=propuesta"
     assert "sin contestar" in luc.get("/familia/cita").text
     assert conn.execute("SELECT count(*) FROM appointments").fetchone()[0] == 0
-    assert "Lucía le ha propuesto una cita" in carmen.get("/").text
+    assert "Lucía le propone una cita" in carmen.get("/").text
     cal = carmen.get("/calendario").text
     assert "Propuestas de la familia" in cal and "Oculista" in cal and "La propone Lucía" in cal
     pid = conn.execute("SELECT id FROM family_proposals").fetchone()[0]

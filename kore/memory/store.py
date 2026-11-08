@@ -30,6 +30,9 @@ CONSENTS = {
     "listening",              # listens after the wake word or the button (told and agreed at setup)
     "presence_sensor",        # notices when they're up or moving
     "keep_conversations",     # keep what we say by voice, to read on the web page (90 days)
+    "lea_sees_day",           # Lea's console: reminders, medicines, notes, feedback (to look after Pepe)
+    "lea_reads_conversations",  # Lea's console: the last 7 days of conversations (to fix problems)
+    "family_sees_doses",      # the family app: whether today's medicine was taken
 }
 
 

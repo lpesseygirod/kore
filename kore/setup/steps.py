@@ -92,6 +92,14 @@ STEPS = [
          "Ask whether you may keep what you talk about, so they can read it later on their phone or tablet; it's "
          "deleted after 90 days. Make clear the answer can be no.",
          "propose_permission keep_conversations, or record_permission_no (either closes the step)."),
+    Step("lea_day", "person",
+         "Ask whether Lea, who looks after Pepe, may see their reminders, medicines, notes and what they've told you "
+         "about how you speak, only to check Pepe works well. Make clear the answer can be no.",
+         "propose_permission lea_sees_day, or record_permission_no (either closes the step)."),
+    Step("lea_chats", "person",
+         "Ask whether Lea may read their conversations of the last 7 days, only to fix problems; anything they ask "
+         "you to forget never shows. Make clear the answer can be no.",
+         "propose_permission lea_reads_conversations, or record_permission_no (either closes the step)."),
     Step("test", "home",
          "Suggest a short test: they say 'Pepe, ¿qué hora es?' and you answer.",
          "setup_step_done after the test (or if they'd rather not)."),
@@ -107,4 +115,5 @@ BY_ID = {s.id: s for s in STEPS}
 # in an earlier chat or by the family's setup), the step is answered: Pepe doesn't ask it again.
 PERMISSION_STEPS = {"health_info": "health_info", "listening": "listening", "presence_sensor": "presence",
                     "family_missed_meds": "family_alerts", "emergency_path": "emergency",
-                    "share_with_partner": "share", "keep_conversations": "conversation_log"}
+                    "share_with_partner": "share", "keep_conversations": "conversation_log",
+                    "lea_sees_day": "lea_day", "lea_reads_conversations": "lea_chats"}

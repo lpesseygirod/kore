@@ -821,7 +821,8 @@ def _setup_step_done(ctx: Context, args: dict) -> dict:
 STEP_FOR_PERMISSION = {"conversation_starters": "chattiness", "health_info": "health_info", "listening": "listening",
                        "presence_sensor": "presence", "family_missed_meds": "family_alerts",
                        "emergency_path": "emergency", "share_with_partner": "share",
-                       "keep_conversations": "conversation_log"}
+                       "keep_conversations": "conversation_log", "lea_sees_day": "lea_day",
+                       "lea_reads_conversations": "lea_chats"}
 
 
 def _close_step(ctx: Context, step_id: str, person_id: int | None) -> None:
@@ -946,6 +947,10 @@ PERMISSION_TEXT = {
     "emergency_path": "message your help contact straight away, without asking first, if you say 'Pepe, ayuda', tell me you've fallen, or press the button",
     "share_with_partner": "tell the other person at home whether you've taken your medicine, if they ask",
     "keep_conversations": "keep what we talk about, so you can read it later on your phone; it's deleted after 90 days",
+    "lea_sees_day": "let Lea, who looks after Pepe, see your reminders, medicines, notes and what you've told me about "
+                    "how I speak, only to check Pepe works well",
+    "lea_reads_conversations": "let Lea read our conversations of the last 7 days, only to fix problems",
+    "family_sees_doses": "let your family see on their phone whether you've taken today's medicine",
 }
 
 

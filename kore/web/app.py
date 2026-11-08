@@ -30,7 +30,7 @@ from kore.info import news, weather
 from kore.memory.db import connect, utc_iso
 from kore.scheduler.clock import Clock, SystemClock
 from kore.setup import progress
-from kore.web import accounts, agenda, pages, photos, today
+from kore.web import accounts, agenda, elder, pages, photos, today
 from kore.web import family as fam
 from kore.web import chat as chats
 
@@ -54,8 +54,10 @@ HEADERS = {
 
 
 def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, hosts: list[str] | None = None,
-               dev: bool = False, chat: chats.ChatWorker | None = None) -> Starlette:
-    """chat: the worker that talks to Claude (None: the Hablar page says writing isn't available now)."""
+               dev: bool = False, chat: chats.ChatWorker | None = None, family_links: dict | None = None) -> Starlette:
+    """chat: the worker that talks to Claude (None: the Hablar page says writing isn't available now).
+    family_links: the channels to the family (Telegram, SMS) for "Pedir ayuda" and replies; None: nothing real is
+    sent (messages wait, and the page says so)."""
     clock = clock or SystemClock()
     lock = threading.Lock()
     holder: dict = {}
@@ -116,7 +118,11 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         return request.client.host if request.client else "unknown"
 
     def account(request: Request):
-        return accounts.who(db(), clock, request.cookies.get(SESSION))
+        a = accounts.who(db(), clock, request.cookies.get(SESSION))
+        if a is not None and a.role == "person":  # their letters and tú/usted, for this request's pages
+            pages.SIZE.set(elder.text_size(db(), a.person_id))
+            pages.TU.set(elder.tu(db(), a.person_id))
+        return a
 
     def household():
         return [{"id": r["id"], "call_name": r["call_name"] or r["name"]}
@@ -132,7 +138,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if a.role == "family":
                 return html(pages.family_home(a, fam.thread(db(), clock, a.contact_id),
                                               pages.DONE.get(request.query_params.get("hecho", ""), "")))
-            return html(pages.today(a, today.for_person(db(), clock, a.person_id)))
+            return html(pages.elder_home(a, elder_home_data(a)))
 
     async def entrar(request: Request):
         with lock:
@@ -275,7 +281,18 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     # --- W3: calendar, shopping list, what Pepe knows ---------------------------------------------
 
     BAD_FORM = "Vuelva a la página de Pepe y pruebe otra vez."
-    BACKS = ("/calendario", "/sabe")
+    BACKS = ("/calendario", "/sabe", "/mi-familia")
+
+    def elder_home_data(a) -> dict:
+        now = clock.now()
+        day = today.for_person(db(), clock, a.person_id)
+        w = day.get("weather") or {}
+        sky = (w.get("rest_of_today") or {}).get("sky") or w.get("sky")
+        return {"date": elder.long_date(now.date()), "time": now.strftime("%H:%M"),
+                "weather": f"{sky.capitalize()}, {w.get('max_c')}°" if sky and w.get("max_c") is not None else "",
+                "next": elder.next_up(db(), clock, a.person_id), "pills": elder.pills(db(), clock, a.person_id),
+                "unread": elder.unread_count(db(), a.person_id), "proposals": day.get("family_proposals") or [],
+                "shopping": day.get("shopping") or []}
 
     def person(request: Request):
         """The logged-in person, or None (operator and strangers get no personal pages)."""
@@ -357,7 +374,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if f is None:
                 return html(pages.message("No se ha podido", BAD_FORM), 403)
             try:
-                where = agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+                where = agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0, family_links)
                 if where.startswith("code:"):  # family access: the code is shown once, here
                     _, code, name = where.split(":", 2)
                     return html(pages.family_code(a, name, code))
@@ -430,6 +447,100 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             return html(pages.known(a, agenda.known(db(), clock, a.person_id), note))
 
     c, k = db, clock  # short names for the proposals below
+
+    # --- Carmen and Antonio's app ---------------------------------------------------------------
+
+    async def agenda_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            chosen = _small_int(request.query_params.get("dia")) or 0
+            days = elder.agenda_days(clock)
+            chosen = chosen if chosen < len(days) else 0
+            return html(pages.elder_agenda(a, days, chosen, elder.day_items(db(), clock, a.person_id,
+                                                                              days[chosen]["date"])))
+
+    async def pills_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.elder_pills(a, elder.pills(db(), clock, a.person_id)))
+
+    async def take_pill(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            if f is None:
+                return html(pages.message("No se ha podido", BAD_FORM, "/pastillas"), 403)
+            note = elder.take_pill(db(), clock, a.person_id, _small_int(f.get("id")) or 0)
+            return html(pages.elder_pills(a, elder.pills(db(), clock, a.person_id), note))
+
+    async def family_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            note = pages.DONE.get(request.query_params.get("hecho", ""), "")
+            return html(pages.elder_family(a, elder.new_messages(db(), clock, a.person_id),
+                                           elder.contacts(db(), a.person_id), note,
+                                           bad=request.query_params.get("hecho") == "pendiente"))
+
+    def family_again(a, f, note):
+        return pages.elder_family(a, [], elder.contacts(db(), a.person_id), note, bad=True)
+
+    async def help_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.elder_help(a, elder.help_names(db(), a.person_id)))
+
+    async def ask_help(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            if f is None:  # a form from elsewhere can't call for help in their name
+                return html(pages.message("No se ha podido", BAD_FORM, "/ayuda"), 403)
+            said = elder.ask_for_help(db(), clock, a.person_id, family_links)
+            return html(pages.elder_help(a, elder.help_names(db(), a.person_id), said))
+
+    async def settings_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.elder_settings(a, elder.text_size(db(), a.person_id)))
+
+    async def set_size(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None or f is None:
+                return go("/entrar")
+            elder.set_text_size(db(), clock, a.person_id, f.get("size") or "")
+        return go("/ajustes")
+
+    async def who_sees_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.elder_who_sees(a, elder.who_sees_what(db(), a.person_id)))
+
+    async def photos_page(request: Request):
+        with lock:
+            a = person(request)
+            if a is None:
+                return go("/entrar")
+            mine = [r["id"] for r in db().execute("SELECT id FROM photos WHERE person_id = ? ORDER BY id DESC LIMIT 30",
+                                                  (a.person_id,))]
+            return html(pages.elder_photos(a, mine))
 
     # --- W4: photos, family ---------------------------------------------------------------------
 
@@ -565,6 +676,15 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/compra/quitar", shopping_change(shop_remove), methods=["POST"]),
         Route("/compra/volver", shopping_change(shop_back), methods=["POST"]),
         Route("/foto", photo),
+        Route("/agenda", agenda_page), Route("/pastillas", pills_page),
+        Route("/pastillas/tomada", take_pill, methods=["POST"]),
+        Route("/mi-familia", family_page),
+        Route("/mi-familia/responder", proposing(
+            lambda a, f: elder.propose_reply(c(), k, a.person_id, _small_int(f.get("contact")) or 0, f.get("text")),
+            family_again, "/mi-familia"), methods=["POST"]),
+        Route("/ayuda", help_page), Route("/ayuda", ask_help, methods=["POST"]),
+        Route("/ajustes", settings_page), Route("/ajustes/letra", set_size, methods=["POST"]),
+        Route("/lo-que-ven", who_sees_page), Route("/fotos", photos_page),
         Route("/familia/invitar", invite_page),
         Route("/familia/invitar", proposing(lambda a, f: fam.propose_access(c(), k, a.person_id, f),
                                             lambda a, f, n: pages.invite(a, fam.people_to_invite(c(), a.person_id), n)),

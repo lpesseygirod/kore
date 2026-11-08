@@ -6,90 +6,231 @@ become HTML.
 
 from __future__ import annotations
 
+import contextvars
 from html import escape
 
 CSS = """
-:root { --bg: #fffaf2; --fg: #1d1d1b; --muted: #5b5750; --card: #ffffff; --line: #e6dccb; --accent: #1f5f8b;
-        --ok: #2e7d32; --warn: #a15c00; }
+/* The look from Lea's design (docs/design/Style.dc.html): wine, linen, Inter, big and calm. */
+:root { --bg: #FBF7F5; --fg: #2A1A1F; --muted: #6F5A61; --card: #FFFFFF; --line: #E6D7DC; --soft-line: #EFE4E8;
+        --accent: #6E1E35; --accent-dark: #4A1224; --tint: #F3E6EA; --tint-line: #E2C9D1; --on-accent: #FFFFFF;
+        --ok-bg: #E4F0EA; --ok: #245640; --wait-bg: #FBEFDF; --wait: #7A410C; --off-bg: #EFEAEC; --off: #4F464A;
+        --online: #2F6B4F; }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #1b1a18; --fg: #f4efe6; --muted: #c9c1b3; --card: #26241f; --line: #3d3a33; --accent: #8cc4ef;
-          --ok: #8fd694; --warn: #f2b45c; }
+  :root { --bg: #1C1517; --fg: #F6EDF0; --muted: #CDB9C0; --card: #261D20; --line: #44343A; --soft-line: #3A2C31;
+          --accent: #E7A3B6; --accent-dark: #F3C6D3; --tint: #3A2530; --tint-line: #5A3A47; --on-accent: #1C1517;
+          --ok-bg: #1F3A2D; --ok: #9AD5B4; --wait-bg: #3D2B14; --wait: #F2C27A; --off-bg: #33292D; --off: #D8CCD0;
+          --online: #8FD3AE; }
 }
 * { box-sizing: border-box; }
 html { font-size: 20px; }
-body { margin: 0; background: var(--bg); color: var(--fg); font-family: system-ui, -apple-system, "Segoe UI",
-       Roboto, sans-serif; line-height: 1.45; }
-main { max-width: 40rem; margin: 0 auto; padding: 1rem 16px 3rem; }
-h1 { font-size: 1.6rem; margin: .5rem 0 1rem; }
-h2 { font-size: 1.15rem; margin: 1.6rem 0 .5rem; }
+html.compact { font-size: 17px; }
+body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.5;
+       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
+main { max-width: 40rem; margin: 0 auto; padding: 1.4rem 16px 3rem; }
+html.compact main { max-width: 1200px; padding: 2rem 24px 4rem; }
+h1 { font-size: 1.8rem; line-height: 1.22; margin: .3rem 0 1rem; font-weight: 700; }
+h2 { font-size: 1.15rem; line-height: 1.4; margin: 1.6rem 0 .6rem; font-weight: 700; }
 p, li { font-size: 1rem; }
 .muted { color: var(--muted); }
+.label { font-size: .75rem; font-weight: 600; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
 a { color: var(--accent); }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 14px; padding: .9rem 1rem;
-        margin: .6rem 0; }
+a:hover { color: var(--accent-dark); }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1rem 1.2rem;
+        margin: .7rem 0; }
+.card.tint { background: var(--tint); border-color: var(--tint-line); }
+.card.hero { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.card.hero .label, .card.hero .muted { color: var(--tint); }
 ul.plain { list-style: none; padding: 0; margin: 0; }
-ul.plain li { padding: .45rem 0; border-bottom: 1px solid var(--line); display: flex; gap: .8rem;
-              align-items: baseline; }
+ul.plain li { padding: .6rem 0; border-bottom: 1px solid var(--soft-line); display: flex; gap: .9rem;
+              align-items: center; flex-wrap: wrap; }
 ul.plain li:last-child { border-bottom: 0; }
-.time { font-weight: 700; min-width: 3.2rem; font-variant-numeric: tabular-nums; }
-.tag { margin-left: auto; font-size: .85rem; color: var(--muted); white-space: nowrap; }
-.tag.ok { color: var(--ok); } .tag.warn { color: var(--warn); }
-nav { display: flex; gap: .4rem; flex-wrap: wrap; padding: .6rem 16px; border-bottom: 1px solid var(--line);
-      max-width: 40rem; margin: 0 auto; }
-nav a, nav button { font: inherit; font-size: .95rem; color: var(--accent); text-decoration: none; background: none;
-      border: 0; padding: .5rem .7rem; border-radius: 10px; cursor: pointer; }
-nav a.here { background: var(--card); border: 1px solid var(--line); color: var(--fg); }
+.time { font-weight: 600; min-width: 3.2rem; font-variant-numeric: tabular-nums; }
+.tag { margin-left: auto; font-size: .8rem; color: var(--muted); white-space: nowrap; }
+.pill { display: inline-block; padding: .2rem .65rem; border-radius: 999px; font-size: .75rem; font-weight: 600;
+        background: var(--off-bg); color: var(--off); white-space: nowrap; }
+.pill.ok, .tag.ok { background: var(--ok-bg); color: var(--ok); }
+.pill.wait, .tag.warn { background: var(--wait-bg); color: var(--wait); }
+.tag.ok, .tag.warn { padding: .2rem .65rem; border-radius: 999px; font-weight: 600; }
+.pill.safety { background: var(--accent); color: var(--on-accent); letter-spacing: .04em; font-weight: 700; }
+header.top { background: var(--card); border-bottom: 1px solid var(--line); }
+header.top .bar { max-width: 40rem; margin: 0 auto; padding: .6rem 16px; display: flex; flex-wrap: wrap;
+                  align-items: center; gap: .4rem 1rem; }
+html.compact header.top .bar { max-width: 1200px; padding: .8rem 24px; gap: .8rem 2rem; }
+.mark { font-size: 1.1rem; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-decoration: none; }
+nav { display: flex; gap: .25rem; flex-wrap: wrap; flex: 1 1 auto; align-items: center; }
+nav a, nav button { font: inherit; font-size: .8rem; color: var(--muted); text-decoration: none; background: none;
+      border: 0; padding: .55rem .65rem; border-radius: 8px; cursor: pointer; min-height: 44px; display: inline-flex;
+      align-items: center; }
+nav a.here { background: var(--tint); color: var(--accent); font-weight: 600; }
 nav form { margin-left: auto; }
-button.big, a.big { display: block; width: 100%; font: inherit; font-size: 1.1rem; font-weight: 600; text-align: center;
-      padding: .9rem 1rem; margin: .6rem 0; border-radius: 14px; border: 2px solid var(--accent);
-      background: var(--card); color: var(--fg); cursor: pointer; text-decoration: none; }
-button.small, a.small { text-decoration: none; display: inline-block; font: inherit; font-size: .9rem; padding: .3rem .7rem; border-radius: 10px;
-      border: 1px solid var(--line); background: var(--bg); color: var(--fg); cursor: pointer; }
+.home-chip { display: flex; align-items: center; gap: .4rem; padding: .35rem .75rem; border: 1px solid var(--line);
+             border-radius: 999px; font-size: .75rem; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--online); display: inline-block; }
+.dot.off { background: var(--wait); }
+button.big, a.big { display: block; width: 100%; font: inherit; font-size: 1.05rem; font-weight: 600;
+      text-align: center; padding: .85rem 1rem; margin: .6rem 0; border-radius: 12px; min-height: 48px;
+      border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); cursor: pointer;
+      text-decoration: none; }
+a.big:hover, button.big:hover { background: var(--accent-dark); color: var(--on-accent); }
+button.big.second, a.big.second { background: var(--card); color: var(--accent); }
+button.small, a.small { text-decoration: none; display: inline-flex; align-items: center; font: inherit;
+      font-size: .8rem; font-weight: 600; padding: .35rem .8rem; min-height: 44px; border-radius: 10px;
+      border: 1px solid var(--line); background: var(--card); color: var(--accent); cursor: pointer; }
 input.code { font: inherit; font-size: 2rem; letter-spacing: .4em; text-align: center; width: 100%;
-      padding: .6rem; border-radius: 14px; border: 2px solid var(--line); background: var(--card); color: var(--fg); }
-.chat { display: flex; flex-direction: column; gap: .5rem; margin: 1rem 0; }
-.bubble { max-width: 85%; padding: .6rem .85rem; border-radius: 16px; border: 1px solid var(--line);
+      padding: .6rem; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+.chat { display: flex; flex-direction: column; gap: .6rem; margin: 1rem 0; }
+.bubble { max-width: 85%; padding: .65rem .9rem; border-radius: 16px 16px 16px 4px; border: 1px solid var(--line);
           background: var(--card); white-space: pre-wrap; overflow-wrap: anywhere; }
-.bubble.me { align-self: flex-end; background: var(--bg); border-color: var(--accent); }
+.bubble.me { align-self: flex-end; background: var(--accent); border-color: var(--accent); color: var(--on-accent);
+             border-radius: 16px 16px 4px 16px; }
+.bubble.me .when { color: var(--tint); }
 .bubble img { display: block; max-width: 100%; height: auto; border-radius: 10px; margin-bottom: .3rem; }
-.bubble .when { display: block; font-size: .75rem; color: var(--muted); margin-top: .2rem; }
-textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .7rem; border-radius: 14px;
-               border: 2px solid var(--line); background: var(--card); color: var(--fg); }
+.bubble .when { display: block; font-size: .7rem; color: var(--muted); margin-top: .25rem; }
+.note-line { align-self: center; padding: .3rem .8rem; border-radius: 999px; background: var(--off-bg);
+             color: var(--off); font-size: .7rem; }
+textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .7rem; border-radius: 12px;
+               border: 1px solid var(--line); background: var(--card); color: var(--fg); }
 .msg { padding: .8rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
-.msg.bad { border-color: var(--warn); }
-.msg.good { border-color: var(--ok); }
-label.f { display: block; margin: .8rem 0 .25rem; font-weight: 600; }
-input.f, select.f { font: inherit; width: 100%; padding: .6rem .7rem; border-radius: 12px; border: 2px solid var(--line);
-      background: var(--card); color: var(--fg); }
-.check { display: flex; gap: .5rem; align-items: center; margin: .6rem 0; font-size: 1rem; }
-.check input { width: 1.4rem; height: 1.4rem; }
-.days { display: flex; flex-wrap: wrap; gap: .3rem 1rem; }
+.msg.bad { border-color: var(--wait); background: var(--wait-bg); color: var(--wait); }
+.msg.good { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
+label.f { display: block; margin: .9rem 0 .3rem; font-weight: 600; }
+input.f, select.f { font: inherit; width: 100%; min-height: 48px; padding: .55rem .75rem; border-radius: 10px;
+      border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+.check { display: flex; gap: .55rem; align-items: center; margin: .6rem 0; font-size: 1rem; min-height: 44px; }
+.check input { width: 1.4rem; height: 1.4rem; accent-color: var(--accent); }
+.days { display: flex; flex-wrap: wrap; gap: .1rem 1rem; }
 .readback { font-size: 1.2rem; font-weight: 600; }
 ul.plain li form { margin-left: auto; }
-ul.plain li .what { flex: 1; }
+ul.plain li .what { flex: 1 1 12rem; min-width: 0; }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
+.stat { display: flex; flex-direction: column; gap: .3rem; text-decoration: none; color: var(--fg); margin: 0; }
+.stat .big-number { font-size: 1.3rem; font-weight: 700; }
+.row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
+.row > .wide { flex: 999 1 520px; min-width: 0; }
+.row > .side { flex: 1 1 300px; min-width: 0; }
+.kv { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; }
+.week { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.week .days7 { min-width: 980px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
+.week .day { border-right: 1px solid var(--soft-line); padding: .7rem .5rem; display: flex; flex-direction: column;
+             gap: .4rem; min-height: 300px; }
+.week .day:last-child { border-right: 0; }
+.week .day.today { background: var(--tint); }
+.ev { border-radius: 8px; padding: .4rem; font-size: .7rem; line-height: 1.35; background: var(--off-bg); }
+.ev.med { background: var(--tint); } .ev.appt { background: var(--wait-bg); }
+.ev.bday { background: var(--accent); color: var(--on-accent); }
+.legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .75rem; color: var(--muted); }
+.sw { width: 14px; height: 14px; border-radius: 4px; display: inline-block; vertical-align: middle;
+      margin-right: .4rem; border: 1px solid var(--line); }
+table.perm { width: 100%; border-collapse: collapse; font-size: .85rem; }
+table.perm th, table.perm td { text-align: left; padding: .55rem .4rem; border-bottom: 1px solid var(--soft-line); }
+html.size-mayor { font-size: 23px; } html.size-enorme { font-size: 26px; }
+body:has(nav.tabs) main { padding-bottom: 7rem; }
+nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
+           background: var(--card); border-top: 1px solid var(--line); padding: .3rem .3rem 1rem; gap: 0; }
+nav.tabs a { flex-direction: column; justify-content: center; gap: .15rem; font-size: .75rem; min-height: 64px;
+             font-weight: 600; color: var(--off); }
+nav.tabs a.here { background: none; color: var(--accent); font-weight: 700; }
+nav.tabs svg { width: 1.4rem; height: 1.4rem; }
+.big-card { display: flex; justify-content: space-between; align-items: center; gap: .8rem; background: var(--card);
+            border: 2px solid var(--line); border-radius: 20px; padding: .8rem 1rem; color: var(--fg);
+            text-decoration: none; margin: .7rem 0; }
+.big-card b { font-size: 1.05rem; } .big-card .chev { font-size: 1.6rem; color: var(--accent); }
+.next { background: var(--accent); color: var(--on-accent); border-radius: 20px; padding: 1rem; margin: .7rem 0;
+        display: flex; flex-direction: column; gap: .6rem; }
+.next .label { color: var(--tint); } .next .what { font-size: 1.15rem; font-weight: 600; }
+.next a { background: var(--card); color: var(--accent); border-radius: 14px; min-height: 56px; display: flex;
+          align-items: center; justify-content: center; font-weight: 700; text-decoration: none; }
+a.talk { min-height: 80px; border-radius: 20px; background: var(--tint); border: 2px solid var(--tint-line);
+         display: flex; align-items: center; justify-content: center; gap: .6rem; color: var(--accent);
+         font-size: 1.1rem; font-weight: 700; text-decoration: none; margin: .7rem 0; }
+.day-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; margin: .5rem 0 1rem; }
+.day-tabs a { min-height: 64px; border-radius: 14px; border: 2px solid var(--tint-line); background: var(--card);
+              color: var(--fg); display: flex; flex-direction: column; align-items: center; justify-content: center;
+              text-decoration: none; font-weight: 600; font-size: .85rem; line-height: 1.2; }
+.day-tabs a.here { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
+.item { display: flex; gap: .7rem; align-items: center; background: var(--card); border: 2px solid var(--line);
+        border-radius: 16px; padding: .7rem .8rem; margin: .5rem 0; }
+.item b { min-width: 3.2rem; } .item.done { opacity: .75; }
+.item.bday { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
+.item.appt { background: var(--wait-bg); border-color: var(--wait-bg); }
+.item.med { background: var(--tint); border-color: var(--tint); } .item.med.done { background: var(--card); }
+.item .sub { display: block; font-size: .8rem; color: var(--muted); }
+.ok-text { color: var(--ok); font-weight: 600; }
+.pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
+.pair a, .pair button { margin: 0; }
+button.huge { min-height: 96px; font-size: 1.2rem; border-radius: 22px; }
+.skip { position: absolute; left: -999px; } .skip:focus { left: 8px; top: 8px; background: var(--card); padding: .5rem; }
 """
+
+
+# Per request (set by the app for a person's login): their text size and tú/usted.
+SIZE: contextvars.ContextVar[str] = contextvars.ContextVar("size", default="grande")
+TU: contextvars.ContextVar[bool] = contextvars.ContextVar("tu", default=False)
+
+
+def t(tu_text: str, usted_text: str) -> str:
+    return tu_text if TU.get() else usted_text
 
 
 def e(value) -> str:
     return escape("" if value is None else str(value), quote=True)
 
 
-def layout(title: str, body: str, nav: str = "") -> str:
-    return (f'<!doctype html><html lang="es"><head><meta charset="utf-8">'
+def layout(title: str, body: str, nav: str = "", lang: str = "es", compact: bool = False, after: str = "") -> str:
+    """compact: Lea's console (a wider page, smaller type, in English). `after`: what goes below the page (the
+    family app's tab bar)."""
+    skip = "Skip to content" if lang == "en" else "Ir al contenido"
+    classes = " ".join(c for c in ("compact" if compact else "", f"size-{SIZE.get()}" if not compact else "") if c)
+    return (f'<!doctype html><html lang="{lang}" class="{classes}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">'
             f'<meta name="color-scheme" content="light dark"><title>{e(title)}</title>'
-            f'<style>{CSS}</style></head><body>{nav}<main>{body}</main></body></html>')
+            f'<style>{CSS}</style></head><body><a class="skip" href="#main">{skip}</a>{nav}'
+            f'<main id="main">{body}</main>{after}</body></html>')
 
 
 def menu(here: str, account) -> str:
+    if account.role == "person":
+        return (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a><nav aria-label="Arriba">'
+                f'<a href="/ajustes" class="{"here" if here == "/ajustes" else ""}" style="margin-left:auto">Ajustes</a>'
+                f'</nav></div></header>' + tabs(here))
     mine = [("/hablar", "Hablar"), ("/calendario", "Calendario"), ("/compra", "La compra"), ("/sabe", "Sobre mí")]
     if account.role == "family":
         items = [("/", "Mensajes"), ("/familia/cita", "Proponer una cita"), ("/dispositivos", "Dispositivos")]
     else:
         items = [("/", "Hoy")] + (mine if account.role == "person" else []) + [("/dispositivos", "Dispositivos")]
-    links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}">{e(label)}</a>' for href, label in items)
-    return (f'<nav aria-label="Menú">{links}<form method="post" action="/salir">'
-            f'<button type="submit">Salir</button></form></nav>')
+    links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}"'
+                    f'{" aria-current=page" if href == here else ""}>{e(label)}</a>' for href, label in items)
+    return (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a><nav aria-label="Menú">{links}'
+            f'<form method="post" action="/salir"><button type="submit">Salir</button></form></nav></div></header>')
+
+
+ICONS = {
+    "home": '<path d="M3 11 L12 4 L21 11"/><path d="M5 10 V20 H19 V10"/>',
+    "chat": '<path d="M4 5 H20 V16 H9 L4 20 Z"/>',
+    "cal": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10 H21 M8 3 V7 M16 3 V7"/>',
+    "family": '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/>'
+              '<path d="M3 20 A6 6 0 0 1 15 20 M14 20 A4.5 4.5 0 0 1 21 17"/>',
+    "bell": '<path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z"/><path d="M10 21 H14"/>',
+    "mic": '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11 A7 7 0 0 0 19 11 M12 18 V21"/>',
+}
+TAB_OF = {"/": "/", "/hablar": "/hablar", "/agenda": "/agenda", "/calendario": "/agenda", "/pastillas": "/agenda",
+          "/compra": "/agenda", "/mi-familia": "/mi-familia", "/fotos": "/mi-familia"}
+
+
+def icon(name: str, size: int = 28) -> str:
+    return (f'<svg aria-hidden="true" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" '
+            f'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+            f'{ICONS[name]}</svg>')
+
+
+def tabs(here: str, items=None) -> str:
+    items = items or [("/", "Inicio", "home"), ("/hablar", "Pepe", "chat"), ("/agenda", "Agenda", "cal"),
+                      ("/mi-familia", "Familia", "family")]
+    current = TAB_OF.get(here, here)
+    links = "".join(f'<a href="{href}" class="{"here" if href == current else ""}"'
+                    f'{" aria-current=page" if href == current else ""}>{icon(ic)}{e(label)}</a>'
+                    for href, label, ic in items)
+    return f'<nav class="tabs" aria-label="Menú">{links}</nav>'
 
 
 # --- logging in ------------------------------------------------------------------------------
@@ -224,7 +365,8 @@ def chat(account, rows: list[dict], available: bool, note: str = "") -> str:
     notice = f'<p class="msg bad" role="status">{e(note)}</p>' if note else ""
     empty = '<p class="muted">Todavía no hay nada escrito. Puede preguntarle lo mismo que en voz alta.</p>'
     return layout("Pepe — Hablar", f"""
-<h1>Hablar con Pepe</h1>
+<h1 style="margin-bottom:.2rem">Pepe</h1>
+<p class="muted" style="margin-top:0">El mismo Pepe de casa. Se acuerda de lo que {t("le cuentas", "le cuenta")}.</p>
 {notice}
 <div class="chat" id="ultimo">{bubbles or empty}</div>
 {form}
@@ -239,7 +381,7 @@ def confirm_delete(account) -> str:
 <p>Se borra todo lo escrito y lo hablado que aparece en «Hablar». Lo que Pepe tiene apuntado (medicinas, citas,
 la compra, lo que sabe de usted) no se borra.</p>
 <form method="post" action="/hablar/borrar"><button class="big" type="submit">Sí, borrar</button></form>
-<a class="big" href="/hablar">No, volver</a>
+<a class="big second" href="/hablar">No, volver</a>
 """, menu("/hablar", account))
 
 
@@ -248,7 +390,9 @@ la compra, lo que sabe de usted) no se borra.</p>
 DONE = {"apuntado": "Hecho. Pepe lo recordará en voz alta cuando toque.", "quitado": "Hecho, quitado.",
         "olvidado": "Hecho. Pepe lo ha olvidado.", "anulado": "No se ha cambiado nada.",
         "enviado": "Mensaje enviado. Pepe les dirá que tienen un mensaje suyo.",
-        "propuesta": "Propuesta enviada. La verán en su página y decidirán si la apuntan."}
+        "propuesta": "Propuesta enviada. La verán en su página y decidirán si la apuntan.",
+        "mandado": "Mensaje enviado.", "pendiente": "Todavía no se ha podido enviar. Pepe lo sigue intentando y "
+        "avisará cuando salga."}
 
 
 def _notice(note: str, bad: bool = False, good: bool = False) -> str:
@@ -409,7 +553,7 @@ def confirm(account, proposal, back: str) -> str:
 <button class="big" type="submit">{e(proposal.question)}</button></form>
 <form method="post" action="/confirmar/no"><input type="hidden" name="id" value="{proposal.id}">
 <input type="hidden" name="back" value="{e(back)}">
-<button class="big" type="submit">No, déjalo</button></form>
+<button class="big second" type="submit">No, déjalo</button></form>
 <p class="muted">Hasta que diga que sí, no se guarda nada.</p>""", menu(back, account))
 
 
@@ -531,3 +675,191 @@ def family_propose(account, people: list[dict], mine: list[dict], today: str, f:
 <button class="big" type="submit">Proponer</button></form>
 {f'<h2>Sus propuestas</h2><div class="card"><ul class="plain">{rows}</ul></div>' if rows else ''}""",
                   menu("/familia/cita", account))
+
+
+# --- Carmen and Antonio's app (W-design: Inicio, Pepe, Agenda, Familia, Pastillas, Ayuda, Ajustes) ---------------
+
+
+def elder_home(account, d: dict) -> str:
+    parts = [f'<h1 style="margin-bottom:.2rem">Hola, {e(account.name)}</h1>'
+             f'<p class="muted" style="margin:0">{e(d["date"])}<br>{e(d["time"])}{" · " + e(d["weather"]) if d.get("weather") else ""}</p>']
+    nxt = d.get("next")
+    if nxt:
+        when = f" · {e(nxt['time'])}" if nxt.get("time") else ""
+        call = (f'<a href="tel:{e(nxt["phone"])}">Llamar a {e(nxt["call"])}</a>' if nxt.get("phone") else "")
+        parts.append(f'<div class="next"><span class="label">Lo próximo{when}</span>'
+                     f'<span class="what">{e(nxt["text"])}</span>{call}</div>')
+    p = d["pills"]
+    if not p["clock_ok"]:
+        parts.append('<p class="msg bad">La hora de Pepe no es fiable ahora mismo, así que las pastillas no se '
+                     'muestran. Mira el pastillero.</p>')
+    elif p["doses"]:
+        more = f" · la próxima a las {e(p['next'])}" if p["next"] else ""
+        parts.append(f'<a class="big-card" href="/pastillas"><span><b>Pastillas de hoy</b><br>'
+                     f'<span class="muted">{p["taken"]} de {len(p["doses"])} tomadas{more}</span></span>'
+                     f'<span class="chev" aria-hidden="true">›</span></a>')
+    parts.append(f'<a class="talk" href="/hablar">{icon("mic", 30)}Hablar con Pepe</a>')
+    if d.get("unread"):
+        parts.append(f'<a class="big-card" href="/mi-familia"><span><b>{t("Tienes", "Tiene")} '
+                     f'{d["unread"]} mensaje{"s" if d["unread"] > 1 else ""} de la familia</b></span>'
+                     f'<span class="chev" aria-hidden="true">›</span></a>')
+    if d.get("proposals"):
+        names = " y ".join(sorted({x["from"] for x in d["proposals"]}))
+        parts.append(f'<a class="big-card" href="/calendario#propuestas"><span><b>{e(names)} '
+                     f'{t("te", "le")} propone una cita</b><br><span class="muted">Míralo y decide</span></span>'
+                     f'<span class="chev" aria-hidden="true">›</span></a>')
+    if d.get("shopping"):
+        parts.append(f'<a class="big-card" href="/compra"><span><b>La compra</b><br><span class="muted">'
+                     f'{e(" · ".join(d["shopping"][:6]))}</span></span><span class="chev" aria-hidden="true">›</span></a>')
+    parts.append('<a class="big second" href="/ayuda" style="margin-top:1.2rem">Pedir ayuda</a>')
+    return layout("Pepe — Inicio", "".join(parts), menu("/", account))
+
+
+def elder_agenda(account, days: list[dict], chosen: int, items: list[dict]) -> str:
+    tabs_html = "".join(f'<a href="/agenda?dia={x["n"]}" class="{"here" if x["n"] == chosen else ""}"'
+                        f'{" aria-current=page" if x["n"] == chosen else ""}>{e(x["label"])}<br>{x["day"]}</a>'
+                        for x in days)
+    rows = "".join(
+        f'<div class="item {i["kind"]}{" done" if i["done"] else ""}"><b>{e(i["time"])}</b><span>{e(i["text"])}'
+        + (' · <span class="ok-text">tomada</span>' if i["kind"] == "med" and i["done"] else "")
+        + (f'<span class="sub">{e(i["note"])}</span>' if i["note"] and i["kind"] != "med" else "") + '</span></div>'
+        for i in items) or '<p class="muted">Ese día no hay nada apuntado.</p>'
+    return layout("Pepe — Agenda", f"""
+<h1>Agenda</h1>
+<nav class="day-tabs" aria-label="Día">{tabs_html}</nav>
+{rows}
+<div class="pair" style="margin-top:1.2rem"><a class="big second" href="/pastillas">Mis pastillas</a>
+<a class="big" href="/hablar">Añadir algo</a></div>
+<p class="muted">Para añadir, {t("díselo", "dígaselo")} a Pepe: «Recuérdame el dentista el martes a las 10».
+{t("También puedes", "También puede")} <a href="/calendario">apuntarlo o cambiarlo aquí</a>, o mirar
+<a href="/compra">la compra</a>.</p>""", menu("/agenda", account))
+
+
+def elder_pills(account, p: dict, note: str = "") -> str:
+    if not p["clock_ok"]:
+        body = ('<p class="msg bad">La hora de Pepe no es fiable ahora mismo, así que no se pueden mostrar ni apuntar '
+                f'las pastillas. {t("Mira", "Mire")} el pastillero.</p>')
+    else:
+        cards = []
+        for d in p["doses"]:
+            if d["state"] == "taken":
+                state = f'<span class="ok-text">Tomada{" a las " + e(d["taken_at"]) if d.get("taken_at") else ""}</span>'
+            elif d["med_id"]:
+                state = '<span style="color:var(--accent);font-weight:700">Pendiente</span>'
+            elif d["state"] == "upcoming":
+                state = '<span class="muted">Más tarde</span>'
+            else:
+                state = '<span class="muted">Sin apuntar</span>'
+            button = (f'<form method="post" action="/pastillas/tomada"><input type="hidden" name="id" value="{d["med_id"]}">'
+                      f'<button class="big" type="submit">Ya me la he tomado</button></form>' if d["med_id"] else "")
+            cards.append(f'<div class="card{" tint" if d["med_id"] else ""}"><div class="kv"><b style="font-size:1.05rem">'
+                         f'{e(d["time"])}</b>{state}</div><div>{e(d["name"])}</div>{button}</div>')
+        body = "".join(cards) or f'<p class="msg">Hoy no {t("tienes", "tiene")} pastillas apuntadas.</p>'
+    notice = f'<p class="msg good" role="status">{e(note)}</p>' if note else ""
+    return layout("Pepe — Pastillas", f"""
+<p><a href="/agenda">‹ Agenda</a></p>
+<h1>{t("Mis pastillas de hoy", "Mis pastillas de hoy")}</h1>{notice}{body}
+<div class="card">¿No {t("te acuerdas si la tomaste", "se acuerda de si la tomó")}? <b>No {t("tomes", "tome")} otra.</b>
+{t("Mira", "Mire")} el pastillero o {t("pregúntale", "pregúntele")} a Pepe.</div>
+<p class="muted">«Sin apuntar» quiere decir que Pepe no lo sabe, no que no se haya tomado.</p>""",
+                  menu("/pastillas", account))
+
+
+def elder_family(account, messages: list[dict], people: list[dict], note: str = "", bad: bool = False) -> str:
+    notice = f'<p class="msg{" bad" if bad else " good"}" role="status">{e(note)}</p>' if note else ""
+    msgs = "".join(
+        f'<div class="card tint"><span class="label" style="color:var(--accent)">Mensaje nuevo de {e(m["from"])}</span>'
+        f'<p style="font-size:1.05rem;margin:.4rem 0">«{e(m["text"])}»</p>'
+        f'<form method="post" action="/mi-familia/responder"><input type="hidden" name="contact" value="{m["contact_id"]}">'
+        f'<label class="f" for="r{m["contact_id"]}">{t("Responder", "Responder")} a {e(m["from"])}</label>'
+        f'<textarea class="say" id="r{m["contact_id"]}" name="text" maxlength="500" required></textarea>'
+        f'<button class="big" type="submit">Responder</button></form></div>' for m in messages)
+    cards = []
+    for c in people:
+        who = f'{e(c["name"])}{", " + t("tu", "su") + " " + e(c["relation"]) if c["relation"] else ""}'
+        buttons = []
+        if c["phone"]:
+            buttons.append(f'<a class="big" href="tel:{e(c["phone"])}">Llamar</a>')
+            buttons.append(f'<a class="big second" href="https://wa.me/{e(c["phone"].lstrip("+"))}" '
+                           f'rel="noopener noreferrer">Videollamada</a>')
+        write = (f'<details><summary class="small" style="margin-top:.5rem">Escribir a {e(c["name"])}</summary>'
+                 f'<form method="post" action="/mi-familia/responder"><input type="hidden" name="contact" value="{c["id"]}">'
+                 f'<label class="f" for="w{c["id"]}">Mensaje</label>'
+                 f'<textarea class="say" id="w{c["id"]}" name="text" maxlength="500" required></textarea>'
+                 f'<button class="big" type="submit">Seguir</button></form></details>' if c["can_write"] else "")
+        cards.append(f'<div class="card"><b style="font-size:1.05rem">{who}</b>'
+                     f'{"<div class=pair>" + "".join(buttons) + "</div>" if buttons else ""}{write}</div>')
+    wa = ('<p class="muted">La videollamada se abre en WhatsApp.</p>' if any(c["phone"] for c in people) else "")
+    return layout("Pepe — Familia", f"""
+<h1>Familia</h1>{notice}{msgs}
+{"".join(cards) or '<p class="msg">Todavía no hay familia apuntada. ' + t("Díselo", "Dígaselo") + ' a Pepe.</p>'}
+<a class="big-card" href="/fotos"><span><b>Fotos</b></span><span class="chev" aria-hidden="true">›</span></a>
+{wa}""", menu("/mi-familia", account))
+
+
+def elder_help(account, names: list[str], result: str = "") -> str:
+    who = " y ".join(names)
+    if result:
+        body = f'<p class="msg" role="status" style="font-size:1.15rem">{e(result)}</p><a class="big second" href="/">Volver</a>'
+    elif names:
+        body = (f'<p style="font-size:1.05rem">Si {t("dices", "dice")} que sí, le enviamos un aviso a {e(who)} para que '
+                f'{t("te", "le")} llame enseguida.</p>'
+                f'<form method="post" action="/ayuda"><button class="big huge" type="submit">Sí, avisar a {e(who)}</button></form>'
+                f'<a class="big second" href="/">No, ha sido sin querer</a>')
+    else:
+        body = (f'<p class="msg bad">Todavía no hay nadie apuntado para avisar. {t("Díselo", "Dígaselo")} a Pepe para '
+                'apuntarlo.</p>')
+    return layout("Pepe — Ayuda", f"""
+<p><a href="/">‹ Inicio</a></p>
+<h1>¿{t("Necesitas", "Necesita")} ayuda, {e(account.name)}?</h1>
+{body}
+<div class="card" style="margin-top:2rem"><b>Si es una emergencia</b>
+<p>{t("Pulsa tu", "Pulse su")} botón de teleasistencia o {t("llama", "llame")} al 112.</p>
+<a class="big" href="tel:112" style="background:var(--accent-dark);border-color:var(--accent-dark)">Llamar al 112</a></div>
+""", menu("/ayuda", account))
+
+
+def elder_settings(account, size: str, note: str = "") -> str:
+    notice = f'<p class="msg good" role="status">{e(note)}</p>' if note else ""
+    sizes = "".join(f'<form method="post" action="/ajustes/letra"><input type="hidden" name="size" value="{k}">'
+                    f'<button class="big{"" if k == size else " second"}" type="submit"'
+                    f'{" aria-pressed=true" if k == size else ""}>{label}</button></form>'
+                    for k, label in (("grande", "Grande"), ("mayor", "Mayor"), ("enorme", "Enorme")))
+    return layout("Pepe — Ajustes", f"""
+<p><a href="/">‹ Inicio</a></p>
+<h1>Ajustes</h1>{notice}
+<h2>Tamaño de la letra</h2><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem">{sizes}</div>
+<h2>Lo mío</h2>
+<a class="big-card" href="/sabe"><span><b>Lo que Pepe sabe de {t("ti", "usted")}</b></span><span class="chev" aria-hidden="true">›</span></a>
+<a class="big-card" href="/lo-que-ven"><span><b>Lo que ve {t("tu", "su")} familia y Lea</b></span><span class="chev" aria-hidden="true">›</span></a>
+<a class="big-card" href="/dispositivos"><span><b>Móviles conectados y acceso de la familia</b></span><span class="chev" aria-hidden="true">›</span></a>
+<p class="muted">Cómo habla Pepe (más despacio, más alto, más corto) y los permisos se cambian hablando con Pepe.</p>
+<form method="post" action="/salir"><button class="big second" type="submit">Salir de este móvil</button></form>
+""", menu("/ajustes", account))
+
+
+def elder_who_sees(account, d: dict) -> str:
+    def block(title, rows):
+        return (f'<h2>{e(title)}</h2><div class="card"><ul class="plain">' + "".join(
+            f'<li><span class="what">{e(label)}</span><span class="pill {"ok" if yes else ""}">{"Sí" if yes else "No"}'
+            f'</span></li>' for label, yes in rows) + "</ul></div>")
+    return layout("Pepe — Lo que ven", f"""
+<p><a href="/ajustes">‹ Ajustes</a></p>
+<h1>Lo que ven los demás</h1>
+{block(t("Tu familia", "Su familia"), d["family"])}
+{block("Lea, que cuida de que Pepe funcione", d["lea"])}
+{block(t("La otra persona de casa", "La otra persona de casa"), d["partner"])}
+<p class="muted">Para cambiar cualquiera, {t("díselo", "dígaselo")} a Pepe: «Pepe, no quiero que Lea vea mis conversaciones».
+{t("Tus", "Sus")} conversaciones y notas nunca se ven sin {t("tu", "su")} sí.</p>""", menu("/ajustes", account))
+
+
+def elder_photos(account, mine: list[int]) -> str:
+    grid = "".join(f'<a href="/foto?id={i}"><img src="/foto?id={i}" alt="Foto que {t("mandaste", "mandó")} a Pepe" '
+                   f'style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px"></a>' for i in mine)
+    return layout("Pepe — Fotos", f"""
+<p><a href="/mi-familia">‹ Familia</a></p>
+<h1>Fotos</h1>
+{f'<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem">{grid}</div>' if grid else
+ '<p class="msg">Todavía no hay fotos. ' + t("Puedes", "Puede") + ' mandarle una a Pepe desde «Pepe».</p>'}
+<p class="muted">Las fotos se guardan solo en Pepe, sin el lugar donde se hicieron.</p>
+<a class="big" href="/hablar">Mandar una foto a Pepe</a>""", menu("/fotos", account))

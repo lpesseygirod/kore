@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<title>KORE para Carmen — Agenda</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#6E1E35}a:hover{color:#4A1224}
+</style>
+</helmet>
+<div style="width: 390px; height: 844px; box-sizing: border-box; background: #FBF7F5; font-family: Inter, system-ui, sans-serif; color: #2A1A1F; display: flex; flex-direction: column; overflow: hidden">
+<div style="flex: 1 1 auto; padding: 20px 18px 16px; display: flex; flex-direction: column; gap: 14px; overflow: hidden">
+<h1 style="margin: 0; font-size: 28px; line-height: 34px; font-weight: 700">Agenda</h1>
+<div role="group" aria-label="Día" style="display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 8px">
+<button type="button" aria-pressed="true" style="min-height: 64px; border-radius: 14px; border: 2px solid #6E1E35; background: #6E1E35; color: #FFFFFF; font: inherit; font-size: 16px; font-weight: 700; cursor: pointer">Hoy<br>8</button>
+<button type="button" aria-pressed="false" style="min-height: 64px; border-radius: 14px; border: 2px solid #E2C9D1; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Lun<br>9</button>
+<button type="button" aria-pressed="false" style="min-height: 64px; border-radius: 14px; border: 2px solid #E2C9D1; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Mar<br>10</button>
+<button type="button" aria-pressed="false" style="min-height: 64px; border-radius: 14px; border: 2px solid #E2C9D1; background: #FFFFFF; color: #2A1A1F; font: inherit; font-size: 16px; font-weight: 600; cursor: pointer">Mié<br>11</button>
+</div>
+<div style="display: flex; flex-direction: column; gap: 10px">
+<div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 2px solid #E6D7DC; border-radius: 16px; padding: 14px 16px; opacity: 0.75"><b style="width: 64px; font-size: 19px">09:00</b><span style="font-size: 19px; line-height: 26px">Pastilla de la tensión · <span style="color: #245640; font-weight: 600">tomada</span></span></div>
+<div style="display: flex; gap: 14px; align-items: center; background: #FFFFFF; border: 2px solid #E6D7DC; border-radius: 16px; padding: 14px 16px; opacity: 0.75"><b style="width: 64px; font-size: 19px">14:00</b><span style="font-size: 19px; line-height: 26px">Pastilla de la comida · <span style="color: #245640; font-weight: 600">tomada</span></span></div>
+<div style="display: flex; gap: 14px; align-items: center; background: #6E1E35; color: #FFFFFF; border-radius: 16px; padding: 14px 16px"><b style="width: 64px; font-size: 19px">18:00</b><span style="font-size: 19px; line-height: 26px">Cumpleaños de Lucía</span></div>
+<div style="display: flex; gap: 14px; align-items: center; background: #FBEFDF; border-radius: 16px; padding: 14px 16px"><b style="width: 64px; font-size: 19px">19:30</b><span style="font-size: 19px; line-height: 26px">Misa<br><span style="font-size: 15px; color: #7A410C">De tu calendario del móvil</span></span></div>
+<div style="display: flex; gap: 14px; align-items: center; background: #F3E6EA; border-radius: 16px; padding: 14px 16px"><b style="width: 64px; font-size: 19px">21:30</b><span style="font-size: 19px; line-height: 26px">Pastilla de la noche</span></div>
+</div>
+<div style="margin-top: auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px">
+<a href="ElderPills.dc.html" style="min-height: 64px; display: flex; align-items: center; justify-content: center; border-radius: 16px; border: 2px solid #6E1E35; background: #FFFFFF; color: #6E1E35; font-size: 19px; font-weight: 700; text-decoration: none">Mis pastillas</a>
+<a href="ElderChat.dc.html" style="min-height: 64px; display: flex; align-items: center; justify-content: center; border-radius: 16px; background: #6E1E35; color: #FFFFFF; font-size: 19px; font-weight: 700; text-decoration: none">Añadir algo</a>
+</div>
+<span style="font-size: 16px; line-height: 22px; color: #4F3D44">Para añadir, díselo a Pepe: “Recuérdame el dentista el martes a las 10”.</span>
+</div>
+<nav aria-label="Menú" style="flex: 0 0 auto; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); background: #FFFFFF; border-top: 2px solid #E6D7DC; padding: 6px 6px 18px">
+<a href="ElderHome.dc.html" style="min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 15px; font-weight: 600; color: #4F3D44; text-decoration: none"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11 L12 4 L21 11"/><path d="M5 10 V20 H19 V10"/></svg>Inicio</a>
+<a href="ElderChat.dc.html" style="min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 15px; font-weight: 600; color: #4F3D44; text-decoration: none"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5 H20 V16 H9 L4 20 Z"/></svg>Pepe</a>
+<a href="ElderAgenda.dc.html" aria-current="page" style="min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 15px; font-weight: 700; color: #6E1E35; text-decoration: none"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10 H21 M8 3 V7 M16 3 V7"/></svg>Agenda</a>
+<a href="ElderFamily.dc.html" style="min-height: 64px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 4px; font-size: 15px; font-weight: 600; color: #4F3D44; text-decoration: none"><svg aria-hidden="true" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/><path d="M3 20 A6 6 0 0 1 15 20 M14 20 A4.5 4.5 0 0 1 21 17"/></svg>Familia</a>
+</nav>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":390,"height":844}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

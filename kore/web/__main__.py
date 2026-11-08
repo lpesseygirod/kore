@@ -53,8 +53,10 @@ def main(argv: list[str] | None = None) -> int:
             print("Listening beyond this computer needs --name (the box's address), so other names are refused.",
                   file=sys.stderr)
             return 2
+        from kore.family import channels
         app = create_app(a.db, clock, secure=False, hosts=DEFAULT_HOSTS + a.name, dev=a.dev,
-                         chat=_chat_worker(a.db, clock, a.dev))
+                         chat=_chat_worker(a.db, clock, a.dev),
+                         family_links={} if a.dev else channels.from_env())  # test mode never sends anything real
         uvicorn.run(app, host=a.host, port=a.port, log_level="warning", server_header=False)
         return 0
     conn = connect(a.db)
