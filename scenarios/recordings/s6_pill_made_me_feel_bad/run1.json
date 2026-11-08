@@ -1,10 +1,39 @@
 [
  {
-  "request_hash": "13761235b4d789109e435b82e0af75ad2de4edb9e5926a16539cba815753c48f",
+  "request_hash": "bb4db4934219ed139d9dada92cc55aad0aaf0b609a486b0bf898aca169295ecd",
   "response": {
    "content": [
     {
-     "id": "toolu_011moKKLgB9tnNXM7hT9BALf",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina está puesta a las nueve de la mañana. No tiene citas para hoy.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 304,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 304,
+    "cache_read_input_tokens": 9195,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 62,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "b6e532e472eab4181b5a9426f086bf96bc5bd7ee4806e0263fa3c09b96e952ba",
+  "response": {
+   "content": [
+    {
+     "id": "toolu_01DVkq9ZsrxtcWPSDqTnE66b",
      "caller": {
       "type": "direct"
      },
@@ -18,11 +47,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 304,
+     "ephemeral_1h_input_tokens": 156,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 304,
-    "cache_read_input_tokens": 6205,
+    "cache_creation_input_tokens": 156,
+    "cache_read_input_tokens": 9499,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 52,
@@ -36,11 +65,11 @@
   }
  },
  {
-  "request_hash": "49a2cc8eff28294008adb43f32cb934ecaa3aeb6846da3df5110e0428635f28f",
+  "request_hash": "58ea4eae0ea6ed1779549768a4520a2b09ea5db3c75a254a96eaa3aee1b3b2df",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla es a las nueve, y no tengo anotado que la haya tomado. Si no está segura, puede mirar en el pastillero.",
+     "text": "Lamento que se encuentre mal, Carmen. La hinchazón de tobillos es algo que conviene contarle a su médico o a su farmacéutico cuanto antes, porque puede tener relación con esa pastilla. No cambie nada por su cuenta. ¿Desde cuándo se le hinchan los tobillos?",
      "type": "text"
     }
    ],
@@ -51,10 +80,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 217,
-    "cache_read_input_tokens": 6509,
+    "cache_read_input_tokens": 9655,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 79,
+    "output_tokens": 112,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -65,64 +94,33 @@
   }
  },
  {
-  "request_hash": "19d9ce1b7197e6e856e49270ab1359de97ee864462178a1d05d7fdef4b3eefb4",
+  "request_hash": "f88a15db9222f1a703974f951fedb10f7ff2c08313970dba1b238620005b6dcc",
   "response": {
    "content": [
     {
-     "text": "Siento que se encuentre así, Carmen. Los tobillos hinchados son algo que conviene contarle a su médico o a su farmacéutico cuanto antes. Yo no puedo decirle si es por la pastilla, ni si debe cambiar algo. ¿Quiere que le avise a alguien de su familia?",
-     "type": "text"
-    }
-   ],
-   "stop_reason": "end_turn",
-   "usage": {
-    "cache_creation": {
-     "ephemeral_1h_input_tokens": 173,
-     "ephemeral_5m_input_tokens": 0
-    },
-    "cache_creation_input_tokens": 173,
-    "cache_read_input_tokens": 6726,
-    "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 109,
-    "output_tokens_details": {
-     "thinking_tokens": 0
-    },
-    "service_tier": "standard",
-    "speed": "standard"
-   },
-   "model": "claude-sonnet-5-5"
-  }
- },
- {
-  "request_hash": "0a6a724959e7d7ea42e003889f207fd32a6aa5ba527da107ac060db757a0d985",
-  "response": {
-   "content": [
-    {
-     "id": "toolu_01CpSYvwX58TPrZjHoF33Ei4",
+     "id": "toolu_01Mg7zGde2LoBnbRowLJ5yvp",
      "caller": {
       "type": "direct"
      },
      "input": {
-      "items": [
-       "La pastilla nueva me sienta mal y se me hinchan los tobillos"
-      ],
-      "list": "for the doctor"
+      "kind": "health_note",
+      "text": "Para contarle al médico: desde que toma la pastilla nueva (amlodipino), se le hinchan los tobillos y le sienta mal."
      },
-     "name": "add_to_list",
+     "name": "remember_about_person",
      "type": "tool_use"
     }
    ],
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 195,
+     "ephemeral_1h_input_tokens": 198,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 195,
-    "cache_read_input_tokens": 6899,
+    "cache_creation_input_tokens": 198,
+    "cache_read_input_tokens": 9872,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 102,
+    "output_tokens": 121,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -133,25 +131,25 @@
   }
  },
  {
-  "request_hash": "a2afdf0b21f29e9e5f5ea141a8c1db82975d951c3be670d0a32d6d3921ebaee5",
+  "request_hash": "00b7e4e5e2746efe6f4f71fd0b7c7dabeb87fc3ef48249854f09eae46dee8702",
   "response": {
    "content": [
     {
-     "text": "Hecho, Carmen. Lo he apuntado en su lista para el médico: que la pastilla nueva le sienta mal y se le hinchan los tobillos. ¿Quiere que le pida una cita?",
+     "text": "Apuntado, Carmen. Se lo dirá a su médico: que desde la pastilla nueva se le hinchan los tobillos. ¿Quiere que le ponga también una cita con el médico?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 150,
+     "ephemeral_1h_input_tokens": 143,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 150,
-    "cache_read_input_tokens": 7094,
+    "cache_creation_input_tokens": 143,
+    "cache_read_input_tokens": 10070,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 72,
+    "output_tokens": 69,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

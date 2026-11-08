@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "c91a26d926eeae3bf29dae70bc42f154982d24ebdb385bbe323e8f1b7d2101e6",
+  "request_hash": "c170d91a4b11e3fd479e3f4c084aff4667927c516cd390c8fc64d14a4fa16832",
   "response": {
    "content": [
     {
-     "id": "toolu_01PiV9k9wu4qTUg8rJxMGoJp",
+     "id": "toolu_01XKVabLxzSRSDHtdoL5EMLA",
      "caller": {
       "type": "direct"
      },
@@ -24,7 +24,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 178,
-    "cache_read_input_tokens": 8723,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 100,
@@ -38,11 +38,11 @@
   }
  },
  {
-  "request_hash": "4cac898047e006b2ff749a06158cd3068cd568907598a3b216b81ee7af4a93ea",
+  "request_hash": "cf30fafb40f69fd38608b4dab40422261ee2121407e2da22a5035da326afd187",
   "response": {
    "content": [
     {
-     "text": "Mañana a las diez estará algo nublado, y a partir de las once empezará a llover débilmente. Desde las doce lloverá más, hasta las dos. Hará entre nueve y doce grados, con algo de viento. Si quiere pasear, lo mejor es salir a las diez y llevar paraguas o un impermeable. ¿Quiere que le apunte un recordatorio?",
+     "text": "Mañana a las diez estará algo nublado, pero empezará a llover débilmente sobre las once. A partir de las doce lloverá con más ganas hasta las dos, y hará bastante viento. Hará unos diez o doce grados. Si sale, mejor a primera hora y con paraguas o impermeable.",
      "type": "text"
     }
    ],
@@ -53,10 +53,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 469,
-    "cache_read_input_tokens": 8901,
+    "cache_read_input_tokens": 9373,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 131,
+    "output_tokens": 106,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

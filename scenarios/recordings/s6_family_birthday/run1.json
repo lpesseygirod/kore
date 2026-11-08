@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "9ab895994ac07462db34778eca2eb43e36ce845da62fd083f1673cd914b41ef7",
+  "request_hash": "7c98b67d91f8ec8e1b7f0d8c5151c209e12bc849acdd3fae9bf23c38482f1a2b",
   "response": {
    "content": [
     {
@@ -11,11 +11,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 319,
+     "ephemeral_1h_input_tokens": 325,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 319,
-    "cache_read_input_tokens": 6205,
+    "cache_creation_input_tokens": 325,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 54,
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "a34c1c29864e751987b30aeaaf428bcf900124a8657d5779df18ba064d2f8a93",
+  "request_hash": "af84f362cb01d19421b7872c397d236c2b2a080f36cdbbbec3609bb69b8b7748",
   "response": {
    "content": [
     {
-     "text": "Carmen, hoy cumple años su nieta Lucía. Quizá le apetezca llamarla o mandarle un mensajito.",
+     "text": "Carmen, hoy cumple años su nieta Lucía. Si quiere, puedo dejarle un mensaje para ella.",
      "type": "text"
     }
    ],
@@ -44,10 +44,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 174,
-    "cache_read_input_tokens": 6524,
+    "cache_read_input_tokens": 9520,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 47,
+    "output_tokens": 45,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

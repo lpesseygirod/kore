@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "25c683829932f95e443766155cfcbe44bbe6e3ece69acf34a766305c4bb1f8b2",
+  "request_hash": "b58e41e350b01679d33a1baa55dc2d7d5200324234a5ab256c455f71fcbf1dc5",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada anotado para hoy.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Qué tal ha dormido?",
      "type": "text"
     }
    ],
@@ -15,7 +15,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 339,
-    "cache_read_input_tokens": 8050,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 45,
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "94a54f0fc069e396f46e0f4a568223a137f3fdc1d02a2326807226b2c07d4f0a",
+  "request_hash": "e4a112e14a6a46e68d7ced798aa9a998fe8c386c3659e404d49a1015a942f790",
   "response": {
    "content": [
     {
-     "id": "toolu_01RZraqn1K9KQGspqmnmmmcV",
+     "id": "toolu_0146BKkH1XttoFQ8vJZUwkfS",
      "caller": {
       "type": "direct"
      },
@@ -49,7 +49,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 172,
-    "cache_read_input_tokens": 8389,
+    "cache_read_input_tokens": 9534,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 27,
@@ -63,7 +63,7 @@
   }
  },
  {
-  "request_hash": "f419cbd167f4321cd7d5e6ab85ca88f9f710c3653015f15607d73f1d8e6421d5",
+  "request_hash": "57c51be873557fda601daa8b4353027f27cf6c94043916c81c4be91a944fa9c6",
   "response": {
    "content": [
     {
@@ -78,7 +78,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 135,
-    "cache_read_input_tokens": 8561,
+    "cache_read_input_tokens": 9706,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 41,
@@ -92,16 +92,16 @@
   }
  },
  {
-  "request_hash": "900305ac0d6821576bfdc2a3aeda7bba842ee895601b893faefdcabf8415341e",
+  "request_hash": "291dc022c2ef8113406f6ece8a281e04383b9d850e7caaf80d05823b68b1c66d",
   "response": {
    "content": [
     {
-     "signature": "CAQS7AcKEAgTGAI4AUIIdGhpbmtpbmcSDB6f+SMzQuaBAQqfthoM1lgJV9NMPqjc/ENeIjDI4Vd+uUjnDnndQtJ07W9mhD+BAbbBjlTAzbopPNCCfecs3MTJMgLoNk8Sa6vaLy0qiQdqzd/Gv+9xjsu1NYFryefj26NpVmpRKr5yfwByiVh0ZwwbiozInaI70OXqRKjnSnwXetyHGpqRJPZm4MD4l7pZ/bRFsH8Q7YFvmSR+XrD69x2BAWtY05s5+GSpwmTzmW8jpjiVYMAAWwBqI+AOE8nyZwTkVztZKvLnAvb9h+SC9CFiLVrFEas9AbF2vyw4CfTknvxWGIdrBCdQzxSNevUqiZbYw/Ax9JrPv/razy09IkA0jMmcfOkoa9gVnntmnDn6ZZTA6d1l4t+Z9irUBHqSwo8h13O5SjQnVeoIq0/y2rAFJfQejmh5lu+k+xAXdUjfWHPEmpBI/c0py2iPrSUgtHORDdrxETHy3cYdDQJ2jF5p4lWSUY+++rEjgq98cdXBoEvsTQyM5gO2yYiIdlg7mjnqXDsKeuVQkqQYRcE8fJeq3CusQ/4Un0e1m6TOV8TASOOj+yvZbpN18VYXPiMn63XeZWNuzytHiqB5spRVv0fQHZIdCnPItw9e60SC89xCjrmcz7l2gX3oWGCqJKq+9Bhm4GE0AyuYZTQACqCso+kEn7YK1aKX9qjlniQfBYq7wfr9zOwCVXZG3Gturx+rqAuCe7yWAOwff2dEOvMnB48Pxt5ojb0J+NTJVy154W2cifg/q9xhCdd+hFbF2xefBdFk1/jvKdSCNyUix1phbTKf+B8zg/ZXYeO7b2Q1cccI0AsGxa2idchBQglRYjnJOIpKLj6tzhb1jdwy/TCVH+mK/H/+fKKxRMc195OCTSx08BJUszGCBmYc828OdRymJhTMuZVFkMN9NE1hu0iWKopQdB1OfuXCeBdyhzGjOJT1NiZ6aYoDAFXa/ypkvsTcRB3KsnC7qVzMUnH4LDx75MWo1nxquCwDXOu3ahQlPRRqyOq53oUVTr/ygG/drTaF4FC4R+NLgB72dr8kDO00G14Ug0veDA3ifqwcLqBo8yNy6GIgV4mk+z9GT5o+GmmsB3GQ4jG83cDWB5UiRNQaCBlXh2XVYkKrkmbWHwXctWsLiyJZXuYgq9nROSISl4Y3XlETh+l89KIUATPEpo4TFAJ0VH8STqecpMU8B7w+DEV3r8W9fu1Gc0j5mpVng1O2QZnzPa0pzcfTOgsDsR2iSqMc7CZO+FXJ6VBTLPnnleQ34aUvd/Wjo1S8WA08fZUsSGFSPkRIWIUMxbYy5YVGgYGH2J/toE8t+hgB",
+     "signature": "CAQSrQcKEAgTGAI4AUIIdGhpbmtpbmcSDKHhKS6i0PJ+dBVYcRoMpZhbX5xzFUo/MgwcIjDh+A+HpODp5to50CK+wL8s17mM2NcmMz8tRxJIPPmbx23ZrKoijwq9VmRR8Wj6JyEqygbUrsYBN4w7K9UKUr103EunCK42U0gyct1iM+jXWqWP8cmnWlmhXVoEKbyZOChzNclYlMhr5dJpEp0JJi+J7koc+b8JXEUb25nQ/4MAwIL+s5FsBXxpijPDk+qYfA+WtBbxUXFahDdvuMs38+GyOL0vznKSBcWMptpE0fiwv9JU5c71cVnbO/+pa61aEZ1yvg9onXD66NSv3sZdx1OzQj2rfOnsl0EvjGNcX+VEoSKwbX/h+s0xNExqo16us1MCzNdOyfmM6Us65GjcY+MgESr5Wc095qaPRnCyiMyVcpSR+68dcDWhban8uLw4H0n6Y3wu+G8//A6x/z/gdsDcPGmknCvzBSGh5KFFoVsHGzVSCTfzx82Q6B1wdmk4EMJDwTHVG9zko+hpHei5P/wNoPzjJHQE1UxEGLharo78dYJKTNtUV1ph4d8p/pfXVDetLi6O7CukWqXimn7geP4p3k8H25IGF0IfHdUm8SalfQH0hxQ8cK032buErW61tNRygy6bJe0D6H/wWHUoi/3HVFEm+El+MGrCUmQo6mm5Wl0XiynyyljxqUX/BfilVEI3mkLYBjtQjTvQwjACopofFcj4t05s0xCZFJ0UpdEpgbcoe0XZamRBN2gFeMTNNZmRIodqs86mko1thKLUEfFCjUpUQopGP+7GYHxbtrWzNQwo+QD0sFdxHCDpoV/sZRrFg4P/zdgk5py7xopqmcO4RVILVE0baOcGQ7w/TkYCfB/oxeGYvmR9sxhaTMfcsn0egW1bX4zT72m/kuLBqrFrIIAJl4WFhzGfKmcpe51gsVQ+bo3/J6hAwKsT+UzD7igiLJkJto5BRMjGHcR0/69cvxZuSIOMIj2stdA+KZ9g0f/R95u4ZJxXl4+1q8YdMp7AZYNYG3tUiUsnB5UUmUNDk2+AXpt8TlncJNNKrRKH9c9esDTYIM7cr+lwMap5jTUnGZULkotfhST5vbhzKZrS9FM/aInmcPQCgciW5HvE29Za8EEf4CI7AlsYGjo+Q3N3e34tlIibBtNJMCy4+CG+LyVdG+9kE8O5gGqsRAnt1UA26PhnP5Sh7tSYgwXpebnnNF4beJIaJE7QqVOvjvj7N7NuZskZ40GKD4uDmxgB",
      "thinking": "",
      "type": "thinking"
     },
     {
-     "id": "toolu_012YQh7MbA2QFdxJU8s1G2gH",
+     "id": "toolu_01HwxncndiCMUCjjM7c2bQTf",
      "caller": {
       "type": "direct"
      },
@@ -117,12 +117,12 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 162,
-    "cache_read_input_tokens": 8696,
+    "cache_read_input_tokens": 9841,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 156,
+    "output_tokens": 129,
     "output_tokens_details": {
-     "thinking_tokens": 127
+     "thinking_tokens": 100
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -131,25 +131,25 @@
   }
  },
  {
-  "request_hash": "2719c4ad0d7cebf7d86b26857d03e6bec9935b503ce5ade65509e664e1c6b55a",
+  "request_hash": "e338a821de0136e285ba71b23dd1fabb2114894d070e042127671d7079ae5ccf",
   "response": {
    "content": [
     {
-     "text": "Muy bien, Carmen, no hay ninguna prisa. Se lo volveré a preguntar otro día.",
+     "text": "Está bien, Carmen, no hay ninguna prisa. Se lo volveré a preguntar otro día.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 193,
+     "ephemeral_1h_input_tokens": 166,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 193,
-    "cache_read_input_tokens": 8858,
+    "cache_creation_input_tokens": 166,
+    "cache_read_input_tokens": 10003,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 40,
+    "output_tokens": 39,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

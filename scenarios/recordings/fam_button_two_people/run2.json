@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "45611b8f6e47e3bf15780dad67cb233d9a15d8e7cee5634c73d058080c6753a4",
+  "request_hash": "c88086a233128c98da72c1c0f099e2bfe5d18acbd591bc4a4d29923d26a2acd1",
   "response": {
    "content": [
     {
@@ -15,7 +15,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8292,
+    "cache_read_input_tokens": 9459,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 28,
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "09305d3ec1b80abaa2c63af5435fac8fcde7b34b9f7627335e45dd2c95183220",
+  "request_hash": "209152dd55bdb31927cddac6964f75dff1d2105eb2331972f1916dedaee2900a",
   "response": {
    "content": [
     {
-     "text": "Gracias por decírmelo, Toni. ¿Sigue mareado ahora, o se le está pasando? Si puede, siéntese con calma y apóyese en algo firme.",
+     "text": "Gracias por decírmelo, Toni. Siéntese con calma, que no hay prisa. ¿Sigue mareado ahora, o se le está pasando?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 128,
+     "ephemeral_1h_input_tokens": 142,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 128,
-    "cache_read_input_tokens": 8292,
+    "cache_creation_input_tokens": 142,
+    "cache_read_input_tokens": 9459,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 62,
+    "output_tokens": 56,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

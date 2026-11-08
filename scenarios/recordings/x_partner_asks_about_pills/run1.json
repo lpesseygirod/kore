@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "request_hash": "1271330a4faa5d6d35d16e417c92532d4cb0455e68aac579ac63485b6095a1ba",
   "response": {
    "content": [
     {
@@ -11,11 +11,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 303,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6508,
+    "cache_creation_input_tokens": 303,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 36,
@@ -29,32 +29,68 @@
   }
  },
  {
-  "request_hash": "42c8ef90f834c06696ea7b3cdb2e4d9506d23913d74dcfc1582e3e8602420d2f",
+  "request_hash": "bb9311784aa3eb819a5599ad9e4fd690797482e23f888b3877ac0212d749f95a",
   "response": {
    "content": [
     {
-     "signature": "CAQSnQcKEAgTGAI4AUIIdGhpbmtpbmcSDH/H9SvlH3X47lsdFxoMe4eir9dqEBp5CZcFIjBr1uv4vedWpgGlIT6IPDVPZFSZZbMmrgJTvXXwVurEMGnv3+tAuJUdw6Qh8XmYc9oqugZ2Aagg9yhoLbmVKIRVRN6+WXOrt736x4fgGbRm7+tStG5jfgnlKkDj+51JlEBZDUDeK8YzUGOuN9fF47HI/sruHCuahzPtWUFscxth5+T/nkKkvRzBAyiQcbopVUfV4v5Cc1P5kmgKvTUnM9WT3OMz2zqo2BQTgHiYdtiBIqvQEd0J2ODzhGhWkwxBoUEEnT1Z0lj4OjMR+vms01PDAP6DTB8auUzH2NEJaenzWEzdf13yftU8ZpV1NCwbfFDzwK/RJwW0/5iMOlk14G9EhG/27RNDX4b2qbAIWMV8Ib1e47dxC7BKrz0TgaYUwoBJRIMNX8txIDi7UJ0kSH7D2ehxenLQrZPAl18Yl87GQjGzqpVqHgmyqnj0hut+GL4sNyAtA4H6Oo/FDHxk9gR5vRR4LwDwLwcbTTeFhkA3qUQD7JNvcWJKnJM2On4P3fc3xtv7fSZy1sjsaenV3StGOLEiFv11gU47IZBD/5R3Qh45rJV9SWTBzOWHhDdFHdzcLc/o/QiPYedMEhedIYIcNYd+e9wYR0SAFYWxIoisfOdMQeBSn0grFrNzWIbpWtGHq2qb/jOW96vuu9EBM+qMz6Sc/d9ED25On4AYvFxQ2CwwrK1PVQ6cmubGmylT55vWQqYqutnNI+ryxirQjYLn2FJepCpHY98IeN6k9s8t5u03hdNw5b2E70+cDbJEUC2njYqtGH3nxhKXO2uyn9elCykUPZuHj1DGvZ29BMolhyO2nWMcPGaovfMcl8dU7Ak8QQIEIzqZRnoYyYXT9R/um6yj4DqDoJkeo4FkqTwHQmCbGH0Baoys3+Djyc5btkh5uoPVNdA223/eWu8mXB6lSpzM9vSNhruPggZmMbkLGZT5PPErlCeskrp648hGqomilp2KIOdISZHtYO/2N39z9WkLAcP9CtpO058jEwCq2npm3kRvnTqFKUW/+RFzpUlnqKnMv7JfMlQCNpqVy57JSCfkxL109SQSjkOchSGu5bXWxQGCAUKO/NyFExTXKByskIhXHzZrS0yksB3C3zKHV702Mq9njXEhnhBLPbotXUbo7qQhqi5rI74xeDYGn7OBHFR3O8MNLhkRGXl9GAE=",
+     "signature": "CAQSyggKEAgTGAI4AUIIdGhpbmtpbmcSDI42dQyZtbo9y+RlNRoMKR/LYOIRZi6I3tdFIjBEMY9DEdxyr3yuJ8nP+jSSt3vbLGZpLXxvKijPY5eQWCe/g8YX/zjGyZe6qfrHBdsq5wfkhSuarF5t6FWPOhLYIrYtipRh6amW1WK3DmelsbQfuDtiUt3n6R8Nq5/NOugsoodvAhCszqs90DAXPwz4+LezEOGlcYZz5mm/1A8TzchdkTkIohr7FKM317Qg7VetIlfuWVFQ3ZPvOVQ4jHeBvOgmowJm3yLGVdrDYGZl+fbsW9zwnJpdoDPJU9bmL9p8+zay7SsW6cl6250len6FNgmzM+xpatFZar9d31puj/d0Ke0T0/l2F3l54X6pCcDccMOLVkaT9eVrvQzqrPQKtqAGksK9BGGNKInfXNGVL9ZpWh9ISmJq5yCUJpqEtykliS26ZDtbQGinQwlFnOvcas+sdoUr6Lbz71EVVQj7YIZczDt9bR46B+lCTumbWZ2XOLMXrFInxo1YcQYfFpXLTRV2cng3I/xl5TKEfKqJZzajRmj1xA+I8r7xIKetJZKwWwgybAhtEjQ1TDlDGCb5G6MluUkB1uCvCSRnEziF97On3ENypVCadn7HiiLnoxyHcE6g2xsKmhOeBJ0KOiSvZicGfwFKjYZYLGgGGWVvOfTAzcz1zJ49RTnKsLkp4zWr0Ejvfb9IDjieaAk/RctSNtc6ED1WXvLNwNV4Q5gJ2m5WccZyDIGunhPGfgEQ6n9nOZKDBEhwNuohGNn3W0iqpOlAaGI+DgvnCZ1LShW/5shk3SNfX2u/ik3TITXttyodqkRSA60xPofWvbRN39Lq6f+50QbPvHAShrMNhc57PXQXyD78LHjMStfuLU3aPuXdmcwBJId5MsIr8Aw07dGtLgolMWU8t727nTsywzOLXHfPClfRI6o3BglCsHMKas9NOxz6hRUJKGRbIwbbYKii8wPjyEYBO+3qfpTGTEpwg5M4hYPJ8yIo6U8avK/jI7E6YOXS0W/dPc7sGCo/jPhSCbmKw/1/0p1BQ7ZebFZgua7hmiY27VmNLERuC2rFWerC/ovuDXugVYGGkNvugIN65Z20RxINMoFbyWpZVlc6GGaJ9SKNwtPj7XoRE1QgHIB8Wfb9Ag42MOBCgNKJ6SNSrndBnT1feuiPkX96hwnaQiREtIDFodllfdQzOfCoDRRMGOhJ1147PxfifBUmNKzzGEsOO32153pFjM3liKQ1h5FPrKFG7NkCvnUgMhbenpvBYegv/OQsIS7eMe0mxzkG4QwgG33DCxm9j5YCQ6gh0weP1SLGw6Yulfcrv/Zm7sAbFE5rVWGQKh9WCAcCBey49fcMITstpo6hHpZarRK2jDmCqWb4vfr9lePsE4nnclTrwa8TgKIP158q/Y+DvHyUbyOjQvR3UQzZGrpneyicu2i/4eO9qrtUMNgYAQ==",
      "thinking": "",
      "type": "thinking"
     },
     {
-     "text": "Toni, eso es algo personal de Carmen, así que prefiero no decírselo yo. Se lo puede preguntar a ella directamente. Si quiere, puedo consultar su pastilla de usted.",
-     "type": "text"
+     "id": "toolu_013cJvKTgHhjRB2FE7Jj25Y5",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {
+      "person": "Carmen"
+     },
+     "name": "get_med_status",
+     "type": "tool_use"
     }
    ],
-   "stop_reason": "end_turn",
+   "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
      "ephemeral_1h_input_tokens": 153,
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 153,
-    "cache_read_input_tokens": 6508,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 177,
+    "output_tokens": 208,
     "output_tokens_details": {
-     "thinking_tokens": 106
+     "thinking_tokens": 155
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "5e1962bfc2b38623b3a4a65444da2c4976c022deb37d68d805f6a21f24c9f759",
+  "response": {
+   "content": [
+    {
+     "text": "Eso es algo que le corresponde contar a Carmen, Toni. Si quiere, se lo pregunto a ella.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 252,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 252,
+    "cache_read_input_tokens": 9651,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 43,
+    "output_tokens_details": {
+     "thinking_tokens": 0
     },
     "service_tier": "standard",
     "speed": "standard"

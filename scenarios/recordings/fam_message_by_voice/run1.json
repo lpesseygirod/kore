@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "0eebc3f86f181b735c9cb988fea86aaf42ef66b4bcbcb20d726ef152a75fa3ad",
+  "request_hash": "1f9b2bce09793e08ffe2368bd6ba7043946395b3e349d958f21d63a805711747",
   "response": {
    "content": [
     {
-     "id": "toolu_01GywhXHYzKmFAdTWDK9mTZr",
+     "id": "toolu_01GjmcNaiNeVCDAWHZeZFsbj",
      "caller": {
       "type": "direct"
      },
@@ -23,7 +23,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 160,
-    "cache_read_input_tokens": 8042,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 85,
@@ -37,7 +37,7 @@
   }
  },
  {
-  "request_hash": "1d4458e7e40335e8e9f6801e3b33ffdf08723730e67b9afbad3ae0b14bdec140",
+  "request_hash": "09ffdd6dfead8c17b99b7845a5ec940c8a75d36f66e2282476f91ff8dcc33163",
   "response": {
    "content": [
     {
@@ -52,7 +52,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 153,
-    "cache_read_input_tokens": 8202,
+    "cache_read_input_tokens": 9355,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 36,
@@ -66,11 +66,11 @@
   }
  },
  {
-  "request_hash": "67f7dc32d64ed32e64677941f99309403916f330b9ef7fbf95000842a024d888",
+  "request_hash": "1a5428ff770e880ef1e1e6aa963ce5d25f49d206682cff842a87d7bcfc899ed0",
   "response": {
    "content": [
     {
-     "id": "toolu_01JdrutHfyuUk2LkFr3hj4TP",
+     "id": "toolu_01P9p3gtuh4MfFpTU9J4iT9A",
      "caller": {
       "type": "direct"
      },
@@ -88,7 +88,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 110,
-    "cache_read_input_tokens": 8355,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -102,7 +102,7 @@
   }
  },
  {
-  "request_hash": "18f95935e8ad1b5b6d679e53757a057ae5511bcdd647bec8d0c24a0625596742",
+  "request_hash": "6259b5450a89cb6a35401fc1f8a383b5e2402cbfeed3ccbb6f60330bf047fe70",
   "response": {
    "content": [
     {
@@ -117,7 +117,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 89,
-    "cache_read_input_tokens": 8465,
+    "cache_read_input_tokens": 9618,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 22,

@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "9392d50774eb93c5a6e0f5b299d5540d424c340dd8f0575505c9c54903f0d6c1",
+  "request_hash": "cfad118ee187f7beae7bbf34b528926db3777d9109f1667338659c1d77484b8e",
   "response": {
    "content": [
     {
@@ -15,7 +15,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 343,
-    "cache_read_input_tokens": 8050,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 36,
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "5ae5b8c02dbfea7b4e5124d9abea5ff0bfd3116ab2d44492a344598af33d43c3",
+  "request_hash": "202ea9c10f4a6b38935986d8aaf47b64839dec8f41ef1347176f4c11a4487bcf",
   "response": {
    "content": [
     {
-     "id": "toolu_01SisX5eQ7qdPQkk6PfQjABC",
+     "id": "toolu_01TarMtM6Srx7tgyvUhhf8wK",
      "caller": {
       "type": "direct"
      },
@@ -49,7 +49,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 145,
-    "cache_read_input_tokens": 8393,
+    "cache_read_input_tokens": 9538,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 27,
@@ -63,11 +63,11 @@
   }
  },
  {
-  "request_hash": "af81b21694ebd4813b183a5fc11d4b2e3b489e54b81ef69d278b5152fff80ce2",
+  "request_hash": "0bd9a88c0dfa83af887664785026834c491386854560c1f97c63a14c7f992864",
   "response": {
    "content": [
     {
-     "text": "Carmen, por su parte ya hemos terminado. Gracias. A Toni todavía le quedan algunas preguntas, cuando le venga bien.",
+     "text": "Por hoy, Carmen, su parte ya está hecha. Ya no le queda nada por contestar. A Toni le quedan algunas preguntas, cuando le venga bien a él.",
      "type": "text"
     }
    ],
@@ -78,10 +78,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 89,
-    "cache_read_input_tokens": 8538,
+    "cache_read_input_tokens": 9683,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 53,
+    "output_tokens": 64,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -92,25 +92,25 @@
   }
  },
  {
-  "request_hash": "54c2adf69121f2a793c96b439eb045fbc593d30e054bdba3b96fe93dc74fae6e",
+  "request_hash": "3d2bcb8158f16ee3503993859f76cca835beade664121235130853a343fe84a4",
   "response": {
    "content": [
     {
-     "text": "Muy bien, Carmen. Lo dejamos para cuando Toni vuelva.",
+     "text": "Muy bien, Carmen. Entonces lo dejamos para cuando vuelva Toni. Si necesita algo mientras tanto, dígame.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_1h_input_tokens": 167,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 156,
-    "cache_read_input_tokens": 8627,
+    "cache_creation_input_tokens": 167,
+    "cache_read_input_tokens": 9772,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 32,
+    "output_tokens": 53,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

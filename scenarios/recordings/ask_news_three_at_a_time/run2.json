@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "request_hash": "1ec6316684a990b4fdc7359bcb1a363cd33c471dd786a7cb5c15ee28c24f1275",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga un buen día.",
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8812,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 55,
+    "output_tokens": 40,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "8ef94a25008b839352c107606910bcc71924d056c998e6bf342cea8ef07e6b29",
+  "request_hash": "7980c7b92e277c5b4f9c6a384727594ef46d9a71cf429787f5ac0cabd0b0fdba",
   "response": {
    "content": [
     {
-     "id": "toolu_01Q15HPaZpVFYMsAfMSgGze3",
+     "id": "toolu_01PkEXWYK26sjY3za542UsKs",
      "caller": {
       "type": "direct"
      },
@@ -45,11 +45,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 144,
+     "ephemeral_1h_input_tokens": 129,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 144,
-    "cache_read_input_tokens": 8812,
+    "cache_creation_input_tokens": 129,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 26,
@@ -63,11 +63,11 @@
   }
  },
  {
-  "request_hash": "e5e3c4f986221793df9b0fb80a18c2919827442075732aefc9d3cbdbf7118fd7",
+  "request_hash": "7cb030b71ff67025e658e49e7f7fc8df088709ede189b2a6a017b03d0ea6d410",
   "response": {
    "content": [
     {
-     "text": "Estos son los titulares de hoy, según El País.\n\nPrimero: el Gobierno aprueba la subida de las pensiones para 2027. Subirán un dos coma ocho por ciento en enero.\n\nSegundo: temporal de lluvia y viento en el norte de la península, con aviso naranja en Galicia y Asturias.\n\nTercero: el Atlético gana dos a cero al Sevilla, con dos goles en la segunda parte.\n\n¿Quiere que le lea más noticias?",
+     "text": "Estos son los titulares de hoy, según El País.\n\nPrimero: el Gobierno aprueba la subida de las pensiones para 2027. Subirán un dos coma ocho por ciento en enero.\n\nSegundo: temporal de lluvia y viento en el norte de la península. Hay aviso naranja en Galicia y Asturias.\n\nTercero: el Atlético gana dos a cero al Sevilla, con dos goles en la segunda parte.\n\n¿Quiere que le lea más noticias?",
      "type": "text"
     }
    ],
@@ -78,10 +78,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 331,
-    "cache_read_input_tokens": 8956,
+    "cache_read_input_tokens": 9625,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 165,
+    "output_tokens": 167,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -92,25 +92,25 @@
   }
  },
  {
-  "request_hash": "1f27d6f185ceab16cd0ac1a5a8e88f7b6abe80339fca4048d5445d10f6914809",
+  "request_hash": "1c7cb255feba35909f0cda85bb7f785edb6540a7676931160d3f8d72aa6688ac",
   "response": {
    "content": [
     {
-     "text": "Solo tengo el resumen que le he leído. El País dice que el Gobierno aprueba la subida de las pensiones para 2027 y que subirán un dos coma ocho por ciento en enero. No tengo más detalles. Para saber cómo le afecta a usted, puede consultar la Seguridad Social o preguntar a su familia. ¿Quiere que le lea más titulares?",
+     "text": "Solo tengo el resumen que le he leído: el Gobierno ha aprobado la subida de las pensiones para 2027, y será de un dos coma ocho por ciento en enero. No tengo más detalles. Para saber cómo le afecta a usted, puede consultarlo en la Seguridad Social. ¿Quiere que le lea más titulares?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 251,
+     "ephemeral_1h_input_tokens": 253,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 251,
-    "cache_read_input_tokens": 9287,
+    "cache_creation_input_tokens": 253,
+    "cache_read_input_tokens": 9956,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 131,
+    "output_tokens": 120,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

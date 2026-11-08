@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga una buena mañana.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 58,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "93bc67a287a07f24c28e2e92c6099e9cc0b4dcc8e1b10200d39ab2bdc177ddc2",
+  "request_hash": "fc2074c54a672aab84127de22edf6164cdf73c843cbcde2bf100926f6ec0d2a7",
   "response": {
    "content": [
     {
-     "id": "toolu_01REyPXrjb9QH6DXzWib9jyM",
+     "id": "toolu_01HrkVVX7bTg82wm3QGQ4Fcb",
      "caller": {
       "type": "direct"
      },
@@ -45,11 +45,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 141,
+     "ephemeral_1h_input_tokens": 158,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 141,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 158,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 28,
@@ -63,16 +63,16 @@
   }
  },
  {
-  "request_hash": "625ad6db4ee08de31e1b61bba214202259ecc26e3568de7b554a30f47bd51279",
+  "request_hash": "40870afd46b5f1e300ddd89883d0df8f52366989e973d0a37b0bc75cf7f81d4a",
   "response": {
    "content": [
     {
-     "signature": "CAQSrwUKEAgTGAI4AUIIdGhpbmtpbmcSDEO91emh95BEKX2uDRoMv5viDM8T2r4K/hQTIjCuBk9awZyttnJq/+pn/Wy4stcHifLvz7zBp+neoAcj79U31aFbfQw7dJWmpgyU31EqzARUpDmVe+Jmn4WbApW34xoZki0sUxt6Ek9BiTpLMM90+J0Hr8B8fa6C9i0Yu72OiyKmXivJRRafRKy3cqNaNpRNAg0aEM00h2V+Toyb92urLb6Qn6lzA4umvs/fuSC+rBtj6laLaHLOjXAM0uNyFWcLknGO6lCvsc8VUTgZGk7eBpL3X2Gm91Fr9oziSLFa4Q+msVMt5BvpU1Yhho5b3qwj7cuBoYuUqmwB7IfDVU39f88VsJzeuxgemzWryEGV54y4asRPpuLpmHQe/Q1c9eyD4Za6V08o/Lk9akRz9kGZHUvoIzo5dKcSisZBPb6DZ+0qYuZApaTbetH+PlRUruOfdQ9r+kDmeYT2G/HLLcsrgFbWLJV8PhZln18ZJ6dSgJxGwv2dbvk2721ohDZyiTYzhDHJzqC4kmurBQ+StK26VX2SXTb0e7Jok9xVwmU+mMTExa72CHVJ0ZHPloW7TmVhPMvIG80k13Mjsuzb8e1RnDTYa9wv3LVgKXsICmb+ZFmLcb1wdobFwBenA1J5bAKtSxfnSr8o5/QlyFiY0LYuTd+5taZt8kPP810JUU/LB1ehmeuy/JIcQ9yBBhyBI8X0oV0b9AHEs3uV9UKWy94uU1WVJ4YHd4MAwFT0kqODjWFV+IkyCm85I9eZpZRxFgediCUqCKfZIKHIY/hq5xvbobQIxIK0ysP2hhhRAX6G96rI30vrec0WEzY8pForNUZJBlv5n6hT1jLNw3wX3mNcWLtEXetqhy1TZT1D3DpcUGfnqZIF0L3lx8OpeSYYAQ==",
+     "signature": "CAQSvwUKEAgTGAI4AUIIdGhpbmtpbmcSDLtv+t37/QA6qejWLBoM0tRxPA2FPUSNlubrIjCxtJJIBrqyKbdo9i7bcxUmjzZg7+Aw2Bw9Vp7GaS3HS8mtl2scZeGq8bIUuzyv8iIq3AR9Sd6VC+bGVOSS0mCiQwzgt8vTMiZFWxTIjVQbqC/WEjO3xAyxL0gwRuXpvNsUgyzLb0PwyCvuFYeKRKQG4/JZTppnQeZdf+gNR9oYSMAmNr3sW5dcBE7k0bN8DdmWsGZg7W6vDrIcMCZ0I7CaDaesKjxAMouU/Kn9ZoD0ZIFxivZGldE66vK43SW2ZC4laVKDiLYgItpvJQxPK0yk9EYQ54PrNvpvTicz/ULHJrQTqM1qtdrWEHV8rdFBiyFwaYMkxCivyAhSljRfBbW38BOqKgGoY3N+IG/XZWbDj3d1FbOa8P1fcSp7bM1Qlnqf53XppfGnVXr2mfLu1gt80v6kZk6H1VbytrJykvB0pNtBKqC3Zk7FPqYonm9YZgRkg5ZwkoxAhxuTiqcgSLs2rPpkaeNi8RLgWwlZpxbSuuLly/JGKZv8BsN1W3rPEi9V28jIZJKxout3MCmJETfUifhKUvpehqkwccU8zGe3UQWI/TGTaje7b38HvfpTLB2TEhV//8JoOs9PGrItWvXYz7h8wFSTNKy647Lm82emwLktN6cPZdSQgdL7g/jTqt+qcOtqEz3io6v3AVusCHZPZ6UlXRf5j4txWgFbTppXxs3+QlpUYpPvKq55fIM8hl9Ucxf/Ntns/+94p5BwRj+oEAj9MvZRAUSulrdPttey4mTupkFuGkA7MulPcvGSn1OvKmfZ4mpuJu+04aoJXH2wlcl4BE9pqEDVLhioCLGXNHTs2fKV0XEgZEBvXebd3p53JWN02hgy1xE7qxWiWmzup2faxXwX2DGHOIXaK0uyGAE=",
      "thinking": "",
      "type": "thinking"
     },
     {
-     "id": "toolu_01JXT9piyjB48Y79MLXFdn6U",
+     "id": "toolu_017nkbunS7F9Vb9DYcMKZgxF",
      "caller": {
       "type": "direct"
      },
@@ -91,12 +91,12 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 103,
-    "cache_read_input_tokens": 6645,
+    "cache_read_input_tokens": 9652,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 112,
+    "output_tokens": 107,
     "output_tokens_details": {
-     "thinking_tokens": 22
+     "thinking_tokens": 17
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -105,25 +105,25 @@
   }
  },
  {
-  "request_hash": "71ac3bbb342cf2510605954163a100fd6ff50604ea46a7ccec01e72454e46250",
+  "request_hash": "e1d52355e97e0bdc9e0064f776555c998ba386df93c76415299c1f77f8d2d32f",
   "response": {
    "content": [
     {
-     "text": "Entonces paso la cita del médico al viernes trece de noviembre, a las once de la mañana. ¿Es correcto?",
+     "text": "Entonces paso el médico al viernes, trece de noviembre, a las once de la mañana. ¿Es correcto?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 167,
+     "ephemeral_1h_input_tokens": 162,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 167,
-    "cache_read_input_tokens": 6748,
+    "cache_creation_input_tokens": 162,
+    "cache_read_input_tokens": 9755,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 44,
+    "output_tokens": 42,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -134,11 +134,11 @@
   }
  },
  {
-  "request_hash": "a8cecf83e8351e918943437d6ca08f04e8414bc02b0b7a5db87e238250328fda",
+  "request_hash": "f91aea4cc4ee3319ebb124949308253dfbd22e148921ca0eb3d9e243bcf4d487",
   "response": {
    "content": [
     {
-     "id": "toolu_01JwJPzagkYvppJMB9P2Qe4Z",
+     "id": "toolu_01PQya9QH1qVHpxhjvFap1u4",
      "caller": {
       "type": "direct"
      },
@@ -152,11 +152,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 118,
+     "ephemeral_1h_input_tokens": 116,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 118,
-    "cache_read_input_tokens": 6915,
+    "cache_creation_input_tokens": 116,
+    "cache_read_input_tokens": 9917,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -170,11 +170,11 @@
   }
  },
  {
-  "request_hash": "c2d51cc60939a8006d88624ad6e4eb1add54832cbbe9eb2fd776e01cb8c4acbe",
+  "request_hash": "d10b6fc0c929e5784d57477841405df87b10ff6222d5f611334141b41678c5c5",
   "response": {
    "content": [
     {
-     "text": "Hecho, Carmen. La cita con el médico queda para el viernes trece, a las once.",
+     "text": "Hecho, Carmen. Su cita con el médico queda el viernes, trece de noviembre, a las once.",
      "type": "text"
     }
    ],
@@ -185,10 +185,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 76,
-    "cache_read_input_tokens": 7033,
+    "cache_read_input_tokens": 10033,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 33,
+    "output_tokens": 39,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

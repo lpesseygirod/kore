@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "9da36583eb13b29bfcdc719415f2c7c0114fc162fd5715f5ed35b322e189a088",
+  "request_hash": "08964edeebbe3570a30a48d7adece8fe08dc8a0162ad8cc2edfd734e207a2eaa",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina es a las nueve. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina es a las nueve. No tiene citas para hoy.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6509,
+    "cache_read_input_tokens": 9499,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 53,
+    "output_tokens": 54,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,7 +29,7 @@
   }
  },
  {
-  "request_hash": "b945ddcb633fd55848e7ee95c88121d9c2bfe7393bbfecc3b90910b29bfd83da",
+  "request_hash": "898038cdefd1568d06c59d9589fd3f8b33034261b0fc7a9c9b6cbaf0a285bc84",
   "response": {
    "content": [
     {
@@ -40,11 +40,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 361,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 361,
-    "cache_read_input_tokens": 6509,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9861,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 30,
@@ -58,25 +58,25 @@
   }
  },
  {
-  "request_hash": "49752be94b999ce672e86653c584d7e114655042596637a4954eab0f9e86aed4",
+  "request_hash": "9dd3e82845c69769c0a248423aed3098b1607e8f3d680caef06c01580d8718f4",
   "response": {
    "content": [
     {
-     "text": "Carmen, un recordatorio sin prisa: la pastilla de la tensión le está esperando.",
+     "text": "Carmen, le recuerdo con calma la pastilla de la tensión, por si aún no la ha tomado.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 338,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 338,
-    "cache_read_input_tokens": 6870,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 10199,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 35,
+    "output_tokens": 39,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -87,25 +87,25 @@
   }
  },
  {
-  "request_hash": "1c7207a492e3f49d65efd578bc8413f7555419c808f2938deb4179194ba55ddd",
+  "request_hash": "4bcf3b7251e9273b573d54c4aa4a6fbc40c58b1ecc11e67a0a6162cde36faf58",
   "response": {
    "content": [
     {
-     "text": "Carmen, solo le recuerdo la pastilla de la tensión, por si acaso.",
+     "text": "Carmen, solo un aviso suave: la pastilla de la tensión sigue pendiente. Si no está segura, puede mirar el pastillero.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 343,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 343,
-    "cache_read_input_tokens": 7208,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 10546,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 32,
+    "output_tokens": 52,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

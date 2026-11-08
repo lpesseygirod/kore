@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "a5a5a2970528c233a7e968a5059200cee3ede2af29b45a8ab133af171c2a8546",
+  "request_hash": "7ce76986ec9c4f7a2f93f4bcfc428faa57c3e4d6db34064ce0b625f6c2be8519",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Qué tal ha amanecido usted?",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8363,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 48,
+    "output_tokens": 63,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,7 +29,7 @@
   }
  },
  {
-  "request_hash": "7d8586546df4ea0c1a22db158792aefd54a25468e2eba027a8522b1aa76de3d9",
+  "request_hash": "92e9a1632d32b264fc51112d58e4dd758ad11b8f51d4d8ff41ddc2b22f7b9832",
   "response": {
    "content": [
     {
@@ -40,11 +40,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 242,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 242,
-    "cache_read_input_tokens": 8363,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9765,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 31,
@@ -58,11 +58,11 @@
   }
  },
  {
-  "request_hash": "9a5725adca664ef467f3398229843234335ce95ed1246a1784b17942f1ea5f6d",
+  "request_hash": "06d4cca22619447d59a3e9cbeb9bb7641398d80afc44bbec57e0be7c53d0e038",
   "response": {
    "content": [
     {
-     "text": "¿Qué le ocurre, Carmen? ¿Se ha caído o le duele algo?",
+     "text": "¿Qué ha pasado, Carmen? Cuénteme con calma.",
      "type": "text"
     }
    ],
@@ -73,10 +73,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 209,
-    "cache_read_input_tokens": 8605,
+    "cache_read_input_tokens": 9765,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 34,
+    "output_tokens": 28,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

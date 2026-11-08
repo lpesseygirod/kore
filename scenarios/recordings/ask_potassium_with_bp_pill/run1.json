@@ -1,10 +1,15 @@
 [
  {
-  "request_hash": "665cb0255c14705c1f303dfec65fae9806578976483c6f8643cf458026d8f7f9",
+  "request_hash": "185758b53643937eb907ea974d45c21ad9c855be4656c92db5e72bf448690187",
   "response": {
    "content": [
     {
-     "id": "toolu_01Bph3cJYZjEnA4vA3Tx1GsP",
+     "signature": "CAQS6wUKEAgTGAI4AUIIdGhpbmtpbmcSDCcG5tb4ZEjBu0+hgRoMoumbzzfev2WHuhvYIjBa3tRvKOlq2ajS0ID0/FWHep342Jg708dfZMChr7kMoMZ2cM7abf+Zp2CAJSJqyG4qiAWAXxximK+ou9jvQm4ZLGx6RVsOWoewiGVwnyImyzpbcFF4GA3w8V5QqqkDYhCuTl9N9KOL67LsT0AXJEoe5FRnZkbeKT2QKMH7MutOIeQwiDNBy5C2vdAYHGenwZmEtKLv7grpJbNTQCFIcSUuPa+IknSouG3e3JyvDLU/YNrDT6Uz05XhrJzUTvaGUEc69HAwJYOm9nPopQwQ28c21czxTXMXMBwA2N4AgtVrWMKiiiLh+Gw6/F73JgKHss4KAtv4k93b+RiN4jS4D0mHzRovqCAZQE4NnzOnhhzuxZp+nphWi2UleU2PHBvsUQCTZGYEa+DhblrXNBquRHAnPSo7o/Pofo/h7haQYS4KODs/h051pc7Q7fiJfh1eJSpHinOJJqq5CBnJP8DxWljo/lSCYxXhK8p8w2Gv4H4yQcKy2b4ZA3jul5smUdWrNAbIcrBIQw0Y+nsNAGbGtMBWJjzVJefDVakP1bnYJeUOLG9x4GTkalethvQmpngZLK9lTv4j2QPmdc3O6chU9kUFENDKGEV+YRkF4FzPChWLtUOluoob886yibs07OlriLvsIMTfdmQzb+DRn7ckbVDpomDiKmc8N7o7tNWG5/m/BNCDXXdI6ZOlM9H8e520JB5e7R0vJVvppLzprKjK+pp7jXca5jJ/M2SKWCWtGzhQWhCLYHulVJ5XiQSQse8+98RdCgooJt4dSe2/+l2nuG5E3F2CN5HnHnALK3s/EITa7Nu+4/I5GQNveIQoDzOECh0g161Kmc/sqWEctKWzAkAdb4/ojX21AI7MJOae+jL3ZlQ2VbeSxFNrQnqOga2PiwN5bx0odrjpa22ahRph8/4dObVFKh9DI+Q+B3MYAQ==",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01XTSqbFazUiY6m9FAgKVuq8",
      "caller": {
       "type": "direct"
      },
@@ -20,12 +25,12 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 175,
-    "cache_read_input_tokens": 8723,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 28,
+    "output_tokens": 65,
     "output_tokens_details": {
-     "thinking_tokens": 0
+     "thinking_tokens": 36
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -34,25 +39,25 @@
   }
  },
  {
-  "request_hash": "589aa63b2df4aeb0655aedc860a6c90d48e30d51da572ea90cca267b1e597a84",
+  "request_hash": "1ba0dce53349af790a3f3fc8339a83589842f7db6452517424fb9dc874843112",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Entre los frutos secos, los pistachos y las almendras aportan bastante potasio. Los pistachos son de los que menos calorías tienen. Todos los frutos secos son calóricos, así que conviene tomarlos en un puñado pequeño y sin sal.\n\nComo usted toma una pastilla para la tensión, y el potasio puede influir con algunos de esos medicamentos, le conviene preguntarle a su farmacéutico o a su médico cuánto potasio puede tomar. ¿Quiere que le apunte esa duda para llevarla a la consulta?",
+     "text": "Claro, Toni. Entre los frutos secos, los pistachos y las almendras tienen bastante potasio. Las avellanas también, pero todos engordan bastante, así que conviene tomarlos en un puñado pequeño. Las castañas tienen menos calorías que el resto, aunque algo menos de potasio.\n\nComo usted toma una pastilla para la tensión, le conviene preguntar a su farmacéutico o a su médico antes de buscar alimentos con mucho potasio. ¿Quiere que le apunte esa pregunta para su próxima cita?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 193,
+     "ephemeral_1h_input_tokens": 230,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 193,
-    "cache_read_input_tokens": 8898,
+    "cache_creation_input_tokens": 230,
+    "cache_read_input_tokens": 9370,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 203,
+    "output_tokens": 192,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

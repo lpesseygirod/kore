@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "9a5afb4b9f50fa9129a4bf7260be2ec0b24b28d27424530345fb20cc05ec593b",
+  "request_hash": "daa422b13c01423c33fc40cb66cffa8792c1ed8445a69e4679c85c8754b7e562",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8812,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 40,
+    "output_tokens": 42,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "60324055396fefb3981b438c8eeb538aee7cdaf3c5ba5705612d6c9a2d5fe1c0",
+  "request_hash": "6edc75efc909b00d9b5c12957de8b81aead30fec8340e13a1b1b22c42132acd0",
   "response": {
    "content": [
     {
-     "text": "Lo siento, Toni, no tengo anotada ninguna visita suya a la peluquería. Si quiere, puedo apuntar la próxima cita para que no se le olvide.",
+     "text": "Perdone, Toni, no tengo anotado cuándo fue a la peluquería. No me consta ninguna cita ni ningún apunte sobre eso. Si quiere, apunto ahora la próxima vez que vaya.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 137,
+     "ephemeral_1h_input_tokens": 139,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 137,
-    "cache_read_input_tokens": 8812,
+    "cache_creation_input_tokens": 139,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 62,
+    "output_tokens": 78,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

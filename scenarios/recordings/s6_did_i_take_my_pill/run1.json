@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "1d9ac1ecdcb966313ee285326b5581ea5c07934cd19236e09641f45dc15834ba",
+  "request_hash": "3f93bd8d14d74bfbee0ebf6950d6818062941ea6432de40f4f44d35f3a81e482",
   "response": {
    "content": [
     {
-     "id": "toolu_01STZzUvZcAywGgZdcG3u7uf",
+     "id": "toolu_0162H4ejdsgsxC3PMueC8Pwr",
      "caller": {
       "type": "direct"
      },
@@ -22,7 +22,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 304,
-    "cache_read_input_tokens": 6358,
+    "cache_read_input_tokens": 9219,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 52,
@@ -36,11 +36,11 @@
   }
  },
  {
-  "request_hash": "ed867c4ee9da9f3fc068d540f7f5e637ee6881b52e7ee6a38b4507f1e22c42bc",
+  "request_hash": "92af9aa7bdcf9d61f8b66825bc977226c50f6245d3a6a50d2cd49fb50d95efe8",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tengo anotado que esta mañana, a las nueve y diez, tomó la pastilla de la tensión y la vitamina D. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tengo anotado que esta mañana, a las nueve y diez, tomó la pastilla de la tensión y la vitamina D. No tiene citas para hoy.",
      "type": "text"
     }
    ],
@@ -51,10 +51,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 270,
-    "cache_read_input_tokens": 6662,
+    "cache_read_input_tokens": 9523,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 85,
+    "output_tokens": 86,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -65,60 +65,24 @@
   }
  },
  {
-  "request_hash": "0b35a494e646f695a1435180f3810c22d698b6b9e71ce3e105a02843c60a0a58",
+  "request_hash": "8b32b42ed0b48ddf57cfd34c23f365e9925a08b1a36e753259d3c686f9b3c3f3",
   "response": {
    "content": [
     {
-     "id": "toolu_01NKNuC2LdAAD8ah6Xe6EWhM",
-     "caller": {
-      "type": "direct"
-     },
-     "input": {
-      "person": "Carmen"
-     },
-     "name": "get_med_status",
-     "type": "tool_use"
+     "text": "Sí, Carmen. Tengo anotado que se tomó la vitamina D hoy a las nueve y diez.",
+     "type": "text"
     }
    ],
-   "stop_reason": "tool_use",
+   "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 172,
+     "ephemeral_1h_input_tokens": 173,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 172,
-    "cache_read_input_tokens": 6932,
+    "cache_creation_input_tokens": 173,
+    "cache_read_input_tokens": 9793,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 52,
-    "output_tokens_details": {
-     "thinking_tokens": 0
-    },
-    "service_tier": "standard",
-    "speed": "standard"
-   },
-   "model": "claude-sonnet-5-5"
-  }
- },
- {
-  "request_hash": "eef520eec5438a8cd0d3d90e6f23b6cf77a80e140d73afc76d79b75cf9862370",
-  "response": {
-   "content": [
-    {
-     "text": "Sí, Carmen. Tengo anotado que la vitamina D la tomó hoy a las nueve y diez.",
-     "type": "text"
-    }
-   ],
-   "stop_reason": "end_turn",
-   "usage": {
-    "cache_creation": {
-     "ephemeral_1h_input_tokens": 270,
-     "ephemeral_5m_input_tokens": 0
-    },
-    "cache_creation_input_tokens": 270,
-    "cache_read_input_tokens": 7104,
-    "inference_geo": "global",
-    "input_tokens": 2,
     "output_tokens": 41,
     "output_tokens_details": {
      "thinking_tokens": 0

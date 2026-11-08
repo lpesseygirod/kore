@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "552c7aaccc061735d58b866354e0380cd2918717e226705443a7902570649bc4",
+  "request_hash": "daa422b13c01423c33fc40cb66cffa8792c1ed8445a69e4679c85c8754b7e562",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. ¿Le puedo ayudar en algo?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 9024,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 40,
+    "output_tokens": 46,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "eb93ae1f878aad59e7a3c0beddd58193d0e04ab51ccb7394d4451513725f0e15",
+  "request_hash": "0ff6f309588445a1dfd93517b1b06198bb2888cc1c06c655456b264bb186f7b7",
   "response": {
    "content": [
     {
-     "text": "Perdone, Toni, pero no lo sé. No tengo forma de saber qué vio anoche en la tele. Si se acuerda de algún actor o de la historia, puedo ayudarle a recordarlo con lo que me cuente. También puede mirar la guía de programación de la cadena que tenía puesta.",
+     "text": "Lo siento, Toni, no lo sé. No tengo apuntado lo que vio anoche, y yo no veo la tele. Si quiere, puede mirar la guía de programación de ese canal. ¿Se acuerda de algo de la película, como los actores o de qué trataba?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 143,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 9161,
+    "cache_creation_input_tokens": 143,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 106,
+    "output_tokens": 96,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

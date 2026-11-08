@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada anotado para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 43,
+    "output_tokens": 55,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "53e05b58258072690b90da1408561bb1bd1d96d49a2a14d6925d76dd0bc164a8",
+  "request_hash": "3dfad661c83b3c185e09788c843899cf7b25f12bf40ba61c1d1849900fe66d91",
   "response": {
    "content": [
     {
-     "text": "No, Carmen, soy una máquina. Soy un asistente de voz que vive en este altavoz. Pero aquí estoy para lo que necesite.",
+     "text": "No, Carmen, soy una máquina. Un asistente de voz que vive en este altavoz. Pero estoy aquí para ayudarla en lo que necesite.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 136,
+     "ephemeral_1h_input_tokens": 148,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 136,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 148,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 53,
+    "output_tokens": 57,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

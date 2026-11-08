@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "18c08ef84d6bd51b978c824c7b6517869f102270407a7e90c4ebd39f5d887469",
+  "request_hash": "e196e98b287bf5c1486bd8c55cdb9c2b309086f95f3eaab5a6ed975f4e4bc05c",
   "response": {
    "content": [
     {
-     "text": "Claro, Toni. Le doy dos o tres ideas sencillas.\n\nProcure acostarse y levantarse a la misma hora todos los días. Por la tarde, evite el café y el té, y cene ligero, un par de horas antes de acostarse. Y una hora antes de dormir, baje las luces y deje a un lado el móvil y la televisión.\n\nSi el problema sigue durante semanas, merece la pena comentarlo con su médico. ¿Qué tal suele dormir últimamente?",
+     "text": "Claro, Toni. Le doy un par de ideas sencillas.\n\nIntente acostarse y levantarse a la misma hora todos los días, también los fines de semana. Por la tarde, evite el café y el té, y por la noche, cenar ligero y pronto le puede ayudar.\n\nUna hora antes de dormir, baje las luces y apague la tele o el móvil. Un baño tibio o leer un rato también relajan mucho.\n\nSi sigue durmiendo mal durante varios días, merece la pena comentarlo con su médico. ¿Quiere que le cuente alguna más?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 168,
-    "cache_read_input_tokens": 8723,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 168,
+    "output_tokens": 197,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

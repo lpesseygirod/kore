@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "889ec1dc61a5e1925a7e208f23c1aa6cc9e78530dd62f880dfe0f49206219ebf",
+  "request_hash": "bf4fb566a4dcd0cfc2c77db332b61140c8f4ff0011aeb294a9eac93a847c3ae9",
   "response": {
    "content": [
     {
-     "id": "toolu_018cRWQudnTo6MVhtcGcMpFP",
+     "id": "toolu_017uDPh6njwQNsgfNb2P63JP",
      "caller": {
       "type": "direct"
      },
@@ -20,7 +20,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8265,
+    "cache_read_input_tokens": 9418,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 27,
@@ -34,11 +34,11 @@
   }
  },
  {
-  "request_hash": "836e21ff5ff95a37221914c03dcf8a22d081ca4c54b7df0c2cf028a0954fb543",
+  "request_hash": "90d04f1cb2361131da0d719929fb7df37ca959f6e24326cbcbad3b5cc7b3beeb",
   "response": {
    "content": [
     {
-     "text": "Buenos días, soy Pepe, el asistente de esta casa. Estoy aquí para ayudarle con los recordatorios, resolver sus dudas o simplemente charlar un rato. Puede preguntarme lo que quiera y cambiar cualquier cosa solo con decírmelo. ¿Le apetece que nos conozcamos ahora, o prefiere otro día?",
+     "text": "Buenos días, soy Pepe, el asistente de esta casa. Puedo ayudarle con los recordatorios, resolver dudas o simplemente charlar un rato. Puede pedirme lo que quiera y cambiar cualquier cosa con solo decírmelo. ¿Le apetece que nos vayamos conociendo ahora o prefiere otro día?",
      "type": "text"
     }
    ],
@@ -49,10 +49,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8445,
+    "cache_read_input_tokens": 9598,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 130,
+    "output_tokens": 125,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -63,11 +63,11 @@
   }
  },
  {
-  "request_hash": "39d9f4190e4cfce84f8c8d65f889b4eeecb299c678be63dedc0580e455dd0477",
+  "request_hash": "a9ede4988b4a0d2dfbff8be9ef05a5e6d7122c35f3073b06755e13a78fad88e5",
   "response": {
    "content": [
     {
-     "id": "toolu_019GXoYanJDZNg27MUZYiCrL",
+     "id": "toolu_01C1w65nbsojZ9veo6NqnZZp",
      "caller": {
       "type": "direct"
      },
@@ -78,7 +78,7 @@
      "type": "tool_use"
     },
     {
-     "id": "toolu_01UrA6iizKpTBdknNoGwAf83",
+     "id": "toolu_01RLBJYuDXGZvJZe757X4USg",
      "caller": {
       "type": "direct"
      },
@@ -90,11 +90,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 222,
+     "ephemeral_1h_input_tokens": 217,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 222,
-    "cache_read_input_tokens": 8445,
+    "cache_creation_input_tokens": 217,
+    "cache_read_input_tokens": 9598,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 76,
@@ -108,11 +108,11 @@
   }
  },
  {
-  "request_hash": "362888d9eafd97866105ca10900f87383bcb878f28ae723300862872a66f974d",
+  "request_hash": "d61ef463a76cb7df6749eeebf3eb185fb0c78a13370c3cf34566fb7752db0b21",
   "response": {
    "content": [
     {
-     "text": "Muy bien, gracias. ¿Cómo se llama usted, y cómo le gusta que le llame?",
+     "text": "Estupendo. ¿Cómo se llama usted y cómo le gusta que le llame?",
      "type": "text"
     }
    ],
@@ -123,10 +123,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 251,
-    "cache_read_input_tokens": 8667,
+    "cache_read_input_tokens": 9815,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 38,
+    "output_tokens": 33,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -137,16 +137,16 @@
   }
  },
  {
-  "request_hash": "aced2f8c1e9ba2e6ce2cc8c07581a003486d12b876ebb96ecff9107a843b6dde",
+  "request_hash": "39291bd86293d4400798b69008d61c557706761a767a04dae978fc427fd576d9",
   "response": {
    "content": [
     {
-     "signature": "CAQS5gUKEAgTGAI4AUIIdGhpbmtpbmcSDKRXyqyT1JvwkOJPDBoMj4Q273NZQi1xWYeEIjCr5ffpDsoxTcnaXHjVE/OtXC8W8T+7QP64/YTfQhsbBu6fKlzq47cIo0aSQvx90zoqgwUomJJcyWHin1/T4RyB8wA5xKotPGrM82F+PMzrv4/MKDyBoBZIY1fjM0GNnyF0bvJAgFBw8KNgodzdqHas8R787eCbHUR5XEbgih/Csvafr4nbBt1udB+XlFwUcb6uOBTgO1aThK4AaVW1ZJOAcEjHp+bZHM3g+Dg8dtCC8li0sT2KStKCNA6po5CP5gMT+tXmu1Sv4j8iVZGV0Qsn8GQwLwFp6FyppQWVc1QJJBc/iXyYOADpU+rYp975LxPZj8Er8L3L6HZex3XETQyYmGOxSury1v3K6kFrvK2/7gnAyYBj8c3RZDMXJ8qhh0E+IZTowheWSihD3lrm4yFOZM3yAFvJITsMMywX41h/gvXI577WBtntdre3fe8Ahwp8KZnobawbuXBEF76YFcQIjkTWWBB3+Mk3U+GwqHo5oB6W8/qWuuaSNyzOCkrGlr46yvLAtXXKlLZJF+Mt224+7oHFAPUDzPFD5KycGHjZt4PYcXekhQvTK0gTbxPlVremW/m6bUvtRkWUsBqbZ2rfwz9JvmIJHoxSRgXqb/N2nJ2hA93LHSq0Od399ADe/nWBIFrZAlCTDlX6C5y5S2BPIL9P7TnS3faMqnWpbiaGcaTgmy1kFmIqmv5jxQWgF4ricQb0GOrtdGj+nPZJzQF1oAcBgIlBrFzXbefZdJSFBow3cugRgdztzNZzzVg7DAceM/t6Uk9N0wZlywIF8hyRcmzDD45PIi+jojdFxy53UA5LaaezJ3uPZSQsIFtweTQRrFNJ3rvVh8HGH/iTdydXPQ4Ea+0H9cqZmOdozF0ky813euLnPAF1sis+imTg/VcN2WjQQVZ8NBoLFR9VJGx+Z/w241QvGAE=",
+     "signature": "CAQSvQcKEAgTGAI4AUIIdGhpbmtpbmcSDBG6LqTsAUeULHetlxoMC0RbS5VT03jHZR/HIjCKq0mo6ewIF8a9ydZI6d0DjJHrj9BfSLcU2d5nw20K7PakbbP1HFt5tgR4J6mfRn0q2gZQqWMcqylIWR6MRf6rbaB2xPVYI/ypwcVenaMKz3KHldbGApAJYGZIG+hRz34Ohet28ZB0DQwkfRMnBQrXqBQGV/PMahoEaaoK5L3QVjK52RzcyMlKG4UkTy/9xY8z9eA8YrFJ1Ivnef8qkbURSs8zItpq9Oklbiq4bpWX8KJqulS7sT9UeDcrA2gRgdDTGWjSPaBanpIlMg88NjHdeyHldnX/IMKQsF8uHnzJivTE573Zijvs65bGS+dzbYMBvJy4Vffk68LfnSkL+mtDJoxo8H4SLqNDsYjSQh2K4TaVMZNuYkVcgL9tlTvG2YiCu87o5PrYWvB56PFnZ+Cc61aDKtreEhMY5dQ6p/bZLf61Cv2uTfsXau5pgR9rZ0BW/5s+2raSTi8KY1ijVqvgGCJicJ34M+S6BQa1jiNQ/ndOcmHelJqXv6BqYzemSfiTLWyKGbPtE7Plcn10WgSNhIAmO+YZqq3CRdjFCBg6FCEVwAUUiTHk+5SwoDo61fq7hc6m4NQZz0LVJrjxxhL2H1eY3FQlG07tpMmyR2Ur3swEqg3eV52iuqmaxxOgFDlFD5NyCZfeSmf3ve82wSxswQBoWO3mU3l684IyxbyL3Lr0Qs9+VxDYFvtkOP/oOvCVedHgfZH6Ev4YBP/xBSpW027mTd1yC1b3HgJ+9FU4v5uPQmJAJebFaMFNtcqsonRHGkqbRQIO27TZuOsJN+gSaUicnHQUMJx17sWjOIj4AyOMuQ/8ufXiREpgIaVMtYJlB7iPGDFlG9HA98SJUV8WoC41dfUE3Bwok8ZFyRcMSxp4WJkjaXSJdaNjYQpKGRyI8vJKZ2VPPsrqYvA5HQGg4uh8H4+Cj/w4teFB40jUGjp4IHHz84qmJqlUqiq4lvqMSwid/C1OtMMv7MAeJuBgJyrIPHuvgwKujBznnunfeHjwgaaqmDUf/x7lUWfbevMtfaVOBPyBoxGCYyAmQfJE0Wb08bugrWJcUN4473z0dLrgt/4H2c2u3vMdj/sOpdIO99KqMVcwEAn1WYv6GqCsMuzvEaHAW08Ck7T0RgNxjKCFplVbfSdBYTZnHdhTS7wqzsheq5/u6L4S/kg4y2Fu3VErkpClYkfQb6e6Zlt5YmnccAUeqmvN6BTJm2UYAQ==",
      "thinking": "",
      "type": "thinking"
     },
     {
-     "id": "toolu_01LVS6SjzyKkas2w1Na7pk43",
+     "id": "toolu_01KDoMm4EXhd8ax6eLLCKDiZ",
      "caller": {
       "type": "direct"
      },
@@ -162,16 +162,16 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_1h_input_tokens": 151,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 156,
-    "cache_read_input_tokens": 8918,
+    "cache_creation_input_tokens": 151,
+    "cache_read_input_tokens": 10066,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 123,
+    "output_tokens": 217,
     "output_tokens_details": {
-     "thinking_tokens": 21
+     "thinking_tokens": 115
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -180,7 +180,7 @@
   }
  },
  {
-  "request_hash": "c3a024a2f2a37211f1367ead88ee6c4ad3c3e7dcb37dbba14f6ffe63a83606e3",
+  "request_hash": "7c0067e02a4b8dc1bb35ae9a9aa1760a269d4dc42ecfe1fcaa3a03834fc8e3a1",
   "response": {
    "content": [
     {
@@ -191,11 +191,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 171,
+     "ephemeral_1h_input_tokens": 265,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 171,
-    "cache_read_input_tokens": 9074,
+    "cache_creation_input_tokens": 265,
+    "cache_read_input_tokens": 10217,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 24,
@@ -209,11 +209,11 @@
   }
  },
  {
-  "request_hash": "5fa980019a4681e580d66a27452cbd841b34dd60bbdb1c7b80dbc98e69e0809f",
+  "request_hash": "7163957ad8bd20834c6c1b1aef6813db8b9009e179c412c90003bb110b0254ad",
   "response": {
    "content": [
     {
-     "id": "toolu_01GCutv3r23vmKLBhWZwcf2T",
+     "id": "toolu_017inxoAdHDmAT2HnjGp3BFa",
      "caller": {
       "type": "direct"
      },
@@ -231,7 +231,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 112,
-    "cache_read_input_tokens": 9245,
+    "cache_read_input_tokens": 10482,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -245,7 +245,7 @@
   }
  },
  {
-  "request_hash": "d4ce4d97db90a58dbdfebedafc6d8aa14003fe9b2cb16481b5649c7760d99f6d",
+  "request_hash": "715829e992e76bb696f55df0fe937e34b2c7b59303120df3b79914ac2a9d3913",
   "response": {
    "content": [
     {
@@ -260,7 +260,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 81,
-    "cache_read_input_tokens": 9357,
+    "cache_read_input_tokens": 10594,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 28,

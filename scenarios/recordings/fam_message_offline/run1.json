@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "dd20fc255086b6129980c54c70461d5a84740a961b868e28f134d944e94fe92f",
+  "request_hash": "04c9c24aec0640f77463d01d16c8517715df15d9b1d983a75cf1fc81d9935219",
   "response": {
    "content": [
     {
-     "id": "toolu_01ATovBxjPxocPJvSszXLz3t",
+     "id": "toolu_01MCUmPGNmk1xXik8ba6wYCA",
      "caller": {
       "type": "direct"
      },
@@ -23,7 +23,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 161,
-    "cache_read_input_tokens": 8042,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 91,
@@ -37,7 +37,7 @@
   }
  },
  {
-  "request_hash": "79d2e38c41debc32dec8dffca03d8a280458bc886772de46b683826144d67317",
+  "request_hash": "e9addd3413dd1de6068403db99c2f166eb6b1f14b577ed7a186f6205a984a1ce",
   "response": {
    "content": [
     {
@@ -52,7 +52,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 165,
-    "cache_read_input_tokens": 8203,
+    "cache_read_input_tokens": 9356,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 43,
@@ -66,11 +66,11 @@
   }
  },
  {
-  "request_hash": "e398df46b2710a01a9351460f1806a011018b37f0f29491603dcdc6ee922e998",
+  "request_hash": "0dd024059ff06bf42dbf2dbaf23cffaeaf62579efe3854afe06c575ef932dcb3",
   "response": {
    "content": [
     {
-     "id": "toolu_01XPhivtyv5wwJRk4e7cCgLS",
+     "id": "toolu_011dqaSmiq4BXEMmdGnLieok",
      "caller": {
       "type": "direct"
      },
@@ -88,7 +88,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 112,
-    "cache_read_input_tokens": 8368,
+    "cache_read_input_tokens": 9521,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -102,11 +102,11 @@
   }
  },
  {
-  "request_hash": "05b71db434ed6a1d697e6e08172f623682ee629e39c738d937d3e0b3422178d0",
+  "request_hash": "941c40e2f7aa86600b1077ea630c7793795e56b35de9c8f9973a3222ecb6d979",
   "response": {
    "content": [
     {
-     "text": "No he podido enviar el mensaje a Lucía ahora mismo. Lo seguiré intentando y le avisaré cuando salga.",
+     "text": "Carmen, no he podido enviar el mensaje a Lucía ahora mismo. Lo seguiré intentando y le aviso en cuanto salga.",
      "type": "text"
     }
    ],
@@ -117,10 +117,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 125,
-    "cache_read_input_tokens": 8480,
+    "cache_read_input_tokens": 9633,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 48,
+    "output_tokens": 54,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -131,22 +131,22 @@
   }
  },
  {
-  "request_hash": "4e3b72510209103863186580618f3884b27b00abf190fc9319e1e09b28e8e782",
+  "request_hash": "51f89fc1d21ea4afe78ccab3a60d1640e54efbe4ae81946de351674ba281cca7",
   "response": {
    "content": [
     {
-     "text": "Carmen, ya se ha enviado el mensaje a Lucía: le he dicho que mañana no venga porque va al médico.",
+     "text": "Carmen, ya se ha enviado el mensaje a Lucía: le he dicho que mañana no venga, que va al médico.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 164,
+     "ephemeral_1h_input_tokens": 170,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 164,
-    "cache_read_input_tokens": 8605,
+    "cache_creation_input_tokens": 170,
+    "cache_read_input_tokens": 9758,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 45,

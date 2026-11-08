@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "66b1614da27f4402cdf33aa6e09bc38dc3068399c9c5b3243df0918c8b852849",
+  "request_hash": "50f269a4c382e38ac04a824df3c253078898ef66ed379ab27c85287ff2d30393",
   "response": {
    "content": [
     {
-     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. ¿Cómo han amanecido?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6508,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 36,
+    "output_tokens": 39,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "8a684357cef0b66908b8e3cdf11f23e027f14087236e4886425e8178dd166f30",
+  "request_hash": "d41d45cf85d432024312c0007a37329720ab6bf2b53b425024aff499fdc6b62a",
   "response": {
    "content": [
     {
-     "text": "Carmen, son las nueve y toca la pastilla de la tensión. ¿Quiere que se lo apunte cuando la tome?",
+     "text": "Carmen, son las nueve: le toca la pastilla de la tensión.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 380,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6885,
+    "cache_creation_input_tokens": 380,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 47,
+    "output_tokens": 27,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,11 +58,11 @@
   }
  },
  {
-  "request_hash": "0dc072906bfd9f9d83a79eb640441539bffed38acdc6639b4b98b7e5a5d80c73",
+  "request_hash": "4388903b1064ca1c5e5c0365c9c3a07f724af3b997c0316f0ef9d2d3ff953758",
   "response": {
    "content": [
     {
-     "id": "toolu_014972zQSahCRX7DLg4kxqHa",
+     "id": "toolu_01QKw16j8au4nVUQkwdoJjXz",
      "caller": {
       "type": "direct"
      },
@@ -74,11 +74,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 154,
+     "ephemeral_1h_input_tokens": 134,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 154,
-    "cache_read_input_tokens": 6885,
+    "cache_creation_input_tokens": 134,
+    "cache_read_input_tokens": 9878,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 33,
@@ -92,7 +92,7 @@
   }
  },
  {
-  "request_hash": "fd7c03ba386e0cee54c12f3e34efb4e19c694bacac8a35f66ac7f59b5a1642b0",
+  "request_hash": "5c4b168d6ed8975a759486b971f27fc694a49e87498e47769b8dff0a1388aac2",
   "response": {
    "content": [
     {
@@ -107,7 +107,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 66,
-    "cache_read_input_tokens": 7039,
+    "cache_read_input_tokens": 10012,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 17,
@@ -121,11 +121,11 @@
   }
  },
  {
-  "request_hash": "4ecd8a5dc44b0d25398f984a2ab03ca4c7213af5a996ecd74790982a072129e7",
+  "request_hash": "792f758afe3f85e8aa1ac13f0cabd8fa522a7190840b19e97d6679d13e4c4609",
   "response": {
    "content": [
     {
-     "text": "Perdone, Toni. Entonces el \"ya está\" no lo apunto, porque el aviso era para Carmen. ¿Quiere que le ayude con algo?",
+     "text": "Gracias, Toni. Entonces la pastilla de la tensión de Carmen sigue sin anotarse. Cuando ella me lo diga, lo apunto.",
      "type": "text"
     }
    ],
@@ -136,10 +136,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 110,
-    "cache_read_input_tokens": 7105,
+    "cache_read_input_tokens": 10078,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 57,
+    "output_tokens": 58,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

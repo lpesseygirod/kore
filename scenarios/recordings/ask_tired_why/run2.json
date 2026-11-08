@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "ae5bfbf4e4eebe435fd523213edbffe7338dd24b78726ed1b8b3ccfcbd03ac3e",
+  "request_hash": "74da8af24154edbf75e9e19968cf80b75900b71a55b7e1384541c3fdb0050639",
   "response": {
    "content": [
     {
-     "text": "Siento que se encuentre así, Toni. A veces el cansancio viene de haber dormido poco o mal, de beber poca agua o de no haber comido bien. ¿Desde cuándo se siente así?",
+     "text": "Lamento que se encuentre así, Toni. A veces el cansancio viene de haber dormido poco o mal, de beber poca agua o de no haber comido bien. ¿Desde cuándo se siente así?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8921,
+    "cache_read_input_tokens": 9361,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 71,
+    "output_tokens": 72,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "7bff05c99b5b8337631beee5622dd5d597e01d6ee26be332d9a431b628825edb",
+  "request_hash": "674c6f95b49288de2c15dd255283bc6078fc3e2f25fd209877171a6608da0758",
   "response": {
    "content": [
     {
-     "text": "Entiendo, Toni. Como lleva así unos días, le conviene comentárselo a su médico. ¿Quiere que lo deje apuntado para su próxima cita?",
+     "text": "Entiendo, Toni. Si lleva varios días así, conviene comentárselo a su médico. ¿Quiere que lo deje anotado para su próxima cita?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 156,
+     "ephemeral_1h_input_tokens": 157,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 156,
-    "cache_read_input_tokens": 8921,
+    "cache_creation_input_tokens": 157,
+    "cache_read_input_tokens": 9361,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 60,
+    "output_tokens": 58,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

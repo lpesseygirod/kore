@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "a5a5a2970528c233a7e968a5059200cee3ede2af29b45a8ab133af171c2a8546",
+  "request_hash": "7ce76986ec9c4f7a2f93f4bcfc428faa57c3e4d6db34064ce0b625f6c2be8519",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8363,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 63,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "dfdeadcad51b57c7731c753b47b1c0d5dab28a71c3d21c55b7253c39cf2e6978",
+  "request_hash": "92e9a1632d32b264fc51112d58e4dd758ad11b8f51d4d8ff41ddc2b22f7b9832",
   "response": {
    "content": [
     {
-     "text": "Estoy aquí con usted, Carmen. ¿Cómo se encuentra?",
+     "text": "Carmen, estoy aquí con usted. ¿Cómo se encuentra?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 257,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8598,
+    "cache_creation_input_tokens": 257,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 31,
+    "output_tokens": 30,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,25 +58,25 @@
   }
  },
  {
-  "request_hash": "65ee55245848bf9033b8dbf0ec5e4375198b224886badd8d7840b2b570b741e2",
+  "request_hash": "24dcb438bc79470b86f05ce177fa97a523cbf5a21557bfe455c72c58c6f9b5ee",
   "response": {
    "content": [
     {
-     "text": "¿Qué le ha pasado, Carmen?",
+     "text": "Carmen, ¿qué le ha pasado? ¿Se ha caído o se encuentra mal?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 209,
+     "ephemeral_1h_input_tokens": 208,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 209,
-    "cache_read_input_tokens": 8598,
+    "cache_creation_input_tokens": 208,
+    "cache_read_input_tokens": 9765,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 19,
+    "output_tokens": 37,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

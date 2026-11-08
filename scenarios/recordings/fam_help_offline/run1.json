@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "7bbeccaec87e765947f49cc0367491d623722555da412acf1ddd1e709170c95d",
+  "request_hash": "7ce76986ec9c4f7a2f93f4bcfc428faa57c3e4d6db34064ce0b625f6c2be8519",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8341,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 43,
+    "output_tokens": 63,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "b3825c14ea205c7809cab2c7293877663a2b3c5d00efcf80ae86bb170c316bcb",
+  "request_hash": "a74c22d33bd96fe772e03ebafecab052de4855f3c325177b1c4126224fd34547",
   "response": {
    "content": [
     {
-     "text": "Estoy aquí con usted, Carmen. ¿Cómo se encuentra?",
+     "text": "Estoy aquí con usted, Carmen. ¿Cómo se encuentra ahora?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 246,
+     "ephemeral_1h_input_tokens": 280,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 246,
-    "cache_read_input_tokens": 8341,
+    "cache_creation_input_tokens": 280,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 31,
+    "output_tokens": 34,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,25 +58,25 @@
   }
  },
  {
-  "request_hash": "9685f57cb49df74b154d210da5a6fbf019f178d84de6a4c40e97752bbe3b03c4",
+  "request_hash": "2f6cfeffad0adfcfbd3e4994dafd5eb9ef8e8cf65b95cd4aed03637716bae1cb",
   "response": {
    "content": [
     {
-     "text": "No lo sé, Carmen. No he podido avisar a nadie todavía, porque no hay conexión. Si necesita ayuda ya, llame por teléfono al 112 o pulse el botón de la teleasistencia. Yo sigo aquí con usted. ¿Cómo se encuentra?",
+     "text": "No lo sé, Carmen. No he podido avisar a nadie porque no hay conexión, y no puedo prometerle que venga alguien. Si lo necesita, llame por teléfono al 112 o pulse el botón de la teleasistencia. Yo sigo aquí con usted. ¿Puede hacerlo ahora?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 107,
+     "ephemeral_1h_input_tokens": 124,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 107,
-    "cache_read_input_tokens": 8587,
+    "cache_creation_input_tokens": 124,
+    "cache_read_input_tokens": 9788,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 102,
+    "output_tokens": 112,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

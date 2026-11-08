@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 43,
+    "output_tokens": 56,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,19 +29,19 @@
   }
  },
  {
-  "request_hash": "d182ab836336e17a61b664008589032ffb17ee3e0681459aba2798037e8b4911",
+  "request_hash": "6606b2786a02822fbbb8363c4b1c0fbed9c6d5b2d0d8eeeed2bb668b32247b6b",
   "response": {
    "content": [
     {
-     "id": "toolu_01Sg1v1PLrogZmLGJKyUGsk9",
+     "id": "toolu_01EgHyBGx5EWNjbvUewu29Ba",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Por favor, no me saques el tema de mi hermana, que está muy malita y me pongo triste.",
-      "understood": "Do not bring up her sister or her sister's health; it makes her sad.",
+      "understood": "Don't bring up her sister or her sister's health; it makes her sad.",
       "kind": "rule",
-      "rule": "Don't bring up her sister or her sister's health unless she does.",
+      "rule": "Don't bring up her sister or her sister's health.",
       "scope": "always"
      },
      "name": "record_feedback",
@@ -51,14 +51,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 142,
+     "ephemeral_1h_input_tokens": 155,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 142,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 155,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 211,
+    "output_tokens": 207,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -69,25 +69,25 @@
   }
  },
  {
-  "request_hash": "7273906dc68b89e6bd9dc80b0dbd773068e31b2f503cd083c25a2389c755e088",
+  "request_hash": "bdda93b9485604b252aa642b14e10ddb0aff3577587b50eb77d162d19c93a314",
   "response": {
    "content": [
     {
-     "text": "Claro, Carmen, no le sacaré el tema de su hermana.",
+     "text": "Claro, Carmen, no volveré a sacar ese tema.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 298,
+     "ephemeral_1h_input_tokens": 290,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 298,
-    "cache_read_input_tokens": 6646,
+    "cache_creation_input_tokens": 290,
+    "cache_read_input_tokens": 9649,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 26,
+    "output_tokens": 24,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

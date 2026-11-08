@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "45611b8f6e47e3bf15780dad67cb233d9a15d8e7cee5634c73d058080c6753a4",
+  "request_hash": "c88086a233128c98da72c1c0f099e2bfe5d18acbd591bc4a4d29923d26a2acd1",
   "response": {
    "content": [
     {
@@ -11,11 +11,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 250,
+     "ephemeral_1h_input_tokens": 264,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 250,
-    "cache_read_input_tokens": 8042,
+    "cache_creation_input_tokens": 264,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 25,
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "325dd4dfc650d4792366fa3c0e6c1744794c055bad31683ff0a1617e30bdcb17",
+  "request_hash": "5cd849d8a25b6c1d6195ed53c2816743e99b34ba7b9fb8026ab6133f15f01ec8",
   "response": {
    "content": [
     {
-     "text": "Gracias por decírmelo, Toni. ¿Sigue mareado ahora, o ya se le está pasando? Si puede, siéntese con calma y no se levante deprisa.",
+     "text": "Gracias, Toni. Siéntese con calma, no hace falta que se levante. ¿Se ha mareado ahora mismo o lleva un rato así?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 125,
+     "ephemeral_1h_input_tokens": 139,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 125,
-    "cache_read_input_tokens": 8292,
+    "cache_creation_input_tokens": 139,
+    "cache_read_input_tokens": 9459,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 63,
+    "output_tokens": 55,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

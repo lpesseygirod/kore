@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "request_hash": "1ec6316684a990b4fdc7359bcb1a363cd33c471dd786a7cb5c15ee28c24f1275",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. ¿Qué tal ha dormido?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8812,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 40,
+    "output_tokens": 44,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "6a4b9f6d1bae4ec93a7cec8362c978129c4078bbea655818bd5a86c88230b92e",
+  "request_hash": "596eb0ced7ad25d6b8f47e35efa1fe8e04c64e78151e0da79b2767482d3e6b45",
   "response": {
    "content": [
     {
-     "text": "Lo siento, Toni, no tengo los horarios ni los precios de los autobuses, y no quiero inventarlos. Le recomiendo mirar la web de la estación de autobuses o llamar a su taquilla. Si quiere, puedo mirar qué tiempo hará mañana en su casa.",
+     "text": "Lo siento, Toni, no tengo los horarios ni los precios de los autobuses, y no quiero darle datos inventados. Le recomiendo mirarlo en la web de la estación de autobuses o llamar a ellos por teléfono. ¿Quiere que le apunte un recordatorio para mañana para que lo consulte?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 149,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 149,
-    "cache_read_input_tokens": 8812,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9649,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 103,
+    "output_tokens": 113,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

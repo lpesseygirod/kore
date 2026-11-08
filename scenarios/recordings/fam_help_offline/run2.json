@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "7bbeccaec87e765947f49cc0367491d623722555da412acf1ddd1e709170c95d",
+  "request_hash": "7ce76986ec9c4f7a2f93f4bcfc428faa57c3e4d6db34064ce0b625f6c2be8519",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8341,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 63,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,7 +29,7 @@
   }
  },
  {
-  "request_hash": "660c5e4f5d9ca4a2ad313c48cc0b0c495e7c0f2505f092866845edf17ab2d25d",
+  "request_hash": "a74c22d33bd96fe772e03ebafecab052de4855f3c325177b1c4126224fd34547",
   "response": {
    "content": [
     {
@@ -40,11 +40,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 244,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 244,
-    "cache_read_input_tokens": 8341,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9788,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 31,
@@ -58,25 +58,25 @@
   }
  },
  {
-  "request_hash": "421a59839aed2b7cca69cfda4b1bf81a112c36ca0a30fad91296524bf430b448",
+  "request_hash": "97dc6f6888161be738d053ec0a548208ff9f30d113a84651d113198cefc10ded",
   "response": {
    "content": [
     {
-     "text": "No lo sé, Carmen. No he podido avisar a nadie porque no hay conexión, así que no le puedo prometer que venga alguien. Llame con el teléfono o pulse el botón de la teleasistencia, o llame al 112 si es grave. Yo me quedo con usted. ¿Qué le ocurre?",
+     "text": "No lo sé, Carmen. Ahora mismo no he podido avisar a nadie, porque no hay conexión. Lo más seguro es llamar por teléfono al 112 o pulsar el botón de la teleasistencia. Yo sigo aquí con usted. ¿Puede alcanzar el teléfono o el botón?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 107,
+     "ephemeral_1h_input_tokens": 121,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 107,
-    "cache_read_input_tokens": 8585,
+    "cache_creation_input_tokens": 121,
+    "cache_read_input_tokens": 9788,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 110,
+    "output_tokens": 112,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

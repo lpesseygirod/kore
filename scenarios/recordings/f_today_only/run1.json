@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "03169010175a47cd8bf1e7899ca891b7529f3d2cc02897ded8a4dab986736b96",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga una buena mañana.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 6657,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 6657,
-    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 58,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,17 +29,17 @@
   }
  },
  {
-  "request_hash": "5552fa7cf2e53619a22e47409335899420625ec287b9a72ed0fd2cecddf18c24",
+  "request_hash": "3539a27fff6e6e0359d25212fa17e50adbc315d92b3b5a7d95561261705110f2",
   "response": {
    "content": [
     {
-     "id": "toolu_01JfqUJKBYgpEPfpo8xHd5nR",
+     "id": "toolu_01YZNzPQBQ1Xt8PKuYahXcqs",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Hoy no me des mucha conversación, que estoy cansada.",
-      "understood": "Carmen quiere poca conversación hoy porque está cansada.",
+      "understood": "Carmen is tired and wants little conversation today.",
       "kind": "setting",
       "setting": "chattiness",
       "value": "less",
@@ -52,14 +52,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 129,
+     "ephemeral_1h_input_tokens": 146,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 129,
-    "cache_read_input_tokens": 6657,
+    "cache_creation_input_tokens": 146,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 204,
+    "output_tokens": 198,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -70,25 +70,25 @@
   }
  },
  {
-  "request_hash": "198d5c22c2c105ac52a8297521ae77ddfd8de6f83914ba02c735af9782d394fd",
+  "request_hash": "56427a8df3ba74b2c579f34c231fccc72fb5ee87da385f05c80caf6c39829580",
   "response": {
    "content": [
     {
-     "text": "Claro, Carmen, hoy hablaré lo justo. Descanse.",
+     "text": "Claro, Carmen. Hoy hablaré lo justo. Descanse.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 281,
+     "ephemeral_1h_input_tokens": 275,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 281,
-    "cache_read_input_tokens": 6786,
+    "cache_creation_input_tokens": 275,
+    "cache_read_input_tokens": 9640,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 28,
+    "output_tokens": 29,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

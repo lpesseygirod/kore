@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "faced28bd48d7d7a83d2f7d88b02384be1e7740b8cf144b7743c85fe7e1294b0",
+  "request_hash": "b7e53db08eb9148ac29f45968305b7434e9f8017db487ec1c8637279542aea7f",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga una buena mañana.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 43,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "a3b11719cae95cf4e0b1a176b5c1b7827d09087dc0e8327ad3169c2764f86872",
+  "request_hash": "06d4a7b893fe47e45e8ffcacbd4227936a235892dd272a00cca587c224191703",
   "response": {
    "content": [
     {
-     "text": "Carmen, no tiene por qué abrir a nadie que no esperaba. Aunque diga que viene a revisar el gas, es mejor no abrirle ahora.\n\nSi quiere comprobarlo, llame usted misma a su compañía de gas, al teléfono que aparece en su factura, no al que él le dé. Y si hay una revisión de verdad, se puede concertar otro día con alguien de la familia a su lado.\n\n¿Quiere que avise a algún familiar?",
+     "text": "No tiene por qué abrirle a nadie que no esperaba, Carmen. Aunque diga que viene a revisar el gas, no abra la puerta si no ha avisado usted antes.\n\nSi quiere comprobarlo, llame a su compañía de gas, al número que figura en su factura, o consulte con su familia. Un revisor de verdad puede esperar.\n\n¿Quiere que avise a alguien de su familia?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 143,
+     "ephemeral_1h_input_tokens": 145,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 143,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 145,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 161,
+    "output_tokens": 142,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

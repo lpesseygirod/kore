@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "38c54b15be9dd668ef8db9792f9bb3e78c22eb303f61d800411326f1618186be",
+  "request_hash": "5a89387581ec1327c924fbdd10bc071b2715b82af69465fe060fdbea4df7569b",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina está puesta para las ocho de la tarde. No tiene citas para hoy.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su medicina de hoy está puesta para las ocho de la tarde, y no tiene citas. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6662,
+    "cache_read_input_tokens": 9499,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 62,
+    "output_tokens": 73,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,59 @@
   }
  },
  {
-  "request_hash": "9741a2120c338cdf5bcaeec2592e0c5a044b6d9820930043cfbecda8c69c34f1",
+  "request_hash": "759ce9ff812554d8935126c104a2d9dc47b31b78eac88b31d66768e5967bdf83",
   "response": {
    "content": [
     {
-     "text": "Siento que le duela la rodilla, Carmen. Sobre si puede tomar ibuprofeno con el Sintrom, eso tiene que decírselo su médico o su farmacéutico, y conviene preguntárselo antes de tomarlo. ¿Quiere que se lo deje anotado para consultarlo?",
+     "id": "toolu_018zBfL9rNZWrjskxTxHBuxo",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "get_med_status",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9675,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 28,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "2e4684b26c0176360d26c8f7a868625954b205a225ea8e488c5cccaf3280066f",
+  "response": {
+   "content": [
+    {
+     "text": "Siento lo de la rodilla, Carmen. Sobre el ibuprofeno con el Sintrom, no puedo decirle que sí ni que no. Es una pregunta para su farmacéutico o para su médico, antes de tomarlo. ¿Quiere que lo anote para que se lo pregunte en su próxima cita?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 165,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 165,
-    "cache_read_input_tokens": 6662,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9859,
     "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 109,
+    "input_tokens": 2,
+    "output_tokens": 113,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

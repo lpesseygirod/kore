@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "66b1614da27f4402cdf33aa6e09bc38dc3068399c9c5b3243df0918c8b852849",
+  "request_hash": "50f269a4c382e38ac04a824df3c253078898ef66ed379ab27c85287ff2d30393",
   "response": {
    "content": [
     {
-     "text": "Buenos días. Hoy es lunes, nueve de noviembre. Que tengan un buen día.",
+     "text": "Buenos días. Hoy es lunes, nueve de noviembre. ¿Quién me habla, por favor?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 303,
-    "cache_read_input_tokens": 6205,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 36,
+    "output_tokens": 40,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "8a684357cef0b66908b8e3cdf11f23e027f14087236e4886425e8178dd166f30",
+  "request_hash": "62bb1755fcbbad3b2bc1ba7e88f89ffcf491c1da6982e399e8a120285a496256",
   "response": {
    "content": [
     {
-     "text": "Carmen, son las nueve y toca la pastilla de la tensión. Cuando la tome, dígamelo, por favor.",
+     "text": "Carmen, son las nueve: es la hora de la pastilla de la tensión.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 377,
+     "ephemeral_1h_input_tokens": 381,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 377,
-    "cache_read_input_tokens": 6508,
+    "cache_creation_input_tokens": 381,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 44,
+    "output_tokens": 29,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,11 +58,16 @@
   }
  },
  {
-  "request_hash": "864e89a5f8757191672c12484f8f2bf68b9e66da88d423cdb1a7af41fbcf3410",
+  "request_hash": "f92b151ee1ed1d814a108e74ffa04bb80e42235b71b4b5116335b83666dfc07e",
   "response": {
    "content": [
     {
-     "id": "toolu_01LrxtJrnMrtBy7QDrxwaZTE",
+     "signature": "CAQS+AUKEAgTGAI4AUIIdGhpbmtpbmcSDOYkaEz8PRxFA/Z6AxoM0iMn+ujEHmY0rAMMIjCY1EZrB8OQcfjROdzgy8cEd1Fz8Rodr33TF1FPSc78KnnS41JifKNso+1pKBje7JEqlQVeK+w8avIyHOQxiOHtmanOu06yUbZ1D//qnwz/e5vGh84iig1N93nouDEJNRDib6d6X5SFnf2niQb5xSZff1/BF+3Vv8h29GoTYw/WTvzyhra6BcjxvS2OO9sk7lckWAkI8rUqEvNvM2ZVK7VQo/CgX+hzeLTa6usN0T+OSnjD3+fKM4beNHuGo1V1DO5u82xJDfIo32EI3M0TpYCnx7dF+t/3iDq5rPuPlhzW0J9f8WgZz+iXtfI1FKISAqSbctZLlDS/jpexfKJyHHap8wK7Za5Msdp2+sOcjEqy/aFydLYf6qcAKd0bQXJiSIPJu+kEi9p1JUsINrVxc0OH4XiWxhokh98an+XDAM8RPoykzYT+ob32iJn/j+PnQKDjK2MlX4lY508sfVkmY0wSB/emKtjSu7PZH0sCOWOVbeH6TFyiracC6jLz2OIamGbwv8qdA24INiRpmWK64hlXd2tPXhEEu3b0pJlFNZVYNZDngvHpis3h33O1vmnFYACAZlEDWpsJRzNN/ZjW2Oegz6ivPT6uS7dwgkCwZGIFwqao6TLGDvHVEoJymUOZtzyJDqDt39n0jLogbtpknCmua07r6ocmdoHqSO4yhF/hUMlBn8RC55822nrfD06nLlPIv0Nf/xCDLdjPDZCkh76x+pygrINZxOzVszLAFmBkNMMN7DL616Y1iMHfh/0+ePdChX6fKQTyJO1D12tt2tQw06ysihKnC9LK6zeCvYAa2OyspFB3TgsZHTWcgYCt1UUn1t1OJT6sb5nY9fXkqrr/hOhwGtj+FMFXvniIDDHuvO5BrAMmOpMrOxdXuOu5NIivy4ywl6Sys02R/DPGDfYG5DVJPlf8GnLaVvkkO50caABkDUYn41m2GAE=",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01SXCyFEX2gp6K4LXSeTYgTW",
      "caller": {
       "type": "direct"
      },
@@ -74,16 +79,16 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 151,
+     "ephemeral_1h_input_tokens": 136,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 151,
-    "cache_read_input_tokens": 6885,
+    "cache_creation_input_tokens": 136,
+    "cache_read_input_tokens": 9879,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 33,
+    "output_tokens": 73,
     "output_tokens_details": {
-     "thinking_tokens": 0
+     "thinking_tokens": 39
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -92,7 +97,7 @@
   }
  },
  {
-  "request_hash": "7b12401f8f826d6808afa84988bbd476774bd768ff52fe9bfa69e6aaea61bbd4",
+  "request_hash": "6d7aa98e8685aeeae7287e128c665598884bb6d67281b08ad4fd46915b81f73d",
   "response": {
    "content": [
     {
@@ -103,11 +108,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 66,
+     "ephemeral_1h_input_tokens": 106,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 66,
-    "cache_read_input_tokens": 7036,
+    "cache_creation_input_tokens": 106,
+    "cache_read_input_tokens": 10015,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 17,
@@ -121,11 +126,11 @@
   }
  },
  {
-  "request_hash": "6ddac3e052215dd1de1666e8ba298f1719e18f8467ed890c26cea5dce6ecc853",
+  "request_hash": "96cc75182a793991873356a55678bb3c99e75e9c466259dfc6143e440d942925",
   "response": {
    "content": [
     {
-     "text": "Gracias, Toni. Entonces no he anotado nada. El aviso era para Carmen, así que ella me lo dirá cuando se la tome.",
+     "text": "Gracias, Toni. Entonces no anoto nada: el aviso de las nueve era para Carmen. ¿Puedo ayudarle en algo?",
      "type": "text"
     }
    ],
@@ -136,10 +141,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 110,
-    "cache_read_input_tokens": 7102,
+    "cache_read_input_tokens": 10121,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 52,
+    "output_tokens": 54,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

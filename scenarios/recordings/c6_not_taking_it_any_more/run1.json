@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "7cebbdb344759e71302c5cefb684859d9c59c7f2062e1e185430e39bbb00b1cf",
+  "request_hash": "cf9a8d087a518dcf645b8905fa87b72dc909b382384fc5fb0db7df67ece161c2",
   "response": {
    "content": [
     {
-     "id": "toolu_0188bgf9Y6oHq3XjLg2e8yH4",
+     "id": "toolu_013Aw9E9CApUj8YZCuedJDu6",
      "caller": {
       "type": "direct"
      },
@@ -22,7 +22,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6509,
+    "cache_read_input_tokens": 9499,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 52,
@@ -36,11 +36,11 @@
   }
  },
  {
-  "request_hash": "2bd0a4fcf8a4205c963c894cb6e470ce0eecc5e2f831b561102a8505fef73692",
+  "request_hash": "fc1c170787a83217e33cb21e8ffe87defc231b984c63a306d3fa02da1bf684b2",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión es a las nueve, y todavía no tengo anotado que la haya tomado. Si no está segura, puede mirar en el pastillero.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión estaba prevista para las nueve, y todavía no tengo apuntado que la haya tomado. Si ya la tomó, dígamelo y lo apunto. Si no está segura, mire el pastillero.",
      "type": "text"
     }
    ],
@@ -51,10 +51,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6729,
+    "cache_read_input_tokens": 9719,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 87,
+    "output_tokens": 110,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -65,32 +65,27 @@
   }
  },
  {
-  "request_hash": "9193acc0f91c1b2b9cf1cc5ed54514dad3305262e61fcccd6912788e51f7e392",
+  "request_hash": "4e0459020f2a4f85016a8e807f0922fd3255aa1098dd1fd8862cace586f3579d",
   "response": {
    "content": [
     {
-     "signature": "CAQSkgYKEAgTGAI4AUIIdGhpbmtpbmcSDA50VveG11elNMihUxoMGGNjP+vcXvovkontIjCWC/YBltyJe18igSpEZUAt3j8Q/dkBF0ufzTh0VhMlSOP7MWhrZIguGxgdmCz5U10qrwUkUK+98jAMEPp7PoViCraLYj6dtvdRhPiKqAHsZ4MTtTPFt3qqSmhNjGBpW06P7kd8aLd9y9cmXPZv4dUBuqwABP6cwIlY0I2al2swFqagDAbRM5re1EGYjitOyle520FDvr/FQaAAU5aXcC+vpI+2A3rumpQvx2SOJSP3DLlKBo7326fwsly1Nrox+TLx3d5WxCkHBqDj0h0q2I8YJ2QWkOo9/8q1Rbuu/aiTZ8o+Vzvh7IactIGVoc72im0ItjKGtDYhOSDy/lZVv0Hc5R2xVQMUngsL7DSs8Gy+cgZG8SNlqzpNndBCPCbGrqZMv+3F5aA2Dxi/flIg2WtypNs1/V1T4NsCALx8tpQr3Cvjt6QNKhENewDHLeu2GYo+7rHwFN7w+ghQMyA3E1oyHSsDzVMua24t4L72qVQ1Y7zWE583SkHhhURgzXCNP61rV5BQVY6PSpGIwWVhBtwa+Le8ww8/A/txv6mWRreGeWht3k7juJZ/4L2qJl/6e19TNapyFt2xyFZOuvM5qS7jG//SAFxzDbNBZcSiyQI/aX2epSEIQICGdeJK+Kmi+e2UgQQkm+lWg0Sc3f8fPkFjcmfzH0UEwuDkRDOv50IIrfkSQhCpx1BBNtSK+YfxmvuLfN1GtJNV08uSK7GbCF5p+oPiPgsfj079wecsFdCYfR4E//79tWyUqJnm516VNUWf4tG/vobPuSIUocF0+7qHZtPMVTEBnbKsIPF2T7k3uPRTKVBffvcctj5lzI5DmTOuA52x+gOQ3CELS0ziDDOGkL17JjMPTDngRfK2gBTfdDOIa2IO2txRfiW5RffWYpnoxntDlh/TmlOllha7QqUg/ZtBY6db9vtlt6AcEZ897KD1rw/3h3Pc9MtNGW0wCWHr7Pl1/L1SKaH/VAB8bdc/9YIYAQ==",
-     "thinking": "",
-     "type": "thinking"
-    },
-    {
-     "text": "Entiendo, Carmen. ¿Se lo ha cambiado su médico, o lo ha decidido usted?",
+     "text": "Gracias por decírmelo, Carmen. ¿Se lo ha cambiado su médico, o ha sido decisión suya?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 180,
+     "ephemeral_1h_input_tokens": 203,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 180,
-    "cache_read_input_tokens": 6729,
+    "cache_creation_input_tokens": 203,
+    "cache_read_input_tokens": 9719,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 98,
+    "output_tokens": 46,
     "output_tokens_details": {
-     "thinking_tokens": 57
+     "thinking_tokens": 0
     },
     "service_tier": "standard",
     "speed": "standard"

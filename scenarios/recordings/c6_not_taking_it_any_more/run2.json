@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "7cebbdb344759e71302c5cefb684859d9c59c7f2062e1e185430e39bbb00b1cf",
+  "request_hash": "cf9a8d087a518dcf645b8905fa87b72dc909b382384fc5fb0db7df67ece161c2",
   "response": {
    "content": [
     {
-     "id": "toolu_01YY6aAbKfFS1Mm2rWSG59mU",
+     "id": "toolu_01JmQ84hCP2EritdpUwDvM1Q",
      "caller": {
       "type": "direct"
      },
@@ -22,7 +22,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6509,
+    "cache_read_input_tokens": 9499,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 52,
@@ -36,11 +36,11 @@
   }
  },
  {
-  "request_hash": "b73c3b9e048cae018bb1bfc59fcf99ff02fda6827568ca68a883d6e508aaf2ee",
+  "request_hash": "35d3b17dc1f910478996ddc09eb2637400244ac2de644b2e0af078e0f2f20f93",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión es a las nueve, y todavía no consta en mis notas. Si quiere, dígame si ya se la ha tomado y lo apunto.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Su pastilla de la tensión está fijada a las nueve, y todavía no tengo anotado que la haya tomado. Si no está segura, puede mirar en el pastillero.",
      "type": "text"
     }
    ],
@@ -51,10 +51,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6729,
+    "cache_read_input_tokens": 9719,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 88,
+    "output_tokens": 90,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -65,7 +65,7 @@
   }
  },
  {
-  "request_hash": "0add3641e07cd2d3f367ceecb42be581dafe0f412235f963ca87dab1d831f413",
+  "request_hash": "0a94a122dadc74b4228aa4ce510aee7b97629b6a43b71a9e7ae6f5dfb02149c0",
   "response": {
    "content": [
     {
@@ -76,11 +76,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 181,
+     "ephemeral_1h_input_tokens": 183,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 181,
-    "cache_read_input_tokens": 6729,
+    "cache_creation_input_tokens": 183,
+    "cache_read_input_tokens": 9719,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 30,

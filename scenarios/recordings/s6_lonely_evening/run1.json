@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "8aa35dc76f972cf6e11c2674bf15c7b6ad0ea78e14a0e328a8bc2255e5eff395",
+  "request_hash": "2d4d2946a3509b69c48883eb8a8c0adf0ad152530778230c6aeccf3035d125b9",
   "response": {
    "content": [
     {
-     "text": "Lo siento, Carmen. Me alegra que me lo cuente. Aquí estoy con usted, y no tengo prisa. ¿Quiere contarme cómo ha sido el día?",
+     "text": "Lo siento, Carmen. Aquí estoy con usted, y no tengo prisa. ¿Quiere contarme qué tal ha ido el día?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 153,
-    "cache_read_input_tokens": 6205,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 66,
+    "output_tokens": 54,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "15a920ff307592f5b62df73d6cddf4b00718bdcb4deaeebaec04836a6d59fe95",
+  "request_hash": "239c829ec07c1f74be92d40c5bdc831535a29bb549918edcef52cc0906fb6371",
   "response": {
    "content": [
     {
-     "text": "Qué bonito recuerdo, Carmen. Los domingos de baile debían de ser días muy especiales. ¿Qué música bailaban?",
+     "text": "Qué recuerdo tan bonito, Carmen. Los domingos de baile debían de ser un momento muy especial para ustedes. ¿Qué música les gustaba bailar?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 153,
+     "ephemeral_1h_input_tokens": 141,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 153,
-    "cache_read_input_tokens": 6358,
+    "cache_creation_input_tokens": 141,
+    "cache_read_input_tokens": 9348,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 51,
+    "output_tokens": 63,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

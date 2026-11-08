@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "request_hash": "1ec6316684a990b4fdc7359bcb1a363cd33c471dd786a7cb5c15ee28c24f1275",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga un buen día.",
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. ¿Le puedo ayudar en algo?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8812,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 55,
+    "output_tokens": 46,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "7911f24a3cb98bb825a50c33fd679f9dbc3acfa7666209e154b89acc7db9a5bf",
+  "request_hash": "093a9e015b573faebfd6c6c1e5ef464efe40a45d1b402c8d725f6791099c9c57",
   "response": {
    "content": [
     {
-     "id": "toolu_01LWosZJsdEde6LUn8rVUxRs",
+     "id": "toolu_01Kd3aShwamApGJ2XsmkoNGJ",
      "caller": {
       "type": "direct"
      },
@@ -47,7 +47,7 @@
      "type": "tool_use"
     },
     {
-     "id": "toolu_01Ar9NyPqzbEZCcC8DVqe8mE",
+     "id": "toolu_01W1tqaJ2qXzcz9EA7ThhvWw",
      "caller": {
       "type": "direct"
      },
@@ -64,11 +64,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 170,
+     "ephemeral_1h_input_tokens": 161,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 170,
-    "cache_read_input_tokens": 8812,
+    "cache_creation_input_tokens": 161,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 127,
@@ -82,14 +82,9 @@
   }
  },
  {
-  "request_hash": "ebc2fb6e6accbc4fb0fd041d4179aa5e0a1b7ca0b726bc63c8fc1cd9531cffbb",
+  "request_hash": "5cf4e918f2abfd5fcef6acdf9c6527f2bafa3026136d3aa6f4f5dcefd105dfea",
   "response": {
    "content": [
-    {
-     "signature": "CAQSnwYKEAgTGAI4AUIIdGhpbmtpbmcSDKVbrhhvAnO9sqXg4RoM8kuyYvMUTImtKosnIjDNMzCjM6KE4lrMB+qWddNDv58pTfJVI4Nu0aBQayTd5N9uc87iifKn7o7veSD0Gc8qvAXv/fEBBT7god7PdPmdShOskLMnvH4ho6AIKFqbsVrt9/PrEeoGFOQ+1FY97b2+uwTwvAgFdMMsnjn7fkIznSvHLZcWgkt+gCyfbg1xHdP0+uHhP1wkLnI017iyGz+9CaUQ5oV6dCrk0DhiKMF+KffEWXsAWuFjycqTsiuVb08qGouD06hCNEOATk5A/DR2k57rDN31fD6pPP2EEp+YE/i6d1Zqh5taH/Py7sLEwnPuSoC3cDsDA0WjVh1HzD53BMaPdQC3Osie/cG+E6KGT2a/fBEhzbbJlRHcJtAIbBHlyQa69dy/4MANgqZ9SibaS6co4tDq8Rxb9PAaAH5cCl+sBkHhLcO3VPQ9qHnHOG6NKwlD3VY0+zTIC3bD5OWrOp7S0DFvH0Ly4gDUp5qQNXhv7AAoDqpLYq1JGlpII6GbkeS9pjYON7UhbyvrzbCAriLLwRWcCjCzmupE3PaszVLm1lpUmb41pUdSlyFdn2WhxUI8+rWhPkhFa8Hv11eLJyXDxaS28RCZH1L/fWN1MwRCjpJA9dMsVaZGaTYq8l9n2oDwAohsFTlWCtEKxxkJscIK1KmXoPXJMnIVe6mplqFNLu+HbEeqcGVOEbLHMh0vMdrNlVRYjxlyQkLk4obM2311jJABdnYJTWfEOYWVEhrP0AMA4edflyE9rVs4+ImDLP5L3F6pg67ay0rKUsBocIOS4pXW9Web2vIVa2Y24Cd75KVUzlqHAUu8SRPrZpqpn0G2l8FDr1Jjge8Et6vrej29joUbIbCzaF4/v6XRBlgoBjWDq19KTSZX/+vmqOqMgn8ZEyyh6fVbASPlhu6PcAxg/kJkJxo+aAeF5jyp4ra6sRBW+bDxJDuVt1ytGhF7mXOV6/xfO1Vwt71htl3uE6iPpg7tNSJ9pY+/RVe0OvELEZqyGFUl5Py47ZX5GAE=",
-     "thinking": "",
-     "type": "thinking"
-    },
     {
      "text": "Hecho, Toni. He añadido el vinagre de arroz y la leche entera. He quitado los copos de avena y la leche desnatada.",
      "type": "text"
@@ -102,12 +97,12 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 263,
-    "cache_read_input_tokens": 8982,
+    "cache_read_input_tokens": 9657,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 96,
+    "output_tokens": 50,
     "output_tokens_details": {
-     "thinking_tokens": 46
+     "thinking_tokens": 0
     },
     "service_tier": "standard",
     "speed": "standard"

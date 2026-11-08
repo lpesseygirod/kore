@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "bbbf9339f980ae8d4306123ea832e05efac5182bb5609bcfd9a801485c68ece3",
+  "request_hash": "fb6649b026cd29ef525b010cff36c1ea4d16c858472cb6c51d168791e710997c",
   "response": {
    "content": [
     {
-     "id": "toolu_017TbCNZBbaQoaN34sWEuQFR",
+     "id": "toolu_01B41Ch5NzPMpVFZAus3Pytp",
      "caller": {
       "type": "direct"
      },
@@ -20,7 +20,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 154,
-    "cache_read_input_tokens": 6205,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 28,
@@ -34,7 +34,7 @@
   }
  },
  {
-  "request_hash": "d79958d6a647dfc3093b9821472e80b76a7cf4ed117925dbbbc1f76666cb94c7",
+  "request_hash": "4de7310001913d0c14ed14b4b8b07412ad4eb561b6930f4e46f6fc7474cbcc99",
   "response": {
    "content": [
     {
@@ -49,7 +49,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 74,
-    "cache_read_input_tokens": 6359,
+    "cache_read_input_tokens": 9349,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 6,

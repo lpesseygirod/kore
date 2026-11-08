@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "c5d1d9600e87e303fa03bf3dfe105fecea26c4e33939590ddeabd3f5417f3d85",
+  "request_hash": "b4f68d94bf35700acdd72f1421c5d497593ba30d9d1d38e312f4ccec0d779312",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8363,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 56,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "7828fb3a4f803945128e42b8c1af5d90ba8f203fa1f146dcf01f85c01a3e6651",
+  "request_hash": "71b9f2a4b5da1408a3c7fed214704d0b6b4faaf969c7103b404acb832c6f4eef",
   "response": {
    "content": [
     {
-     "text": "Vaya, siento que se encuentre así, Carmen. ¿Se ha sentado ya? ¿Le duele algo, o le ha pasado otras veces?\n\nSi quiere, puedo avisar a su hija Lucía. No sería ninguna molestia para ella.",
+     "text": "Vaya, lamento oírlo, Carmen. Siéntese con calma, que no hay prisa. ¿Desde cuándo se encuentra mareada, y ha comido o bebido algo esta mañana?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 150,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8498,
+    "cache_creation_input_tokens": 150,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 93,
+    "output_tokens": 73,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,25 +58,25 @@
   }
  },
  {
-  "request_hash": "6845b8b409aa31cf1747432699a59a542e6e35778043e339abd63b9db96b7fd1",
+  "request_hash": "b923e017775bf224ea9c58a9e433e2b54d9a03a7cc26032e14a4365df8a9354a",
   "response": {
    "content": [
     {
-     "text": "Me alegro de que ya se le esté pasando, Carmen. Quédese sentada un ratito, sin prisa. ¿Quiere que le avise a Lucía, o prefiere esperar a ver cómo sigue?",
+     "text": "Me alegro de que se le esté pasando, Carmen. Quédese sentada un rato, con calma. Si le parece, puedo avisar a Lucía de que se ha mareado, y no sería ninguna molestia para ella. ¿Quiere que lo haga?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 187,
+     "ephemeral_1h_input_tokens": 167,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 187,
-    "cache_read_input_tokens": 8498,
+    "cache_creation_input_tokens": 167,
+    "cache_read_input_tokens": 9658,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 77,
+    "output_tokens": 91,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

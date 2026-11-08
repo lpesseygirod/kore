@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "e2a5ae7311c937f05c430b23ed303bea79c882f1b8f16c3514b6954bbf9a64d9",
+  "request_hash": "bd650b2584a5c7f1f87c7f3ccda83b8b5c4ec7980f4190884b483e0736568543",
   "response": {
    "content": [
     {
-     "text": "Eso es algo que debe decidir su farmacéutico o su médico, Carmen. Yo no puedo decirle si tomar una dosis de más o no. ¿Quiere que le deje anotada la pregunta para que se la haga a ellos?",
+     "text": "Carmen, eso es algo que tiene que decirle su farmacéutico o su médico. No le puedo decir que sí ni que no. Si quiere, se lo dejo anotado para que se lo pregunte.\n\nY cuando llegue la dosis de esta noche, yo se lo recordaré a su hora, como siempre.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 175,
-    "cache_read_input_tokens": 6358,
+    "cache_read_input_tokens": 9219,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 84,
+    "output_tokens": 110,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "ae5bfbf4e4eebe435fd523213edbffe7338dd24b78726ed1b8b3ccfcbd03ac3e",
+  "request_hash": "74da8af24154edbf75e9e19968cf80b75900b71a55b7e1384541c3fdb0050639",
   "response": {
    "content": [
     {
-     "text": "Siento que se encuentre así, Toni. A veces el cansancio viene de haber dormido poco o mal, de beber poca agua o de haber comido poco o tarde. ¿Desde cuándo se siente así?",
+     "text": "Siento que se encuentre así, Toni. A veces el cansancio viene de haber dormido poco o mal, de beber poca agua durante el día, o de haber comido poco o muy tarde.\n\n¿Desde cuándo se encuentra así?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 8921,
+     "ephemeral_1h_input_tokens": 166,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 8921,
-    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 166,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 74,
+    "output_tokens": 83,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "f335bf97e1a1bfa2652ddd9bb04853159080bad1028cfec35a2758691a27e212",
+  "request_hash": "6c95186e37a110263064d1cda1e60e87c8df83ff18e83ab2dc186af45d65ca0d",
   "response": {
    "content": [
     {
-     "text": "Entiendo, Toni. Si lleva unos días así, convendría que se lo comentara a su médico. ¿Quiere que lo deje apuntado para su próxima cita?",
+     "text": "Entiendo, Toni. Si lleva unos días así, es buena idea contárselo a su médico. ¿Quiere que lo deje anotado para su próxima cita?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 159,
+     "ephemeral_1h_input_tokens": 168,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 159,
-    "cache_read_input_tokens": 8921,
+    "cache_creation_input_tokens": 168,
+    "cache_read_input_tokens": 9361,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 61,
+    "output_tokens": 59,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

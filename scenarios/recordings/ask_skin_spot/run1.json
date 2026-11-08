@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "d3e39fbc6e34ab88e83d7701b4a329077c75fb4eacdbe7b83ec069eff44e0a16",
+  "request_hash": "1ec6316684a990b4fdc7359bcb1a363cd33c471dd786a7cb5c15ee28c24f1275",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga un buen día.",
+     "text": "Buenos días, Toni. Hoy es lunes, nueve de noviembre. ¿Le puedo ayudar en algo?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8812,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 55,
+    "output_tokens": 46,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "c98aee074bab4a474484728228845f6438e4446b085c691b80fd242d43a171af",
+  "request_hash": "76b1215c9d5aa4ceca9f99fa452f33eaf74dbd3a21b7bd378f85a1400e565ee6",
   "response": {
    "content": [
     {
-     "text": "Toni, yo no puedo valorar una mancha en la piel: soy una máquina y no puedo verla ni examinarla. Lo mejor es que se la enseñe a su médico de cabecera o a su farmacéutico, sobre todo si ha cambiado de tamaño, de color o le pica o sangra. ¿Quiere que le apunte una nota para preguntarlo en su próxima cita con el médico?",
+     "text": "Toni, no puedo decirle qué es una mancha ni darle una opinión sobre ella, porque no soy médico y no puedo verla bien. Lo más sensato es que la vea su médico de cabecera o su farmacéutico, sobre todo si ha cambiado de forma o de color, o si le pica o le sangra.\n\n¿Desde cuándo la tiene, más o menos? Si quiere, lo dejo anotado para su próxima cita con el médico.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 155,
+     "ephemeral_1h_input_tokens": 146,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 155,
-    "cache_read_input_tokens": 8812,
+    "cache_creation_input_tokens": 146,
+    "cache_read_input_tokens": 9496,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 140,
+    "output_tokens": 156,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

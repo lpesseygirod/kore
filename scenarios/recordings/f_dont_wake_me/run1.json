@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "request_hash": "1271330a4faa5d6d35d16e417c92532d4cb0455e68aac579ac63485b6095a1ba",
   "response": {
    "content": [
     {
@@ -11,11 +11,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 303,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 303,
-    "cache_read_input_tokens": 6205,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 36,
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "35ce7ba7b783831c56f860e000f5fe410a533b13fc0faf2a0f5f8c207d3d5557",
+  "request_hash": "f3be9ea610738881ddfe840b919879114a6b0720a04e2d77a9bc36eda73cf8bb",
   "response": {
    "content": [
     {
-     "id": "toolu_01BfrbU7HMvcQRT7ommxLZBT",
+     "id": "toolu_01JR1u9dYvNDQvKdqUiReuBX",
      "caller": {
       "type": "direct"
      },
@@ -57,7 +57,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 156,
-    "cache_read_input_tokens": 6508,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 235,
@@ -71,7 +71,7 @@
   }
  },
  {
-  "request_hash": "e0714daa70ff0ab2ff1e6d499a0ec84d28ec579ce2c9e68a918e75fca6294357",
+  "request_hash": "9f4d8ebfd255c1ca0d5b0694c3c0dcdbcc72956eeec43fe99358d7ae5253c6bd",
   "response": {
    "content": [
     {
@@ -86,7 +86,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 313,
-    "cache_read_input_tokens": 6664,
+    "cache_read_input_tokens": 9654,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 30,

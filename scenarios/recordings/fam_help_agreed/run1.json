@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "a5a5a2970528c233a7e968a5059200cee3ede2af29b45a8ab133af171c2a8546",
+  "request_hash": "7ce76986ec9c4f7a2f93f4bcfc428faa57c3e4d6db34064ce0b625f6c2be8519",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene medicinas ni citas apuntadas para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 8363,
+     "ephemeral_1h_input_tokens": 313,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 8363,
-    "cache_read_input_tokens": 0,
+    "cache_creation_input_tokens": 313,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 63,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "077d621f6c57684f25ad39a6a0d95bb57f02efd058263cdd2a86bc24d5a45d33",
+  "request_hash": "0f8d1ab356949788c11ea46a0542e77688f4f0d794ad0d35c2948699b898a52c",
   "response": {
    "content": [
     {
-     "text": "Carmen, ¿cómo se encuentra ahora?",
+     "text": "Carmen, estoy aquí con usted. ¿Cómo se encuentra?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 217,
+     "ephemeral_1h_input_tokens": 239,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 217,
-    "cache_read_input_tokens": 8363,
+    "cache_creation_input_tokens": 239,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 22,
+    "output_tokens": 30,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,25 +58,59 @@
   }
  },
  {
-  "request_hash": "0fdd0d93eacfd850d3a7ce7ab3503823cef42037545d8f44600c0bfb57409582",
+  "request_hash": "667e38dfa618b87dc88e1c65bb5fc3e178dae2fe7c8a69e2d7a829cff3ada8c1",
   "response": {
    "content": [
     {
-     "text": "Carmen, eso puede ser serio. Llame ahora al 112 o pulse su botón de teleasistencia. Yo me quedo con usted. ¿Puede respirar bien?",
+     "id": "toolu_017yAJBTL71eh8yeYf62ZfEm",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "propose_help_alert",
+     "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 121,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 121,
+    "cache_read_input_tokens": 9747,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "cb217fe32341f9ec41a23bd418dce698182099d4c88a251cae12cbbda2d00b3d",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, un dolor fuerte en el pecho es serio. Le recomiendo llamar al 112 ahora mismo, o pulsar su botón de teleasistencia. Yo me quedo aquí con usted. ¿Puede llamar usted, o está sola y le cuesta moverse?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 113,
+     "ephemeral_1h_input_tokens": 91,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 113,
-    "cache_read_input_tokens": 8580,
+    "cache_creation_input_tokens": 91,
+    "cache_read_input_tokens": 9868,
     "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 64,
+    "input_tokens": 2,
+    "output_tokens": 101,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

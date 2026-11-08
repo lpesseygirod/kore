@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "0eebc3f86f181b735c9cb988fea86aaf42ef66b4bcbcb20d726ef152a75fa3ad",
+  "request_hash": "1f9b2bce09793e08ffe2368bd6ba7043946395b3e349d958f21d63a805711747",
   "response": {
    "content": [
     {
-     "id": "toolu_01CzdLLoNRZ6tuXB57EU7Gxv",
+     "id": "toolu_01B3HGCTHcC7haS3CnnzKXyB",
      "caller": {
       "type": "direct"
      },
@@ -23,7 +23,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8202,
+    "cache_read_input_tokens": 9355,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 85,
@@ -37,11 +37,11 @@
   }
  },
  {
-  "request_hash": "c0fe2c6fc175bc9d85fe40d7653bf69c0dbb7d47e444628bc011d5d55d4ca541",
+  "request_hash": "55b5aaabb569c72ec6f874b333d059a681fa26cbfc35b0ea04400df0cd110700",
   "response": {
    "content": [
     {
-     "text": "Le mando a Lucía: «Me han encantado las fotos del niño.». ¿Lo envío?",
+     "text": "Le mando a Lucía: «Me han encantado las fotos del niño». ¿Lo envío?",
      "type": "text"
     }
    ],
@@ -52,10 +52,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8355,
+    "cache_read_input_tokens": 9508,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 37,
+    "output_tokens": 36,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -66,11 +66,11 @@
   }
  },
  {
-  "request_hash": "099235bc2494ce297f61def92fdc5e164ecafc5d5a8884d8ede75151ac644a9a",
+  "request_hash": "48818f84a726f724b111dee8dff5cadd79257e88c0f86ef0bc10623f81f0fb96",
   "response": {
    "content": [
     {
-     "id": "toolu_016fbffPybzY9z62F4NkkHQT",
+     "id": "toolu_015Yg1FdddtQjFbc6u2muyNL",
      "caller": {
       "type": "direct"
      },
@@ -84,11 +84,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 111,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 111,
-    "cache_read_input_tokens": 8355,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9618,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -102,25 +102,25 @@
   }
  },
  {
-  "request_hash": "627b622a432f434343456f46cbf52366b977941875a47150c4c02fbc93b906a3",
+  "request_hash": "98edde247a0cb3c91ab2ece1f3d34204f6539bd38db68dedcaa3a9fdde6617dd",
   "response": {
    "content": [
     {
-     "text": "Hecho, ya se lo he enviado a Lucía.",
+     "text": "Ya está, el mensaje se ha enviado a Lucía.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 89,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 89,
-    "cache_read_input_tokens": 8466,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9707,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 22,
+    "output_tokens": 24,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

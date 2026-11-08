@@ -1,46 +1,10 @@
 [
  {
-  "request_hash": "a645e018faf3e13355ac0436b4c9bb270dc5bf06c6da42b91bedacdb56c03880",
+  "request_hash": "e4a8468bbc0b35ec4a5e469f27668393a3d38d40a2b2ddc03c3e2a5321fe3eed",
   "response": {
    "content": [
     {
-     "id": "toolu_016EAyeMim61tbGuJ4Vu2vcL",
-     "caller": {
-      "type": "direct"
-     },
-     "input": {
-      "person": "Carmen"
-     },
-     "name": "get_med_status",
-     "type": "tool_use"
-    }
-   ],
-   "stop_reason": "tool_use",
-   "usage": {
-    "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
-     "ephemeral_5m_input_tokens": 0
-    },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6667,
-    "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 52,
-    "output_tokens_details": {
-     "thinking_tokens": 0
-    },
-    "service_tier": "standard",
-    "speed": "standard"
-   },
-   "model": "claude-sonnet-5-5"
-  }
- },
- {
-  "request_hash": "5c4d63a486aeaf34937062993cd5e0f37d3d0a4bb5cc193aa03803f56f147700",
-  "response": {
-   "content": [
-    {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Sus pastillas de la tensión son a las nueve de la mañana y a las nueve de la noche. De la de esta mañana no tengo nada anotado. ¿Quiere que la apunte como tomada?",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tiene sus medicinas a las nueve de la mañana y a las nueve de la noche. No tiene citas para hoy.",
      "type": "text"
     }
    ],
@@ -51,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6931,
+    "cache_read_input_tokens": 9504,
     "inference_geo": "global",
-    "input_tokens": 2,
-    "output_tokens": 100,
+    "input_tokens": 4,
+    "output_tokens": 73,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -65,17 +29,20 @@
   }
  },
  {
-  "request_hash": "feacf512a1a31388bf25f99055e55166ec12480b777a303a7d4ce1f07f218e36",
+  "request_hash": "256bedc03cbeec1868aef6548a517edc2b84238c11227da870f8af1619283c38",
   "response": {
    "content": [
     {
-     "id": "toolu_013QHYEs1zj5tcTpfpLp8ZQQ",
+     "signature": "CAQSuQcKEAgTGAI4AUIIdGhpbmtpbmcSDFNwz5AlIJb5q5FLRRoMojVfyFtn7FLcnTA7IjCM+I05iV4HkP8KK2qRZq927Rbqaml427xQCAcG21KTuegGcHcD0Vv+MQTCj5elwHYq1gb02ce2G0kKhrxSGWjAPlbEGtLFhigZ0zXy4pQnwwUbLsYopdr48/h5Ejg1TKr7Pka2qMC3DDY4/FKs5iSTdL295OtqtU4QUWFIc1fM0S7JHIujkUdNMRcnFCNgCqqri2F53nnv/Ms0FdcjCWXQwpnmY2D37pftMctkMfniRAhH48gX1w6U5nduIykNxiv/DimFUNbN/mj5LicznxHsOs6zZ/yXekgVCJ4CoiwAOfs+Y/cqPYATeKntfTze1ip5fbhc21nEp8LMoxPgNK2TysHRTwD5JD6wL/2cL26LDbd3lK4YHdy/Ag1bck80EGvXLTi72H1CiVfFWYQ9fHNoda4liF6khsy52bIEEJrW22cx7sG2wCmPGsiLV5Q0e3YP/HaybZZHaj+yT3CBKfC51+1oosur/BSbO7wTmKs0oKoA8tilfs7BPRIn73xeAj3PvmMXHUSKMnaT/UbWOX1NlqHKoOSHLyIcMHDxlKFjq2Mf5+D3V5SYFoh3jpQkj955Ay3t064GnaNLoUotvgU6+BjrtmZJ774e+N0AfaF0QjPl7v09hQMXYRQOaytOex3yBBoHtYcent8G29STTRzzLPIcZGeWatS+LOP7ivG8DZIHQwr/pP4S0lTQDtyT6mk7zYPbCG5GXTB4BQbfCsDkgCF6JevyZrVXdQ7ZRbQrPdjPrRNZJdfFBCg13eOgTrBTXHQlhvKUtp148P7WWYUuoE4Dyn0jblDXIeizLCMsQ+Kd4VVnRsyhHI974mNqtiDu7hCjuDBvf15a6w9EonjmeaiCFMvyfNxd6rLvWSn0+I72CBNYjbgeWhUGxv8YspH8/c84Ixheb2IAoAkDzOaZ1ZKKTbDeggv8/al+9dZJu9rvUAlR5Gl8LIvecgPOxiRVfdfx2C3VZAuPkClSB5KGElXdzKMEMCLm4HpOSxFatH5K760sraNVsxg8TYoS/EhM7/ciI9I2J+RsKsMRjUtsYz7Y9en2rHejTspuvNK6XiFmo0r5MZhpBTgp/X7qj5mRcwq7zsGlm1N9zSjhNkztwOylAHqXSbQ2qP49gBhy0TXDg5S084ijjSWBHhoAXTVcllFhSryT8BGxMkl4n+Gngu9JY9D5JbxWgr4xdNjhbD91NRVUnNqQQBgB",
+     "thinking": "",
+     "type": "thinking"
+    },
+    {
+     "id": "toolu_01ATadc7zZQ77j3MNx9X5ax8",
      "caller": {
       "type": "direct"
      },
-     "input": {
-      "person": "Carmen"
-     },
+     "input": {},
      "name": "mark_dose_taken",
      "type": "tool_use"
     }
@@ -83,16 +50,16 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 209,
+     "ephemeral_1h_input_tokens": 182,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 209,
-    "cache_read_input_tokens": 6931,
+    "cache_creation_input_tokens": 182,
+    "cache_read_input_tokens": 9504,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 55,
+    "output_tokens": 138,
     "output_tokens_details": {
-     "thinking_tokens": 0
+     "thinking_tokens": 106
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -101,25 +68,25 @@
   }
  },
  {
-  "request_hash": "dbd30868a597986ea3c9bb26cb96d2c1cbf11ec228fda181ee5a105bd402a5b3",
+  "request_hash": "1adb4762ee88c86dd467bcfa79924a11d6717990c62efef3195380d872249d2e",
   "response": {
    "content": [
     {
-     "text": "Ya lo he apuntado: la pastilla de la mañana, tomada. Sobre si tomarse la de la noche igual, eso es mejor preguntárselo a su farmacéutico o a su médico, porque yo no puedo decírselo. Si quiere, lo dejo anotado para que se lo pregunte. El recordatorio de la noche sigue puesto a las nueve.",
+     "text": "Perfecto, Carmen, ya le he anotado la pastilla de la mañana.\n\nSobre la de la noche, eso es mejor preguntárselo a su farmacéutico o a su médico, porque como se tomó la de la mañana tarde, ellos le dirán lo que le conviene. Si quiere, se lo dejo anotado para que se lo pregunte. Mi recordatorio sigue puesto a las nueve de la noche.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 175,
+     "ephemeral_1h_input_tokens": 258,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 175,
-    "cache_read_input_tokens": 7140,
+    "cache_creation_input_tokens": 258,
+    "cache_read_input_tokens": 9686,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 130,
+    "output_tokens": 149,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

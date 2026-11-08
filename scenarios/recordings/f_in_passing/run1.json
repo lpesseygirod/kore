@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada anotado para hoy. Que tenga un buen día.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 55,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,17 +29,17 @@
   }
  },
  {
-  "request_hash": "f483743ad60774b10f7b0b96a1f61cb9e35d9ce56837afc29eca84454c4fd736",
+  "request_hash": "aa95739f12eb195bd95bb1e0746d9edd8f574dcc22f76b8feca3c84c0b79c64a",
   "response": {
    "content": [
     {
-     "id": "toolu_019R1tZCpoaFGKjzDj6wKMxd",
+     "id": "toolu_01LCZJe1CfMZyuoqYn3bns6w",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Ay, qué deprisa hablas, chico",
-      "understood": "Carmen says I speak too fast; wants slower speech.",
+      "understood": "Carmen wants me to speak more slowly",
       "kind": "setting",
       "setting": "speech_rate",
       "value": "slower",
@@ -52,14 +52,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 139,
+     "ephemeral_1h_input_tokens": 153,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 139,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 153,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 197,
+    "output_tokens": 192,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -70,7 +70,7 @@
   }
  },
  {
-  "request_hash": "0b2edf4523b294e4255a6382c8f01dd68f3977b0c29c2567a6856d7a404a8c96",
+  "request_hash": "74b992caa545998b44e51e4d2a69ed2f7c4f82454417535a8a0d03dc5fd3624c",
   "response": {
    "content": [
     {
@@ -81,11 +81,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 277,
+     "ephemeral_1h_input_tokens": 272,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 277,
-    "cache_read_input_tokens": 6643,
+    "cache_creation_input_tokens": 272,
+    "cache_read_input_tokens": 9647,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 35,

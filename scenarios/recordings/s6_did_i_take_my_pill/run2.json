@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "1d9ac1ecdcb966313ee285326b5581ea5c07934cd19236e09641f45dc15834ba",
+  "request_hash": "3f93bd8d14d74bfbee0ebf6950d6818062941ea6432de40f4f44d35f3a81e482",
   "response": {
    "content": [
     {
-     "id": "toolu_01L36D8APdL7StG1azAw3fQR",
+     "id": "toolu_01LzXJfvzh3mL9gsosHg64y4",
      "caller": {
       "type": "direct"
      },
@@ -22,7 +22,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6662,
+    "cache_read_input_tokens": 9523,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 52,
@@ -36,11 +36,11 @@
   }
  },
  {
-  "request_hash": "05de033d13246ae2e9d19b715804c7ceff0246b74a4ad41ee6cedaab0a8466f7",
+  "request_hash": "7ff38f0e4d325d9be1da158733aa29451e739a15a35aa65e1217b1d6eee3afd3",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tengo anotado que ya se tomó esta mañana la pastilla de la tensión y la vitamina D, a las nueve y diez. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Tengo anotado que esta mañana, a las nueve y diez, tomó la pastilla de la tensión y la vitamina D. Hoy no tiene ninguna cita.",
      "type": "text"
     }
    ],
@@ -51,10 +51,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6932,
+    "cache_read_input_tokens": 9793,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 87,
+    "output_tokens": 90,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -65,25 +65,25 @@
   }
  },
  {
-  "request_hash": "f48b7a80a2ec72a5d6a25373ce45ddd63f7d274a0c865ec06f25f6e578342edc",
+  "request_hash": "485f60ca5ce25d9407c3efc698140eb9d79518367060557d1f833e0ca29f879e",
   "response": {
    "content": [
     {
-     "text": "Sí, Carmen. Tengo anotado que se tomó la vitamina D a las nueve y diez de esta mañana.",
+     "text": "Sí, Carmen. Tengo anotado que tomó la vitamina D a las nueve y diez de esta mañana.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 174,
+     "ephemeral_1h_input_tokens": 177,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 174,
-    "cache_read_input_tokens": 6932,
+    "cache_creation_input_tokens": 177,
+    "cache_read_input_tokens": 9793,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 44,
+    "output_tokens": 43,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

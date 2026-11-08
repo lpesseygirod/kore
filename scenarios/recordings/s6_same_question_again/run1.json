@@ -1,24 +1,24 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "610b13f9d82f7898e59ae638e657eca520ab2da9882115c4624bbf382e4fe68d",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Qué tal ha dormido?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 9518,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_creation_input_tokens": 9518,
+    "cache_read_input_tokens": 0,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 45,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,36 +29,7 @@
   }
  },
  {
-  "request_hash": "5e4d8996689c2c0ba0deb2cc778bc4a98b30149f323706de2c45ab0537090c95",
-  "response": {
-   "content": [
-    {
-     "text": "Hoy es lunes, nueve de noviembre.",
-     "type": "text"
-    }
-   ],
-   "stop_reason": "end_turn",
-   "usage": {
-    "cache_creation": {
-     "ephemeral_1h_input_tokens": 119,
-     "ephemeral_5m_input_tokens": 0
-    },
-    "cache_creation_input_tokens": 119,
-    "cache_read_input_tokens": 6504,
-    "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 20,
-    "output_tokens_details": {
-     "thinking_tokens": 0
-    },
-    "service_tier": "standard",
-    "speed": "standard"
-   },
-   "model": "claude-sonnet-5-5"
-  }
- },
- {
-  "request_hash": "1f4a492d6f65a65a5b3f71ec4d90700018c5fd330e5bf893f1ed67bc78fdacd7",
+  "request_hash": "692788c611228030bf54c3e26883efc4c5858f7a99e95311bd03727ff48cd043",
   "response": {
    "content": [
     {
@@ -69,11 +40,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 103,
+     "ephemeral_1h_input_tokens": 123,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 103,
-    "cache_read_input_tokens": 6623,
+    "cache_creation_input_tokens": 123,
+    "cache_read_input_tokens": 9518,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 25,
@@ -87,11 +58,40 @@
   }
  },
  {
-  "request_hash": "03b921a04e8ea126ea90bfa7872881d3a4853f9d106cf3d4121a47b2a9a84b39",
+  "request_hash": "f1e52ea081902eedf6dafa8e24530a35ced77a48c8030cb423e844991aab8712",
   "response": {
    "content": [
     {
-     "text": "Hoy es lunes, nueve de noviembre.",
+     "text": "Hoy es lunes, nueve de noviembre, Carmen.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 108,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 108,
+    "cache_read_input_tokens": 9641,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 25,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "a51e0686aef577d8140004f29c0793de4de0f33ee185a0d2788a9d681521950e",
+  "response": {
+   "content": [
+    {
+     "text": "Hoy es lunes, Carmen, nueve de noviembre.",
      "type": "text"
     }
    ],
@@ -102,10 +102,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 107,
-    "cache_read_input_tokens": 6726,
+    "cache_read_input_tokens": 9749,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 20,
+    "output_tokens": 25,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

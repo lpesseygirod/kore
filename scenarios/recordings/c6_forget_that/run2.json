@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga una buena mañana.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 58,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,25 +29,25 @@
   }
  },
  {
-  "request_hash": "0ea41179b697874cb9d1d25f718d7cb722b77c0cad746d1c053b036cd74633cf",
+  "request_hash": "336d217bcecda70cc13e25c8d868994c7eb981ec1746ee6c69afe8e01c85e4a1",
   "response": {
    "content": [
     {
-     "text": "Gracias por contármelo, Carmen. Debe de ser una carga guardar algo así. Aquí la escucho, si quiere contarme más.",
+     "text": "Gracias por contármelo, Carmen. Debe de ser difícil llevar eso usted sola. Aquí estoy para escucharla, si quiere seguir hablando. Y le aviso de que no puedo prometerle que quede en secreto.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 165,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6652,
+    "cache_creation_input_tokens": 165,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 51,
+    "output_tokens": 84,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -58,11 +58,11 @@
   }
  },
  {
-  "request_hash": "003875e76792830d2507373ea78169f9a115a9224f7dae415c6ec743e4be038a",
+  "request_hash": "3991ded4993cb37a7cd2e3bb5bb62195e1b83b56820dd4aa19657562e61229f6",
   "response": {
    "content": [
     {
-     "id": "toolu_01A2de6k57bVUzd35bQbjxVd",
+     "id": "toolu_014NbLbwEZUWLfWBKsenrLci",
      "caller": {
       "type": "direct"
      },
@@ -74,11 +74,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 140,
+     "ephemeral_1h_input_tokens": 173,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 140,
-    "cache_read_input_tokens": 6652,
+    "cache_creation_input_tokens": 173,
+    "cache_read_input_tokens": 9659,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 25,
@@ -92,7 +92,7 @@
   }
  },
  {
-  "request_hash": "05967206a092213c56737fa3e56973da916134386c9730c6714b8f72a77490d0",
+  "request_hash": "0fcdffa1eaa048d6af1fe9a248fb4881805c0785e28a3de378bb5d30b8a56d53",
   "response": {
    "content": [
     {
@@ -107,7 +107,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 67,
-    "cache_read_input_tokens": 6792,
+    "cache_read_input_tokens": 9832,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 13,

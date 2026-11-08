@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "25c683829932f95e443766155cfcbe44bbe6e3ece69acf34a766305c4bb1f8b2",
+  "request_hash": "b58e41e350b01679d33a1baa55dc2d7d5200324234a5ab256c455f71fcbf1dc5",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. ¿Qué tal ha dormido?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 8389,
+    "cache_read_input_tokens": 9534,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 46,
+    "output_tokens": 45,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "775169103f148fbad91b6ef891c580498e0574743d02860fd1d90d1d21b8311d",
+  "request_hash": "e4a112e14a6a46e68d7ced798aa9a998fe8c386c3659e404d49a1015a942f790",
   "response": {
    "content": [
     {
-     "id": "toolu_01HzyyLv3s95baHPVfHjw967",
+     "id": "toolu_012F6thaXZRNAWEoMQLLEzh3",
      "caller": {
       "type": "direct"
      },
@@ -45,11 +45,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 173,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 173,
-    "cache_read_input_tokens": 8389,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9706,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 27,
@@ -63,25 +63,25 @@
   }
  },
  {
-  "request_hash": "2e59936838c9474e94791c7a39038d266d09c576d2c79c9fe1b35209c076c515",
+  "request_hash": "65c57b36921660a0339f237b4610b9159f573cd264a67ed9aa2a624d95e44e29",
   "response": {
    "content": [
     {
-     "text": "Muy bien, Carmen. ¿Me permite guardar sus medicinas y sus citas para poder recordárselas?",
+     "text": "Claro, Carmen. ¿Me permite guardar sus medicinas y sus citas para poder recordárselas?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 135,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 135,
-    "cache_read_input_tokens": 8562,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 9841,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 43,
+    "output_tokens": 41,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -92,37 +92,40 @@
   }
  },
  {
-  "request_hash": "b987518f4a7a13f3898148cea1a7367c9535c76fffa71cf3ec4eca0aededcba6",
+  "request_hash": "54e4257b1038d8a9e3852c12fba87424cfa112abadb9daccfeff0ec972fa777f",
   "response": {
    "content": [
     {
-     "signature": "CAQS3wcKEAgTGAI4AUIIdGhpbmtpbmcSDJm8x8vQ6gGrwyJWOhoMKGPa1P2yEUCL+LQlIjAFlX35f17R2fYvy+T7y7noCxIf4KtF6BL/GabcOLlbKkkTNqlPR4uHEgqbD8FvjI8q/AY54R2VBS6OyWSIuIrkI3BjLJmaNoB9AZr+pogLLBzLYqHu95Zp6BGtdmW+e9dOO5WdKQh/8fd94m6dJ2WQO4MPa+jU9Wi13yFP/SPneI7JP+UBcYnM79iKh8udKrsS9o2nDLSy6YAUqJwerJUzFq92cwR1UICtwRCo7rCMjHjEv7CcceXy6/3iBBWX2dodAjS5QNbaQhs6B0Df2yvLDg1UWQcBi9KNPy+0PftbNxhmKticsdHdjVkYEpy/P8smntpeidZn1scYpx5SMCBooAoDkwCbpNMKkfWmTBKQJ+XwuXaYwWY3zBbnI7dyT7/1RD0IsFCKA8Mv5g3WMq7ZbIZXAds3n8BzwpWTQmGm2nAnXXC5rIz1QUv8g0LE9QHXW9crxf3EuYJSIzvY7oZMkMcKaafbcbajbvbEs1aS9uWiJzEWRLD43KukbgemKclntrur/RbM2PIhuP5VqqMW/lBjOonSp/5AO+PhJB8Tt0VJfdWP05pCaacV0ZMTb45SXMtr44esircEAn3UL6ROhbXLZBGfKyQTfCf63Z5bHXep0Xaym3JuUy692I1s4CFogovLclKj7DzKKxPeRZ3hIIpPNYLGlwAg0HJxVeipRZXJWO1YBAT0+IjcPNXIAgYTUw6Wh34I4R8NmNfiPusNg1t1FqYWawCA/O+WlZkvSXm8jhJlsRPiUpQ86lPdAo1n4sPQpg4tYuNmg+maEXM/MHUhmrp3eeJQzDn8V1Nk3g1Cj0TL/EWXHyCMnG9yWXJVI6wO8XC+hZsHyui7zbdU5vWzEavr2eoXcgUmnDaoVUHROk15O3CTuvtmslIPE40NAw+XWuyIcEDJYHJnfVetkP+tbur+KwGYnJFlhJ7iIgmQeSptB0sc3fDmt7ZRkXC7f6LZYdZHzJo+HmO9qSIsuNpvXg8OhzKRRrYuC0Dt4WrhcEZyvrKbqYOzn3T5f2LHQWEQbH8k8rEBvE50UI5c3Ul0/ripgqF04x4rPjlT7RRxZBbaioirvrCNBHe+uvSsbL597SbaN/7wOOrh2mFS2z62xGIVCzw3HnnfxevGplKfMB7EIKA483y8UstiNNJ8EeNSmEvba7nkvLma2GqxImEai+ERF33r+OB9Z7RByFsMpeCOHGxp4VMI+d6qT3cvgsB/aFYyzJM69AXWmeffB5vh991npytzKm69hYvtGAE=",
+     "signature": "CAQS4QcKEAgTGAI4AUIIdGhpbmtpbmcSDL1/MLNgWAh0vxPw9RoMVeTYI6/zb/NyFO6SIjD6QNxb8S7iUP+EWsuqHlRgm+Lt3VttNczlIQX8bFCodFaaC1nGy+9sxksYp3uRKiIq/gY5Vbt5yJBA6kYJy7TSbhblTsnjAMKZ2xRUQfUBly9xkF6VQsJkLTlMWa6VdsGljHxDcZFQvDbc2KmAbBtp3MH/dWnuGOODQmfey07yxS+SWN3Yl0vN1NjaeDiF3YUXUtXuUexLRveYkw0AGJ3aLSHNgBM6+Q/7cKkaTK+69ARaq6TFIKBjDOAuExRsPmY1xbxxL9GTpOaJpVNJPLPo1yc2UQQjxM/8iLx6iQ51eeM3WA9PfqcO/pQ+Wc6qq38L4YtWqh46u/UffMoL9zy/IsSuF9tZ9OzuU+wmUV81nPf2IWpnp1gPw8G4zS70PwuLD8uZav/r5+jf7Oa+MDyGN6HSGhTOlsa7usYEJ4ShIqg1YLayPR/iWxfd/xtLcmfcYt49zFSyT1VB9blu3mhSYQS6LQzozeOStQI9hKG2p5aghZMhcfayWd5j9t21Knv/k4qMs+15fssClUcfA/DrdaXRYmolONY8QUgrPgUtkXioNfuOrVUc7BEJ34E943ZzqZaDuYXj9wVatzUiDNHA0IrFH4l5O9j+gcgoeQXqW3aIFWUR8mYXL/5cDNKNLTqNvoyjP16hG8sOQ41pZNFDEDoNIXarr7MboUHOKSKMsrSs8PyWSF3WlbTQt6/4rFBZOPUgeFho4fL6feewby5dR7QeeMBMWkg354ip6mlqYH7QOwnuqsSj7bxmZouKD9UvWCytIRfUyUOEL5BiJEcpQG15LQ0UtCCYjPGs9VSkRtQeI+DnN9fObLI7XikFex8NQYhi3vBgI+cseO/QC0hEvrQVLEJleqF1bxsKMXlAkw6uQND9zHio8onrg15lHgynnC12TF8sOUe2hLELCXlaPU13wDjZJoKQBU1w+6lF07RIUmcyWSFjTpPd6GoMq7RF8LNTTPYTtmcVjpBjXgMwYtbej8PGO+P/0z3nvzRL6guMdEZTOFova/DQMmTOe7qCLC4U2/9fPmVSWiiw9LtyE/xWiJc4BoOmUl1fzO09I7K9tbnJ4YaucNONkhYHbg4h3RFtbkqlSdDnN1vO5gvG2EFXbduuKJGAd6T74OJviMhT/3HOU3TPAzpivnRfOBbcgOZquyEryavaScgHvhMlWDCvYnjrePJkr6puxhFh2SLfHJ8/i1+lmro3XI/s7c+nVqyWsO3afP0sqHP2h7qpbyV/9Ag/0l0x19ivxI3ZVHUYAQ==",
      "thinking": "",
      "type": "thinking"
     },
     {
-     "id": "toolu_01K5skDkVw9pCaWeT2zKSu5W",
+     "id": "toolu_01SLQTuR5txXdHHsJvpEk6bJ",
      "caller": {
       "type": "direct"
      },
-     "input": {},
-     "name": "setup_pause",
+     "input": {
+      "step": "health_info",
+      "skipped": true
+     },
+     "name": "setup_step_done",
      "type": "tool_use"
     }
    ],
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 164,
+     "ephemeral_1h_input_tokens": 0,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 164,
-    "cache_read_input_tokens": 8697,
+    "cache_creation_input_tokens": 0,
+    "cache_read_input_tokens": 10003,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 147,
+    "output_tokens": 201,
     "output_tokens_details": {
-     "thinking_tokens": 118
+     "thinking_tokens": 125
     },
     "service_tier": "standard",
     "speed": "standard"
@@ -131,25 +134,25 @@
   }
  },
  {
-  "request_hash": "aef6e47971e3a97ee8dd3b2b771ca8be921b5b5458f8ccfbe6f16b78c0a4a7ab",
+  "request_hash": "6b433c500983c8ac5bd3395e8d209bd7358e14d0876e06fff2537b68473e55d8",
   "response": {
    "content": [
     {
-     "text": "Muy bien, Carmen, no hay ninguna prisa. Se lo volveré a preguntar otro día.",
+     "text": "Muy bien, Carmen, no hay ninguna prisa. Lo dejamos para otro día, y si más adelante quiere, me lo dice.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 184,
+     "ephemeral_1h_input_tokens": 215,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 184,
-    "cache_read_input_tokens": 8861,
+    "cache_creation_input_tokens": 215,
+    "cache_read_input_tokens": 10003,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 40,
+    "output_tokens": 52,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

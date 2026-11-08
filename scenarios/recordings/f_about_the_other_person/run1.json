@@ -1,6 +1,6 @@
 [
  {
-  "request_hash": "0f9efe98a2adbafc178771bb4705db3e67a2fe5a9028743d354c727782852d97",
+  "request_hash": "1271330a4faa5d6d35d16e417c92532d4cb0455e68aac579ac63485b6095a1ba",
   "response": {
    "content": [
     {
@@ -15,7 +15,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6508,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 36,
@@ -29,16 +29,16 @@
   }
  },
  {
-  "request_hash": "f0bcc3c28c19c5bf54533e994269dfe8e791eb95cec5c18e55b1086637781865",
+  "request_hash": "90e1cd5810709ec1650bcb6b219b19041e46d2c5cce97e2c27c6b8abfde68ed0",
   "response": {
    "content": [
     {
-     "signature": "CAQSxAcKEAgTGAI4AUIIdGhpbmtpbmcSDKqSkT/bO1LoHF7bfxoMrNy0G6ed8BAvUwi6IjDRQDUjwm9FYctnu/bKRkS1hUkSQ2DEZGCdU2WEPXFbaHBi2GZ2lOZeCyCUGQ2NTHcq4QZnkMpyctOdtQ7zmr2LfiMlO4xkc0FPIXMzlHdB2bC9PpMiskR2YHW3G5EXNxPr/mrfTJFVnsAXrgxhuMyoFnNiVaR8ziLdSdo1S13ljnKK65d7WkRXU5gwC4zgJu8uzWz/rQMKN+JL7ToHlSenIzGnF6noDZyskjYpEJILYOqAHw9LCPlKMvLXSqMjAStTqNBkZdCzyOeeN9YDUy6k2cHxyRXr/gTDewyfxcgRSQUO0V1Vuai+igWZRHUMDxs9Vbq2RA42f369h1I+5voz58E/NZqbM2g8sEsnMNrg6H0dT0iLejuVbW+VT12kViEbbr0VSsG3jBQa89FGPPJjvTxca80tE/7v6WJhxrbOgh5nCTadD3LcAZjoMtU+HcQUTyBOrYF9uXKNR3eR/kBoGhOS8wGuPIfDa93waxSm6dMZ4+xahKTX6VYLf7CxNsBxHBoDuTLtcV7MGcuC67y0ozQx+4VzI1nAUUFO9tS3FCe0j8eObtobY3IkXZeyMa3zdvs6Dwph87D+c4xLISpLpTPgecPqpjEMpjKWDeOccHcjQ7/HgZi/ST2IzCLnQG9tKg9HV954wFk5OuDN6XroN9FB3S7C8szMN/EDpkKXjmzydKbYTaZcioHmturF/8s7QUlNRGqkjGM90E2DCClEKeSVW+tpW+2kYYogk7uhR6ZOTTliarWpsQcijrme84Vd+R4jQnsghck884zlUmNj/dEURSuT7QW0tgLQtF+MT0AxfINMREBycU5REJhjlsH+vslHcrZvb8GwZwAwTVEtYbZbriL0s/5f89AEeldIlxsMy/qjVwXRubmT3AUiBcyPhs4IXwRLGXxO8ZJMGv+jgnSuF84yxHqkcy+oOx2QXGdFLfqqoIp8kJBZAMlpGtff7PxKz34uPekqZXHb38odP6uzO2u7YItKXi13zrSx38iUgzp/LGXz5OtTpqg8wXvw/1atPFTvgNaIMBxLgrWxDs717tMl1L+xSiQwRkjX6OLjpzf96YQ5HK9y/0VR3NYtUHMMuugNBLVoV4mcRTruot+/PKIAaG3yGivdAEZjW74v4+xBgevZd/qvi/Z7OzhDtSaKQBOYwG6Qtu4yVhq4gO+KIozh7vqHgbGRHZlgw8FCp7UXmgcP7McR4YaC6nXuHjWwGAE=",
+     "signature": "CAQSkAcKEAgTGAI4AUIIdGhpbmtpbmcSDLnXWj8xK70D78q89BoM0PGGUEFnEmPCamsjIjDuGFjSDU3df81MPuPe9bN2Wfa+sJaL3s3hNGChbncwcRH5VK0pBM/5GPwm5V1PqScqrQZO23yhzaprMkUlKuhLZHGil9WmPKCTqDT9jzgRCOTQ1RNdSPqKXH0Jfc3OHGj4rgqUP6fvlX9CjDQ7hEA9lD6lWp5dG7Tjw91LrW4jGXVPHAinxx18fD4chNArU1yqdeRKp/AyRUt1o/E/RK2fuI7kfwoltI9BE5TYwj+lWeGQP1BLgC4cepyDjXrHHEJ//PROVphUCndmUGjvK30HlxYlnjZUIAwp7mxFNaUVwVhDYoChdKgZUn4ksqqujIIYOahEQGH5R9CEBlY7/duQTxSyqts/fgESwr7ulFKOQ1AOA7xaraITpjHLmKM/q2FJ2D15JIicrwou+cqnKdMBSXZZaT+fHN5R6DDaEKkg4cL1hdbmER5A2IkI59ZS6qEAVVk1FzrCT2jfMxdfC0p7vPYzqtWEFuVZyUEWikzC7+1EUOYGZWhphmP96Ps0BRMio4WDDC1zbwN0fC6FFye+bmFqr4olH4o/vJddne9w46AD6f660eM6c4tvJ/dk1g+KvN1nZ+eKlcQI3ciq6yxXBBZQmUr7EFRAV8TpxthtVH6KyFYUTxgO8W6vfqYDPnofAUfV0XRk8slMDxq86NogbtCNSI9GEL1rMyOZjA9Fkr2RQCLlw+yArxMZ3q4/89T0wDQ4LmQMRbYKWPr3HTtirvVfJYJ0WhJRTChL2tKomICWxOy9TjjzMBWbQo9uysyyAAsFBR5+uVhnLmfwrbT4qL62CuQwIBHwc4F3IXL/5/q2dogA/hKTSlaHmAbodYums2o1i9uZTSbZy/GY84Ug/7URF1jTnAR5BVTnmo07JYqCqYlJYQWgDbGNFaNwoqk9f7ncvsKCY+RZq7TBP92ZRwt+LMQGPjw9r7WWYJxY8Of22Fu4pqGSlGQIGXqjs+RkE8COn/gDPDvte9YCKXUIqGskz/A/1u9XneE5aY0Fc4pNSyK2x/gKgK/hRaP/4eq5J1HYQ2qrWzU7eTVAVSxuOXcg89k6B70M2RnEKVcfa2u2xTgAPEjlTTa5icearUYYiOkzzDHWGDywh3kqMmWWFklIvj00IgJQAfZtvRb0GYgxa+6wXe2ve9ZjEOO+eMsYAQ==",
      "thinking": "",
      "type": "thinking"
     },
     {
-     "text": "Buenos días, Carmen. Eso es algo que tiene que pedirme Toni mismo cuando hable conmigo, y entonces subiré el volumen para él. Para usted, ¿le parece bien cómo la oigo?",
+     "text": "Encantado, Carmen. Eso mejor que me lo pida el propio Toni cuando hable conmigo, porque cada uno cambia lo suyo. Y si usted quiere que hable más alto con usted, dígamelo.",
      "type": "text"
     }
    ],
@@ -49,12 +49,12 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 149,
-    "cache_read_input_tokens": 6508,
+    "cache_read_input_tokens": 9498,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 201,
+    "output_tokens": 168,
     "output_tokens_details": {
-     "thinking_tokens": 122
+     "thinking_tokens": 89
     },
     "service_tier": "standard",
     "speed": "standard"

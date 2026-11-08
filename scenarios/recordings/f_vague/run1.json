@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "9a1fd4669726b02e3af5ea9e28a39cb88e687d7b76533e3c91a5f87b46b9320a",
+  "request_hash": "c441130ab0fc9b27e5137054960a932178030bfa7d9f779d8ecd11bb02e238de",
   "response": {
    "content": [
     {
-     "text": "Con mucho gusto, Carmen. El cocido madrileño lleva garbanzos, carne, verduras y fideos, y se hace en varias partes. Le explico los primeros pasos.\n\nPrimero, la noche anterior ponga los garbanzos en remojo con agua templada y un poco de sal. Después, en una olla grande con agua, ponga la carne de ternera, un trozo de jamón y un hueso de caña, y llévelo a hervir.\n\nCuando hierva, quite la espuma que salga. ¿Quiere que le diga el siguiente paso?",
+     "text": "Con mucho gusto, Carmen. El cocido madrileño se hace en pasos, así que le doy los primeros.\n\nPrimero, ponga garbanzos en remojo la noche anterior, con un poco de sal. Al día siguiente, en una olla grande con agua fría, ponga la carne de morcillo, un hueso de jamón y un trozo de tocino, y llévelo a hervir despacio, quitando la espuma que salga.\n\n¿Quiere que le diga el siguiente paso?",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 154,
-    "cache_read_input_tokens": 6205,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 192,
+    "output_tokens": 167,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,17 +29,17 @@
   }
  },
  {
-  "request_hash": "f367a626092aaad7d79cc9f5768b49291c9274bb635446552b4f772a530dc9f5",
+  "request_hash": "5426d1e1fec9e721b7bce336673d45e8f20302b02317c8b04386bf273b9f1429",
   "response": {
    "content": [
     {
-     "id": "toolu_01VegwKTeewW8sn9XRJgia5n",
+     "id": "toolu_01TmC3ArBNQpU2qdkFmsR9zn",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Uf, eso ha sido demasiado.",
-      "understood": "Carmen says the last answer was too long; wants shorter answers.",
+      "understood": "Carmen found the last answer too long; wants shorter answers.",
       "kind": "setting",
       "setting": "answer_length",
       "value": "shorter",
@@ -52,14 +52,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 273,
+     "ephemeral_1h_input_tokens": 248,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 273,
-    "cache_read_input_tokens": 6359,
+    "cache_creation_input_tokens": 248,
+    "cache_read_input_tokens": 9349,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 198,
+    "output_tokens": 197,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -70,25 +70,25 @@
   }
  },
  {
-  "request_hash": "b30d034d97df9234a049f0967384b0867989be401788868b8207848bd801748a",
+  "request_hash": "6e218f52feedb0c8a8e8f7ec4752bb7856832dbe598047a1f65e9769831a2642",
   "response": {
    "content": [
     {
-     "text": "Claro, Carmen, seré más breve. Cuando quiera, seguimos con el cocido, paso a paso.",
+     "text": "Perdone, Carmen. A partir de ahora le responderé con menos.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 275,
+     "ephemeral_1h_input_tokens": 274,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 275,
-    "cache_read_input_tokens": 6632,
+    "cache_creation_input_tokens": 274,
+    "cache_read_input_tokens": 9597,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 41,
+    "output_tokens": 27,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

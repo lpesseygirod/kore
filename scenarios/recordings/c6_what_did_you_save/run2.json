@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "35d9b9461f853036a776f35bfa9629ca19f3bc44432df9c7a5031bc2b0423970",
+  "request_hash": "d49c45872ae01d0ca4f172bee3b20fffbcd73e760c965618e86eb58072f99571",
   "response": {
    "content": [
     {
-     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. Que tenga un buen día.",
+     "text": "Buenos días, Carmen. Hoy es lunes, nueve de noviembre. No tiene nada apuntado para hoy. Que tenga una buena mañana.",
      "type": "text"
     }
    ],
@@ -15,10 +15,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6504,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 41,
+    "output_tokens": 58,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -29,11 +29,11 @@
   }
  },
  {
-  "request_hash": "28fb7fca5bcf5dcf1c49ef8fb169738d5ef540bcf06f18da5f2fb8beff4519cb",
+  "request_hash": "baf35ef1c148eac9737232ec8ca5239be7c15270f2fdc4439b6856752d61c13a",
   "response": {
    "content": [
     {
-     "id": "toolu_01Xgu4xaVra4oLM53eqCKAJH",
+     "id": "toolu_01UuRJWgXKJ1yyP3Ne1oLfnk",
      "caller": {
       "type": "direct"
      },
@@ -48,11 +48,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 153,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6640,
+    "cache_creation_input_tokens": 153,
+    "cache_read_input_tokens": 9494,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 94,
@@ -66,25 +66,25 @@
   }
  },
  {
-  "request_hash": "30952524b165d9cd702fbe0977ec92f693cce856a2686d6c44ffb814269d4b7b",
+  "request_hash": "c12cb107eb16f6315bbeb453fc964f39bb91bf81e229a8ac2e8ee8478d01c598",
   "response": {
    "content": [
     {
-     "text": "Apuntado, Carmen. Su nieta Lucía estudia enfermería en Salamanca. Es una carrera muy bonita.",
+     "text": "Apuntado, Carmen: su nieta Lucía estudia enfermería en Salamanca. Qué bonita profesión.",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 0,
+     "ephemeral_1h_input_tokens": 116,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6756,
+    "cache_creation_input_tokens": 116,
+    "cache_read_input_tokens": 9647,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 48,
+    "output_tokens": 45,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -95,11 +95,11 @@
   }
  },
  {
-  "request_hash": "3e98cb204c82d02d46c8d7861e34bc73db2f2422a6624b9898eaa540f6f8fca1",
+  "request_hash": "c71f629ef49cd1e887e2c6bd995f0c14156eb1d54fecd331eeb514a7831ba023",
   "response": {
    "content": [
     {
-     "id": "toolu_01EPfPwzepBtca5HkHDar4M9",
+     "id": "toolu_01XskF6MGfMYx1KK559GUqsh",
      "caller": {
       "type": "direct"
      },
@@ -111,11 +111,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 129,
+     "ephemeral_1h_input_tokens": 126,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 129,
-    "cache_read_input_tokens": 6756,
+    "cache_creation_input_tokens": 126,
+    "cache_read_input_tokens": 9763,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 34,
@@ -129,11 +129,11 @@
   }
  },
  {
-  "request_hash": "7ca18de579f56c97de94fd05adadfd14b3e9c2649f4044da4a8e897fd89838a2",
+  "request_hash": "492fa5270c9c396b2eb6afe723e8d622f5828bd5285d6009e09793bcef2e3790",
   "response": {
    "content": [
     {
-     "text": "Sé una sola cosa, Carmen: que su nieta Lucía estudia enfermería en Salamanca. No tengo apuntadas medicinas ni citas suyas. Si quiere, puede contarme más cosas.",
+     "text": "Sé poco, Carmen. Solo que su nieta Lucía estudia enfermería en Salamanca. No tengo apuntadas medicinas ni citas. Si quiere, me cuenta más cosas.",
      "type": "text"
     }
    ],
@@ -144,10 +144,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 109,
-    "cache_read_input_tokens": 6885,
+    "cache_read_input_tokens": 9889,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 77,
+    "output_tokens": 73,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

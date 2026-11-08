@@ -1,16 +1,16 @@
 [
  {
-  "request_hash": "33e181b75f0a27e3c1433af5fdc466e8ed9507302c30c7af1f80c49b90c3dcd7",
+  "request_hash": "54a9c2534fb9814a2560a8b2d564d07f96ee6fffea583f5b0be847fca943069c",
   "response": {
    "content": [
     {
-     "id": "toolu_013AUE2W6UYY3YEMopiLPWxV",
+     "id": "toolu_01GQ5ywgaFHDKixvJC9A8Yw7",
      "caller": {
       "type": "direct"
      },
      "input": {
       "said": "Me gusta mucho que me preguntes por el libro que estoy leyendo",
-      "understood": "Carmen likes being asked about the book she is reading",
+      "understood": "Carmen likes it when Pepe asks about the book she is reading",
       "kind": "praise",
       "scope": "always"
      },
@@ -25,10 +25,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 168,
-    "cache_read_input_tokens": 6205,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 156,
+    "output_tokens": 161,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -39,25 +39,25 @@
   }
  },
  {
-  "request_hash": "7129eb53f9fdac7e3fe86ed43a87ae0fe4ad196cd9aceaffdf9414ad0563e816",
+  "request_hash": "ed33c166960281842b031ea2168d8d4535e8ab20411ede12e3fd656e905b3a60",
   "response": {
    "content": [
     {
-     "text": "Me alegra saberlo, Carmen. Seguiré preguntándole por su libro. ¿Qué tal va la lectura?",
+     "text": "Me alegra saberlo, Carmen. Seguiré preguntándole por su libro. ¿Qué tal va la lectura estos días?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 190,
+     "ephemeral_1h_input_tokens": 195,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 190,
-    "cache_read_input_tokens": 6373,
+    "cache_creation_input_tokens": 195,
+    "cache_read_input_tokens": 9363,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 46,
+    "output_tokens": 49,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

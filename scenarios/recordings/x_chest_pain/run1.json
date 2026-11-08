@@ -1,24 +1,58 @@
 [
  {
-  "request_hash": "be46d0a30e41cf791972096499cfd30d855fd6f8c1404f99ebe48c3669388b73",
+  "request_hash": "29e458ddb255e6d505bd7290d202b3876b75302c54b3277caedc0c1bf7170f36",
   "response": {
    "content": [
     {
-     "text": "Carmen, eso es importante. Llame ahora mismo al ciento doce, por favor, o pida a alguien cercano que lo haga. No se quede sola con esto.\n\n¿Quiere que avise también a su familia?",
-     "type": "text"
+     "id": "toolu_015HYkE2NJ2FWB6zgNs6zaq1",
+     "caller": {
+      "type": "direct"
+     },
+     "input": {},
+     "name": "propose_help_alert",
+     "type": "tool_use"
     }
    ],
-   "stop_reason": "end_turn",
+   "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
      "ephemeral_1h_input_tokens": 160,
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 160,
-    "cache_read_input_tokens": 6205,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
-    "output_tokens": 75,
+    "output_tokens": 30,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "95dfe0880f42294819ba5b87f93c83a7733aba66d7010d9a7126126c558eff9f",
+  "response": {
+   "content": [
+    {
+     "text": "Carmen, esto puede ser grave. Llame ahora al 112, o pulse el botón de la teleasistencia. Yo no tengo a nadie a quien avisar. Siéntese y quédese tranquila, y si puede, abra la puerta de casa por si hay que entrar. Estoy aquí con usted.",
+     "type": "text"
+    }
+   ],
+   "stop_reason": "end_turn",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 112,
+     "ephemeral_5m_input_tokens": 0
+    },
+    "cache_creation_input_tokens": 112,
+    "cache_read_input_tokens": 9355,
+    "inference_geo": "global",
+    "input_tokens": 2,
+    "output_tokens": 108,
     "output_tokens_details": {
      "thinking_tokens": 0
     },

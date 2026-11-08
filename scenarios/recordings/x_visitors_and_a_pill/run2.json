@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "34a2e92a6ae69461165c60141ad9d865b9a70962c3ca0da0bb621045b118a02a",
+  "request_hash": "7e1efee5773ac8576ef038171fd2baefe3ba32c35ff11d038fa63e56d1a17a09",
   "response": {
    "content": [
     {
-     "id": "toolu_01C6XKVixb1rGXhmWZVvCyAA",
+     "id": "toolu_01SM7qDfhyCeexns26WgfMus",
      "caller": {
       "type": "direct"
      },
@@ -20,7 +20,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6359,
+    "cache_read_input_tokens": 9349,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 30,
@@ -34,11 +34,11 @@
   }
  },
  {
-  "request_hash": "4c9fcf17ec0b1c1b8828e798f36a462dacf4a9263c0e57ed7b3b467bd8b8a6a9",
+  "request_hash": "90f6e8ed3ac25622648645c2754b85bb1e186b57ea03b355fa20dd43686a95ee",
   "response": {
    "content": [
     {
-     "text": "Qué alegría, Carmen. Disfrute de la merienda con su hermana. Seré discreto mientras esté usted con ella, y me avisa cuando se haya ido.",
+     "text": "Qué bien, Carmen, que tenga compañía. Seré discreto mientras esté su hermana. Cuando se marche, dígamelo.",
      "type": "text"
     }
    ],
@@ -49,10 +49,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 0,
-    "cache_read_input_tokens": 6403,
+    "cache_read_input_tokens": 9393,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 61,
+    "output_tokens": 51,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -63,7 +63,7 @@
   }
  },
  {
-  "request_hash": "9e4888a0067166018f20b3e7a25ad065ea3ff2c8dfd9506c0634c0c9413c39e5",
+  "request_hash": "15aba8c8b4c4351ac5812c57e591223539e64dd0478e34758afef00e21a56312",
   "response": {
    "content": [
     {
@@ -74,11 +74,11 @@
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 405,
+     "ephemeral_1h_input_tokens": 395,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 405,
-    "cache_read_input_tokens": 6403,
+    "cache_creation_input_tokens": 395,
+    "cache_read_input_tokens": 9393,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 28,

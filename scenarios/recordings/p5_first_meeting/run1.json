@@ -1,10 +1,10 @@
 [
  {
-  "request_hash": "889ec1dc61a5e1925a7e208f23c1aa6cc9e78530dd62f880dfe0f49206219ebf",
+  "request_hash": "bf4fb566a4dcd0cfc2c77db332b61140c8f4ff0011aeb294a9eac93a847c3ae9",
   "response": {
    "content": [
     {
-     "id": "toolu_01VdLCPJht3g5vJgGkf3isGe",
+     "id": "toolu_01WKvCcUi32jVwHJvyhb42cE",
      "caller": {
       "type": "direct"
      },
@@ -20,7 +20,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 223,
-    "cache_read_input_tokens": 8042,
+    "cache_read_input_tokens": 9195,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 27,
@@ -34,11 +34,11 @@
   }
  },
  {
-  "request_hash": "3acb87ccb60eb291c1b46197f0297a5f76057ab1fa1c408817043042d67388f7",
+  "request_hash": "d9f5f98f16182934b131aa6115e13f40d27605d5bb6a42d4633baf12c766aebe",
   "response": {
    "content": [
     {
-     "text": "Buenos días, soy Pepe, el asistente de esta casa. Estoy aquí para ayudarle con los recordatorios, resolver sus dudas o simplemente charlar un rato. Puede pedirme lo que quiera y cambiar cualquier cosa con solo decírmelo. ¿Le apetece que nos conozcamos ahora o prefiere hacerlo otro día?",
+     "text": "Buenos días, soy Pepe, el asistente de esta casa. Estoy aquí para ayudarle con los recordatorios, resolver dudas o simplemente charlar un rato. Puede preguntarme lo que quiera y cambiar cualquier cosa con solo decírmelo. ¿Le apetece que nos conozcamos ahora o prefiere otro día?",
      "type": "text"
     }
    ],
@@ -49,10 +49,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 180,
-    "cache_read_input_tokens": 8265,
+    "cache_read_input_tokens": 9418,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 133,
+    "output_tokens": 127,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -63,11 +63,11 @@
   }
  },
  {
-  "request_hash": "425c1f0885282715987c051d8fb18b5c91c02207ddd4822d9dbd64418bfa08ac",
+  "request_hash": "73318eef46a13feb934cfeb27e7e1c7ac5a4fb18acc8aa74d8d2f80a8cf7e21a",
   "response": {
    "content": [
     {
-     "id": "toolu_019aqVC44zVaZerJYWbJ6ps9",
+     "id": "toolu_01XpSW1bgnXyTNnkaM35YWJh",
      "caller": {
       "type": "direct"
      },
@@ -76,9 +76,34 @@
      },
      "name": "setup_step_done",
      "type": "tool_use"
+    }
+   ],
+   "stop_reason": "tool_use",
+   "usage": {
+    "cache_creation": {
+     "ephemeral_1h_input_tokens": 239,
+     "ephemeral_5m_input_tokens": 0
     },
+    "cache_creation_input_tokens": 239,
+    "cache_read_input_tokens": 9598,
+    "inference_geo": "global",
+    "input_tokens": 4,
+    "output_tokens": 52,
+    "output_tokens_details": {
+     "thinking_tokens": 0
+    },
+    "service_tier": "standard",
+    "speed": "standard"
+   },
+   "model": "claude-sonnet-5-5"
+  }
+ },
+ {
+  "request_hash": "06af1e87329c25ac67003b9d4e15349dc037d053c7f68f1ce40b5051065e3384",
+  "response": {
+   "content": [
     {
-     "id": "toolu_01SHs9xBNjGu4CJvhohiMGLx",
+     "id": "toolu_01G6UMCZ7Mm6rqktTSEQiPzc",
      "caller": {
       "type": "direct"
      },
@@ -90,14 +115,14 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 245,
+     "ephemeral_1h_input_tokens": 66,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 245,
-    "cache_read_input_tokens": 8445,
+    "cache_creation_input_tokens": 66,
+    "cache_read_input_tokens": 9837,
     "inference_geo": "global",
-    "input_tokens": 4,
-    "output_tokens": 76,
+    "input_tokens": 2,
+    "output_tokens": 27,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -108,25 +133,25 @@
   }
  },
  {
-  "request_hash": "245608c14d98c7431ae50e6fd1137be97af5745c9333bdf58d505fbd87923a78",
+  "request_hash": "3c9f1fd2dceb800a2594b704013bda3cdf086b076c18056df975d5990c14cab5",
   "response": {
    "content": [
     {
-     "text": "Soy Pepe, una máquina, un asistente que vive en este altavoz. Encantado de conocerle. ¿Cómo se llama usted y cómo prefiere que le llame?",
+     "text": "Soy Pepe, un asistente que vive en este altavoz. Soy una máquina, pero estoy aquí para echarle una mano. ¿Cómo se llama usted y cómo le gusta que le llamen?",
      "type": "text"
     }
    ],
    "stop_reason": "end_turn",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 251,
+     "ephemeral_1h_input_tokens": 138,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 251,
-    "cache_read_input_tokens": 8690,
+    "cache_creation_input_tokens": 138,
+    "cache_read_input_tokens": 9903,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 64,
+    "output_tokens": 74,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
@@ -137,11 +162,11 @@
   }
  },
  {
-  "request_hash": "a80efbe52435fb423522f67b5ca7c0110bf7931110572d316e0f08099d360e47",
+  "request_hash": "e040e15785518ce5a45ca4cad08bcd13a02a7a9f04cf71310228ca4c197e28b8",
   "response": {
    "content": [
     {
-     "id": "toolu_019Tx4sawgiJcguv45J9JAfz",
+     "id": "toolu_01Fd27HYfPkgzKc2R13JoXLB",
      "caller": {
       "type": "direct"
      },
@@ -157,11 +182,11 @@
    "stop_reason": "tool_use",
    "usage": {
     "cache_creation": {
-     "ephemeral_1h_input_tokens": 169,
+     "ephemeral_1h_input_tokens": 179,
      "ephemeral_5m_input_tokens": 0
     },
-    "cache_creation_input_tokens": 169,
-    "cache_read_input_tokens": 8941,
+    "cache_creation_input_tokens": 179,
+    "cache_read_input_tokens": 10041,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 107,
@@ -175,7 +200,7 @@
   }
  },
  {
-  "request_hash": "fd63372d273a02fbadfb54ee131c869f6a46da5143a3a82cdebe2c4ea743880f",
+  "request_hash": "86faf0cde66a12ab7a90020e5cd199a6db480de4420b2a3a43da99d678c3e632",
   "response": {
    "content": [
     {
@@ -190,7 +215,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 156,
-    "cache_read_input_tokens": 9110,
+    "cache_read_input_tokens": 10220,
     "inference_geo": "global",
     "input_tokens": 2,
     "output_tokens": 25,
@@ -204,11 +229,11 @@
   }
  },
  {
-  "request_hash": "14d8e3e4be75fff079d70a79431b840b97e5ca75a743b698ff80545342d61e97",
+  "request_hash": "5a821cd29ad16c709102e14788ad725992f85025ca5c720d88aed246997156f5",
   "response": {
    "content": [
     {
-     "id": "toolu_01E7hwGtpvHpBPXDtLV8bFBZ",
+     "id": "toolu_01P6YxuQi2xRXsrGeR8osxWt",
      "caller": {
       "type": "direct"
      },
@@ -226,7 +251,7 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 113,
-    "cache_read_input_tokens": 9266,
+    "cache_read_input_tokens": 10376,
     "inference_geo": "global",
     "input_tokens": 4,
     "output_tokens": 51,
@@ -240,11 +265,11 @@
   }
  },
  {
-  "request_hash": "d00c6603a7428020e93afbe06107ca6e858091db1d74d1c4bc79c3d028798b73",
+  "request_hash": "e9e1d77de8756f1edf5caaa97aa78ef4c09fa57f4e00c79f898f799dfa9bd634",
   "response": {
    "content": [
     {
-     "text": "Perfecto, Carmen, ya la tengo apuntada. ¿Vive alguien más con usted en casa?",
+     "text": "Encantado, Carmen. Una cosa más: ¿vive alguien más con usted en casa?",
      "type": "text"
     }
    ],
@@ -255,10 +280,10 @@
      "ephemeral_5m_input_tokens": 0
     },
     "cache_creation_input_tokens": 81,
-    "cache_read_input_tokens": 9379,
+    "cache_read_input_tokens": 10489,
     "inference_geo": "global",
     "input_tokens": 2,
-    "output_tokens": 41,
+    "output_tokens": 35,
     "output_tokens_details": {
      "thinking_tokens": 0
     },
