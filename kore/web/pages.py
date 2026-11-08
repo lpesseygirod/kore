@@ -9,6 +9,8 @@ from __future__ import annotations
 import contextvars
 from html import escape
 
+from kore.web import icons
+
 CSS = """
 /* The look from Lea's design (docs/design/Style.dc.html): wine, linen, Inter, big and calm. */
 :root { --bg: #FBF7F5; --fg: #2A1A1F; --muted: #6F5A61; --card: #FFFFFF; --line: #E6D7DC; --soft-line: #EFE4E8;
@@ -184,7 +186,7 @@ def layout(title: str, body: str, nav: str = "", lang: str = "es", compact: bool
     classes = " ".join(c for c in ("compact" if compact else "", f"size-{SIZE.get()}" if not compact else "") if c)
     return (f'<!doctype html><html lang="{lang}" class="{classes}"><head><meta charset="utf-8">'
             f'<meta name="viewport" content="width=device-width, initial-scale=1">'
-            f'<meta name="color-scheme" content="light dark"><title>{e(title)}</title>'
+            f'<meta name="color-scheme" content="light dark"><title>{e(title)}</title>{icons.HEAD}'
             f'<style>{CSS}</style></head><body><a class="skip" href="#main">{skip}</a>{nav}'
             f'<main id="main">{body}</main>{after}</body></html>')
 
@@ -922,6 +924,12 @@ def elder_settings(account, size: str, note: str = "") -> str:
 <a class="big-card" href="/lo-que-ven"><span><b>Lo que ve {t("tu", "su")} familia y Lea</b></span><span class="chev" aria-hidden="true">›</span></a>
 <a class="big-card" href="/dispositivos"><span><b>Móviles conectados y acceso de la familia</b></span><span class="chev" aria-hidden="true">›</span></a>
 <p class="muted">Cómo habla Pepe (más despacio, más alto, más corto) y los permisos se cambian hablando con Pepe.</p>
+<h2>Pepe en la pantalla de inicio</h2>
+<div class="card"><p>Para abrir Pepe con un toque, como cualquier aplicación:</p>
+<p><b>iPhone:</b> en Safari, {t("toca", "toque")} el botón Compartir (el cuadrado con la flecha) y luego
+«Añadir a pantalla de inicio». Al abrirlo desde el icono, Pepe {t("te", "le")} pedirá otra vez el código, solo esa vez.</p>
+<p><b>Android:</b> en Chrome, {t("toca", "toque")} el menú (los tres puntos) y luego «Añadir a pantalla de inicio»
+o «Instalar aplicación».</p></div>
 <form method="post" action="/salir"><button class="big second" type="submit">Salir de este móvil</button></form>
 """, menu("/ajustes", account))
 

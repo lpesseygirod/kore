@@ -32,7 +32,7 @@ from kore.memory.db import connect, utc_iso
 from kore.scheduler.clock import Clock, SystemClock
 from kore.setup import progress
 from kore.brain.costs import CostLog
-from kore.web import accounts, agenda, console, elder, pages, pages_console, photos, today
+from kore.web import accounts, agenda, console, elder, icons, pages, pages_console, photos, today
 from kore.web import family as fam
 from kore.web import chat as chats
 
@@ -45,7 +45,8 @@ REPLY_WAIT_S = 90
 DEFAULT_HOSTS = ["localhost", "127.0.0.1"]  # plus the box's own name(s), given when serving
 
 HEADERS = {
-    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; form-action 'self'; "
+    "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; manifest-src 'self'; "
+                               "form-action 'self'; "
                                "frame-ancestors 'none'; base-uri 'none'",
     "X-Frame-Options": "DENY",
     "X-Content-Type-Options": "nosniff",
@@ -997,6 +998,17 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             fam.withdraw(db(), clock, a.contact_id, i)
         return "/familia/cita"
 
+    # Pepe's icon and the manifest: public (the phone fetches them before anyone logs in), the same for everyone.
+    cached = {**HEADERS, "Cache-Control": "public, max-age=86400"}
+
+    async def manifest(request: Request):
+        return Response(icons.manifest(), media_type="application/manifest+json", headers=cached)
+
+    def icon(size: int):
+        async def serve(request: Request):
+            return Response(icons.png(size), media_type="image/png", headers=cached)
+        return serve
+
     async def health(request: Request):
         return PlainTextResponse("ok", headers=HEADERS)
 
@@ -1005,6 +1017,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/entrar/codigo", code_page), Route("/entrar", use_code, methods=["POST"]),
         Route("/dispositivos", devices), Route("/dispositivos/cerrar", close_device, methods=["POST"]),
         Route("/salir", logout, methods=["POST"]), Route("/salud", health),
+        Route("/manifest.webmanifest", manifest), *[Route(f"/icono-{s}.png", icon(s)) for s in icons.SIZES],
         Route("/hablar", talk_page), Route("/hablar", talk, methods=["POST"]),
         Route("/hablar/borrar", delete_page), Route("/hablar/borrar", delete, methods=["POST"]),
         Route("/calendario", calendar_page),

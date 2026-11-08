@@ -12,6 +12,10 @@ with Claude's recommendation for each.
 **Decided (Lea, 2026-11-08): "Web app is enough."** No phone app. Carmen and Antonio use the web app in their
 phone's browser. What only an app could do (search their photos, read their calls) stays out. Calls work through
 the "Llamar" button, and photos through the family app and "Fotos".
+**Built: Pepe's icon on the home screen** (`kore/web/icons.py`). A linen speaker on wine, drawn by code, plus a web
+app manifest. "Añadir a pantalla de inicio" on an iPhone or Android phone, or "Install" in Chrome or Edge on Windows,
+puts Pepe there as an app of its own. Ajustes explains how, in big text. On an iPhone the icon keeps its own login, so
+the code is entered once more inside it.
 
 The home page (the web) can't reach the phone's photos library, call history or contacts. A real app can, with the
 person's permission, and only partly:
