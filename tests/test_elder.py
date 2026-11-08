@@ -136,7 +136,7 @@ def test_a_reply_to_a_family_member_with_only_the_family_app_reaches_her_page(ap
     page = carmen.post("/mi-familia/responder", data={"contact": str(marcos), "text": "¿Vienes el domingo?"},
                        headers=ORIGIN).text
     carmen.post("/confirmar", data={"id": pending_id(page)}, headers=ORIGIN)
-    assert "¿Vienes el domingo?" in m.get("/").text
+    assert "¿Vienes el domingo?" in m.get("/familia/mensajes").text
 
 
 # --- agenda, settings ------------------------------------------------------------------------------------

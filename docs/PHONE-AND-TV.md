@@ -34,6 +34,21 @@ Two small steps would make it feel like an app, at no cost:
 What a computer still can't give: the phone's call history or WhatsApp, and Pepe's voice from the computer's
 microphone ("Pulsa y habla") needs the same decision as on the phone (speech services in the page).
 
+## 1c. Messages by WhatsApp (Lea, 2026-11-08: "for the send messages, connect it to WhatsApp")
+
+Today Pepe's messages to family go by Telegram, help also by SMS, and the family app (BUILD-PLAN: "v1 uses
+Telegram and SMS, not WhatsApp"). Every channel sits behind one interface (`kore/family/channels.py`), so WhatsApp
+can be added as one more without touching the rest. The ways to do it:
+
+| Way | How it works | Cost and limits | Recommendation |
+| --- | --- | --- | --- |
+| **WhatsApp Business Platform (Meta's Cloud API)**, directly or through Twilio | The box gets its own WhatsApp number ("Pepe de Carmen y Antonio"). Family receive and answer there | A Meta business account and a phone number just for it. Messages Pepe starts must use templates Meta approves, and are paid per message (a few cents each in Spain; replies within 24 h of the family writing are free). Twilio adds its own fee | **Yes, after the trial**, if the family prefers WhatsApp. Lea's OK needed (new paid service, a change to the plan) |
+| Automating Carmen's own WhatsApp (unofficial tools that drive WhatsApp Web) | Messages would come from her own number | Against WhatsApp's terms: numbers get banned without warning | **No.** Never for help alerts |
+| A WhatsApp link on the page | Opens WhatsApp on her phone with that person; she writes or calls herself | Free, nothing automated | Already built (Familia → Videollamada) |
+
+For help alerts, reliability comes first: keep Telegram and SMS as the help path even if WhatsApp is added, since a
+WhatsApp template or account problem must never stop "Pepe, ayuda".
+
 ## 2. The TV
 
 | Way | What Pepe could know | Privacy and cost | Recommendation |
@@ -52,3 +67,5 @@ microphone ("Pulsa y habla") needs the same decision as on the phone (speech ser
 2. "Llama a…" from the web page with a call button, and Pepe noting the calls it starts: OK? (Free, no app.)
 3. Family photos: shared on purpose (family app → Carmen's Fotos), not by searching their phone: OK?
 4. TV: what TV and decoder do they have? And may Pepe look things up on the internet (the TV guide)?
+5. WhatsApp: add Meta's WhatsApp Business service as a message channel (a number for the box, a few cents per
+   message), keeping Telegram and SMS for help? Now, after the trial, or not?

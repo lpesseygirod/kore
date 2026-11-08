@@ -140,8 +140,11 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if a.role == "operator":
                 return html(pages_console.overview(overview_data()))
             if a.role == "family":
-                return html(pages.family_home(a, fam.thread(db(), clock, a.contact_id),
-                                              pages.DONE.get(request.query_params.get("hecho", ""), "")))
+                return html(pages.family_home(a, {
+                    "date": elder.long_date(clock.now().date()), "people": fam.their_people(db(), a.contact_id),
+                    "all_good": fam.all_good(db(), clock, a.contact_id),
+                    "doses": fam.doses_shared(db(), clock, a.contact_id),
+                    "today": fam.days_ahead(db(), clock, a.contact_id, 1)[0]["items"]}))
             return html(pages.elder_home(a, elder_home_data(a)))
 
     async def entrar(request: Request):
@@ -285,7 +288,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     # --- W3: calendar, shopping list, what Pepe knows ---------------------------------------------
 
     BAD_FORM = "Vuelva a la página de Pepe y pruebe otra vez."
-    BACKS = ("/calendario", "/sabe", "/mi-familia")
+    BACKS = ("/calendario", "/sabe", "/mi-familia", "/fotos")
 
     def elder_home_data(a) -> dict:
         now = clock.now()
@@ -297,7 +300,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 "next": elder.next_up(db(), clock, a.person_id), "pills": elder.pills(db(), clock, a.person_id),
                 "unread": elder.unread_count(db(), a.person_id), "proposals": day.get("family_proposals") or [],
                 "shopping": day.get("shopping") or [],
-                "medicine_proposals": elder.medicine_proposals(db(), a.person_id)}
+                "medicine_proposals": elder.medicine_proposals(db(), a.person_id),
+                "new_photos": fam.new_photos(db(), a.person_id)}
 
     def person(request: Request):
         """The logged-in person, or None (operator and strangers get no personal pages)."""
@@ -379,7 +383,8 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if f is None:
                 return html(pages.message("No se ha podido", BAD_FORM), 403)
             try:
-                where = agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0, family_links)
+                where = agenda.confirm(db(), clock, a.person_id, _small_int(f.get("id")) or 0, family_links,
+                                       photo_dir)
                 if where.startswith("code:"):  # family access: the code is shown once, here
                     _, code, name = where.split(":", 2)
                     return html(pages.family_code(a, name, code))
@@ -737,7 +742,55 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
                 return go("/entrar")
             mine = [r["id"] for r in db().execute("SELECT id FROM photos WHERE person_id = ? ORDER BY id DESC LIMIT 30",
                                                   (a.person_id,))]
-            return html(pages.elder_photos(a, mine))
+            family_photos = fam.photos_for_person(db(), clock, a.person_id)
+            fam.mark_photos_seen(db(), clock, [x["id"] for x in family_photos])
+            hecho = request.query_params.get("hecho", "")
+            return html(pages.elder_photos(a, family_photos, mine, elder.contacts(db(), a.person_id),
+                                           pages.DONE.get(hecho, ""), bad=hecho == "pendiente"))
+
+    async def talk_about_photo(request: Request):
+        f = await form(request)
+        with lock:
+            a = person(request)
+            if a is None or f is None or chat is None:
+                return go("/entrar" if a is None else "/fotos")
+            fid = _small_int(f.get("id")) or 0
+            data = fam.photo_file(db(), photo_dir, fid, person_id=a.person_id)
+            row = db().execute("SELECT c.name FROM family_photos p JOIN contacts c ON c.id = p.contact_id WHERE p.id = ?",
+                               (fid,)).fetchone()
+            if data is None or row is None:
+                return go("/fotos")
+            try:
+                w, h = (1, 1)
+                pid = photos.save(db(), clock, photo_dir, a.person_id, data, w, h)
+            except photos.Refused as r:
+                return html(pages.message("No se ha podido", str(r), "/fotos"), 400)
+        try:
+            await asyncio.wait_for(asyncio.wrap_future(
+                chat.submit(a.person_id, f"Mira esta foto que me ha mandado {row['name']}.", (pid, data))), REPLY_WAIT_S)
+        except asyncio.TimeoutError:
+            pass
+        return go("/hablar#escribir")
+
+    async def send_photo(request: Request):
+        with lock:
+            a = person(request)
+        if a is None:
+            return go("/entrar")
+        f = await upload(request)
+        data = f.get("photo") if f and isinstance(f.get("photo"), bytes) else b""
+        if f is None or not data:
+            return html(pages.message("No se ha podido", "No ha llegado la foto. Pruebe otra vez.", "/fotos"), 400)
+        try:
+            jpeg, _, _ = await asyncio.to_thread(photos.shrink, data)
+            with lock:
+                proposal = fam.propose_photo_to_family(db(), clock, photo_dir, a.person_id,
+                                                       _small_int(f.get("to") if isinstance(f.get("to"), str) else "")
+                                                       or 0, jpeg,
+                                                       f.get("caption") if isinstance(f.get("caption"), str) else "")
+                return html(pages.confirm(a, proposal, "/fotos"))
+        except (photos.Refused, agenda.Refused) as r:
+            return html(pages.message("No se ha podido", str(r), "/fotos"), 400)
 
     # --- W4: photos, family ---------------------------------------------------------------------
 
@@ -819,12 +872,78 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
     def cita_page(a, f, note, bad=True):
         return family_form(f, note, bad, a)
 
+    def thread_with_photos(a):
+        return sorted(fam.thread(db(), clock, a.contact_id) + fam.photos_in_thread(db(), clock, a.contact_id),
+                      key=lambda m: m["at"])[-60:]
+
     def home_page(a, f, note, bad=True):
-        return pages.family_home(a, fam.thread(db(), clock, a.contact_id), note, bad)
+        return pages.family_messages(a, thread_with_photos(a), fam.household(db(), a.contact_id), note, bad)
+
+    async def family_messages_page(request: Request):
+        with lock:
+            a = relative(request)
+            if a is None:
+                return go("/entrar")
+            return html(home_page(a, None, pages.DONE.get(request.query_params.get("hecho", ""), ""), False))
+
+    async def family_calendar_page(request: Request):
+        with lock:
+            a = relative(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.family_calendar(a, fam.days_ahead(db(), clock, a.contact_id)))
+
+    async def family_alerts_page(request: Request):
+        with lock:
+            a = relative(request)
+            if a is None:
+                return go("/entrar")
+            return html(pages.family_alerts(a, fam.alerts(db(), clock, a.contact_id)))
+
+    async def family_photo_upload(request: Request):
+        with lock:
+            a = relative(request)
+        if a is None:
+            return go("/entrar")
+        f = await upload(request)
+        data = f.get("photo") if f and isinstance(f.get("photo"), bytes) else b""
+        if f is None or not data:
+            with lock:
+                return html(home_page(a, None, "No ha llegado la foto. Prueba otra vez."), 400)
+        try:
+            jpeg, _, _ = await asyncio.to_thread(photos.shrink, data)
+            with lock:
+                people_ids = {str(p["id"]): p["id"] for p in fam.household(db(), a.contact_id)}
+                target = f.get("for") if isinstance(f.get("for"), str) else ""
+                if target == "both" and len(people_ids) > 1:
+                    pid = None
+                elif target in people_ids:
+                    pid = people_ids[target]
+                else:
+                    raise agenda.Refused("Elige para quién es.")
+                fam.save_photo(db(), clock, photo_dir, a.contact_id, pid, "to_home", jpeg,
+                               f.get("caption") if isinstance(f.get("caption"), str) else "")
+        except (photos.Refused, agenda.Refused) as r:
+            with lock:
+                return html(home_page(a, None, str(r)), 400)
+        return go("/familia/mensajes?hecho=foto")
+
+    async def family_photo(request: Request):
+        with lock:
+            a = account(request)
+            pid = _small_int(request.query_params.get("id")) or 0
+            data = None
+            if a is not None and a.role == "person":
+                data = fam.photo_file(db(), photo_dir, pid, person_id=a.person_id)
+            elif a is not None and a.role == "family":
+                data = fam.photo_file(db(), photo_dir, pid, contact_id=a.contact_id)
+        if data is None:
+            return Response(status_code=404, headers=HEADERS)
+        return Response(data, media_type="image/jpeg", headers={**HEADERS, "Content-Disposition": "inline"})
 
     def fam_write(a, f):
         fam.write(db(), clock, a.contact_id, f.get("text"))
-        return "/?hecho=enviado"
+        return "/familia/mensajes?hecho=enviado"
 
     def fam_propose(a, f):
         fam.propose(db(), clock, a.contact_id, f)
@@ -908,6 +1027,10 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
               methods=["POST"]),
         Route("/calendario/propuesta/no", decline, methods=["POST"]),
         Route("/familia/escribir", family_change(fam_write, home_page), methods=["POST"]),
+        Route("/familia/mensajes", family_messages_page), Route("/familia/calendario", family_calendar_page),
+        Route("/familia/avisos", family_alerts_page),
+        Route("/familia/foto", family_photo_upload, methods=["POST"]), Route("/foto-familia", family_photo),
+        Route("/fotos/hablar", talk_about_photo, methods=["POST"]), Route("/fotos/enviar", send_photo, methods=["POST"]),
         Route("/familia/cita", family_cita_page),
         Route("/familia/cita", family_change(fam_propose, cita_page), methods=["POST"]),
         Route("/familia/cita/retirar", family_change(fam_withdraw, cita_page), methods=["POST"]),

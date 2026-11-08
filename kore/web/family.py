@@ -271,3 +271,205 @@ def decline(conn, clock: Clock, person_id: int, proposal_id: int) -> None:
     _waiting_row(conn, clock, person_id, proposal_id)
     conn.execute("UPDATE family_proposals SET status = 'declined', answered_at = ? WHERE id = ?",
                  (utc_iso(clock.now()), proposal_id))
+
+
+# --- the family app (Lea's design: Inicio, Calendario, Mensajes, Avisos) -----------------------------------
+
+PHOTOS_KEEP = timedelta(days=90)
+PHOTOS_PER_DAY = 20
+
+
+def their_people(conn, contact_id: int) -> list[dict]:
+    """The people at home this family member belongs to: the contact's person, or everyone for a shared one."""
+    return household(conn, contact_id)
+
+
+def doses_shared(conn, clock: Clock, contact_id: int) -> list[dict]:
+    """Per person: today's doses taken, only with that person's `family_sees_doses`; else "No compartido"."""
+    from kore.memory import meds, store
+
+    out = []
+    for p in their_people(conn, contact_id):
+        if not store.has_consent(conn, p["id"], "family_sees_doses"):
+            out.append({"name": p["call_name"], "shared": False})
+            continue
+        try:
+            doses = meds.status(conn, clock, p["id"])["doses"]
+        except meds.ClockUntrusted:
+            out.append({"name": p["call_name"], "shared": True, "unknown": True})
+            continue
+        out.append({"name": p["call_name"], "shared": True, "taken": sum(d["state"] == "taken" for d in doses),
+                    "total": len(doses), "times": [d["time"] for d in doses]})
+    return out
+
+
+def days_ahead(conn, clock: Clock, contact_id: int, days: int = 4) -> list[dict]:
+    """What the family may see coming: birthdays, and appointments they proposed that were saved (and the dose
+    times of people who share them). Nothing else from the home's calendar."""
+    from kore.memory import store
+
+    people = their_people(conn, contact_id)
+    ids = {p["id"] for p in people}
+    names = {p["id"]: p["call_name"] for p in people}
+    today = clock.now().date()
+    shared_doses = {d["name"]: d for d in doses_shared(conn, clock, contact_id) if d.get("shared") and d.get("times")}
+    accepted = conn.execute("SELECT title, starts_at_utc, person_id FROM family_proposals WHERE contact_id = ? AND "
+                            "status = 'accepted'", (contact_id,)).fetchall()
+    out = []
+    for i in range(days):
+        day = today + timedelta(days=i)
+        items = []
+        for c in conn.execute("SELECT name, relation, for_person FROM contacts WHERE birthday_md = ? AND "
+                              "birthday_reminders = 1", (day.strftime("%m-%d"),)):
+            if c["for_person"] is None or c["for_person"] in ids:
+                items.append({"time": "", "text": f"Cumpleaños de {c['name']}"})
+        for r in accepted:
+            at = from_utc_iso(r["starts_at_utc"], clock.tz)
+            if at.date() == day and (r["person_id"] is None or r["person_id"] in ids):
+                items.append({"time": at.strftime("%H:%M"), "text": f"{r['title']} · "
+                              f"{names.get(r['person_id'], 'los dos')}", "note": "La propusiste tú: está apuntada"})
+        if i == 0:
+            for name, d in shared_doses.items():
+                for t in d["times"]:
+                    items.append({"time": t, "text": f"Pastilla · {name}"})
+        items.sort(key=lambda x: (x["time"] == "", x["time"]))
+        out.append({"date": day, "items": items})
+    return out
+
+
+def alerts(conn, clock: Clock, contact_id: int) -> dict:
+    """What this family member gets alerts for (their people's choices), and the last week's alerts to them."""
+    from kore.memory import store
+
+    c = conn.execute("SELECT * FROM contacts WHERE id = ?", (contact_id,)).fetchone()
+    kinds = []
+    if c and c["help_contact"]:
+        for p in their_people(conn, contact_id):
+            kinds.append(f"«Pepe, ayuda», una caída o el botón · {p['call_name']}"
+                         + ("" if store.has_consent(conn, p["id"], "emergency_path") else " (Pepe pregunta antes)"))
+            if store.has_consent(conn, p["id"], "family_missed_meds"):
+                kinds.append(f"Pastillas olvidadas varias veces seguidas · {p['call_name']}")
+    since = utc_iso(clock.now() - timedelta(days=7))
+    words = {"help": "Petición de ayuda", "missed_meds": "Pastillas olvidadas", "stop_request": "Quiere dejar una pastilla"}
+    recent = [{"what": words.get(r["kind"], r["kind"]), "text": r["text"],
+               "at": from_utc_iso(r["created_at_utc"], clock.tz),
+               "state": {"sent": "Enviado", "pending": "Enviándose", "failed": "No se pudo enviar"}[r["status"]]}
+              for r in conn.execute("SELECT * FROM family_out WHERE contact_id = ? AND kind IN ('help', 'missed_meds', "
+                                    "'stop_request') AND created_at_utc >= ? ORDER BY id DESC", (contact_id, since))]
+    return {"kinds": kinds, "recent": recent}
+
+
+def all_good(conn, clock: Clock, contact_id: int) -> bool:
+    since = utc_iso(clock.now().replace(hour=0, minute=0, second=0, microsecond=0))
+    return conn.execute("SELECT count(*) FROM family_out WHERE contact_id = ? AND kind IN ('help', 'missed_meds') AND "
+                        "created_at_utc >= ?", (contact_id, since)).fetchone()[0] == 0
+
+
+# --- photos between the family and the home -------------------------------------------------------------
+
+
+def _purge_photos(conn, clock: Clock, folder) -> None:
+    """Family photos after 90 days, and photos chosen to send that never got their yes (after a day)."""
+    import time
+    if folder.exists():
+        kept = {r["file"] for r in conn.execute("SELECT file FROM family_photos WHERE file LIKE 'p%'")}
+        for f in folder.glob("p*.jpg"):
+            try:
+                if f.name not in kept and time.time() - f.stat().st_mtime > 86400:
+                    f.unlink(missing_ok=True)
+            except OSError:
+                continue
+    for r in conn.execute("SELECT id, file FROM family_photos WHERE created_at < ?",
+                          (utc_iso(clock.now() - PHOTOS_KEEP),)).fetchall():
+        try:
+            (folder / r["file"]).unlink(missing_ok=True)
+        except OSError:
+            continue
+        conn.execute("DELETE FROM family_photos WHERE id = ?", (r["id"],))
+
+
+def save_photo(conn, clock: Clock, folder, contact_id: int, person_id: int | None, direction: str, jpeg: bytes,
+               caption: str) -> int:
+    import secrets
+
+    since = utc_iso(clock.now() - timedelta(days=1))
+    if conn.execute("SELECT count(*) FROM family_photos WHERE contact_id = ? AND direction = ? AND created_at > ?",
+                    (contact_id, direction, since)).fetchone()[0] >= PHOTOS_PER_DAY:
+        raise agenda.Refused("Hoy ya se han mandado muchas fotos. Mañana se pueden mandar más.")
+    folder.mkdir(parents=True, exist_ok=True)
+    name = "f" + secrets.token_hex(16) + ".jpg"
+    pid = conn.execute("INSERT INTO family_photos (contact_id, person_id, direction, file, caption, created_at) "
+                       "VALUES (?, ?, ?, ?, ?, ?)", (contact_id, person_id, direction, name,
+                                                     agenda.clean(caption, 120), utc_iso(clock.now()))).lastrowid
+    try:
+        (folder / name).write_bytes(jpeg)
+    except OSError:
+        conn.execute("DELETE FROM family_photos WHERE id = ?", (pid,))
+        raise agenda.Refused("No se ha podido guardar la foto.") from None
+    _purge_photos(conn, clock, folder)
+    return pid
+
+
+def photos_for_person(conn, clock: Clock, person_id: int) -> list[dict]:
+    """Photos the family sent to this person (or to both), newest first; seen once shown."""
+    rows = conn.execute("SELECT p.*, c.name FROM family_photos p JOIN contacts c ON c.id = p.contact_id WHERE "
+                        "p.direction = 'to_home' AND (p.person_id = ? OR p.person_id IS NULL) AND "
+                        "(c.for_person IS NULL OR c.for_person = ?) ORDER BY p.id DESC LIMIT 30",
+                        (person_id, person_id)).fetchall()
+    return [{"id": r["id"], "from": r["name"], "caption": r["caption"], "new": r["seen_at"] is None,
+             "at": from_utc_iso(r["created_at"], clock.tz)} for r in rows]
+
+
+def mark_photos_seen(conn, clock: Clock, ids: list[int]) -> None:
+    for i in ids:
+        conn.execute("UPDATE family_photos SET seen_at = ? WHERE id = ? AND seen_at IS NULL", (utc_iso(clock.now()), i))
+
+
+def new_photos(conn, person_id: int) -> list[dict]:
+    rows = conn.execute("SELECT p.caption, c.name FROM family_photos p JOIN contacts c ON c.id = p.contact_id WHERE "
+                        "p.direction = 'to_home' AND p.seen_at IS NULL AND (p.person_id = ? OR p.person_id IS NULL) "
+                        "AND (c.for_person IS NULL OR c.for_person = ?)", (person_id, person_id)).fetchall()
+    return [{"from": r["name"], "caption": r["caption"]} for r in rows]
+
+
+def photo_file(conn, folder, photo_id: int, *, person_id: int | None = None, contact_id: int | None = None):
+    """The file, only for someone who may see it: the person it was sent to (or from), or the family member."""
+    r = conn.execute("SELECT p.*, c.for_person FROM family_photos p JOIN contacts c ON c.id = p.contact_id "
+                     "WHERE p.id = ?", (photo_id,)).fetchone()
+    if r is None:
+        return None
+    if contact_id is not None:
+        ok = r["contact_id"] == contact_id
+    else:
+        ok = (r["for_person"] is None or r["for_person"] == person_id) and (
+            r["person_id"] is None or r["person_id"] == person_id)
+    path = folder / r["file"]
+    return path.read_bytes() if ok and path.is_file() else None
+
+
+def photos_in_thread(conn, clock: Clock, contact_id: int) -> list[dict]:
+    names = {p["id"]: p["call_name"] for p in household(conn)}
+    return [{"who": "me" if r["direction"] == "to_home" else "home", "photo_id": r["id"], "text": r["caption"],
+             "at": from_utc_iso(r["created_at"], clock.tz),
+             "state": "" if r["direction"] == "to_family" else ("La ha visto" if r["seen_at"] else "Todavía no la ha visto"),
+             "from": names.get(r["person_id"], "")}
+            for r in conn.execute("SELECT * FROM family_photos WHERE contact_id = ? ORDER BY id DESC LIMIT 30",
+                                  (contact_id,))]
+
+
+def propose_photo_to_family(conn, clock: Clock, folder, person_id: int, contact_id: int, jpeg: bytes,
+                            caption: str) -> agenda.Proposal:
+    """Carmen chose a photo and who gets it: stored aside, sent only after "Sí, envíala"."""
+    c = _contact(conn, person_id, contact_id)
+    if not c["telegram_chat_id"] and not conn.execute(
+            "SELECT 1 FROM web_accounts WHERE role = 'family' AND contact_id = ?", (contact_id,)).fetchone():
+        raise agenda.Refused(f"Todavía no se pueden mandar fotos a {c['name']}: tiene que conectarse primero.")
+    import secrets
+
+    folder.mkdir(parents=True, exist_ok=True)
+    name = "p" + secrets.token_hex(16) + ".jpg"  # waiting for the yes; deleted if it never comes (a day)
+    (folder / name).write_bytes(jpeg)
+    return agenda._save(conn, clock, person_id, "send_photo",
+                        {"contact_id": contact_id, "file": name, "caption": agenda.clean(caption, 120)},
+                        f"Le mando a {c['name']} esta foto" + (f": «{agenda.clean(caption, 120)}»" if caption else "")
+                        + ".", "Sí, envíala")

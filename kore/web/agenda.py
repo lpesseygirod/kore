@@ -334,7 +334,7 @@ def cancel(conn, person_id: int, pending_id: int) -> None:
                  (pending_id, person_id))
 
 
-def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = None) -> str:
+def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = None, photo_dir=None) -> str:
     """The person pressed "Sí": check again, then do it. Returns where the page goes next.
     Raises Refused (with what to say) if it can't be done."""
     row = _open(conn, clock, person_id, pending_id)
@@ -364,6 +364,8 @@ def confirm(conn, clock, person_id: int, pending_id: int, links: dict | None = N
         return f"code:{code}:{name}"
     if kind == "send_message":  # to family: sent (and retried) outside a transaction, like by voice
         return _send_to_family(conn, clock, person_id, row["id"], p, links)
+    if kind == "send_photo":
+        return _send_photo(conn, clock, person_id, row["id"], p, links, photo_dir)
     ctx = tools.Context(conn, clock, _session(conn, person_id))
     conn.execute("BEGIN IMMEDIATE")
     try:
@@ -411,6 +413,28 @@ def _send_to_family(conn, clock, person_id: int, pending_row: int, p: dict, link
     return "/mi-familia?hecho=mandado"
 
 
+def _send_photo(conn, clock, person_id: int, pending_row: int, p: dict, links: dict | None, photo_dir) -> str:
+    """Their yes to "Le mando a Ana esta foto": it appears in Ana's family app, and goes by Telegram if she has it."""
+    conn.execute("UPDATE web_pending SET status = 'done' WHERE id = ?", (pending_row,))
+    path = photo_dir / p["file"] if photo_dir is not None else None
+    if path is None or not path.is_file():
+        raise Refused("La foto ya no está. Elígela otra vez, por favor.")
+    c = conn.execute("SELECT * FROM contacts WHERE id = ?", (p["contact_id"],)).fetchone()
+    conn.execute("INSERT INTO family_photos (contact_id, person_id, direction, file, caption, created_at) "
+                 "VALUES (?, ?, 'to_family', ?, ?, ?)", (c["id"], person_id, p["file"], p["caption"],
+                                                         utc_iso(clock.now())))
+    sent = True
+    tg = (links or {}).get("telegram")
+    if c["telegram_chat_id"] and tg is not None and hasattr(tg, "send_document"):
+        name = conn.execute("SELECT call_name FROM people WHERE id = ?", (person_id,)).fetchone()["call_name"]
+        try:
+            sent = tg.send_document(c["telegram_chat_id"], "foto.jpg", path.read_bytes(),
+                                    f"{name} (con Pepe)" + (f": {p['caption']}" if p["caption"] else "")).ok
+        except Exception:
+            sent = False
+    return "/fotos?hecho=" + ("mandado" if sent else "pendiente")
+
+
 def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:
     if kind in ("add_appointment", "move_appointment", "cancel_appointment", "add_reminder", "stop_reminder",
                 "add_contact", "stop_birthday"):
@@ -440,7 +464,7 @@ def _check_again(conn, clock, person_id: int, kind: str, p: dict) -> None:
         _reminder(conn, person_id, p["reminder_id"])
     elif kind == "stop_birthday":
         _birthday(conn, person_id, p["contact_id"])
-    elif kind == "send_message":
+    elif kind in ("send_message", "send_photo"):
         c = conn.execute("SELECT for_person FROM contacts WHERE id = ?", (p["contact_id"],)).fetchone()
         _mine(c, c and c["for_person"], person_id, "No se ha encontrado a esa persona.")
 

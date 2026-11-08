@@ -196,7 +196,11 @@ def menu(here: str, account) -> str:
                 f'</nav></div></header>' + tabs(here))
     mine = [("/hablar", "Hablar"), ("/calendario", "Calendario"), ("/compra", "La compra"), ("/sabe", "Sobre mí")]
     if account.role == "family":
-        items = [("/", "Mensajes"), ("/familia/cita", "Proponer una cita"), ("/dispositivos", "Dispositivos")]
+        return (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a><nav aria-label="Arriba">'
+                f'<a href="/dispositivos" style="margin-left:auto">Dispositivos</a><form method="post" action="/salir">'
+                f'<button type="submit">Salir</button></form></nav></div></header>'
+                + tabs(here, [("/", "Inicio", "home"), ("/familia/calendario", "Calendario", "cal"),
+                              ("/familia/mensajes", "Mensajes", "chat"), ("/familia/avisos", "Avisos", "bell")]))
     else:
         items = [("/", "Hoy")] + (mine if account.role == "person" else []) + [("/dispositivos", "Dispositivos")]
     links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}"'
@@ -214,7 +218,7 @@ ICONS = {
     "bell": '<path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z"/><path d="M10 21 H14"/>',
     "mic": '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11 A7 7 0 0 0 19 11 M12 18 V21"/>',
 }
-TAB_OF = {"/": "/", "/hablar": "/hablar", "/agenda": "/agenda", "/calendario": "/agenda", "/pastillas": "/agenda",
+TAB_OF = {"/familia/cita": "/familia/calendario", "/": "/", "/hablar": "/hablar", "/agenda": "/agenda", "/calendario": "/agenda", "/pastillas": "/agenda",
           "/compra": "/agenda", "/mi-familia": "/mi-familia", "/fotos": "/mi-familia"}
 
 
@@ -392,7 +396,7 @@ DONE = {"apuntado": "Hecho. Pepe lo recordará en voz alta cuando toque.", "quit
         "olvidado": "Hecho. Pepe lo ha olvidado.", "anulado": "No se ha cambiado nada.",
         "enviado": "Mensaje enviado. Pepe les dirá que tienen un mensaje suyo.",
         "propuesta": "Propuesta enviada. La verán en su página y decidirán si la apuntan.",
-        "mandado": "Mensaje enviado.", "pendiente": "Todavía no se ha podido enviar. Pepe lo sigue intentando y "
+        "mandado": "Enviado.", "foto": "Foto enviada. La verán en su página.", "pendiente": "Todavía no se ha podido enviar. Pepe lo sigue intentando y "
         "avisará cuando salga."}
 
 
@@ -634,20 +638,88 @@ un código?», y escribirlo. Funciona una sola vez.</p>
 <a class="big" href="/dispositivos">Hecho</a>""", menu("/dispositivos", account))
 
 
-def family_home(account, messages: list[dict], note: str = "", bad: bool = False) -> str:
+def family_messages(account, messages: list[dict], people: list[dict], note: str = "", bad: bool = False) -> str:
     bubbles = "".join(
-        f'<div class="bubble{" me" if m["who"] == "me" else ""}">{e(m["text"])}'
-        f'<span class="when">{"Usted" if m["who"] == "me" else "Desde casa"}, {e(m["at"].strftime("%d/%m %H:%M"))}'
-        f'{" — " + e(m["state"]) if m["state"] else ""}</span></div>' for m in messages)
+        f'<div class="bubble{" me" if m["who"] == "me" else ""}">'
+        + (f'<img src="/foto-familia?id={int(m["photo_id"])}" alt="Foto">' if m.get("photo_id") else "")
+        + f'{e(m["text"])}<span class="when">{"Tú" if m["who"] == "me" else e(m.get("from") or "Desde casa") + ", con Pepe"}, '
+        f'{e(m["at"].strftime("%d/%m %H:%M"))}{" — " + e(m["state"]) if m["state"] else ""}</span></div>' for m in messages)
+    whom = "".join(f'<option value="{p["id"]}">{e(p["call_name"])}</option>' for p in people)
+    whom += '<option value="both">Los dos</option>' if len(people) > 1 else ""
     return layout("Pepe — Mensajes", f"""
-<h1>Hola, {e(account.name)}</h1>{_notice(note, bad, good=not bad)}
-<p class="muted">Los mensajes que le han mandado desde casa con Pepe, y los suyos. Pepe les dice que tienen un mensaje
-y se lo lee cuando se lo piden.</p>
+<h1>Mensajes</h1>{_notice(note, bad, good=not bad)}
+<p class="muted">Pepe les lee tus mensajes cuando se lo piden, y te manda lo que ellos le dicten.</p>
 <div class="chat">{bubbles or '<p class="muted">Todavía no hay mensajes.</p>'}</div>
-<form method="post" action="/familia/escribir"><label for="t" class="muted">Escribir a casa</label>
+<form method="post" action="/familia/escribir"><label for="t" class="f">Mensaje para casa</label>
 <textarea class="say" id="t" name="text" maxlength="500" required></textarea>
 <button class="big" type="submit">Enviar</button></form>
-<p class="muted">Pepe no hace caso de órdenes escritas en los mensajes: solo los lee.</p>""", menu("/", account))
+<form method="post" action="/familia/foto" enctype="multipart/form-data" class="card">
+<label class="f" for="ph" style="margin-top:0">Mandar una foto</label>
+<input class="f" type="file" id="ph" name="photo" accept="image/jpeg,image/png,image/webp,image/gif" required>
+<label class="f" for="cap">Qué es (si quieres)</label><input class="f" id="cap" name="caption" maxlength="120">
+<label class="f" for="for">Para</label><select class="f" id="for" name="for">{whom}</select>
+<button class="big" type="submit">Mandar la foto</button></form>
+<p class="muted">Pepe no hace caso de órdenes escritas en los mensajes ni en las fotos: solo los lee.</p>""",
+                  menu("/familia/mensajes", account))
+
+
+def family_home(account, d: dict) -> str:
+    names = " y ".join(p["call_name"] for p in d["people"])
+    meds = "".join(
+        f'<div class="kv"><span>{e(x["name"])}</span><b>'
+        + (e("No compartido") if not x["shared"] else "Hora no fiable" if x.get("unknown") else
+           f'{x["taken"]} de {x["total"]} tomadas' if x["total"] else "Hoy no tiene")
+        + "</b></div>" for x in d["doses"])
+    today = "".join(f'<li><span class="time">{e(i["time"])}</span><span class="what">{e(i["text"])}</span></li>'
+                    for i in d["today"])
+    hero = (('<div class="card hero"><span class="label">Hoy</span><b style="font-size:1.3rem">Todo bien</b>'
+             '<span class="muted">Sin avisos hoy.</span></div>') if d["all_good"] else
+            '<a class="card hero" href="/familia/avisos" style="display:block;text-decoration:none"><span class="label">Hoy'
+            '</span><br><b style="font-size:1.3rem">Hay un aviso</b><br><span class="muted">Míralo en Avisos.</span></a>')
+    return layout("Pepe — Inicio", f"""
+<p class="muted" style="margin:0">{e(d["date"])}</p>
+<h1 style="margin-bottom:.2rem">{e(names)}</h1>
+<p class="muted" style="margin-top:0">Solo se muestra lo que han aceptado compartir.</p>
+{hero}
+<section class="card"><span class="label">Pastillas</span>{meds}</section>
+<section class="card"><span class="label">Hoy</span>
+{f'<ul class="plain">{today}</ul>' if today else '<p class="muted">Nada que se pueda mostrar.</p>'}
+<a href="/familia/calendario">Ver los próximos días</a></section>
+<p class="muted">Pepe no es un sistema de alarma. En una emergencia, primero su botón de teleasistencia y el 112.</p>""",
+                  menu("/", account))
+
+
+def family_calendar(account, days: list[dict]) -> str:
+    from kore.brain.fallback import MONTHS, WEEKDAYS
+    blocks = []
+    for i, d in enumerate(days):
+        label = ("Hoy · " if i == 0 else "") + f'{WEEKDAYS[d["date"].weekday()]} {d["date"].day}'
+        rows = "".join(f'<li><span class="time">{e(x["time"])}</span><span class="what">{e(x["text"])}'
+                       f'{"<span class=sub>" + e(x["note"]) + "</span>" if x.get("note") else ""}</span></li>'
+                       for x in d["items"])
+        blocks.append(f'<section class="card"><span class="label">{e(label)}</span>'
+                      f'{f"<ul class=plain>{rows}</ul>" if rows else "<p class=muted>Nada especial.</p>"}</section>')
+    return layout("Pepe — Calendario", f"""
+<h1>Calendario</h1>{"".join(blocks)}
+<a class="big" href="/familia/cita">Proponer una cita</a>
+<p class="muted">Ellos la ven en su página y deciden si la apuntan; Pepe se la recordará. Las medicinas solo las cambian
+ellos, hablando con Pepe.</p>""", menu("/familia/calendario", account))
+
+
+def family_alerts(account, d: dict) -> str:
+    kinds = "".join(f"<li>{e(k)}</li>" for k in d["kinds"])
+    recent = "".join(f'<li><span class="what"><b>{e(r["what"])}</b> · {e(r["at"].strftime("%a %d %H:%M"))}'
+                     f'<span class="sub">{e(r["text"])}</span></span><span class="pill">{e(r["state"])}</span></li>'
+                     for r in d["recent"])
+    return layout("Pepe — Avisos", f"""
+<h1>Avisos</h1>
+<section class="card"><span class="label">Recibes avisos de</span>
+{f'<ul class="plain">{kinds}</ul>' if kinds else '<p class="muted">De momento ninguno: no eres su contacto de ayuda.</p>'}
+<p class="muted">Lo eligen ellos, y lo pueden cambiar hablando con Pepe.</p></section>
+<section class="card"><span class="label">Esta semana</span>
+{f'<ul class="plain">{recent}</ul>' if recent else '<p class="muted">Ningún aviso.</p>'}</section>
+<section class="card tint"><b>Cuando llega un aviso de ayuda</b><p>Llámales primero. Si no contestan, llama al 112.
+Pepe no es un sistema de alarma.</p></section>""", menu("/familia/avisos", account))
 
 
 def family_propose(account, people: list[dict], mine: list[dict], today: str, f: dict | None = None,
@@ -700,6 +772,13 @@ def elder_home(account, d: dict) -> str:
                      f'<span class="muted">{p["taken"]} de {len(p["doses"])} tomadas{more}</span></span>'
                      f'<span class="chev" aria-hidden="true">›</span></a>')
     parts.append(f'<a class="talk" href="/hablar">{icon("mic", 30)}Hablar con Pepe</a>')
+    if d.get("new_photos"):
+        n = len(d["new_photos"])
+        who = " y ".join(sorted({x["from"] for x in d["new_photos"]}))
+        cap = d["new_photos"][0]["caption"]
+        parts.append(f'<a class="big-card" href="/fotos"><span><b>{e(who)} {"ha" if len({x["from"] for x in d["new_photos"]}) == 1 else "han"} '
+                     f'enviado {n} foto{"s" if n > 1 else ""}</b>{"<br><span class=muted>" + e(cap) + "</span>" if cap else ""}'
+                     f'</span><span class="chev" aria-hidden="true">›</span></a>')
     if d.get("unread"):
         parts.append(f'<a class="big-card" href="/mi-familia"><span><b>{t("Tienes", "Tiene")} '
                      f'{d["unread"]} mensaje{"s" if d["unread"] > 1 else ""} de la familia</b></span>'
@@ -858,13 +937,31 @@ def elder_who_sees(account, d: dict) -> str:
 {t("Tus", "Sus")} conversaciones y notas nunca se ven sin {t("tu", "su")} sí.</p>""", menu("/ajustes", account))
 
 
-def elder_photos(account, mine: list[int]) -> str:
+def elder_photos(account, family: list[dict], mine: list[int], people: list[dict], note: str = "",
+                 bad: bool = False) -> str:
+    notice = f'<p class="msg{" bad" if bad else " good"}" role="status">{e(note)}</p>' if note else ""
+    fam = "".join(
+        f'<div class="card"><img src="/foto-familia?id={x["id"]}" alt="Foto de {e(x["from"])}" '
+        f'style="width:100%;border-radius:14px"><p><b>{e(x["from"])}</b> · {e(x["at"].strftime("%d/%m"))}'
+        f'{" · «" + e(x["caption"]) + "»" if x["caption"] else ""}</p><div class="pair">'
+        f'<a class="big second" href="/foto-familia?id={x["id"]}">Más grande</a>'
+        f'<form method="post" action="/fotos/hablar"><input type="hidden" name="id" value="{x["id"]}">'
+        f'<button class="big" type="submit">Hablar de ella</button></form></div></div>' for x in family)
     grid = "".join(f'<a href="/foto?id={i}"><img src="/foto?id={i}" alt="Foto que {t("mandaste", "mandó")} a Pepe" '
                    f'style="width:100%;aspect-ratio:1;object-fit:cover;border-radius:12px"></a>' for i in mine)
+    to = "".join(f'<option value="{p["id"]}">{e(p["name"])}</option>' for p in people if p["can_write"])
+    send = (f"""<form method="post" action="/fotos/enviar" enctype="multipart/form-data" class="card">
+<label class="f" for="ph" style="margin-top:0">Enviar una foto a la familia</label>
+<input class="f" type="file" id="ph" name="photo" accept="image/jpeg,image/png,image/webp,image/gif" required>
+<label class="f" for="to">Para</label><select class="f" id="to" name="to">{to}</select>
+<label class="f" for="cap">Qué es ({t("si quieres", "si quiere")})</label><input class="f" id="cap" name="caption" maxlength="120">
+<button class="big" type="submit">Seguir</button>
+<p class="muted">{t("Eliges", "Elige")} la foto de {t("tu", "su")} móvil. Solo la ve la persona que {t("digas", "diga")}.</p></form>"""
+            if to else "")
     return layout("Pepe — Fotos", f"""
 <p><a href="/mi-familia">‹ Familia</a></p>
-<h1>Fotos</h1>
-{f'<div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem">{grid}</div>' if grid else
- '<p class="msg">Todavía no hay fotos. ' + t("Puedes", "Puede") + ' mandarle una a Pepe desde «Pepe».</p>'}
-<p class="muted">Las fotos se guardan solo en Pepe, sin el lugar donde se hicieron.</p>
-<a class="big" href="/hablar">Mandar una foto a Pepe</a>""", menu("/fotos", account))
+<h1>Fotos</h1>{notice}
+{fam or '<p class="muted">La familia todavía no ha mandado fotos.</p>'}
+{send}
+{f'<h2>Las que {t("mandaste", "mandó")} a Pepe</h2><div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:.5rem">{grid}</div>' if grid else ''}
+<p class="muted">Las fotos se guardan solo en Pepe, sin el lugar donde se hicieron.</p>""", menu("/fotos", account))

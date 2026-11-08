@@ -13,7 +13,7 @@ import sqlite3
 from datetime import datetime, timezone
 from pathlib import Path
 
-SCHEMA_VERSION = 10
+SCHEMA_VERSION = 11
 
 SCHEMA = """
 CREATE TABLE IF NOT EXISTS people (
@@ -394,6 +394,20 @@ CREATE TABLE IF NOT EXISTS family_proposals (
     created_at TEXT NOT NULL,
     status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'accepted', 'declined', 'withdrawn')),
     answered_at TEXT
+);
+
+-- Photos between the home and the family (Lea's design: Fotos, the family app). Stored only on the box, shrunk and
+-- without metadata (web/photos.py), in the photos folder. Deleted after 90 days. Never sent anywhere without the
+-- sender's own action (and, from the home, their read-back and yes).
+CREATE TABLE IF NOT EXISTS family_photos (
+    id INTEGER PRIMARY KEY,
+    contact_id INTEGER NOT NULL REFERENCES contacts(id),
+    person_id INTEGER REFERENCES people(id),   -- to_home: for whom (NULL both); to_family: who sent it
+    direction TEXT NOT NULL CHECK (direction IN ('to_home', 'to_family')),
+    file TEXT NOT NULL UNIQUE,
+    caption TEXT NOT NULL DEFAULT '',
+    created_at TEXT NOT NULL,
+    seen_at TEXT
 );
 
 -- Lea's console: a medicine change or an appointment she proposes. It changes nothing by itself: the person sees

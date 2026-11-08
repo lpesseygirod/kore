@@ -57,7 +57,8 @@ def snapshot(conn: sqlite3.Connection, dest: Path) -> None:
 # Not in the backup: the web conversations (each person's own; Lea's view never shows them, and "deleted after
 # 90 days" must hold), and the web's codes, logins and attempts (a restored box makes everyone log in again).
 NOT_BACKED_UP = ("chat", "chat_turns", "say_queue", "web_codes", "web_attempts", "web_logins", "web_pending",
-                 "photos", "photo_log", "console_marks")
+                 "photos", "photo_log", "console_marks",
+                 "family_photos")
 
 
 def _leave_out_private(path: Path) -> None:
