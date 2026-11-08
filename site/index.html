@@ -1,0 +1,144 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<title>KORE — company and reminders, just by talking</title>
+<meta name="description" content="KORE is a small speaker for older people. They talk to Pepe, and Pepe remembers what matters.">
+<style>
+/* Lea's design (docs/design/Site.dc.html). Static: nothing loaded from outside, no scripts. */
+:root { --bg: #FBF7F5; --fg: #2A1A1F; --muted: #6F5A61; --card: #FFFFFF; --line: #E6D7DC; --accent: #6E1E35;
+        --accent-dark: #4A1224; --tint: #F3E6EA; --tint-line: #E2C9D1; --on-accent: #FFFFFF; }
+@media (prefers-color-scheme: dark) {
+  :root { --bg: #1C1517; --fg: #F6EDF0; --muted: #CDB9C0; --card: #261D20; --line: #44343A; --accent: #E7A3B6;
+          --accent-dark: #F3C6D3; --tint: #3A2530; --tint-line: #5A3A47; --on-accent: #1C1517; }
+}
+* { box-sizing: border-box; }
+body { margin: 0; background: var(--bg); color: var(--fg); font-family: Inter, system-ui, -apple-system, "Segoe UI",
+       Roboto, sans-serif; font-size: 17px; line-height: 1.55; }
+a { color: var(--accent); } a:hover { color: var(--accent-dark); }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+header { display: flex; flex-wrap: wrap; align-items: center; gap: 12px 32px; padding: 20px 24px; max-width: 1200px;
+         margin: 0 auto; }
+.mark { font-size: 22px; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-decoration: none; }
+nav { display: flex; flex-wrap: wrap; gap: 4px; flex: 1 1 auto; }
+nav a { padding: 10px 12px; border-radius: 8px; color: var(--muted); text-decoration: none; font-size: 15px;
+        min-height: 44px; display: inline-flex; align-items: center; }
+.button { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 22px;
+          border-radius: 10px; border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent);
+          font: inherit; font-size: 16px; font-weight: 600; text-decoration: none; cursor: pointer; }
+.button:hover { background: var(--accent-dark); color: var(--on-accent); }
+.button.second { background: var(--card); color: var(--accent); }
+.hero { display: flex; flex-wrap: wrap; gap: 48px; align-items: center; padding: 48px 24px 72px; }
+.hero > div { flex: 1 1 420px; min-width: 0; }
+h1 { font-size: clamp(36px, 6vw, 56px); line-height: 1.08; margin: 0 0 20px; letter-spacing: -.01em; }
+h2 { font-size: 32px; line-height: 1.2; margin: 0 0 24px; }
+h3 { font-size: 20px; margin: 0 0 8px; }
+.lead { font-size: 20px; color: var(--muted); max-width: 560px; margin: 0 0 28px; }
+.actions { display: flex; flex-wrap: wrap; gap: 12px; }
+.speaker { aspect-ratio: 1; max-width: 420px; margin: 0 auto; border-radius: 50%; background: var(--tint);
+           border: 1px solid var(--tint-line); display: flex; align-items: center; justify-content: center; }
+.speaker div { width: 58%; aspect-ratio: 1; border-radius: 50%; background: var(--card); border: 14px solid var(--accent);
+               display: flex; align-items: center; justify-content: center; font-weight: 700; letter-spacing: .18em;
+               color: var(--accent); font-size: 22px; }
+section { padding: 72px 0; }
+.band { background: var(--card); border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); }
+.grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); gap: 24px; }
+.step .n { width: 44px; height: 44px; border-radius: 50%; background: var(--tint); color: var(--accent);
+           display: flex; align-items: center; justify-content: center; font-weight: 700; margin-bottom: 14px; }
+.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 24px; }
+.step p, .card p { margin: 0; color: var(--muted); }
+.two { display: flex; flex-wrap: wrap; gap: 40px; align-items: flex-start; }
+.two > * { flex: 1 1 380px; min-width: 0; }
+ul.ticks { list-style: none; padding: 0; margin: 0; display: grid; gap: 14px; }
+ul.ticks li { display: flex; gap: 12px; align-items: baseline; font-size: 18px; }
+ul.ticks li::before { content: ""; flex: 0 0 10px; height: 10px; border-radius: 50%; background: var(--accent); }
+.price { font-size: 44px; font-weight: 700; margin: 0 0 12px; } .price span { font-size: 18px; color: var(--muted); }
+form { background: var(--tint); border: 1px solid var(--tint-line); border-radius: 16px; padding: 28px;
+       display: flex; flex-direction: column; gap: 14px; }
+label { font-weight: 600; display: block; margin-bottom: 6px; }
+input, select { font: inherit; width: 100%; min-height: 48px; padding: 0 14px; border-radius: 10px;
+                border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+button[disabled] { opacity: .65; cursor: not-allowed; }
+.small { font-size: 14px; color: var(--muted); margin: 0; }
+footer { border-top: 1px solid var(--line); padding: 28px 0; }
+footer .wrap { display: flex; flex-wrap: wrap; justify-content: space-between; gap: 12px; font-size: 15px; }
+footer a { margin-left: 16px; }
+</style>
+</head>
+<body>
+<header>
+<a class="mark" href="#">KORE</a>
+<nav aria-label="Main"><a href="#how">How it works</a><a href="#promises">Our promises</a>
+<a href="#families">For families</a><a href="#price">Price</a></nav>
+<a class="button" href="#waitlist">Join the waitlist</a>
+</header>
+<main>
+<div class="hero wrap">
+<div>
+<h1>Company and reminders, just by talking.</h1>
+<p class="lead">KORE is a small speaker for older people. They talk to Pepe, and Pepe remembers what matters:
+medication, appointments, birthdays, the shopping list, and the book they’re reading. No screen needed, and a simple
+large-text app if they’d like one.</p>
+<div class="actions"><a class="button" href="#waitlist">Join the waitlist</a>
+<a class="button second" href="#how">How it works</a></div>
+</div>
+<div aria-hidden="true"><div class="speaker"><div>PEPE</div></div></div>
+</div>
+
+<section id="how" class="band"><div class="wrap">
+<h2>How it works</h2>
+<div class="grid">
+<div class="step"><div class="n">1</div><h3>Say “Pepe”</h3><p>Or press the big button. Pepe listens only after its
+name, and speaks slowly and clearly.</p></div>
+<div class="step"><div class="n">2</div><h3>It remembers for them</h3><p>Pills on time, the doctor tomorrow, a
+granddaughter’s birthday, what to buy. It asks “Did you take it?” and never suggests a double dose.</p></div>
+<div class="step"><div class="n">3</div><h3>It keeps them company</h3><p>It learns their stories and interests,
+follows up on them, and knows when to stay quiet. Tell it “talk less” and it does, from then on.</p></div>
+</div></div></section>
+
+<section id="promises"><div class="wrap">
+<h2>Our promises</h2>
+<div class="grid">
+<div class="card"><h3>Listens only after its name</h3><p>The wake word is recognised on the device. Nothing leaves the
+home before it.</p></div>
+<div class="card"><h3>Nothing sent without a yes</h3><p>Pepe asks before it messages anyone. They decide what the
+family sees.</p></div>
+<div class="card"><h3>Honest, always</h3><p>It says it’s an assistant, admits mistakes, and never pressures or
+sells.</p></div>
+<div class="card"><h3>Not an alarm system</h3><p>KORE adds to teleasistencia; it never replaces it. In an emergency,
+their button and 112 come first.</p></div>
+</div></div></section>
+
+<section id="families" class="band"><div class="wrap two">
+<div><h2>For families</h2><p class="lead">Stay in the loop without spying. If they agree, you get a daily “all
+good”, an alert if medication is missed, and a way to send messages Pepe reads aloud.</p></div>
+<ul class="ticks">
+<li>They choose what you can see, and can change it by voice</li>
+<li>Conversations stay private; only agreed alerts are shared</li>
+<li>Their memory is kept on the speaker at home. What they say to Pepe is processed by our speech and AI
+providers to answer, and not kept by us</li>
+</ul>
+</div></section>
+
+<section id="price"><div class="wrap two">
+<div><h2>Price</h2><p class="price">[YOUR PRICE] <span>a month</span></p>
+<p>The KORE speaker and the service. [WHAT’S INCLUDED: setup help, device, updates]</p>
+<p>First homes: [LAUNCH AREA AND DATE]</p></div>
+<form id="waitlist" action="#" method="get" aria-describedby="wl-note">
+<h2 style="margin:0">Join the waitlist</h2>
+<div><label for="wl-name">Your name</label><input id="wl-name" name="name" type="text" autocomplete="name" disabled></div>
+<div><label for="wl-email">Email</label><input id="wl-email" name="email" type="email" autocomplete="email" disabled></div>
+<div><label for="wl-for">Who is it for?</label><select id="wl-for" name="for" disabled><option>A parent</option>
+<option>A grandparent</option><option>Myself</option><option>Someone I care for</option></select></div>
+<button class="button" type="submit" disabled>Keep me posted</button>
+<p class="small" id="wl-note">The waitlist opens soon. We’ll only use your email for KORE news.
+<a href="#">Privacy policy</a></p>
+</form>
+</div></section>
+</main>
+<footer><div class="wrap"><span><b>KORE</b> · Madrid</span>
+<span><a href="#">Privacy</a><a href="#">Terms</a><a href="#">Contact</a></span></div></footer>
+</body>
+</html>
