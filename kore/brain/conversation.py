@@ -84,6 +84,9 @@ class Brain:
     channel: str = "voice"  # "chat": the home web page, in text
     # The voice loop sets this to speak code's own lines (help) at once, before Claude answers.
     say_now: Callable[[str], None] | None = None
+    # The voice loop sets this to say a short "A ver…" when Claude has to look something up first (a tool
+    # round takes another second or two): they know they were heard.
+    on_tool_round: Callable[[], None] | None = None
 
     # --- the ways a turn starts ---------------------------------------------------
 
@@ -192,6 +195,8 @@ class Brain:
             uses = [b for b in resp["content"] if b.get("type") == "tool_use"]
             if resp.get("stop_reason") != "tool_use" or not uses:
                 break
+            if self.on_tool_round is not None:
+                self.on_tool_round()
             results = []
             for u in uses:
                 result = tools.call(self.ctx, u["name"], u.get("input") or {})

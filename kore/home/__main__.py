@@ -53,6 +53,8 @@ def main(argv: list[str] | None = None) -> int:
     else:
         from kore.brain.clients import LiveClient
         client = LiveClient("voice", daily_cap_usd=2.0)
+        from kore.brain.conversation import MODEL
+        threading.Thread(target=client.warm, args=(MODEL,), daemon=True).start()  # the first turn won't wait
     ears = None
     voice = PrintVoice()
     if a.voz:

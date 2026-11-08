@@ -46,6 +46,15 @@ class LiveClient:
         self.daily_cap_usd = daily_cap_usd  # this purpose's own share of the day (the web chat can't eat the rest)
         self.spent = 0.0
 
+    def warm(self, model: str) -> bool:
+        """Open the connection before the first turn (the first call otherwise waits for it): a token count,
+        which is free. False if it couldn't (no internet): the first turn will just be slower."""
+        try:
+            self.sdk.messages.count_tokens(model=model, messages=[{"role": "user", "content": "hola"}])
+            return True
+        except Exception:
+            return False
+
     def create(self, request: dict) -> dict:
         self.costs.check_budget()  # the daily limit, across everything
         if self.daily_cap_usd is not None and self.costs.today_usd(self.purpose) >= self.daily_cap_usd:

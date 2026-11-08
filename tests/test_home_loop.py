@@ -281,3 +281,30 @@ def test_a_short_greeting_gets_only_the_shared_part_of_the_day(h):
     assert "ginecólogo" not in seen[-1] and "shared_appointments" in seen[-1]
     h.brain.speak_event(Item(2, ev, "say"))
     assert "ginecólogo" in seen[-1]
+
+
+def _tool_then_text(final):
+    from kore.brain.clients import tool_use
+
+    def answer(r):
+        last = r["messages"][-1]["content"]
+        if any(b.get("type") == "tool_result" for b in last):
+            return text(final)
+        return tool_use("get_med_status", {"person": "Carmen"})
+    return ScriptedClient(answer)
+
+
+def test_a_look_up_first_says_a_ver_at_once(h):
+    pill(h, ["21:30"])
+    h.claude.client = _tool_then_text("Le toca a las nueve y media.")
+    h.heard("Soy Carmen. ¿A qué hora me toca la pastilla?")
+    assert h.v.said == ["A ver.", "Le toca a las nueve y media."]
+
+
+def test_no_a_ver_when_pepe_speaks_first_or_already_spoke(h):
+    from kore.manners.gate import Item
+    from kore.scheduler.engine import Event
+    pill(h, ["21:30"])
+    h.claude.client = _tool_then_text("Buenos días, Carmen.")
+    h.brain.speak_event(Item(1, Event("morning_greeting", 1, [h.carmen], {"date": "2026-11-09"}), "say"))
+    assert "A ver." not in h.v.said

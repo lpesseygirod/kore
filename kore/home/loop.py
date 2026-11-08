@@ -52,6 +52,7 @@ END_SILENCE = timedelta(minutes=2)       # then the conversation is over: who wa
 NEW_CONVERSATION = timedelta(minutes=30) # Claude's copy of the conversation starts afresh (and on a new day)
 MAX_TURNS = 40
 REPLY_WAIT = timedelta(minutes=2)        # no answer to something Pepe started: "ignored"
+LOOKING = "A ver."
 
 REPEAT = re.compile(r"(?:pepe[,\s]*)?(?:¿\s*)?(?:qué|que|cómo|como|eh|perdona|perdón|repite|repítelo|repítemelo|"
                     r"no te he oído|no te he entendido|no te oigo|otra vez)(?:\s*\?)?[\s.!?]*", re.I)
@@ -82,6 +83,7 @@ class Home:
         self._day: str | None = None
         self._background: dict[str, threading.Thread] = {}
         self._turn_lines: list[str] = []
+        self._in_turn = False
         self._t0: float | None = None
         self._first_word_ms: int | None = None
         self._new_conversation()
@@ -241,6 +243,7 @@ class Home:
         ctx = tools.Context(self.conn, self.clock, self.session, family=self.family, info=self.info)
         self.brain = Brain(ctx, self.client)
         self.brain.say_now = self._say  # code's own lines (help) are said before Claude is even asked
+        self.brain.on_tool_round = self._looking_it_up
         self.started = self.clock.now()
         self.turns = 0
         self._broken = False
@@ -260,8 +263,15 @@ class Home:
         self._t0 = ended_at if ended_at is not None else self.monotonic()
         self._first_word_ms = None
         self._turn_lines = []
+        self._in_turn = True
         self._spent_before = getattr(self.client, "spent", None)
         self.turns += 1
+
+    def _looking_it_up(self) -> None:
+        """Claude needs a tool before answering: if nothing has been said yet in this turn, a short "A ver."
+        now, so they know they were heard (only in their own turns, not when Pepe speaks first)."""
+        if self._t0 is not None and not self._turn_lines and self._in_turn:
+            self._say(LOOKING)
 
     def _say(self, text: str) -> None:
         text = (text or "").strip()
@@ -274,6 +284,7 @@ class Home:
         self.voice.say(text, self._voice_settings([speaker] if speaker is not None else []))
 
     def _end_turn(self, heard: str) -> None:
+        self._in_turn = False
         now = self.clock.now()
         self.last_words = now
         said = " ".join(self._turn_lines)
