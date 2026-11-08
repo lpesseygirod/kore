@@ -1141,8 +1141,21 @@ def _status(conn, clock: Clock) -> dict:
     }
 
 
+MAC_VOICE: str | None = None  # serve --voz: the Mac also says it out loud (its own Spanish voice)
+
+
+def mac_say(text: str) -> None:
+    """Say it with the Mac's built-in voice, without waiting (Mac only; development until the box's speaker)."""
+    import subprocess
+
+    if MAC_VOICE:
+        subprocess.Popen(["say", "-v", MAC_VOICE, "-r", "165", text], stdout=subprocess.DEVNULL,
+                         stderr=subprocess.DEVNULL)
+
+
 def _speak_in_terminal(conn) -> None:
-    """Development on the Mac, with no speaker yet: what Pepe would say is printed instead."""
+    """Development on the Mac, with no speaker yet: what Pepe would say is printed (and said, with --voz)."""
     for row in conn.execute("SELECT id, text FROM say_queue WHERE said_at IS NULL ORDER BY id").fetchall():
         print(f"[Pepe diría] {row['text']}", flush=True)
+        mac_say(row["text"])
         conn.execute("UPDATE say_queue SET said_at = ? WHERE id = ?", (utc_iso(SystemClock().now()), row["id"]))

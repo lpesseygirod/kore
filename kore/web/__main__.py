@@ -32,6 +32,8 @@ def main(argv: list[str] | None = None) -> int:
     p.add_argument("--host", default="127.0.0.1")
     p.add_argument("--port", type=int, default=8080)
     p.add_argument("--dev", action="store_true")
+    p.add_argument("--voz", nargs="?", const="Eddy (Spanish (Spain))", default=None,
+                   help="the Mac reads Pepe's replies and login codes aloud (a voice from `say -v ?`)")
     p.add_argument("--name", action="append", default=[], help="an extra host name the page answers to")
     sub.add_parser("invite")
     p = sub.add_parser("qr")
@@ -54,8 +56,17 @@ def main(argv: list[str] | None = None) -> int:
                   file=sys.stderr)
             return 2
         from kore.family import channels
+        from kore.web import app as web_app
+        worker = _chat_worker(a.db, clock, a.dev)
+        if a.voz:
+            if sys.platform != "darwin":
+                print("--voz uses the Mac's own voice.", file=sys.stderr)
+                return 2
+            web_app.MAC_VOICE = a.voz
+            if worker is not None:
+                worker.on_reply = lambda person_id, reply: web_app.mac_say(reply)
         app = create_app(a.db, clock, secure=False, hosts=DEFAULT_HOSTS + a.name, dev=a.dev,
-                         chat=_chat_worker(a.db, clock, a.dev),
+                         chat=worker,
                          family_links={} if a.dev else channels.from_env())  # test mode never sends anything real
         uvicorn.run(app, host=a.host, port=a.port, log_level="warning", server_header=False)
         return 0

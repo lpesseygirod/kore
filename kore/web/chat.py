@@ -158,6 +158,7 @@ class ChatWorker:
     client: object
     make_context: Callable[[sqlite3.Connection, Session], tools.Context] | None = None
     photo_dir: Path | None = None  # where photos are kept (for deleting them with their lines)
+    on_reply: Callable[[int, str], None] | None = None  # the Mac reads replies aloud (serve --voz)
     _lanes: dict[int, _Lane] = field(default_factory=dict)
     _local: threading.local = field(default_factory=threading.local)
     _talks: dict[int, _Conversation] = field(default_factory=dict)
@@ -194,7 +195,13 @@ class ChatWorker:
             self._talks.pop(person_id, None)
             return ""
         try:
-            return self._turn_inner(person_id, text, photo)
+            reply = self._turn_inner(person_id, text, photo)
+            if reply and self.on_reply is not None:
+                try:
+                    self.on_reply(person_id, reply)
+                except Exception:
+                    pass  # reading it aloud is an extra: the page still shows it
+            return reply
         except Exception:  # a database error, a broken context: say so, never a broken page
             try:
                 add(self._conn(), self.clock, person_id, "pepe", "chat", CANT_ANSWER)
