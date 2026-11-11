@@ -1,5 +1,9 @@
 # KORE
 
+![Status: in progress](https://img.shields.io/badge/status-in%20progress-orange)
+
+**Work in progress.** Version 1 is being built and tested; KORE's own local model is still at the planning stage.
+
 **A Spanish-speaking voice companion for older people.** KORE greets them, keeps them company, reminds them of their medication, appointments and shopping, shares photos and messages with their family, and gets help when something is wrong. It is designed for people who will never use an app: you just talk to it.
 
 > The source code is private while KORE is tested in a real home. This page describes the design and what has been measured.
