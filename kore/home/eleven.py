@@ -1,4 +1,4 @@
-"""ElevenLabs as Pepe's ears and mouth on the box (phase 1): one interface each, swappable (CLAUDE.md).
+"""ElevenLabs as Pepe's ears and mouth on the box (phase 1): one interface each, swappable.
 
 - ElevenSTT: speech to text with Scribe. `transcribe(wav) -> str | None` (None: it failed; never raises).
 - ElevenVoice: the Voice interface (kore/home/voice.py). Text to speech, then played through a player

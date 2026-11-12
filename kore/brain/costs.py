@@ -1,4 +1,4 @@
-"""What each live API call costs, and the daily test budget (CLAUDE.md: at most 5 euros a day).
+"""What each live API call costs, and the daily test budget (at most 5 euros a day).
 
 Every live call is appended to data/costs.jsonl (git-ignored). Before a live
 run, check_budget() refuses to start if today's spend has reached the limit.

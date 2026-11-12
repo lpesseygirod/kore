@@ -1,5 +1,6 @@
 .env
 .env.*
+!.env.example
 private/
 data/
 docs/reports/
@@ -12,5 +13,15 @@ __pycache__/
 *.db-wal
 *.db-shm
 .pytest_cache/
-pepe-model/data/
-pepe-model/models/
+*.log
+.idea/
+.vscode/
+
+# local only: the model work in progress and private working notes
+kore-model/
+pepe-model/
+CLAUDE.md
+docs/PROGRESS.md
+docs/START-HERE.md
+docs/claude-code-starting-prompt.txt
+docs/pepe-prueba.txt

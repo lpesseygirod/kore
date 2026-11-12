@@ -1,5 +1,9 @@
 # KORE — Build Plan
 
+> **About this document.** This is the plan I made with an AI advisor before building KORE: its review of my
+> first design, the phases, and the prompts I used to drive Claude Code. The code refers to its sections
+> (e.g. "BUILD-PLAN 0b.9"). It is kept as written, so it speaks to me in the second person.
+
 > **Two parts (Lea's decision, 2026-11-08).** Part 1, *Pepe the app*: this plan, with Claude as the brain.
 > Part 2, *Pepe's model*: an open model trained only to be Pepe, on Lea's hardware. It has its own plan in
 > `pepe-model/README.md` and meets part 1 through one adapter. Nothing in part 1 waits for part 2.

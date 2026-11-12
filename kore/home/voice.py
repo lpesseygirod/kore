@@ -1,4 +1,4 @@
-"""Pepe's mouth: one interface, swappable (CLAUDE.md: one interface per provider).
+"""Pepe's mouth: one interface, swappable (one interface per provider).
 
 The real one (phase 1, needs the speakerphone and the ElevenLabs key) turns text into speech and plays it, and
 stops when someone talks over it. The fake one records what would have been said, for tests and the simulator.
