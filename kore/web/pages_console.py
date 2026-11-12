@@ -1,4 +1,4 @@
-"""Lea's console (her design: Console 1–7), in English. Plain HTML, no scripts, everything escaped (pages.e)."""
+"""My console (design: Console 1–7), in English. Plain HTML, no scripts, everything escaped (pages.e)."""
 
 from __future__ import annotations
 

@@ -2,10 +2,10 @@
 
 What the ears hand over (words after the wake word or the button, the help button, the presence sensor) comes in
 through `heard`, `help_button` and `presence`; `tick` runs every few seconds. What Pepe says goes out through a
-`Voice` (kore.home.voice): fake in tests, printed on the Mac, the real speaker in phase 1.
+`Voice` (kore.home.voice): fake in tests, printed or spoken on the Mac, ElevenLabs on the box.
 
-Each tick (BUILD-PLAN phases 1 and 7):
-- tells Lea's console the loop is alive (family_state "loop_seen_at");
+Each tick:
+- tells my console the loop is alive (family_state "loop_seen_at");
 - reminders and events from the engine, and how family messages went, go through the manners gate; what the gate
   says to say now is worded by Claude (the offline phrase if Claude can't be reached) and spoken. An item is marked
   done only once the voice has really said it, so a power cut or a broken speaker means it's said later, not lost;

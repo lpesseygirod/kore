@@ -1,12 +1,12 @@
-"""Lea's feedback page and weekly summary (BUILD-PLAN 2, "Your feedback page").
+"""My feedback page and weekly summary (BUILD-PLAN 2, "Your feedback page").
 
 Every item: what was said, how Pepe understood it, what changed, whether it's
 still active. Anything that touched medicine, alerts or night rules comes first.
 Only the feedback sentence is shown, never the conversation around it.
 
-For the trial this is a static page written to data/ (git-ignored) plus the
-command line in kore/feedback/__main__.py for undo; the page on the device and
-the weekly Telegram message come with phase 6.
+The console shows the same items (kore/web/console.py). The static page in data/
+(git-ignored) and the weekly summary come from kore/feedback/__main__.py; nothing
+sends the summary automatically yet.
 """
 
 from __future__ import annotations
@@ -100,7 +100,7 @@ code {{ font-size:13px; }}
 
 
 def weekly_summary(conn: sqlite3.Connection, clock: Clock, since: datetime) -> str:
-    """Plain text, for the weekly message to Lea (phase 6 sends it)."""
+    """Plain text, for the weekly message (printed by the command line for now)."""
     rows = items(conn, since)
     if not rows:
         return "Pepe: no feedback this week."

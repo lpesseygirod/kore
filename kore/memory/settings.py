@@ -1,6 +1,6 @@
 """Settings for the home and for each person, with defaults.
 
-Setup (phase 5) and feedback (phase 4b) change these; code reads them. Person 0
+Setup and feedback change these; code reads them. Person 0
 means the whole home. A person's own value wins over the home's; a temporary
 value ("just now", "today") wins over both until it runs out.
 

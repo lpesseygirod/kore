@@ -450,7 +450,7 @@ def test_be_quiet_cannot_come_from_outside_text(h, monkeypatch):
     assert not modes.active(h.conn, h.clock, "out", h.ids["carmen"])  # ...but nothing changes
 
 
-# --- regressions from the independent review (2026-11-06) ----------------------
+# --- regressions ----------------------
 
 
 def test_reminder_never_said_is_unknown_not_missed_and_no_alert(conn, clock):

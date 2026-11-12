@@ -1,8 +1,8 @@
 """Telling systemd "I'm up" and "I'm still alive" (sd_notify), with nothing but the standard library.
 
 Outside systemd (the Mac, tests) NOTIFY_SOCKET isn't set and every call does nothing.
-To switch the watchdog on for kore-home: call `ready()` once the loop runs and `alive()` on every tick, then set
-`Type=notify` and `WatchdogSec=60` in deploy/pi/kore-home.service (the lines are there, commented). If the loop
+kore/home/pi.py calls `ready()` once the loop runs and `alive()` on every tick. The watchdog itself is still off:
+set `Type=notify` and `WatchdogSec=60` in deploy/pi/kore-home.service (the lines are there, commented). If the loop
 then hangs for a minute, systemd kills and restarts it.
 """
 

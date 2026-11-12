@@ -30,11 +30,9 @@ from kore.setup import progress as setup
 from kore.manners import modes
 from kore.manners.gate import Item
 
-MODEL = "claude-sonnet-5-5"  # Lea approved 2026-11-06 (experiment 4)
-# Adaptive thinking at low effort: Claude can think privately (in thinking blocks the
-# voice never sees) and skips it on simple turns. With thinking off ("between_tools"),
-# the pilot showed it sometimes writing its notes as text, which the voice would read
-# out. Speed to be measured in phase 1 (experiment 4 timed "between_tools").
+MODEL = "claude-sonnet-5-5"  # chosen in experiment 4
+# Adaptive thinking at low effort: it skips thinking on simple turns. With thinking off ("between_tools")
+# the pilot sometimes wrote its notes as plain text, which the voice would read out.
 MODEL_CONFIG = {"thinking": {"type": "adaptive"}, "output_config": {"effort": "low"}}
 MAX_TOKENS = 1024
 MAX_TOOL_ROUNDS = 6
@@ -81,7 +79,7 @@ class Brain:
     messages: list[dict] = field(default_factory=list)
     calls: list[ToolCall] = field(default_factory=list)
     responses: list[dict] = field(default_factory=list)
-    dropped: list[str] = field(default_factory=list)  # text kept from the voice (notes in English), for Lea
+    dropped: list[str] = field(default_factory=list)  # text kept from the voice (notes in English), for me to check
     code_actions: list[str] = field(default_factory=list)  # what the help path (code, not Claude) did, for the judge
     channel: str = "voice"  # "chat": the home web page, in text
     # The voice loop sets this to speak code's own lines (help) at once, before Claude answers.
@@ -184,12 +182,12 @@ class Brain:
     def speak_event(self, item: Item) -> str | None:
         """Pepe speaks first: word an event from the scheduler, in the manner the gate chose."""
         if item.manner == "family":
-            return None  # a message (phase 6), never spoken
+            return None  # a message, never spoken
         ev = item.event
         data = ev.data
         if ev.kind == "morning_greeting" and item.manner != "say":
             # Short (quiet, night) or a signal: only the shared part of the day goes to Claude, so nobody's own
-            # medicines or appointments can slip into a short line (state.md requirement).
+            # medicines or appointments can slip into a short line.
             data = {k: v for k, v in data.items() if k != "people"}
         info = self.ctx.info
         if ev.kind == "morning_greeting" and info and info.weather:

@@ -1,4 +1,4 @@
-# KORE — a voice companion and assistant for older people
+# KORE: a voice companion and assistant for older people
 
 A small home speaker, like a HomePod or Alexa but made only for older people. It reminds them of what matters (medication, water, appointments, the shopping list, birthdays), answers their questions, and keeps them company. Everything works by voice. It takes the initiative, but it knows when to stay quiet.
 

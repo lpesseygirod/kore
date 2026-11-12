@@ -7,7 +7,7 @@
   reminder    one soft green light: "something for you, when you can"
   quiet       one dim violet light: quiet mode is on
   night       one very dim amber light
-  error       the whole ring dim red: something is wrong (Lea sees why in the logs)
+  error       the whole ring dim red: something is wrong (the logs say why)
 
 The ring is a WS2812 strip, driven through the Pi's SPI port (spidev, MIT licence; imported only on the Pi):
 each bit of colour becomes three SPI bits at 2.4 MHz, which gives the WS2812 the timing it needs. This works on

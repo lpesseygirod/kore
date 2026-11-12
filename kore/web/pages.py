@@ -12,7 +12,7 @@ from html import escape
 from kore.web import icons
 
 CSS = """
-/* Lea's chosen look, "Persephone" (docs/design/persephone/): Kore brings back the spring. Pomegranate, seed, wheat
+/* The look, "Persephone" (docs/design/persephone/): Kore brings back the spring. Pomegranate, seed, wheat
    and spring green on warm marble; Fraunces for titles, Figtree for reading. Both fonts are served by the box itself
    (kore/web/fonts, SIL Open Font Licence), so nothing is loaded from outside. */
 @font-face { font-family: "Fraunces"; src: url(/fuentes/fraunces.woff2) format("woff2"); font-weight: 100 900;
@@ -92,7 +92,7 @@ nav form { margin-left: auto; }
              font-size: .8rem; font-weight: 600; background: var(--card); box-shadow: var(--shadow); }
 .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--online); display: inline-block; }
 .dot.off { background: var(--wait); }
-/* Lea's console: a dark pomegranate-black side bar on a wide screen, a dark top bar on a narrow one. */
+/* The console: a dark pomegranate-black side bar on a wide screen, a dark top bar on a narrow one. */
 html.compact header.top { background: var(--side); color: var(--side-fg); }
 html.compact .mark { color: #F7F2EA; }
 /* The pomegranate on a dark ground (the console's side bar, dark mode): lighter, as in the design. */
@@ -274,7 +274,7 @@ def seeds(on: int, total: int) -> str:
 
 
 def layout(title: str, body: str, nav: str = "", lang: str = "es", compact: bool = False, after: str = "") -> str:
-    """compact: Lea's console (a wider page, smaller type, in English). `after`: what goes below the page (the
+    """compact: my console (a wider page, smaller type, in English). `after`: what goes below the page (the
     family app's tab bar)."""
     skip = "Skip to content" if lang == "en" else "Ir al contenido"
     classes = " ".join(c for c in ("compact" if compact else "", f"size-{SIZE.get()}" if not compact else "") if c)
@@ -865,7 +865,7 @@ def family_propose(account, people: list[dict], mine: list[dict], today: str, f:
 def elder_home(account, d: dict) -> str:
     parts = [f'<h1 style="margin-bottom:.2rem">Hola, {e(account.name)}</h1>'
              f'<p class="muted" style="margin:0">{e(d["date"])}<br>{e(d["time"])}{" · " + e(d["weather"]) if d.get("weather") else ""}</p>']
-    # Lea's design (Persephone): KORE is here (pomegranate), what comes next (wheat), today's pills (spring).
+    # Persephone: KORE is here (pomegranate), what comes next (wheat), today's pills (spring).
     parts.append(f'<div class="here-card"><div class="who"><span class="avatar" aria-hidden="true">{pomegranate(34)}'
                  f'</span><span><b>Pepe está aquí</b><span>{t("Pregúntale lo que quieras.", "Pregúntele lo que quiera.")}'
                  f'</span></span></div><a class="talk" href="/hablar">{icon("mic", 30)}Hablar con Pepe</a></div>')

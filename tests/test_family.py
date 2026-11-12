@@ -2,7 +2,7 @@
 
 'Done when' (offline half): each message type is produced and sent through the
 channel interface; with the internet unplugged, "help" says out loud that it
-couldn't reach anyone; the heartbeat pings on time. The real phones are Lea's step.
+couldn't reach anyone; the heartbeat pings on time. Real phones are tested by hand.
 """
 
 import shutil
@@ -88,7 +88,7 @@ HELP_CASES = {
     "me he caído": "fall", "no me puedo levantar": "fall", "Pepe, ayuda, estoy en el suelo": "fall",
     "Toni se ha caído en el baño": "fall", "mi marido se ha caído": "fall", "Se ha caído Antonio": "fall",
     "me acabo de caer": "fall",
-    # not calls (review 6: false alarms would send AYUDA to the family)
+    # not calls (false alarms would send AYUDA to the family)
     "necesito ayuda con la tele": None, "¿me ayudas con el crucigrama?": None, "Pepe, ¿me ayuda?": None,
     "¿me ayudas a buscar el mando?": None, "ayúdame con la compra": None, "ayuda a buscar las gafas": None,
     "Qué ayuda, Pepe": None, "Gracias por tu ayuda": None, "La ayuda a domicilio viene hoy": None,
@@ -422,7 +422,7 @@ def test_retry_waits_grow_and_kinds_expire(h, clock):
     assert len(msgs.deliver(h.conn, clock, h.family.channels)) == 1
     run_for(h, clock, 25 * 60, step_s=60)
     assert h.conn.execute("SELECT status FROM family_out WHERE id = ?", (i,)).fetchone()[0] == "failed"
-    # A failed family alert becomes a note to Lea.
+    # A failed family alert becomes a note to me.
     assert [r["kind"] for r in h.out("operator")] == ["operator"]
 
 
@@ -540,7 +540,7 @@ def test_no_backup_with_the_clock_in_doubt(conn, clock, tmp_path):
     assert conn.execute("SELECT count(*) FROM family_out").fetchone()[0] == 0
 
 
-# --- the fifth independent review (phase 6): one test per finding ------------------------------------
+# --- regressions: one test per bug ------------------------------------
 
 
 class Boom:

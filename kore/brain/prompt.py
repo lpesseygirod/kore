@@ -1,7 +1,6 @@
 """Pepe's system prompt, built from docs/PEPE.md (sections 4, 6, 6b, 6c).
 
-First version, for the phase 0.5 personality experiment. The prompt is static,
-so it is cached (1-hour TTL); anything that changes (the time, today's state)
+The prompt is static, so it is cached (1-hour TTL); anything that changes (the time, today's state)
 goes in a separate block after the cache breakpoint.
 
 Facts (medicines, doses, appointments, lists) never come from this prompt or

@@ -7,7 +7,7 @@ CLEAR_YES = [
     "yes", "Yes please", "yeah, send it", "of course", "Por supuesto", "Sí, soy yo",
 ]
 NOT_A_CLEAR_YES = [
-    # found in review: repeats, corrections, questions back, putting it off
+    # bugs I hit: repeats, corrections, questions back, putting it off
     "Por favor, repítelo", "Perdona, ¿qué? Por favor otra vez", "Ay, por favor, qué lío",
     "Eso es a las diez", "Claro, a las diez", "Sí, a las diez", "¿Está bien eso?",
     "Vale, luego lo vemos", "Está bien, mañana lo hablamos", "Qué va, eso es mentira",
@@ -52,7 +52,7 @@ def test_self_identification(text, expected):
 @pytest.mark.parametrize(
     "text",
     [
-        # found in review: negations, mentions, calling someone
+        # bugs I hit: negations, mentions, calling someone
         "No soy Carmen", "Yo no soy Carmen", "¿Está aquí Carmen?", "Carmen aquí no está",
         "Las gafas de Carmen, aquí en la mesa", "¡Carmen!", "¿Habla Carmen con su hija hoy?",
         "Soy la hija de Carmen", "I'm not Carmen",

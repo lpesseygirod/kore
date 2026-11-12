@@ -1,4 +1,4 @@
-"""Lea's console (docs/CONSOLE-PLAN.md, from her design canvas): what the operator login shows.
+"""My console (docs/CONSOLE-PLAN.md, from my design canvas): what the operator login shows.
 
 Privacy first (WEB-PLAN decision 5): device health, costs and settings are always shown; anything about a
 person only with that person's permission, asked by Pepe at setup:
@@ -7,9 +7,9 @@ person only with that person's permission, asked by Pepe at setup:
 - `lea_reads_conversations`: their conversations of the last 7 days (only what is kept: the web chat, and
   voice turns only with their `keep_conversations` permission).
 Shared things (shared appointments, reminders and birthdays, the shopping list) show only when everyone at home
-agreed. Feedback that touched safety always reaches Lea (it is held for her), whatever the permissions.
+agreed. Feedback that touched safety always reaches me (it is held for me), whatever the permissions.
 
-Lea's own actions go through code like everything else: a medicine change or an appointment she proposes is
+My own actions go through code like everything else: a medicine change or an appointment I propose is
 only a proposal the person confirms (their read-back and yes); undoing feedback uses the feedback store.
 """
 
@@ -217,7 +217,7 @@ def shopping(conn) -> list[str] | None:
     return store.list_items(conn) if _shared_ok(conn) else None
 
 
-# --- Lea's proposals (a medicine change, an appointment): the person decides ----------------------------
+# --- my proposals (a medicine change, an appointment): the person decides ----------------------------
 
 
 def propose_medicine_change(conn, clock: Clock, medication_id: int, times_text: str) -> str:
@@ -350,13 +350,13 @@ def delete_conversation(conn, clock: Clock, person_id: int, first_id: int) -> bo
                                                 (person_id, first_id, utc_iso(c["last"]))))
     conn.execute("DELETE FROM chat WHERE person_id = ? AND id BETWEEN ? AND ?", (person_id, first_id, last_id))
     conn.execute("DELETE FROM console_marks WHERE person_id = ? AND chat_id BETWEEN ? AND ?",
-                 (person_id, first_id, last_id))  # Lea's notes about it go too (they may quote it)
+                 (person_id, first_id, last_id))  # my notes about it go too (they may quote it)
     conn.execute("PRAGMA wal_checkpoint(TRUNCATE)")
     return True
 
 
 def save_as_scenario_draft(conn, clock: Clock, person_id: int, first_id: int, folder: Path) -> Path | None:
-    """A draft for a test scenario, in private/ (git-ignored: real words never go in git). Lea rewrites it with
+    """A draft for a test scenario, in private/ (git-ignored: real words never go in git). I rewrite it with
     made-up names before it becomes a scenario."""
     c = conversation(conn, clock, person_id, first_id)
     if c is None:
@@ -481,7 +481,7 @@ def set_quiet_times(conn, clock: Clock, start: str, end: str) -> None:
 
 
 def contacts(conn) -> list[dict]:
-    """Family contacts Lea may see: shared ones when everyone agreed, and those of people who agreed."""
+    """Family contacts I may see: shared ones when everyone agreed, and those of people who agreed."""
     names = {p["id"]: p["name"] for p in people(conn)}
     allowed, shared = _day_ok(conn), _shared_ok(conn)
     return [{"name": r["name"], "relation": r["relation"], "for": names.get(r["for_person"], "both"),
@@ -497,7 +497,7 @@ def contacts(conn) -> list[dict]:
 
 
 def messages_today(conn, clock: Clock) -> int | None:
-    """Only for people who let Lea read their conversations (None: nobody did)."""
+    """Only for people who let me read their conversations (None: nobody did)."""
     allowed = [p["id"] for p in people(conn) if p["chats"]]
     if not allowed:
         return None
@@ -536,7 +536,7 @@ def week_numbers(conn, clock: Clock, log: CostLog) -> dict:
 
 
 def events(conn, clock: Clock) -> list[dict]:
-    """What the box told Lea (device messages), newest first."""
+    """What the box told me (device messages), newest first."""
     return [{"at": from_utc_iso(r["created_at_utc"], clock.tz).strftime("%a %-d %b %H:%M"), "text": r["text"]}
             for r in conn.execute("SELECT created_at_utc, text FROM family_out WHERE kind = 'operator' "
                                   "ORDER BY id DESC LIMIT 10")]
@@ -554,7 +554,7 @@ def version() -> str:
 
 
 class TestChat:
-    """One per Lea login. The copy is made when she starts (or switches who she pretends to be) and lives in
+    """One per operator login. The copy is made when I start (or switch who I pretend to be) and lives in
     memory only: nothing reaches the device, their memory or their family (no channels)."""
 
     def __init__(self):
@@ -576,7 +576,7 @@ class TestChat:
 
         if as_person not in _day_ok(src) or not _shared_ok(src):
             # The copy holds the whole home (shared list, shared appointments, a partner's doses): only when
-            # everyone at home agreed Lea may see their day.
+            # everyone at home agreed I may see their day.
             raise agenda.Refused("The test chat needs everyone at home to have agreed you can see their day.")
         if self.brain is None or self.as_person != as_person or clock.now() - self.started > timedelta(minutes=30):
             self.copy = connect(":memory:", shared=True)

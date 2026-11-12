@@ -77,7 +77,7 @@ def test_confirmation_needs_a_later_clear_yes():
 
 
 def test_a_new_read_back_replaces_the_old_one():
-    # Review finding: "No, a las diez" → new proposal → "Sí" confirmed both, saving 09:00 too.
+    # Bug: "No, a las diez" → new proposal → "Sí" confirmed both, saving 09:00 too.
     s = Session([CARMEN])
     s.begin_turn("La pastilla a las 9")
     old = s.propose("add_medication", {"t": "09:00"}, "?")
@@ -90,7 +90,7 @@ def test_a_new_read_back_replaces_the_old_one():
 
 
 def test_yes_must_answer_the_read_back_directly():
-    # Review finding: a "vale" two turns later, about something else, confirmed a stop.
+    # Bug: a "vale" two turns later, about something else, confirmed a stop.
     s = Session([CARMEN])
     s.begin_turn("Ya no quiero la pastilla")
     a = s.propose("stop_medication", {}, "?")

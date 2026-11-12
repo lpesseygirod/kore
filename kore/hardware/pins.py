@@ -4,7 +4,7 @@ Numbers are GPIO (BCM) numbers, not the physical pin numbers printed on diagrams
 comment, counting on the 40-pin header: pin 1 (3.3 V) is at the end farthest from the USB ports, inner row;
 even numbers run along the board's edge.
 
-Defaults, and how to wire them (docs/DEVICE.md has the pictures-in-words version for Lea):
+Defaults, and how to wire them (docs/DEVICE.md has the step-by-step version):
 
   help button (arcade button)  GPIO17 (physical 11) and any GND (physical 9 or 14). No resistor: the Pi's own
                                pull-up is used; pressing connects the pin to GND.

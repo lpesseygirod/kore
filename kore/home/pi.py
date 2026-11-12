@@ -8,7 +8,7 @@ and ElevenLabs (kore/home/eleven.py), around the home loop. Started by systemd (
 - The sensor: moving / still / absent to the home loop (the morning greeting, nobody-home rules).
 - The light: listening, thinking, speaking; night or quiet when that's on; error when the voice can't speak.
 - systemd: "ready" once started, then "alive" on every tick (a stuck loop is restarted by the watchdog).
-The wake word "Pepe" isn't here yet (BUILD-PLAN phase 0.5, experiment 3: a model trained and tested against their
+The wake word "Pepe" isn't here yet (BUILD-PLAN experiment 3: it needs a model trained and tested against their
 TV first); until then the button is the way to talk.
 """
 

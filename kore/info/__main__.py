@@ -1,4 +1,4 @@
-"""Lea's controls for the weather and the news, from the command line. No keys needed; both are free GETs.
+"""My controls for the weather and the news, from the command line. No keys needed; both are free GETs.
 
   place NAME                 look the town up and list the matches
   place NAME --pick N        save match N as the home's place (for the weather)

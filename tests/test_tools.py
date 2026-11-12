@@ -208,7 +208,7 @@ def test_schemas_are_valid_for_the_api():
 
 
 def test_forget_removes_notes_with_quotes_from_the_log_too(ctx, conn):
-    # Review finding: JSON escaping hid the note from the log scrub.
+    # Bug: JSON escaping hid the note from the log scrub.
     say(ctx, "Soy Carmen")
     text = 'mi nieto dice que soy "la reina del barrio"'
     nid = call(ctx, "remember_about_person", kind="story", text=text)["note_id"]

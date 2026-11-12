@@ -1,4 +1,4 @@
-"""Pepe's icon on the home screen (Lea, 2026-11-08: no phone app, "add the icon")."""
+"""Pepe's icon on the home screen (no phone app, just the icon)."""
 
 import io
 import json

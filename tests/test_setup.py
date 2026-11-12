@@ -280,7 +280,7 @@ def test_setup_state_reaches_claude():
     assert json.dumps(tools.schemas())  # all tool schemas still serialisable
 
 
-# --- regressions from the independent review of phase 5 (2026-11-06) ----------------------
+# --- regressions ----------------------
 
 
 def test_name_before_the_welcome_keeps_setup_open(s):

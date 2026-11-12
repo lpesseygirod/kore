@@ -1,10 +1,10 @@
 """The nightly encrypted backup (BUILD-PLAN 0b.9): the database, off the device, every night.
 
 1. A consistent copy of the database (SQLite's online backup, safe while Pepe runs).
-2. Encrypted to Lea's public certificate with OpenSSL (CMS, AES-256-GCM). The device
-   holds only the public half: it can make backups but can't read them. Lea keeps the
-   private key on her own computer (see `python -m kore.family` for the steps).
-3. Sent to Lea's own Telegram chat as a file, and the last 7 kept on the device.
+2. Encrypted to my public certificate with OpenSSL (CMS, AES-256-GCM). The device
+   holds only the public half: it can make backups but can't read them. The private
+   key stays on my own computer (see `python -m kore.family` for the steps).
+3. Sent to my own Telegram chat as a file, and the last 7 kept on the device.
 
 OpenSSL is already on the Raspberry Pi and the Mac (Apache-2.0 licence): no new
 dependency. The plain copy only ever exists in a private temporary folder, and is
@@ -25,7 +25,7 @@ from kore.family import messages as msgs
 from kore.memory.db import utc_iso
 from kore.scheduler.clock import Clock
 
-CERT_VAR = "KORE_BACKUP_CERT"          # path to Lea's public certificate (not secret)
+CERT_VAR = "KORE_BACKUP_CERT"          # path to my public certificate (not secret)
 DEFAULT_CERT = "private/backup_cert.pem"
 OPENSSL_VAR = "KORE_OPENSSL"           # which openssl to use, if not the first on PATH
 DIR = Path("data/backups")
@@ -54,7 +54,7 @@ def snapshot(conn: sqlite3.Connection, dest: Path) -> None:
         out.close()
 
 
-# Not in the backup: the web conversations (each person's own; Lea's view never shows them, and "deleted after
+# Not in the backup: the web conversations (each person's own; the console never shows them, and "deleted after
 # 90 days" must hold), and the web's codes, logins and attempts (a restored box makes everyone log in again).
 NOT_BACKED_UP = ("chat", "chat_turns", "say_queue", "web_codes", "web_attempts", "web_logins", "web_pending",
                  "photos", "photo_log", "console_marks",
@@ -83,8 +83,8 @@ def encrypt(src: Path, cert: Path, dest: Path) -> None:
 
 
 def decrypt(src: Path, key: Path, cert: Path, dest: Path) -> None:
-    """For Lea, on her own computer: back to a database file."""
-    # Not captured: OpenSSL asks Lea for her key's passphrase in the terminal.
+    """On my own computer: back to a database file."""
+    # Not captured: OpenSSL asks for the key's passphrase in the terminal.
     r = subprocess.run([openssl(), "cms", "-decrypt", "-binary", "-inform", "DER", "-in", str(src), "-out", str(dest),
                         "-inkey", str(key), "-recip", str(cert)])
     if r.returncode != 0:
@@ -118,9 +118,9 @@ SEND_RETRY = timedelta(minutes=30)
 def nightly(conn: sqlite3.Connection, clock: Clock, family, cert: Path | None = None,
             folder: Path = DIR) -> Path | None:
     """Call every tick. Once a day after AT (or later that day, if the device was off): make the backup;
-    then send it to Lea's chat, retrying every 30 minutes until it goes. Returns a file made now, else None.
+    then send it to my chat, retrying every 30 minutes until it goes. Returns a file made now, else None.
 
-    Failures go to Lea once a day (Telegram; the heartbeat stays the backstop).
+    Failures reach me once a day (Telegram; the heartbeat stays the backstop).
     """
     now = clock.now()
     today = now.date().isoformat()

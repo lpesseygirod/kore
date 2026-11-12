@@ -180,7 +180,7 @@ def test_reminders_work_with_no_network(conn, clock, carmen_pills, monkeypatch):
     assert kinds(events) == [("09:00", "medication_reminder")]
 
 
-# --- review findings ----------------------------------------------------------
+# --- regressions ----------------------------------------------------------
 
 
 def test_one_missed_morning_with_two_pills_is_not_two_in_a_row(conn, clock, carmen_pills, home):

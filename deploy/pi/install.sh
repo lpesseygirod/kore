@@ -15,7 +15,7 @@
 #   uv (pinned), in /opt/kore/tools; Python itself goes in /opt/kore/python
 #   /opt/kore/releases/<version> and the /opt/kore/current link (the code: read-only for Pepe)
 #   /var/lib/kore (the data: database, logs of turns, backups; never inside a release)
-#   /etc/kore/kore.env (the keys: root only, mode 600; created empty, Lea types the keys with kore-set-key)
+#   /etc/kore/kore.env (the keys: root only, mode 600; created empty, I type the keys with kore-set-key)
 #   kore-set-key, kore-selftest and kore-update in /usr/local/sbin
 #   systemd: kore-home, kore-web (start on boot, restart on a crash), kore-update.timer (nights only)
 #   persistent logs kept 7 days, the hardware watchdog, SPI on (for the light ring), the time zone Europe/Madrid

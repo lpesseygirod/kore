@@ -5,7 +5,7 @@ Every event from the engine goes into the outbox with a decision, the "manner":
   short   very short and soft (quiet mode, night, visitors)
   signal  a soft sound and at most their name, nothing about what it is
           (something private, with visitors there)
-  family  a message for the family channel (phase 6), never spoken
+  family  a message for the family channel, never spoken
 or it is held (said later, once the reason has passed) or dropped.
 
 Items not yet said are decided again on every tick, so a change ("be quiet",

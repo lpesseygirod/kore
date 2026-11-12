@@ -1,4 +1,4 @@
-"""The box's install and night-update scripts (phase 7), checked on the Mac.
+"""The box's install and night-update scripts, checked on the Mac.
 
 No real systemd, network, GPIO or uv download: update.sh runs in a temporary folder with stand-ins for systemctl,
 uv and the release's Python, so the update / rollback logic itself is exercised.

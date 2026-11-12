@@ -119,7 +119,7 @@ def test_many_wrong_tries_across_the_home_pause_codes_and_tell_lea(app, conn, cl
     assert told and "intentos fallidos" in told["text"]
     lea = client(app)
     lea.get("/entrar")
-    assert lea.post("/entrar", data={"code": lea_code}, headers=ORIGIN).status_code == 303  # Lea can still get in
+    assert lea.post("/entrar", data={"code": lea_code}, headers=ORIGIN).status_code == 303  # I can still get in
     accounts.unlock(conn, clock)
     assert c.post("/entrar/codigo", data={"person": home["carmen"]}, headers=ORIGIN).status_code == 200
 
@@ -231,7 +231,7 @@ def test_an_unused_phone_is_logged_out_after_six_months(app, conn, clock, home):
     assert c.get("/").status_code == 303
 
 
-# --- Lea -----------------------------------------------------------------------------------
+# --- the operator -----------------------------------------------------------------------------------
 
 
 def test_lea_logs_in_with_a_printed_code_and_sees_status_only(app, conn, clock, home):
@@ -284,7 +284,7 @@ def test_serving_beyond_this_computer_needs_a_name():
     assert main(["serve", "--host", "0.0.0.0"]) == 2
 
 
-# --- the security review of 2026-11-08 --------------------------------------------------------
+# --- security --------------------------------------------------------
 
 
 @pytest.mark.parametrize("why", ["quiet", "visitors", "rest", "clock"])

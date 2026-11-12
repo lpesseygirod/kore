@@ -4,7 +4,7 @@ Headlines come from an RSS feed, are cleaned and kept for 30 minutes, and are gi
 as quoted content: the tool that returns them taints the turn, so nothing they say can change
 anything (the same rule as family messages). Pepe reads them, never adds to them.
 
-Feed: El País by default; Lea picks (`python -m kore.info feeds`). Checked 2026-11-07: RTVE's feeds
+Feed: El País by default; others can be set with `python -m kore.info feeds`. Checked 2026-11-07: RTVE's feeds
 stopped updating in 2022; Europa Press sends an incomplete certificate chain, so a secure client
 refuses it (and we never switch verification off); El País, El Mundo, 20minutos, eldiario.es and
 La Vanguardia all work. Reading headlines aloud at home for the family trial is personal use; a product for sale

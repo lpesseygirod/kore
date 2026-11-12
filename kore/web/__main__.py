@@ -1,8 +1,8 @@
-"""Lea's controls for the home web page, from the command line (on the box, or the Mac for now).
+"""My controls for the home web page, from the command line (on the box, or the Mac for now).
 
   serve [--host H] [--port P] [--dev]   run the page; --dev prints what Pepe would say (no speaker yet).
                                         Writing to Pepe needs: uv run --env-file .env --group live ...
-  invite                                a 10-minute code for Lea's own login (printed, never spoken)
+  invite                                a 10-minute code for my own login (printed, never spoken)
   qr URL                                the QR code for the box's sticker (data/web/qr.svg and .png)
   logins                                every logged-in device
   close-all                             log every device out

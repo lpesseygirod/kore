@@ -485,7 +485,7 @@ def test_photos_and_proposals_stay_out_of_the_backup():
     assert "web_pending" in backup.NOT_BACKED_UP
 
 
-# --- from the fresh review (W4) ------------------------------------------------------------------
+# --- edge cases (W4) ------------------------------------------------------------------
 
 import time  # noqa: E402
 

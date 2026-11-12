@@ -59,7 +59,7 @@ def test_too_early_is_not_guessed(conn, clock, home, pills):
 
 
 def test_adjacent_times_are_ambiguous_not_guessed(conn, clock, home):
-    # Review finding: at 08:05 "ya me la he tomado" marked the 08:30 pill, not the 08:00 one.
+    # Bug: at 08:05 "ya me la he tomado" marked the 08:30 pill, not the 08:00 one.
     meds.add_medication(conn, clock, home["antonio"], "Eutirox", ["08:00"])
     enalapril = meds.add_medication(conn, clock, home["antonio"], "Enalapril", ["08:30"])
     clock.set(at(8, 5))
@@ -71,7 +71,7 @@ def test_adjacent_times_are_ambiguous_not_guessed(conn, clock, home):
 
 
 def test_early_pill_today_does_not_rewrite_yesterdays_missed_dose(conn, clock, home):
-    # Review finding: at 06:30 "I took it" turned yesterday's missed 08:00 into "taken".
+    # Bug: at 06:30 "I took it" turned yesterday's missed 08:00 into "taken".
     mid = meds.add_medication(conn, clock, home["carmen"], "x", ["08:00"])
     med = meds.medications(conn, home["carmen"])[0]
     meds.close_slot(conn, clock, med, at(8, 0), reminded=True)

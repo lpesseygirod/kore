@@ -1,16 +1,16 @@
 # KORE: from a new Raspberry Pi to Pepe running
 
-Written 2026-11-08 for BUILD-PLAN phase 7. Follow the steps in order; each one ends with a check. Where a step
-**costs money** it says so; everything else is free. If a check doesn't look like the text here, stop and ask
-Claude Code (paste what you see).
+My guide for BUILD-PLAN phase 7. Follow the steps in order; each one ends with a check. Where a step **costs
+money** it says so; everything else is free. If a check doesn't look like the text here, stop and look at the logs
+(end of this page) before going on.
 
-> Status today: everything below works except the very last piece of code, the box's own voice loop
-> (`kore.home --pi`: the speakerphone, the ElevenLabs voice and the button, sensor and light together). It is being
-> built now. Until it's there, `kore-home` keeps restarting (harmless) while the web page, the night updates and the
-> self-test already work.
+> Status: I haven't built the box yet, so none of this has run on a real Raspberry Pi. The code for it is written
+> and tested on the Mac with fake parts: the installer and night updates (`deploy/pi/`), the self-test, and the
+> box's voice loop (`kore.home --pi`: the speakerphone, the ElevenLabs voice, the button, sensor and light). The
+> wake word "Pepe" isn't built yet; until then you talk to it with the button.
 
-Names used here: the box is called **kore-abuelos** and your user on it is **lea**. If you choose other names,
-use yours wherever these appear.
+Names used here: the box is called **kore-abuelos** and my user on it is **lea**. With other names, change them
+wherever these appear.
 
 ---
 
@@ -22,8 +22,7 @@ Pi 5 (8 GB), the official 27 W power supply, active cooler, the official RTC bat
 (with wires), jumper wires (female-female), and the USB speakerphone you already have.
 
 Also useful (costs money, about €15): **a USB adapter for NVMe SSDs**, so you can write the system straight onto
-the SSD from your Mac (step 2). Without it, use the microSD card first and ask Claude Code for the steps to move to
-the SSD afterwards.
+the SSD from your Mac (step 2). Without it, use the microSD card first and move to the SSD afterwards.
 
 Free: Raspberry Pi Imager (on your Mac), Tailscale's personal plan, everything in this repo.
 
@@ -85,11 +84,11 @@ Unplug the power while you do any of this.
    Otherwise the box drops off after six months.
 
 **Check:** from your Mac, `ssh lea@kore-abuelos` (without `.local`) works, even with the Mac on another network.
-From now on this is how you (and Claude Code, through you) reach the box, wherever it is.
+From now on this is how you reach the box, wherever it is.
 
 ## 5. Install Pepe  (free)
 
-On your Mac, in the KORE folder (Terminal, `cd` to the folder Claude Code works in):
+On your Mac, in the KORE folder (Terminal, `cd` to the repo):
 
     deploy/send_release.sh --first kore-abuelos
 
@@ -121,7 +120,7 @@ On the box, one key at a time. Each asks for the value and **does not show it** 
 
 The first two are needed for Pepe to talk; the others for help messages and the heartbeat (the same ones as in
 your Mac's `.env`). They are stored in `/etc/kore/kore.env`, readable only by the system (root). Never paste a key
-into a chat, an email or Claude Code. To change a key later, run the same line again.
+into a chat, an email or an AI tool. To change a key later, run the same line again.
 
 Then start Pepe and the web page:
 
@@ -135,7 +134,7 @@ Then start Pepe and the web page:
 3. The web page: on your Mac, open `http://kore-abuelos:8080` (over Tailscale) or `http://kore-abuelos.local:8080`
    (on the same Wi-Fi). Get your login code on the box with
    `sudo -u kore /opt/kore/current/.venv/bin/python -m kore.web --db /var/lib/kore/kore.db invite`.
-4. Say "Pepe" (or press the button briefly) and ask the time. Hold the button for 2 seconds: that is **help**, so
+4. Press the button briefly and ask the time (the wake word isn't built yet). Hold the button for 2 seconds: that is **help**, so
    only do it with the family member warned, or before the help contacts are set up.
 5. Walk into the room after it was empty for a few minutes: the morning greeting uses the sensor.
 6. Switch the Wi-Fi router off, set a test reminder two minutes ahead, and check Pepe still says it.
@@ -155,12 +154,12 @@ Goal: after 10 sudden power cuts in the middle of use, the dose log is intact an
 4. After each one: `sudo kore-selftest` must say OK (the clock line says "from the RTC battery" when the
    router is off: that's right), `date` must show the right time, and the dose count must be the same or
    higher, never lower.
-5. Write the ten results in a little table (try, what you were doing, self-test, time right, doses) and give it to
-   Claude Code for the phase report.
+5. Write the ten results in a little table (try, what you were doing, self-test, time right, doses) for the
+   phase report.
 
 ## 9. New versions: they install themselves at night
 
-When Claude Code has a new version and you've agreed, on your Mac:
+When there's a new committed version, on your Mac:
 
     deploy/send_release.sh kore-abuelos
 
@@ -196,13 +195,13 @@ itself** (its one-time-programmable memory), not on the SSD. Then:
 
 Encrypting the whole system disk as well adds little here for much more complication (it needs the same automatic
 key, and a broken start-up is harder to repair from afar). Nothing in `install.sh` encrypts anything; if you choose
-the simple path, ask Claude Code for the steps and do them before the database has real data in it.
+the simple path, do it before the database has real data in it.
 
 ## If something goes wrong
 
 - `sudo kore-selftest`: what's wrong, one line per check.
 - `journalctl -u kore-home -n 100` (Pepe), `journalctl -u kore-web -n 100` (the page),
-  `journalctl -u kore-update` (the night updates). Copy what you see to Claude Code, **after** checking it has no
+  `journalctl -u kore-update` (the night updates). Before sharing what you see with anyone, check it has no
   keys in it (it shouldn't: keys are never printed).
 - Pepe restarts by himself after a crash (5 seconds), and the box restarts itself if the whole system freezes.
 - Nothing answers at all: pull the plug, wait 10 seconds, plug it back. That is always safe.

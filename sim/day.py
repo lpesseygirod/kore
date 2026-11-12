@@ -4,7 +4,7 @@ The brain is scripted here (no Claude, no network): each line the person says
 comes with the tool calls Claude is expected to make. Events from the engine
 go through the manners gate (quiet mode, visitors, night) and are worded with
 the offline fallback phrases. This checks the deterministic half of the day;
-the real brain comes with phase 1.
+the real brain is tested by the scenario runs.
 
 Run:  uv run python -m sim.day
 """

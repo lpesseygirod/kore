@@ -40,7 +40,7 @@ class Context:
     session: Session
     tainted_turn: int | None = None  # the turn in which outside text was read
     inbox: list[dict] = field(default_factory=list)  # extra messages to read (scenario tests); the rest is in the db
-    # "Forget that" with nothing saved: the conversation log must drop turns up to here (phase 1 loop).
+    # "Forget that" with nothing saved: the conversation log drops turns up to here.
     forget_up_to_turn: int | None = None
     family: Family | None = None  # the channels to the family; None: nothing can be sent (and Pepe says so)
     info: Info | None = None  # weather and news; None: Pepe says it can't check
@@ -125,7 +125,7 @@ def call(ctx: Context, name: str, args: dict) -> dict:
             result = {"ok": False, "error": "clock_untrusted", "say": e.say}
         except (ValueError, KeyError) as e:
             result = {"ok": False, "error": "bad_input", "detail": str(e)}
-        except Exception as e:  # never break the voice turn; the type (no details) is logged for Lea
+        except Exception as e:  # never break the voice turn; only the error type is logged
             result = {"ok": False, "error": "internal", "detail": type(e).__name__,
                       "say": "That didn't work. Say simply that you can't do it right now."}
         if t.outside_text and result.get("ok"):
@@ -797,7 +797,7 @@ def _where(ctx: Context, args: dict) -> dict:
     return {"ok": True, "found": found, **({} if found else {"say": "Say you don't know; never guess."})}
 
 
-# --- feedback about how Pepe behaves (phase 4b) -----------------------------------
+# --- feedback about how Pepe behaves -----------------------------------
 
 
 @tool("record_feedback",
@@ -852,7 +852,7 @@ def _feedback_follow_up(ctx: Context, args: dict) -> dict:
     return feedback.follow_up(ctx.conn, ctx.clock, int(args["feedback_id"]), args.get("answer"), args.get("scope"))
 
 
-# --- the setup conversation (phase 5) ----------------------------------------------
+# --- the setup conversation ----------------------------------------------
 
 
 def _people(ctx: Context) -> list[int]:
@@ -1144,7 +1144,7 @@ def _propose_contact(ctx: Context, args: dict) -> dict:
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
 
-# --- messages to the family (phase 6) ---------------------------------------------
+# --- messages to the family ---------------------------------------------
 
 MAX_MESSAGE = 500
 

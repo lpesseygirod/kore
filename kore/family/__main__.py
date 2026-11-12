@@ -1,4 +1,4 @@
-"""Lea's controls for the family links, from the command line.
+"""My controls for the family links, from the command line.
 
 Keys come from .env (run with `uv run --env-file .env python -m kore.family ...`); they are
 never printed. Every command that sends something real needs --yes.
@@ -158,7 +158,7 @@ def _status(conn, clock, chans) -> int:
 
 
 def _pair(conn, clock, chans, contact_id) -> int:
-    wa = chans.get("whatsapp") if contact_id is not None else None  # Lea's own link stays Telegram
+    wa = chans.get("whatsapp") if contact_id is not None else None  # my own link stays Telegram
     if "telegram" not in chans and wa is None:
         print(f"Set {channels.TELEGRAM_TOKEN_VAR} in .env first.", file=sys.stderr)
         return 1

@@ -420,7 +420,7 @@ def test_old_proposals_are_deleted_after_a_day(conn, clock, home):
     assert timedelta(minutes=15) == agenda.PENDING_LIFE
 
 
-# --- from the fresh review (W3) ------------------------------------------------------------------
+# --- edge cases (W3) ------------------------------------------------------------------
 
 
 def test_r1_a_note_forgotten_by_voice_leaves_no_web_read_back(app, conn, clock, home):

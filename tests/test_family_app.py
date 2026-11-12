@@ -1,4 +1,4 @@
-"""The family app from Lea's design (Inicio, Calendario, Mensajes, Avisos) and photos both ways."""
+"""The family app (Inicio, Calendario, Mensajes, Avisos) and photos both ways."""
 
 import re
 
@@ -141,7 +141,7 @@ def test_the_family_tabs(ana_app):
         assert f'href="{href}"' in page
 
 
-# --- from the fresh review of the design build ------------------------------------------------------------
+# --- edge cases ------------------------------------------------------------
 
 
 def test_r5_a_photo_that_reaches_no_one_says_so(app, conn, clock, home, ana, ana_app):

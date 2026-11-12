@@ -477,7 +477,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
 
     c, k = db, clock  # short names for the proposals below
 
-    # --- Lea's console ----------------------------------------------------------------------------
+    # --- my console ----------------------------------------------------------------------------
 
     def lea(request: Request):
         a = account(request)
@@ -507,7 +507,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         return handler
 
     def console_action(act, back: str):
-        """A console form: Lea's own change. `act(a, f)` returns a note for the page, or raises Refused."""
+        """A console form: my own change. `act(a, f)` returns a note for the page, or raises Refused."""
         async def handler(request: Request):
             f = await form(request)
             with lock:
@@ -1133,7 +1133,7 @@ def _same_origin(request: Request) -> bool:
 
 
 def _status(conn, clock: Clock) -> dict:
-    """Lea's view: the box's health, nothing private."""
+    """The operator view: the box's health, nothing private."""
     w = weather.Weather(conn, clock, weather.OpenMeteo())
     place = w.place()
     return {

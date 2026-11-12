@@ -201,7 +201,7 @@ def test_everything_goes_after_90_days(conn, clock, home):
     assert [r["text"] for r in chats.history(conn, clock, home["carmen"])] == ["nuevo"]
 
 
-# --- the review of 2026-11-08 ------------------------------------------------------------------
+# --- edge cases ------------------------------------------------------------------
 
 import threading  # noqa: E402
 

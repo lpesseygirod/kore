@@ -2,8 +2,8 @@
 with a checklist and says, item by item, whether Pepe met it.
 
 Its verdicts are a signal, not proof: hard rules (doses, confirmations, family
-messages) are checked by code in the runner, never by the judge. Samples of
-transcripts go to Lea to read.
+messages) are checked by code in the runner, never by the judge. I read samples of
+the transcripts myself.
 """
 
 from __future__ import annotations

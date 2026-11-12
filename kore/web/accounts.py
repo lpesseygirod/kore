@@ -11,20 +11,20 @@ Limits, so nobody on the Wi-Fi can lock the family out or make Pepe talk on and 
 - per device (its address): 3 codes an hour, and 10 wrong tries in 30 minutes lock that device
   for 15 minutes;
 - for the whole home: 10 codes an hour, and 50 wrong tries in 30 minutes stop new codes for
-  15 minutes and tell Lea. Lea's printed code still works during that pause (it is never
+  15 minutes and tell me. My printed code still works during that pause (it is never
   cancelled by it), and `python -m kore.web unlock` ends it.
 
 After that the phone stays logged in: a random cookie, of which only a hash is kept. Each
-login can be closed from the page, by voice (later), or by Lea.
+login can be closed from the page, by voice (later), or by me.
 
 The spoken line holds the code in words, so it is deleted as soon as the code is used, burned,
 cancelled or expired (and the voice loop deletes it once said).
 
-Lea's operator code is printed on the box's terminal, never spoken (`python -m kore.web invite`).
+My operator code is printed on the box's terminal, never spoken (`python -m kore.web invite`).
 
 Family (W4): a person at home gives a family member access from their own page, with a read-back and a
 yes; the code then shows on that person's screen (30 minutes) to pass on, and works in any browser
-(like Lea's). Wrong guesses count against it like any other code. During a home-wide pause only Lea's
+(like mine). Wrong guesses count against it like any other code. During a home-wide pause only my
 code works. A family login sees nothing private (web/family.py).
 
 By design (v1, no voice recognition): anyone in the home who hears the code can log in as that
@@ -116,7 +116,7 @@ def _client_locked(conn: sqlite3.Connection, clock: Clock, client: str) -> bool:
 
 
 def unlock(conn: sqlite3.Connection, clock: Clock) -> None:
-    """Lea, from the box: end a home-wide pause now."""
+    """From the box: end a home-wide pause now."""
     info.put(conn, LOCK_KEY, clock.now().isoformat(), clock.now())
     conn.execute("DELETE FROM web_attempts WHERE kind = 'wrong'")
 
@@ -184,7 +184,7 @@ def request_code(conn: sqlite3.Connection, clock: Clock, person_id: int, ticket:
 
 
 def operator_code(conn: sqlite3.Connection, clock: Clock) -> str:
-    """For Lea, from the box's terminal: any browser, 10 minutes. Returns the code (printed, never spoken)."""
+    """The operator code, from the box's terminal: any browser, 10 minutes. Returns the code (printed, never spoken)."""
     now = clock.now()
     code = f"{secrets.randbelow(10**6):06d}"
     conn.execute("INSERT INTO web_codes (role, person_id, code_hash, ticket_hash, created_at, expires_at) "
@@ -225,7 +225,7 @@ def use_code(conn: sqlite3.Connection, clock: Clock, code: str, ticket: str | No
         raise Refused(TOO_MANY)
     home_locked = _home_locked(conn, clock)
     code = "".join(c for c in (code or "") if c in "0123456789")
-    # During a home-wide pause only Lea's printed code works (so she can always get in to see what's going on).
+    # During a home-wide pause only my printed code works, so I can always get in and see what's going on.
     rows = conn.execute("SELECT * FROM web_codes WHERE status = 'open' AND expires_at > ? AND "
                         "((ticket_hash IS NULL AND role = 'operator') OR (ticket_hash IS NULL AND role = 'family' AND ?) "
                         "OR (ticket_hash = ? AND ?)) ORDER BY id DESC",
@@ -238,7 +238,7 @@ def use_code(conn: sqlite3.Connection, clock: Clock, code: str, ticket: str | No
     if match is None:
         for r in rows:  # the guess was checked against each of these: each one counts it
             if r["role"] == "operator":
-                continue  # Lea's code: guarded by the per-device and home limits, never burned by strangers
+                continue  # the operator code: guarded by the per-device and home limits, never burned by strangers
             conn.execute("UPDATE web_codes SET tries = tries + 1, status = CASE WHEN tries + 1 >= ? THEN 'burned' "
                          "ELSE status END WHERE id = ? AND status = 'open'", (TRIES_PER_CODE, r["id"]))
         _wrong(conn, clock, client)
@@ -312,7 +312,7 @@ def who(conn: sqlite3.Connection, clock: Clock, token: str | None) -> Account | 
 
 
 def logins(conn: sqlite3.Connection, clock: Clock, account: Account) -> list[dict]:
-    """Your own logged-in devices; Lea sees everyone's."""
+    """Your own logged-in devices; the operator sees everyone's."""
     sql = ("SELECT l.*, a.name, a.role FROM web_logins l JOIN web_accounts a ON a.id = l.account_id "
            "WHERE l.revoked_at IS NULL")
     args: tuple = ()
@@ -327,7 +327,7 @@ def logins(conn: sqlite3.Connection, clock: Clock, account: Account) -> list[dic
 
 
 def close(conn: sqlite3.Connection, clock: Clock, account: Account, login_id: int) -> bool:
-    """Log out one device: your own, or any if you're Lea."""
+    """Log out one device: your own, or any for the operator."""
     row = conn.execute("SELECT account_id FROM web_logins WHERE id = ? AND revoked_at IS NULL", (login_id,)).fetchone()
     if row is None or (account.role != "operator" and row["account_id"] != account.id):
         return False
@@ -336,7 +336,7 @@ def close(conn: sqlite3.Connection, clock: Clock, account: Account, login_id: in
 
 
 def close_all(conn: sqlite3.Connection, clock: Clock) -> int:
-    """Every device logged out (Lea, or later by voice: "Pepe, cierra las sesiones de la web")."""
+    """Every device logged out (by me, or later by voice: "Pepe, cierra las sesiones de la web")."""
     return conn.execute("UPDATE web_logins SET revoked_at = ? WHERE revoked_at IS NULL",
                         (utc_iso(clock.now()),)).rowcount
 

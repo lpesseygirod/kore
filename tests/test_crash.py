@@ -1,7 +1,7 @@
 """Killing the process mid-write must never lose a committed dose or corrupt the file.
 
 A process kill is not a real power cut (the OS still flushes its cache);
-phase 7 pulls the plug on the Pi 10 times. This catches transaction bugs early.
+the real test is pulling the plug on the Pi 10 times. This catches transaction bugs early.
 """
 
 import signal

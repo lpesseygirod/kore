@@ -5,11 +5,11 @@ connection only delays it. Each one is retried until it goes or expires.
 Messages a person asked for are followed up out loud: "sent after all" or
 "couldn't be sent" (BUILD-PLAN rule: if a message can't be sent, say so).
 
-In: only messages from a family chat linked by pairing (a one-time code Lea
-gives the family member) are kept; anything else reaching the bot is ignored.
+In: only messages from a family chat linked by pairing (a one-time code I
+give the family member) are kept; anything else reaching the bot is ignored.
 They are read aloud only when asked, as quoted content.
 
-WhatsApp (off until Lea sets it up): a family member links their number by sending
+WhatsApp (off until I set it up): a family member links their number by sending
 the same pairing code to the box's WhatsApp number. That message is also their
 agreement to get messages there (Meta's rule). Once linked, their messages from
 Pepe go by WhatsApp instead of Telegram; a call for help goes by every way they
@@ -45,7 +45,7 @@ PAIRING_TRIES_IN_ALL = 20      # wrong codes overall before every open code is c
 MAX_IN_TEXT = 1000
 PHONE = re.compile(r"^\+[1-9]\d{7,14}$")
 
-OPERATOR_CHAT = "operator_chat"   # Lea's own Telegram chat: device messages and backups
+OPERATOR_CHAT = "operator_chat"   # my own Telegram chat: device messages and backups
 TG_OFFSET = "telegram_offset"
 WA_WINDOW = timedelta(hours=23)   # WhatsApp allows plain text 24 h after they last wrote; keep a margin
 WA_CHECK_FOR = timedelta(hours=6) # how long a WhatsApp message accepted by Twilio is checked for a late failure
@@ -55,7 +55,7 @@ WA_SEEN_KEEP = timedelta(days=3)
 @dataclass
 class Attempt:
     id: int
-    contact: str | None   # contact name, None for Lea
+    contact: str | None   # contact name, None for me (the operator)
     channel: str
     ok: bool
     error: str | None
@@ -149,7 +149,7 @@ def deliver(conn: sqlite3.Connection, clock: Clock, channels: dict[str, Channel]
         if to is None:
             result = Sent(False, "no_address", permanent=True)
         elif ch is None:
-            result = Sent(False, "not_configured")  # Lea may still set it up: keep it until it expires
+            result = Sent(False, "not_configured")  # it may still be set up: keep it until it expires
         else:
             try:
                 if r["channel"] == "whatsapp":
@@ -197,7 +197,7 @@ def check_whatsapp(conn: sqlite3.Connection, clock: Clock, channel) -> int:
         tg = conn.execute("SELECT telegram_chat_id FROM contacts WHERE id = ?", (r["contact_id"],)).fetchone()
         if r["kind"] in ("message", "missed_meds", "stop_request") and tg and tg["telegram_chat_id"]:
             i = queue(conn, clock, r["kind"], "telegram", r["text"], r["contact_id"], r["from_person"], group)
-            if r["kind"] != "message":  # an alert: the Telegram copy carries it now (and Lea's note if it fails)
+            if r["kind"] != "message":  # an alert: the Telegram copy carries it now (and my note if it fails)
                 conn.execute("UPDATE family_out SET told = 2 WHERE id = ?", (r["id"],))
                 conn.execute("UPDATE family_out SET told = 0 WHERE id = ?", (i,))
         if r["kind"] in ("help", "message"):
@@ -207,7 +207,7 @@ def check_whatsapp(conn: sqlite3.Connection, clock: Clock, channel) -> int:
                 # if, in the end, nothing got through (3).
                 state = 1 if any(x["told"] == 1 for x in rows) and r["told"] != 2 else 3
                 conn.execute("UPDATE family_out SET told = ? WHERE group_id = ?", (state, group))
-        if r["kind"] in ("help", "message", "test"):  # failed alerts already reach Lea through follow_ups
+        if r["kind"] in ("help", "message", "test"):  # failed alerts already reach me through follow_ups
             queue(conn, clock, "operator", "telegram",
                   f"Pepe: un WhatsApp a {contact_name(conn, r['contact_id']) or 'la familia'} no ha llegado "
                   "(número sin WhatsApp o plantilla rechazada). Revisa: uv run python -m kore.family status")
@@ -218,7 +218,7 @@ def follow_ups(conn: sqlite3.Connection, clock: Clock, everyone: list[int]) -> l
     """Tell people how a message they asked for (or a call for help) went, after they heard "not yet".
 
     One event per request: "it went after all" once any part is sent, or "it couldn't be sent" once
-    every part has failed for good. Family alerts that fail for good become a note to Lea.
+    every part has failed for good. Family alerts that fail for good become a note to me.
     """
     events = []
     for g in conn.execute("SELECT group_id, max(told) AS told FROM family_out WHERE told IN (1, 3) "
@@ -281,7 +281,7 @@ def poll(conn: sqlite3.Connection, clock: Clock, channel) -> dict:
         else:
             row = conn.execute("SELECT id FROM contacts WHERE telegram_chat_id = ?", (u.chat_id,)).fetchone()
             if row is None:
-                stats["ignored"] += 1  # a stranger, or Lea's own chat: never read aloud
+                stats["ignored"] += 1  # a stranger, or my own chat: never read aloud
             else:
                 text = (u.text or "").strip()[:MAX_IN_TEXT] or "[una foto o un audio, que no puedo mostrar]"
                 conn.execute("INSERT INTO family_in (received_at_utc, contact_id, text) VALUES (?, ?, ?)",
@@ -377,12 +377,12 @@ def mark_read(conn: sqlite3.Connection, clock: Clock, ids: list[int]) -> None:
                      (utc_iso(clock.now()), i))
 
 
-# --- linking a family chat or a phone (Lea, from the command line) ------------------------
+# --- linking a family chat or a phone (from the command line) ------------------------
 
 
 def start_pairing(conn: sqlite3.Connection, clock: Clock, contact_id: int | None) -> str:
     """A one-time 6-digit code. The family member sends it to the bot; their chat is then linked.
-    contact_id None links Lea's own chat (device messages and backups)."""
+    contact_id None links my own chat (device messages and backups)."""
     if contact_id is not None and contact_name(conn, contact_id) is None:
         raise ValueError(f"no contact {contact_id}")
     code = f"{secrets.randbelow(10 ** 6):06d}"
@@ -410,7 +410,7 @@ def _pair(conn: sqlite3.Connection, clock: Clock, chat_id: str, text: str, chann
         return False
     info = json.loads(raw)
     if info["contact_id"] is None and channel != "telegram":
-        return False  # Lea's own link (device messages, backups) is Telegram only; the code stays usable there
+        return False  # my own link (device messages, backups) is Telegram only; the code stays usable there
     conn.execute("DELETE FROM family_state WHERE key = ?", (f"pair:{m.group(1)}",))  # one use only
     if info["expires"] <= utc_iso(clock.now()):
         return False

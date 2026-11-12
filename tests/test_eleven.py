@@ -1,6 +1,6 @@
 """ElevenLabs as Pepe's ears (Scribe) and mouth (text to speech), against a server on this computer.
 
-Fake key only: nothing leaves the computer. Switched off until Lea sets ELEVENLABS_API_KEY.
+Fake key only: nothing leaves the computer. Switched off until ELEVENLABS_API_KEY is set.
 """
 
 import io
@@ -78,7 +78,7 @@ def samples(wav: bytes) -> tuple[int, list[int]]:
 PCM_1S = array("h", [1000, -1000] * 8000).tobytes()  # one second at 16 kHz
 
 
-# --- switched off until Lea adds the key -------------------------------------------------------------------
+# --- switched off until the key is set -------------------------------------------------------------------
 
 
 def test_off_without_the_key():

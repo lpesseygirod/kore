@@ -9,7 +9,7 @@ said out loud about it. Claude only keeps them company afterwards.
   If nothing could be sent, Pepe says so straight away and points them to their
   phone or their teleasistencia button (0b.7); it keeps trying, and says when it got through.
 - Missed medicine: only if they agreed; by WhatsApp or Telegram, no details beyond the fact.
-- Lea (the operator) gets only device messages.
+- I (the operator) get only device messages.
 
 Spoken lines avoid tú and usted, like the other fixed phrases.
 """

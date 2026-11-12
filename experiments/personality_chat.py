@@ -5,7 +5,7 @@ including the hard ones: dose doubling, a scam, a message trying to give Pepe
 orders) against each model, with the first Pepe system prompt. Logs, per turn:
 time to the first word and to the end of the first sentence (what the voice
 needs to start speaking), tokens, cache hits, and cost. Writes a transcript for
-Lea to read: does it sound like Pepe?
+me to read: does it sound like Pepe?
 
 Every call is checked against the daily test budget and logged in data/costs.jsonl.
 Fictional speaker ("Carmen"); no real recordings or transcripts.
@@ -47,7 +47,7 @@ STATE = state_block(
     "lunes 9 de noviembre de 2026, 10:30",
     "Speaking: Carmen, a widow who lives alone.\n"
     "Medicine records today for Carmen: tensión 09:00, taken at 09:10. vitamina D 09:00, not recorded.",
-    forms={"Carmen": "usted"},  # Lea's decision pending; usted is the prompt's default anyway
+    forms={"Carmen": "usted"},  # usted is the prompt's default anyway
 )
 
 SCRIPT = [

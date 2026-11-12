@@ -31,8 +31,8 @@ CONSENTS = {
     "listening",              # listens after the wake word or the button (told and agreed at setup)
     "presence_sensor",        # notices when they're up or moving
     "keep_conversations",     # keep what we say by voice, to read on the web page (90 days)
-    "lea_sees_day",           # Lea's console: reminders, medicines, notes, feedback (to look after Pepe)
-    "lea_reads_conversations",  # Lea's console: the last 7 days of conversations (to fix problems)
+    "lea_sees_day",           # my console: reminders, medicines, notes, feedback (to look after Pepe)
+    "lea_reads_conversations",  # my console: the last 7 days of conversations (to fix problems)
     "family_sees_doses",      # the family app: whether today's medicine was taken
 }
 
@@ -47,7 +47,7 @@ def set_consent(conn: sqlite3.Connection, clock: Clock, person_id: int, kind: st
     )
     if kind == "keep_conversations" and not granted:  # a no, now or later: what was kept by voice goes
         conn.execute("DELETE FROM chat WHERE person_id = ? AND channel = 'voice'", (person_id,))
-    if kind == "lea_reads_conversations" and not granted:  # Lea's notes quoting them go too
+    if kind == "lea_reads_conversations" and not granted:  # my notes quoting them go too
         conn.execute("DELETE FROM console_marks WHERE person_id = ?", (person_id,))
 
 
@@ -63,7 +63,7 @@ def sensor_allowed(conn: sqlite3.Connection) -> bool:
 
 
 def listening_declined(conn: sqlite3.Connection) -> bool:
-    """Someone said no to listening after the wake word: the voice loop (phase 1) must then use the button only."""
+    """Someone said no to listening after the wake word: the voice loop must then use the button only."""
     return conn.execute("SELECT 1 FROM consents WHERE kind = 'listening' AND granted = 0").fetchone() is not None
 
 

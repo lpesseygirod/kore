@@ -1,6 +1,6 @@
 """The heartbeat: "I'm alive" every few minutes to a free dead man's switch (Healthchecks.io).
 
-If the pings stop (crash, power cut, no internet), the service alerts Lea, not the
+If the pings stop (crash, power cut, no internet), the service alerts me, not the
 family (BUILD-PLAN 3, "silent failure"). Set the check to period 5 minutes, grace
 30 minutes: an alert arrives at most 35 minutes after Pepe stops.
 
@@ -45,7 +45,7 @@ class Heartbeat:
         return bool(self._url)
 
     def tick(self, healthy: bool = True) -> bool:
-        """Ping if one is due. healthy=False reports a failed self-test (Lea is alerted at once)."""
+        """Ping if one is due. healthy=False reports a failed self-test (I'm alerted at once)."""
         if not self._url:
             return False
         now = self._monotonic()

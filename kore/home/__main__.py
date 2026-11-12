@@ -1,4 +1,4 @@
-"""Run Pepe on the Mac, until the box exists (phase 1).
+"""Run Pepe on the Mac, until the box exists.
 
   uv run --env-file .env --group live python -m kore.home --voz           talk to Pepe, out loud
   uv run --env-file .env --group live python -m kore.home                 in text

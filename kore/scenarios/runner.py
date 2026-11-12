@@ -1,4 +1,4 @@
-"""Scenario runs (BUILD-PLAN phase 4 and 8): each scenario file is a short script -
+"""Scenario runs (BUILD-PLAN 8): each scenario file is a short script -
 a home, a time, what the person says, what happens - plus what Pepe must and
 must not do. Every scenario runs N times (default 5) through the real brain
 (Claude with the tools), each run in a fresh in-memory home with a fake clock.

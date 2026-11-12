@@ -1,4 +1,4 @@
-"""Lea's console (her design, Console 1–7): she sees nothing private without the person's yes."""
+"""My console (design: Console 1–7): I see nothing private without the person's yes."""
 
 import json
 import re
@@ -198,7 +198,7 @@ def test_lea_undoes_and_rewords_feedback(lea, conn, clock, day):
     assert "Undone" in r.text
     row = conn.execute("SELECT status, misunderstood, rule_text FROM feedback WHERE id = ?", (fid,)).fetchone()
     assert (row["status"], row["misunderstood"], row["rule_text"]) == ("undone", 1, "Speak a little slower.")
-    other = _feedback(conn, clock, day["carmen"])  # Carmen didn't agree: not Lea's to undo
+    other = _feedback(conn, clock, day["carmen"])  # Carmen didn't agree: not mine to undo
     assert lea.post("/console/feedback/undo", data={"id": str(other)}, headers=ORIGIN).status_code == 400
 
 
@@ -245,7 +245,7 @@ def test_only_lea_gets_the_console_and_only_from_its_own_pages(app, lea, conn, c
     assert r.status_code == 403
 
 
-# --- from the fresh review of the design build ------------------------------------------------------------
+# --- edge cases ------------------------------------------------------------
 
 
 def test_r2_settings_hide_contacts_of_someone_who_didnt_agree(lea, conn, clock, day):

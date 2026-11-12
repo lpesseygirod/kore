@@ -100,7 +100,7 @@ def purge(conn: sqlite3.Connection, clock: Clock, photo_dir: Path | None = None)
     now = clock.now()
     conn.execute("DELETE FROM chat_turns WHERE at_utc < ?", (utc_iso(now - timedelta(days=1)),))
     n = conn.execute("DELETE FROM chat WHERE at_utc < ?", (utc_iso(now - KEEP),)).rowcount
-    # Lea's notes about conversations that are gone (deleted, forgotten, or past 90 days) go too.
+    # My notes about conversations that are gone (deleted, forgotten, or past 90 days) go too.
     conn.execute("DELETE FROM console_marks WHERE chat_id NOT IN (SELECT id FROM chat)")
     if photo_dir is not None:
         photos.drop_unused(conn, clock, photo_dir)

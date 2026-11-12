@@ -10,9 +10,9 @@ happens to it, so the rules hold whatever Claude says:
 - Scope: "now" (half an hour), "today" (until midnight) or "always" (the default).
 - At most one follow-up question, and it can be left unanswered.
 - Never weakens a safety rule: anything about medicines, doses, alerts, the
-  doctor or emergencies is held for Lea, not applied. (Code-level safety -
+  doctor or emergencies is held for me, not applied. (Code-level safety -
   reminders, alerts - is never a setting or a rule in the first place.)
-- Every item is listed for Lea, who can undo it, reword a rule or mark it
+- Every item is listed for me: I can undo it, reword a rule or mark it
   misunderstood; undoing works from the next turn.
 """
 
@@ -40,18 +40,18 @@ KINDS = {"setting", "rule", "praise", "safety", "other"}
 SCOPES = {"now", "today", "always"}
 
 # Words that make a rule (or a setting request) a safety matter, in Spanish and
-# English, matched on folded whole-word prefixes. False alarms only mean Lea
-# looks at it first; a miss could mean Pepe stops mentioning someone's pills.
+# English, matched on folded whole-word prefixes. False alarms only mean I
+# look at it first; a miss could mean Pepe stops mentioning someone's pills.
 SAFETY_WORDS = [
     "pastill", "medic", "dosis", "dose", "pill", "tablet", "comprimid", "jarabe", "insulin", "sintrom",
     "alert", "alarm", "aviso", "avisa", "avises", "avisar", "emergenc", "urgenc", "socorro", "ayuda", "help",
     "112", "teleasistencia", "doctor", "medico", "farmac", "pharmac", "recordatori", "reminder", "remind",
     "caida", "caigo", "caer", "fall", "meds", "pildor", "inhal", "parche", "gotas", "recuerd", "record",
     "familia", "hija", "hijo", "nieta", "nieto", "ambulan", "hospital", "urgent", "emergency",
-    # Scams (SR-09): "no me avises de estafas" must not switch off the warnings without Lea seeing it.
+    # Scams (SR-09): "no me avises de estafas" must not switch off the warnings without me seeing it.
     "estaf", "timo", "timad", "engan", "fraud", "scam", "codig", "clave", "contrasen", "password", "banco",
     "bancari", "tarjeta", "bizum", "transferen",
-    # Despair and suicide (SR-05): "no me vuelvas a preguntar si me quiero matar" must reach Lea, never apply silently.
+    # Despair and suicide (SR-05): "no me vuelvas a preguntar si me quiero matar" must reach me, never apply silently.
     "suicid", "matar", "morir", "muero", "muert", "vivir", "024",
 ]
 # Matched as whole words only: as prefixes they would also catch everyday words ("pintar", "pinchar").
@@ -103,7 +103,7 @@ def record(conn: sqlite3.Connection, clock: Clock, *, speaker_id: int | None, ab
         return _hold(conn, clock, base, about_id, HOLD_SAY_SAFETY)
     if kind == "setting":
         if setting_key not in settings.DEFAULTS:
-            # Logged all the same, so Lea sees it (often "switch off the medicine reminders").
+            # Logged all the same, so I see it (often "switch off the medicine reminders").
             if safety_words:
                 return _hold(conn, clock, base, about_id, HOLD_SAY_SAFETY)
             fid = _insert(conn, clock, person_id=about_id, status="noted", **base)
@@ -248,14 +248,14 @@ def _rescope(conn, clock, row, scope) -> None:
                  (scope, utc_iso(until) if until else None, row["id"]))
 
 
-# --- Lea's controls -------------------------------------------------------------
+# --- my controls -------------------------------------------------------------
 
 
 def undo(conn: sqlite3.Connection, clock: Clock, feedback_id: int, misunderstood: bool = False,
          note: str | None = None) -> None:
     row = _row(conn, feedback_id)
     if row["status"] not in ("active", "replaced"):
-        if misunderstood or note:  # nothing to undo, but Lea's remark is kept
+        if misunderstood or note:  # nothing to undo, but my remark is kept
             conn.execute("UPDATE feedback SET misunderstood = ?, lea_note = coalesce(?, lea_note) WHERE id = ?",
                          (int(misunderstood or row["misunderstood"]), note, feedback_id))
             return

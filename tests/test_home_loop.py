@@ -271,7 +271,7 @@ def test_the_backup_runs_in_the_background_on_its_own_connection(setup, clock, t
     home.tick()
     home.wait_for_background()
     notes = [r[0] for r in home.conn.execute("SELECT text FROM family_out WHERE kind = 'operator'")]
-    assert any("copia de seguridad" in n for n in notes)  # no key yet: Lea is told, the loop carries on
+    assert any("copia de seguridad" in n for n in notes)  # no key yet: I'm told, the loop carries on
 
 
 def test_the_heartbeat_runs_in_the_background(setup, clock):
@@ -329,7 +329,7 @@ def test_no_a_ver_when_pepe_speaks_first_or_already_spoke(h):
     assert "A ver." not in h.v.said
 
 
-# --- from the review of the home loop and the box (2026-11-08) ---------------------------------------------
+# --- regressions: the home loop and the box ---------------------------------------------
 
 
 def test_r_help_waiting_stops_a_turn_at_the_look_up(h):

@@ -1,10 +1,10 @@
-"""ElevenLabs as Pepe's ears and mouth on the box (phase 1): one interface each, swappable.
+"""ElevenLabs as Pepe's ears and mouth on the box: one interface each, swappable.
 
 - ElevenSTT: speech to text with Scribe. `transcribe(wav) -> str | None` (None: it failed; never raises).
 - ElevenVoice: the Voice interface (kore/home/voice.py). Text to speech, then played through a player
   (default: `aplay` on the Raspberry Pi, `afplay` on a Mac). Blocking: Pepe never listens while talking.
 
-Switched off until Lea sets ELEVENLABS_API_KEY (from_env returns (None, None) without it). Optional:
+Switched off until ELEVENLABS_API_KEY is set (from_env returns (None, None) without it). Optional:
 ELEVENLABS_VOICE_ID (default DEFAULT_VOICE_ID below) and ELEVENLABS_TTS_MODEL (default TTS_MODEL).
 
 Checked against the official API reference on 2026-11-08:
@@ -22,8 +22,8 @@ Checked against the official API reference on 2026-11-08:
 - https://elevenlabs.io/docs/eleven-agents/customization/voice/speed-control  (speed 0.7 to 1.2)
 
 DEFAULT_VOICE_ID is "George", the premade voice in ElevenLabs' own API examples: it speaks Spanish through the
-multilingual models but with a foreign accent. For Pepe, Lea picks a Spanish (Spain) voice in the Voice Library
-and puts its id in ELEVENLABS_VOICE_ID.
+multilingual models but with a foreign accent. For Pepe I pick a Spanish (Spain) voice in the Voice Library
+and put its id in ELEVENLABS_VOICE_ID.
 
 Plain standard library (urllib, wave, array): no new dependency. The key is never logged, printed or put in an
 error or a repr; errors are kept as a short word in `last_error`.
@@ -53,7 +53,7 @@ TTS_MODEL_VAR = "ELEVENLABS_TTS_MODEL"
 BASE = "https://api.elevenlabs.io"
 STT_MODEL = "scribe_v2"
 TTS_MODEL = "eleven_flash_v2_5"          # Spanish, the fastest; "eleven_multilingual_v2" sounds a little richer
-DEFAULT_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"  # "George" (premade). Lea sets a Spanish one: see the docstring
+DEFAULT_VOICE_ID = "JBFqnCBsd6RMkjVDRZzb"  # "George" (premade); set a Spanish one, see the docstring
 OUTPUT_FORMAT = "pcm_24000"
 OUTPUT_RATE = 24000
 TIMEOUT_S = 15
@@ -173,7 +173,7 @@ def play_wav(wav: bytes, run=subprocess.run) -> bool:
         return False
     finally:
         if path:
-            Path(path).unlink(missing_ok=True)  # our own temporary sound file, not one of Lea's
+            Path(path).unlink(missing_ok=True)  # our own temporary sound file
 
 
 def _wav(pcm: bytes, rate: int) -> bytes:
@@ -212,7 +212,7 @@ def _speed(settings: dict) -> float:
 class ElevenVoice:
     """The Voice interface with an ElevenLabs voice. `say` returns False when it couldn't be said (no connection,
     bad key, quota, the speaker failed); the loop says it later or falls back. It can't yet tell that someone
-    talked over it: that needs the speakerphone's echo cancelling (phase 1, on the box)."""
+    talked over it: that needs the speakerphone's echo cancelling, on the box."""
 
     def __init__(self, api_key: str, voice_id: str = DEFAULT_VOICE_ID, model: str = TTS_MODEL, base: str = BASE,
                  timeout: float = TIMEOUT_S, player=play_wav, language: str = "es", cache_dir: Path | None = None):
@@ -323,7 +323,7 @@ class ElevenVoice:
 
 
 def from_env(env=None, cache_dir: Path | None = None) -> tuple[ElevenSTT | None, ElevenVoice | None]:
-    """(ears, voice), or (None, None) until Lea sets ELEVENLABS_API_KEY."""
+    """(ears, voice), or (None, None) until ELEVENLABS_API_KEY is set."""
     env = os.environ if env is None else env
     key = (env.get(API_KEY_VAR) or "").strip()
     if not key:

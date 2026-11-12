@@ -1,4 +1,4 @@
-"""The box's own parts (BUILD-PLAN phase 7): the help button, the presence sensor, the light ring.
+"""The box's own parts: the help button, the presence sensor, the light ring.
 
 Each has an interface, a fake (tests, the Mac) and a real one for the Raspberry Pi. The real ones import gpiozero
 (BSD licence) or spidev (MIT licence) only when they are built, on the Pi, so nothing here needs them elsewhere.

@@ -1,4 +1,4 @@
-"""Carmen and Antonio's app, from Lea's design: Inicio, Pepe, Agenda, Pastillas, Familia, Ayuda, Ajustes."""
+"""Carmen and Antonio's app: Inicio, Pepe, Agenda, Pastillas, Familia, Ayuda, Ajustes."""
 
 import re
 

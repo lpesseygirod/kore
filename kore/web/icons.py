@@ -1,7 +1,7 @@
-"""Pepe's icon, for the phone's home screen and a Windows computer's Start menu (Lea, 2026-11-08: no phone app,
-"add the icon").
+"""Pepe's icon, for the phone's home screen and a Windows computer's Start menu (no phone app, just
+the icon).
 
-Drawn here with Pillow (already a dependency) when the server starts, in the colours of Lea's design (Persephone): a
+Drawn here with Pillow (already a dependency) when the server starts, in the colours of the Persephone design: a
 pomegranate on marble. No font, no image files in the repo. Full-bleed and centred inside the middle 60 %, so the same picture works
 where the phone rounds or crops it (iPhone, Android's "maskable" icons).
 
@@ -16,7 +16,7 @@ import json
 from functools import lru_cache
 from pathlib import Path
 
-MARBLE = (0xF7, 0xF2, 0xEA)  # Lea's design, "Persephone" (docs/design/persephone/)
+MARBLE = (0xF7, 0xF2, 0xEA)  # "Persephone" (docs/design/persephone/)
 POMEGRANATE = (0x8C, 0x1C, 0x2B)
 SEED = (0xE0, 0x4A, 0x5F)
 LEAF = (0x9D, 0xB8, 0x9A)

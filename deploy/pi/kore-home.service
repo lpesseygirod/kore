@@ -20,7 +20,7 @@ ExecStart=/opt/kore/current/.venv/bin/python -m kore.home --db /var/lib/kore/kor
 Restart=always
 RestartSec=5
 TimeoutStopSec=20
-# Watchdog: switch on once the loop calls kore.hardware.systemd.ready() and .alive() on every tick
+# Watchdog: kore/home/pi.py already calls ready() and alive(). Switch it on once tested on the box
 # (replace Type=simple above with these three lines). A loop stuck for 60 s is then killed and restarted.
 #Type=notify
 #NotifyAccess=main

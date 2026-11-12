@@ -3,9 +3,9 @@
 #
 # Installed by install.sh as /usr/local/sbin/kore-update and run by kore-update.timer every night at 03:30.
 #   sudo kore-update          what the timer runs: does nothing outside 03:30-04:30
-#   sudo kore-update --now    install the waiting version straight away (Lea, by hand)
+#   sudo kore-update --now    install the waiting version straight away (by hand)
 #
-# Where a new version comes from: deploy/send_release.sh on Lea's Mac copies kore-<version>.tar.gz and its
+# Where a new version comes from: deploy/send_release.sh on my Mac copies kore-<version>.tar.gz and its
 # .sha256 into /var/lib/kore/incoming (over Tailscale). The newest one there is installed:
 #   1. check its checksum (a half-copied file is refused)
 #   2. unpack it into /opt/kore/releases/<version> and build its Python environment (uv, from uv.lock)

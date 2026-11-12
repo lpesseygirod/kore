@@ -1,4 +1,4 @@
-"""Weather and news (phase 6c), offline: fake providers, a fake clock."""
+"""Weather and news, offline: fake providers, a fake clock."""
 
 import threading
 from datetime import datetime, timedelta
@@ -281,7 +281,7 @@ def test_the_morning_greeting_carries_todays_weather_from_the_cache(ctx, w, fake
     assert "weather_today" in str(seen[-1]["messages"][-1])
 
 
-# --- the review of 2026-11-07 -----------------------------------------------------------------
+# --- edge cases -----------------------------------------------------------------
 
 
 def test_r1_last_nights_reading_is_never_given_as_now(w, fake, clock):

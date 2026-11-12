@@ -1,4 +1,4 @@
-# KORE: the home web page (the family app and Lea's console). Installed by install.sh.
+# KORE: the home web page (the family app and my console). Installed by install.sh.
 # Logs: journalctl -u kore-web
 [Unit]
 Description=KORE: the home web page

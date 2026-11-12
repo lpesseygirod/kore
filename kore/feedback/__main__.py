@@ -1,4 +1,4 @@
-"""Lea's controls for Pepe's feedback, from the command line.
+"""My controls for Pepe's feedback, from the command line.
 
   uv run python -m kore.feedback list
   uv run python -m kore.feedback page            # writes data/feedback.html

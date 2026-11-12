@@ -1,6 +1,6 @@
-"""WhatsApp as a message channel (Lea, 2026-11-08: "build it, switched off").
+"""WhatsApp as a message channel (built, but switched off).
 
-Off until Lea sets TWILIO_WHATSAPP_FROM. Fake accounts only: nothing leaves the computer.
+Off until TWILIO_WHATSAPP_FROM is set. Fake accounts only: nothing leaves the computer.
 """
 
 import json
@@ -36,7 +36,7 @@ def link(h, number=LUCIA_WA, contact=None):
     return msgs.poll_whatsapp(h.conn, h.clock, h.wa)
 
 
-# --- switched off until Lea sets it up -------------------------------------------------------------
+# --- switched off until it's set up -------------------------------------------------------------
 
 
 def test_whatsapp_is_off_without_its_number():
@@ -211,7 +211,7 @@ class _Pending(dict):
 
 def test_r2_without_whatsapp_set_up_telegram_contacts_get_telegram(h):
     link(h)
-    del h.family.channels["whatsapp"]  # Lea took the number out of .env
+    del h.family.channels["whatsapp"]  # the number was taken out of .env
     h.session.speaker_id = h.carmen
     assert h.family.send_message(h.lucia, "Un beso", h.carmen)["sent"] and h.tg.sent
     h.family.missed_meds(h.carmen, 2)

@@ -2,8 +2,8 @@
 
 - Telegram (a bot): free, two-way. Family messages, help alerts, missed-medicine alerts.
 - SMS (Twilio): only for "help", as a second path.
-- WhatsApp (Twilio's WhatsApp service, Lea 2026-11-08: "build it, switched off"): a number of the box's own.
-  Off until Lea sets TWILIO_WHATSAPP_FROM and TWILIO_WHATSAPP_TEMPLATE. Twilio, not Meta's own Cloud API, because Meta delivers replies only
+- WhatsApp (Twilio's WhatsApp service): a number of the box's own. Built, but switched off.
+  Off until I set TWILIO_WHATSAPP_FROM and TWILIO_WHATSAPP_TEMPLATE. Twilio, not Meta's own Cloud API, because Meta delivers replies only
   to a web address reachable from the internet, and the box stays on the home Wi-Fi: Twilio keeps them, and the
   box asks for them, like Telegram. Outside 24 hours since the family member last wrote, WhatsApp only takes a
   template Meta approved (TWILIO_WHATSAPP_TEMPLATE, one body variable). Help never depends on it.
@@ -298,7 +298,7 @@ class TwilioWhatsApp:
 
 
 def from_env(env: dict | None = None) -> dict[str, Channel]:
-    """The channels whose keys Lea has set (in .env). Missing ones are simply absent."""
+    """The channels whose keys are set (in .env). Missing ones are simply absent."""
     env = os.environ if env is None else env
     v = {k: (env.get(k) or "").strip() for k in (TELEGRAM_TOKEN_VAR, TWILIO_SID_VAR, TWILIO_TOKEN_VAR,
                                                  TWILIO_FROM_VAR, WHATSAPP_FROM_VAR,
@@ -308,7 +308,7 @@ def from_env(env: dict | None = None) -> dict[str, Channel]:
         out["telegram"] = TelegramChannel(v[TELEGRAM_TOKEN_VAR])
     if all(v[k] for k in (TWILIO_SID_VAR, TWILIO_TOKEN_VAR, TWILIO_FROM_VAR)):
         out["sms"] = TwilioSms(v[TWILIO_SID_VAR], v[TWILIO_TOKEN_VAR], v[TWILIO_FROM_VAR])
-    # Off until Lea sets the number and the approved template (without it, most messages couldn't go).
+    # Off until the number and the approved template are set (without it, most messages couldn't go).
     if all(v[k] for k in (TWILIO_SID_VAR, TWILIO_TOKEN_VAR, WHATSAPP_FROM_VAR, WHATSAPP_TEMPLATE_VAR)):
         out["whatsapp"] = TwilioWhatsApp(v[TWILIO_SID_VAR], v[TWILIO_TOKEN_VAR], v[WHATSAPP_FROM_VAR],
                                          v[WHATSAPP_TEMPLATE_VAR])

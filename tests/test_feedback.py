@@ -111,7 +111,7 @@ EXAMPLES = [
     # Claude mislabelled it as a plain rule: the words still catch it
     ("Carmen", "Lo del Sintrom no me lo digas más",
      dict(kind="rule", rule="Stop mentioning Sintrom."), "held_safety", {}),
-    # Claude tried to dress it as a setting: there is no such setting, and it's logged for Lea
+    # Claude tried to dress it as a setting: there is no such setting, and it's logged for me
     ("Carmen", "Apaga los avisos de las medicinas",
      dict(kind="setting", setting="medicine_reminders", value="off"), "held_safety", {}),
 ]
@@ -325,7 +325,7 @@ def test_often_asking_what_suggests_slower_never_applies_it(conn, clock, home):
     assert settings.get(conn, "speech_rate", home["carmen"], clock) == "1.0"
 
 
-# --- Lea's page -------------------------------------------------------------------------
+# --- my page -------------------------------------------------------------------------
 
 
 def test_page_lists_safety_first_and_escapes(ctx, conn, clock):
@@ -361,7 +361,7 @@ def test_command_line_undo_works_from_the_next_turn(tmp_path, clock, capsys):
     assert cli(["--db", str(path), "reword", str(fid), "x"]) == 1  # not a rule
 
 
-# --- regressions from the independent review of phase 4b (2026-11-06) ------------------
+# --- regressions ------------------
 
 
 def test_night_that_would_swallow_a_medicine_time_is_held(ctx, conn, clock, home):

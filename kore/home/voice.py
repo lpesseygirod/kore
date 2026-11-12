@@ -1,7 +1,6 @@
 """Pepe's mouth: one interface, swappable (one interface per provider).
 
-The real one (phase 1, needs the speakerphone and the ElevenLabs key) turns text into speech and plays it, and
-stops when someone talks over it. The fake one records what would have been said, for tests and the simulator.
+The real ones (kore/home/eleven.py on the box, kore/home/mac.py on the Mac) turn text into speech and play it. The fake one records what would have been said, for tests and the simulator.
 """
 
 from __future__ import annotations

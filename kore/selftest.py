@@ -1,4 +1,4 @@
-"""The box checks itself: after an update (and before), at install, or whenever Lea wants to know.
+"""The box checks itself: after an update (and before), at install, or whenever I want to know.
 
   python -m kore.selftest --db /var/lib/kore/kore.db            on the box: kore-selftest does this for you
   uv run --env-file .env python -m kore.selftest --db data/kore.db --skip audio      on the Mac

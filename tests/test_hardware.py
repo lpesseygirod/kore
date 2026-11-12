@@ -1,4 +1,4 @@
-"""The box's parts (phase 7): button, presence sensor, light ring, all without a Pi.
+"""The box's parts: button, presence sensor, light ring, all without a Pi.
 
 The real classes are checked against stand-in gpiozero / spidev modules: no real GPIO is touched.
 """

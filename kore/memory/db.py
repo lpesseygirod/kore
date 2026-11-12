@@ -68,7 +68,7 @@ CREATE TABLE IF NOT EXISTS reminder_attempts (
     slot_utc TEXT NOT NULL,
     attempts INTEGER NOT NULL,
     last_attempt_utc TEXT NOT NULL,
-    spoken INTEGER NOT NULL DEFAULT 0,  -- times the voice actually said it (phase 4)
+    spoken INTEGER NOT NULL DEFAULT 0,  -- times the voice actually said it
     PRIMARY KEY (medication_id, slot_utc)
 );
 
@@ -137,7 +137,7 @@ CREATE TABLE IF NOT EXISTS event_log (
     fired_at_utc TEXT NOT NULL
 );
 
--- Quiet, visitors (whole home), out of the house, away for days (per person). Phase 4.
+-- Quiet, visitors (whole home), out of the house, away for days (per person).
 CREATE TABLE IF NOT EXISTS modes (
     id INTEGER PRIMARY KEY,
     kind TEXT NOT NULL CHECK (kind IN ('quiet', 'visitors', 'out', 'away')),
@@ -168,8 +168,8 @@ CREATE TABLE IF NOT EXISTS setting_overrides (
     feedback_id INTEGER REFERENCES feedback(id)
 );
 
--- Feedback about how Pepe behaves (phase 4b). Only the feedback sentence is
--- stored, never the conversation around it. Lea sees and can undo every row.
+-- Feedback about how Pepe behaves. Only the feedback sentence is
+-- stored, never the conversation around it. I see and can undo every row.
 CREATE TABLE IF NOT EXISTS feedback (
     id INTEGER PRIMARY KEY,
     at_utc TEXT NOT NULL,
@@ -191,7 +191,7 @@ CREATE TABLE IF NOT EXISTS feedback (
     status TEXT NOT NULL CHECK (status IN
         ('active', 'undone', 'replaced', 'held_safety', 'not_applied', 'noted')),
     replaced_by INTEGER REFERENCES feedback(id),
-    review_first INTEGER NOT NULL DEFAULT 0,   -- touches medicine, alerts or night: top of Lea's page
+    review_first INTEGER NOT NULL DEFAULT 0,   -- touches medicine, alerts or night: top of my page
     misunderstood INTEGER NOT NULL DEFAULT 0,
     lea_note TEXT,
     checked_at_utc TEXT                        -- the light "is that better?" a few days later
@@ -205,7 +205,7 @@ CREATE TABLE IF NOT EXISTS behaviour_signals (
     kind TEXT NOT NULL CHECK (kind IN ('repeat_request'))
 );
 
--- The setup conversation (phase 5): which steps are done, for the home (0) or each person.
+-- The setup conversation: which steps are done, for the home (0) or each person.
 CREATE TABLE IF NOT EXISTS setup_steps (
     person_id INTEGER NOT NULL,
     step TEXT NOT NULL,
@@ -258,13 +258,13 @@ CREATE TABLE IF NOT EXISTS tool_log (
     result TEXT NOT NULL
 );
 
--- Phase 6: messages to the family (and device messages to Lea). Kept until sent,
+-- Messages to the family (and device messages to me). Kept until sent,
 -- so a power cut or a dead connection only delays them.
 CREATE TABLE IF NOT EXISTS family_out (
     id INTEGER PRIMARY KEY,
     created_at_utc TEXT NOT NULL,
     kind TEXT NOT NULL,               -- help | missed_meds | stop_request | message | test | operator
-    contact_id INTEGER REFERENCES contacts(id),   -- NULL: to Lea (the operator)
+    contact_id INTEGER REFERENCES contacts(id),   -- NULL: to me (the operator)
     channel TEXT NOT NULL CHECK (channel IN ('telegram', 'sms', 'whatsapp')),
     text TEXT NOT NULL,
     from_person INTEGER REFERENCES people(id),    -- who asked for it, to tell them how it went
@@ -290,7 +290,7 @@ CREATE TABLE IF NOT EXISTS family_in (
     read_at_utc TEXT
 );
 
--- Small values: the Telegram update offset, Lea's chat, pairing codes.
+-- Small values: the Telegram update offset, my chat, pairing codes.
 CREATE TABLE IF NOT EXISTS family_state (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL
@@ -321,7 +321,7 @@ CREATE TABLE IF NOT EXISTS web_codes (
     role TEXT NOT NULL,
     person_id INTEGER REFERENCES people(id),
     code_hash TEXT NOT NULL,
-    ticket_hash TEXT,                             -- the browser that asked for it; NULL: any (Lea's, from the box)
+    ticket_hash TEXT,                             -- the browser that asked for it; NULL: any (mine, from the box)
     created_at TEXT NOT NULL,
     expires_at TEXT NOT NULL,
     tries INTEGER NOT NULL DEFAULT 0,
@@ -400,7 +400,7 @@ CREATE TABLE IF NOT EXISTS family_proposals (
     answered_at TEXT
 );
 
--- Photos between the home and the family (Lea's design: Fotos, the family app). Stored only on the box, shrunk and
+-- Photos between the home and the family (Fotos, the family app). Stored only on the box, shrunk and
 -- without metadata (web/photos.py), in the photos folder. Deleted after 90 days. Never sent anywhere without the
 -- sender's own action (and, from the home, their read-back and yes).
 CREATE TABLE IF NOT EXISTS family_photos (
@@ -414,7 +414,7 @@ CREATE TABLE IF NOT EXISTS family_photos (
     seen_at TEXT
 );
 
--- Lea's console: a medicine change or an appointment she proposes. It changes nothing by itself: the person sees
+-- My console: a medicine change or an appointment I propose. It changes nothing by itself: the person sees
 -- it (and Pepe mentions a medicine change) and saves it only with their own read-back and yes.
 CREATE TABLE IF NOT EXISTS operator_proposals (
     id INTEGER PRIMARY KEY,
@@ -426,7 +426,7 @@ CREATE TABLE IF NOT EXISTS operator_proposals (
     answered_at TEXT
 );
 
--- Lea's console: "Mark a problem" on a conversation she may read. Deleted with it, never backed up.
+-- My console: "Mark a problem" on a conversation I may read. Deleted with it, never backed up.
 CREATE TABLE IF NOT EXISTS console_marks (
     id INTEGER PRIMARY KEY,
     person_id INTEGER NOT NULL REFERENCES people(id),
@@ -447,7 +447,7 @@ CREATE TABLE IF NOT EXISTS web_pending (
     status TEXT NOT NULL DEFAULT 'open' CHECK (status IN ('open', 'done', 'cancelled', 'expired', 'failed'))
 );
 
--- Weather and news (phase 6c): the home's place, the feeds, and the last answers fetched.
+-- Weather and news: the home's place, the feeds, and the last answers fetched.
 CREATE TABLE IF NOT EXISTS info (
     key TEXT PRIMARY KEY,
     value TEXT NOT NULL,

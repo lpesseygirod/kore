@@ -180,7 +180,7 @@ def withdraw(conn, clock: Clock, contact_id: int, proposal_id: int) -> None:
 
 
 def waiting(conn, clock: Clock, person_id: int) -> list[dict]:
-    """Open proposals for this person (or for both), still in the future: the family's, then Lea's (id "lea-N")."""
+    """Open proposals for this person (or for both), still in the future: the family's, then mine (id "lea-N")."""
     today = clock.now().date()
     out = []
     for r in conn.execute("SELECT * FROM operator_proposals WHERE kind = 'appointment' AND status = 'open' AND "
@@ -218,7 +218,7 @@ def _lea_row(conn, clock: Clock, person_id: int, proposal_id: int) -> sqlite3.Ro
 
 
 def proposal_ref(value: str | None) -> tuple[str, int] | None:
-    """A proposal's id from a form: "12" (family) or "lea-12" (Lea)."""
+    """A proposal's id from a form: "12" (family) or "lea-12" (mine)."""
     value = value or ""
     lea = value.startswith("lea-")
     digits = value[4:] if lea else value
@@ -273,7 +273,7 @@ def decline(conn, clock: Clock, person_id: int, proposal_id: int) -> None:
                  (utc_iso(clock.now()), proposal_id))
 
 
-# --- the family app (Lea's design: Inicio, Calendario, Mensajes, Avisos) -----------------------------------
+# --- the family app (Inicio, Calendario, Mensajes, Avisos) -----------------------------------
 
 PHOTOS_KEEP = timedelta(days=90)
 PHOTOS_PER_DAY = 20

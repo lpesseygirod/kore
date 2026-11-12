@@ -2,7 +2,7 @@
 
 Normally Claude words every event. With no internet, these templates are
 spoken instead (and can be pre-recorded on the device). Phrased without tú or
-usted, so they fit either; the choice between the two is still Lea's.
+usted, so they fit either.
 """
 
 from __future__ import annotations

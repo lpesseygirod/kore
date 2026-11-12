@@ -1,7 +1,7 @@
 """The big button. A short press is "talk to Pepe" (like saying his name); holding it is "help".
 
 Holding fires "help" while the finger is still down (after `long_press_s`), so nobody has to guess when to let go.
-Lea can change the hold time in one place (pins.py). The real button uses gpiozero (BSD licence), imported only
+The hold time is set in one place (pins.py). The real button uses gpiozero (BSD licence), imported only
 on the Pi; the Mac and the tests use FakeButton.
 """
 

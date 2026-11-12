@@ -1,10 +1,10 @@
-"""Carmen and Antonio's app (Lea's design, "App for Carmen & Antonio"): what each screen shows, from the records.
+"""Carmen and Antonio's app (my design, "App for Carmen & Antonio"): what each screen shows, from the records.
 
 Same rules as everywhere: code decides what is true; a dose is recorded only by code (`meds.mark_taken`, which
 picks the dose and can't record it twice), a message to family only after a read-back and their "Sí", and
 "Pedir ayuda" goes through the help path the voice uses: pressing "Sí, avisar a Ana" is their clear yes.
 
-Not built, because the home page can't do them without new services or Lea's decisions (listed in
+Not built, because the home page can't do them without new services or decisions I haven't made yet (listed in
 docs/CONSOLE-PLAN.md): talking to Pepe from the phone ("Pulsa y habla"), reading answers aloud, the phone's
 calendar and contacts, WhatsApp, and alerts outside the home Wi-Fi.
 """
@@ -240,7 +240,7 @@ def who_sees_what(conn, person_id: int) -> dict:
 
 
 def medicine_proposals(conn, person_id: int) -> list[dict]:
-    """Lea's proposed medicine changes, for the Inicio card. Pepe asks them; nothing changes without their yes."""
+    """Medicine changes I proposed, for the Inicio card. Pepe asks them; nothing changes without their yes."""
     import json
     return [json.loads(r["payload"]) | {"id": r["id"]} for r in conn.execute(
         "SELECT id, payload FROM operator_proposals WHERE kind = 'medication' AND status = 'open' AND person_id = ?",

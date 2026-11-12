@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# KORE: send the committed code to the box, from Lea's Mac, over Tailscale. It is installed that night.
+# KORE: send the committed code to the box, from my Mac, over Tailscale. It is installed that night.
 #
 #   deploy/send_release.sh kore-abuelos            a new version: installed tonight between 03:30 and 04:30
 #   deploy/send_release.sh --first kore-abuelos    the very first time (before install.sh): into the home folder

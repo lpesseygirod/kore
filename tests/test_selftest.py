@@ -1,4 +1,4 @@
-"""The box's self-test (phase 7): it gates every night update, so it must fail when something is really wrong."""
+"""The box's self-test: it gates every night update, so it must fail when something is really wrong."""
 
 import contextlib
 import http.server
