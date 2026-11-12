@@ -17,6 +17,8 @@ UNITS = ["cero", "una", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho
          "veintidós", "veintitrés", "veinticuatro", "veinticinco", "veintiséis", "veintisiete", "veintiocho",
          "veintinueve"]
 TENS = {30: "treinta", 40: "cuarenta", 50: "cincuenta"}
+TENS_ALL = {60: "sesenta", 70: "setenta", 80: "ochenta", 90: "noventa"}
+UNITS_M = ["", "uno", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve"]
 DAY_WORDS = ["", "uno", *UNITS[2:21], "veintiuno", *UNITS[22:30], "treinta", "treinta y uno"]
 WEEKDAY_CODES = {"MON": 0, "TUE": 1, "WED": 2, "THU": 3, "FRI": 4, "SAT": 5, "SUN": 6}
 PLURAL_WEEKDAYS = ["lunes", "martes", "miércoles", "jueves", "viernes", "sábados", "domingos"]
@@ -85,8 +87,21 @@ def day(d: date, today: date | None = None) -> str:
             return "pasado mañana"
     text = f"el {WEEKDAYS[d.weekday()]} {DAY_WORDS[d.day]} de {MONTHS[d.month - 1]}"
     if today is not None and d.year != today.year:
-        text += f" de {d.year}"
+        text += f" de {year(d.year)}"
     return text
+
+
+def year(y: int) -> str:
+    """2027 → 'dos mil veintisiete', 2031 → 'dos mil treinta y uno' (masculine; no digits are ever spoken)."""
+    if not 2000 <= y < 2100:
+        return str(y)
+    rest = y - 2000
+    if rest == 0:
+        return "dos mil"
+    if rest < len(DAY_WORDS):
+        return f"dos mil {DAY_WORDS[rest]}"
+    tens = {**TENS, **TENS_ALL}[rest // 10 * 10]
+    return f"dos mil {tens}" + (f" y {UNITS_M[rest % 10]}" if rest % 10 else "")
 
 
 def when(dt: datetime, today: date | None = None) -> str:

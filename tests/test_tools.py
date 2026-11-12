@@ -329,3 +329,20 @@ def test_permission_question_comes_last(ctx):
 def test_seseo_yes_counts():
     from kore.brain.language import is_affirmative
     assert is_affirmative("ci") and is_affirmative("Zi, ya está") and not is_affirmative("ci no te importa")
+
+
+def test_read_backs_next_year_and_relation_in_words(ctx):
+    from datetime import date as d
+    from kore.brain import readback as rb
+    assert rb.day(d(2027, 3, 28), d(2026, 11, 9)) == "el domingo veintiocho de marzo de dos mil veintisiete"
+    assert rb.year(2031) == "dos mil treinta y uno" and rb.year(2021) == "dos mil veintiuno"
+    say(ctx, "Soy Carmen, apunta a Lucía, mi nieta")
+    r = call(ctx, "propose_contact", name="Lucía", relation="nieta")
+    assert r["say_and_wait"] == "Apunto a Lucía, su nieta. ¿Es así?"
+
+
+def test_untrusted_clock_read_back_says_the_full_date(ctx, clock):
+    say(ctx, "Soy Carmen, el dentista mañana a las diez")
+    clock.set_trusted(False)
+    r = call(ctx, "propose_appointment", title="el dentista", starts_at="2026-11-10T10:00")
+    assert "mañana a las" not in r["say_and_wait"] and "el martes diez de noviembre" in r["say_and_wait"]

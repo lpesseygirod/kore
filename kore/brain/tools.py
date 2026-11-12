@@ -262,6 +262,11 @@ def _form(ctx: Context) -> str:
     return {"tu": "tú"}.get(value or "usted", value or "usted")
 
 
+def _today(ctx: Context) -> date | None:
+    """Today, for 'hoy'/'mañana' in read-backs; None when the clock can't be trusted (then the full date is said)."""
+    return ctx.clock.now().date() if ctx.clock.trusted() else None
+
+
 def _sent_when(at: datetime, today: date) -> str:
     """When a family message arrived, as KORE would say it: 'hoy a las diez de la mañana', 'el lunes …'."""
     if today - at.date() == timedelta(days=1):
@@ -332,7 +337,7 @@ def _propose_appt(ctx: Context, args: dict) -> dict:
         _health_ok(ctx, pid)
     starts = datetime.fromisoformat(args["starts_at"])
     starts = starts.replace(tzinfo=ctx.clock.tz) if starts.tzinfo is None else starts.astimezone(ctx.clock.tz)
-    readback = f"Apunto {args['title']}, {rb.when(starts, ctx.clock.now().date())}. ¿Es así?"
+    readback = f"Apunto {args['title']}, {rb.when(starts, _today(ctx))}. ¿Es así?"
     a = ctx.session.propose("add_appointment", {"person_id": pid, "title": args["title"],
                                                 "starts_at": starts.isoformat(),
                                                 "location": args.get("location", "")}, readback)
@@ -352,14 +357,14 @@ def _propose_appt_change(ctx: Context, args: dict) -> dict:
         ctx.session.require_speaker(row["person_id"])  # someone's own appointment: only they change it
     if args.get("cancel"):
         was = from_utc_iso(row["starts_at_utc"], ctx.clock.tz)
-        readback = f"Quito {row['title']} {rb.of(rb.when(was, ctx.clock.now().date()))}. ¿Es así?"
+        readback = f"Quito {row['title']} {rb.of(rb.when(was, _today(ctx)))}. ¿Es así?"
         a = ctx.session.propose("cancel_appointment", {"appointment_id": row["id"]}, readback)
     else:
         if not args.get("starts_at"):
             raise ValueError("starts_at or cancel is needed")
         starts = datetime.fromisoformat(args["starts_at"])
         starts = starts.replace(tzinfo=ctx.clock.tz) if starts.tzinfo is None else starts.astimezone(ctx.clock.tz)
-        readback = f"Cambio {row['title']} para {rb.when(starts, ctx.clock.now().date())}. ¿Es así?"
+        readback = f"Cambio {row['title']} para {rb.when(starts, _today(ctx))}. ¿Es así?"
         a = ctx.session.propose("move_appointment", {"appointment_id": row["id"], "starts_at": starts.isoformat()},
                                 readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
@@ -380,7 +385,7 @@ def _propose_reminder(ctx: Context, args: dict) -> dict:
     first = date.fromisoformat(args["first_day"]) if args.get("first_day") else ctx.clock.now().date()
     if args["rule"] == "once" and local_at(first, time, ctx.clock.tz) <= ctx.clock.now():
         raise ValueError("that time has already passed: ask which day they mean")
-    how_often = rb.rule(args["rule"], first, ctx.clock.now().date())
+    how_often = rb.rule(args["rule"], first, _today(ctx))
     readback = f"Apunto el recordatorio «{args['text']}», {how_often}, {rb.at(time)}. ¿Es así?"
     a = ctx.session.propose("add_reminder", {"person_id": pid, "text": args["text"], "time": time,
                                              "rule": args["rule"], "anchor": first.isoformat()}, readback)
@@ -746,7 +751,7 @@ def _propose_away(ctx: Context, args: dict) -> dict:
         raise ValueError("back_on is in the past")
     people = _who_goes(ctx, args)
     names = rb.join([ctx.session.person(p).call_name for p in people])
-    until = f" hasta {rb.day(back_on, ctx.clock.now().date())}" if back_on else ""
+    until = f" hasta {rb.day(back_on, _today(ctx))}" if back_on else ""
     readback = f"{names} fuera de casa{until}. Pauso los recordatorios hasta la vuelta. ¿Es así?"
     a = ctx.session.propose("go_away", {"person_ids": people, "back_on": back_on.isoformat() if back_on else None},
                             readback)
@@ -1122,7 +1127,8 @@ def _propose_contact(ctx: Context, args: dict) -> dict:
     if birthday:
         m, d = (int(x) for x in birthday.split("-"))
         date(2024, m, d)
-    parts = [f"Apunto a {args['name']}" + (f", {args['relation']}" if args.get("relation") else "")]
+    mine = rb.you(_form(ctx), "su", "tu")
+    parts = [f"Apunto a {args['name']}" + (f", {mine} {args['relation']}" if args.get("relation") else "")]
     if birthday:
         parts.append(f"que cumple años {rb.birthday(birthday)}")
     if args.get("help"):
