@@ -16,7 +16,7 @@ from kore.brain.clients import ScriptedClient, text
 from kore.brain.conversation import Brain
 from kore.brain.language import help_requested
 from kore.brain.session import Person, Session
-from kore.family import backup, channels, heartbeat
+from kore.family import backup, channels, heartbeat, service
 from kore.family import messages as msgs
 from kore.family.channels import FakeChannel, TelegramChannel
 from kore.family.service import NO_ONE, Family
@@ -697,6 +697,23 @@ def test_claude_can_only_ask_before_raising_help(h):
     r = h.say("no puedo respirar", ("propose_help_alert", {}))[0]
     assert r["say_and_wait"] == "¿Aviso ahora a Lucía?" and not h.tg.sent  # even with the agreed path
     assert h.brain.hear("sí").startswith("Ya he avisado a Lucía")
+
+
+def test_help_alert_can_leave_out_someone_they_fear(h):
+    """SR-12: the person hurting them may be a help contact. They are never told; the question names who is."""
+    rosa = store.add_contact(h.conn, h.clock, "Rosa", "nieta", help_contact=True, for_person=h.carmen)
+    h.conn.execute("UPDATE contacts SET telegram_chat_id = ? WHERE id = ?", ("222", rosa))
+    h.session.speaker_id = h.carmen
+    r = h.say("mi hija me pega", ("propose_help_alert", {"leave_out": ["mi hija"]}))[0]
+    assert r["say_and_wait"] == "¿Aviso ahora a Rosa?"
+    h.brain.hear("sí")
+    assert {str(addr) for addr, _ in h.tg.sent} == {"222"}  # only Rosa; Lucía never
+
+
+def test_help_alert_with_everyone_left_out_tells_no_one_and_points_to_112(h):
+    h.session.speaker_id = h.carmen
+    r = h.say("mi hija me amenaza", ("propose_help_alert", {"leave_out": ["Lucía"]}))[0]
+    assert r["say"] == service.ALL_LEFT_OUT and not h.tg.sent and "ciento doce" in r["say"]
 
 
 def test_a_family_message_cannot_raise_help(h):

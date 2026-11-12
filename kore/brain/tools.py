@@ -1141,10 +1141,14 @@ def _propose_message(ctx: Context, args: dict) -> dict:
 
 @tool("propose_help_alert", "They seem to be in danger or need urgent help but didn't use the agreed phrase "
       "('no puedo respirar', 'me duele mucho el pecho', 'estoy en el suelo'). Asks whether to tell their help "
-      "contact now; code sends it on their yes. Also suggest 112 if it sounds serious. Never for ordinary help.",
+      "contact now; code sends it on their yes. Also suggest 112 if it sounds serious. Never for ordinary help. "
+      "If they're afraid of someone who is a help contact (a relative hurting or threatening them), pass that "
+      "person in leave_out: they are never told, and the question names exactly who will be.",
+      {"leave_out": {"type": "array", "items": {"type": "string"},
+                     "description": "Names or relations of help contacts NOT to tell this time."}},
       writes=True)
 def _propose_help_alert(ctx: Context, args: dict) -> dict:
-    out = ctx.link().call_for_help(ctx.session, "help", ask_first=True)
+    out = ctx.link().call_for_help(ctx.session, "help", ask_first=True, leave_out=args.get("leave_out"))
     if out.asked:
         return {"ok": True, "action_id": out.action_id, "say_and_wait": out.say}
     return {"ok": not out.none, "say": out.say, "summary": out.summary()}

@@ -20,6 +20,7 @@ import sqlite3
 from dataclasses import dataclass, field
 from datetime import timedelta, timezone
 
+from kore.brain.language import fold
 from kore.brain.session import Session
 from kore.family import messages as msgs
 from kore.family.channels import Channel
@@ -31,6 +32,16 @@ PHONE_OR_TELEASISTENCIA = "Hay que llamar con el teléfono o pulsar el botón de
 NO_ONE = "No tengo a nadie a quien avisar todavía. " + PHONE_OR_TELEASISTENCIA
 NOT_SENT = "No he podido avisar a nadie: no hay conexión. " + PHONE_OR_TELEASISTENCIA + " Yo sigo intentándolo."
 NOT_REACHED = "No he podido avisar a nadie. " + PHONE_OR_TELEASISTENCIA
+def _strip_possessive(word: str) -> str:
+    """'mi hijo' → 'hijo', 'su yerno' → 'yerno'."""
+    for p in ("mi ", "su ", "tu ", "el ", "la "):
+        if word.startswith(p):
+            return word[len(p):]
+    return word
+
+
+# Everyone who could be told is someone they asked us to leave out (SR-12): nobody is told, and 112 is the way.
+ALL_LEFT_OUT = "No aviso a nadie de la familia. Si está en peligro, llame al ciento doce."
 RECENT_HELP = timedelta(minutes=3)  # a second "¡ayuda!" within this doesn't send twice to the same people
 MAX_WORDS_SENT = 120
 
@@ -69,11 +80,20 @@ class Family:
 
     # --- help ------------------------------------------------------------------------
 
-    def call_for_help(self, session: Session, source: str, words: str = "", ask_first: bool = False) -> HelpOutcome:
+    def call_for_help(self, session: Session, source: str, words: str = "", ask_first: bool = False,
+                      leave_out: list[str] | None = None) -> HelpOutcome:
         """source: help (the phrase) | fall | button. `words`: what they said, for a fall.
-        ask_first: always ask, even with the agreed path (help Claude noticed, not the agreed phrase)."""
+        ask_first: always ask, even with the agreed path (help Claude noticed, not the agreed phrase).
+        leave_out: names or relations of help contacts never to tell this time (someone they're afraid of)."""
         people = [session.speaker_id] if session.speaker_id is not None else [p.id for p in session.household]
         reachable = self._reachable(msgs.help_contacts(self.conn, people))
+        if leave_out:
+            out_words = {_strip_possessive(fold(w)) for w in leave_out if w and w.strip()}
+            kept = [c for c in reachable
+                    if fold(c["name"]) not in out_words and fold(c["relation"] or "") not in out_words]
+            if reachable and not kept:
+                return HelpOutcome(ALL_LEFT_OUT, none=True)
+            reachable = kept
         if not reachable:
             msgs.queue(self.conn, self.clock, "operator", "telegram",
                        "Pepe: alguien ha pedido ayuda y no hay ningún contacto de ayuda con Telegram, WhatsApp "
