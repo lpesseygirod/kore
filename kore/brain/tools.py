@@ -609,8 +609,8 @@ def _back(ctx: Context, args: dict) -> dict:
 # --- manners: quiet, visitors, away -------------------------------------------
 
 
-@tool("be_quiet", "They asked you to be quiet. Say only 'Claro.' Medicine and appointment reminders still "
-      "come, very short. Give minutes or until if they said how long; otherwise two hours.",
+@tool("be_quiet", "They asked you to be quiet. Follow the 'say' line of the result (usually only 'Claro.'). "
+      "Medicine and appointment reminders still come, very short. Give minutes or until if they said how long; otherwise two hours.",
       {"minutes": {"type": "integer"},
        "until": {"type": "string", "description": "HH:MM, or 'night' for 'until tonight'."}}, writes=True)
 def _be_quiet(ctx: Context, args: dict) -> dict:
@@ -634,8 +634,38 @@ def _be_quiet(ctx: Context, args: dict) -> dict:
             until = local_at(now.date() + timedelta(days=1), hhmm, ctx.clock.tz)
     modes.start(ctx.conn, ctx.clock, "quiet", until=until)
     row = modes.active(ctx.conn, ctx.clock, "quiet")
-    return {"ok": True, "quiet_until": from_utc_iso(row["until_utc"], ctx.clock.tz).strftime("%H:%M"),
-            "say": "Only 'Claro.' Nothing else."}
+    if row is None:  # couldn't be set: never pretend it worked
+        return {"ok": False, "error": "internal", "say": "Say kindly that you'll try to talk less, but you couldn't "
+                "set the quiet time just now."}
+    end = from_utc_iso(row["until_utc"], ctx.clock.tz)
+    reminders = _medicine_reminders_before(ctx, end)
+    say = "Say only 'Claro.' Nothing else."
+    if reminders:
+        say = ("Say 'Claro.' Medicine reminders still come during this quiet time, very short and soft: only if they "
+               "asked for complete silence (no reminders at all), add one short clause such as 'Solo le avisaré de "
+               "las pastillas.' Nothing else.")
+    return {"ok": True, "quiet_until": end.strftime("%H:%M"), "medicine_reminders_during_quiet": reminders,
+            "say": say}
+
+
+def _medicine_reminders_before(ctx: Context, end) -> bool:
+    """Whether any medicine reminder (anyone at home) is still due between now and the end of the quiet time."""
+    now = ctx.clock.now()
+    for p in ctx.session.household:
+        day = now.date()
+        while day <= end.date():
+            try:
+                doses = meds.status(ctx.conn, ctx.clock, p.id, day)["doses"]
+            except meds.ClockUntrusted:
+                return False
+            for d in doses:
+                if d["state"] == "taken":
+                    continue
+                at = local_at(day, d["time"], ctx.clock.tz)
+                if now < at <= end:
+                    return True
+            day += timedelta(days=1)
+    return False
 
 
 @tool("can_talk_again", "They said you can talk again before the quiet time was up.", writes=True)

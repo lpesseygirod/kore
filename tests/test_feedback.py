@@ -502,3 +502,11 @@ def test_undo_of_something_never_applied_says_so(ctx, conn, clock):
         store.undo(conn, clock, r["id"])
     store.undo(conn, clock, r["id"], misunderstood=True, note="she meant the vitamin")
     assert conn.execute("SELECT misunderstood, lea_note FROM feedback").fetchone()[:] == (1, "she meant the vitamin")
+
+
+def test_scam_words_are_safety_too():
+    for text in ("No me avises más de estafas", "Deja lo de los timos", "No me preguntes por el banco",
+                 "No me digas nada del PIN", "Lo de las contraseñas sobra"):
+        assert store.touches_safety(text), text
+    for text in ("Me gusta pintar", "Habla de los pinchos de la fiesta"):
+        assert not store.touches_safety(text), text

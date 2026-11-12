@@ -205,7 +205,10 @@ class Brain:
                                 "content": json.dumps(result, ensure_ascii=False, default=str)})
             self.messages.append({"role": "user", "content": results})
         else:
-            spoken.append(fallback.CONNECTION_PROBLEM)  # too many tool rounds: say something true
+            # Too many tool rounds: the connection is fine, so say something true, and make sure a "sí" to the
+            # question below can't confirm a read-back the person never heard.
+            self.ctx.session.drop_pending()
+            spoken = [fallback.LOST_THE_THREAD]
         return " ".join(s.strip() for s in spoken if s.strip())
 
     def _speakable(self, text: str) -> str:
@@ -267,6 +270,10 @@ class Brain:
                              "use propose_medication_change and wait for their yes. If they say no or want to ask "
                              "their doctor first, call decline_lea_proposal. Their doctor's word wins.")
         when = f"{fallback.spoken_date(now.date())}, {now.strftime('%H:%M')}"
+        if not ctx.clock.trusted():  # a power cut without the clock battery: don't sound sure of the time
+            when += " (the clock can't be trusted right now: the date and time may be wrong)"
+            lines.insert(0, "Clock: not trusted. Don't say the time or date as a fact; say you don't know it for "
+                            "certain. Nothing about medicines can be recorded until it is fixed.")
         forms = {names[p.id]: _form(settings.stored(ctx.conn, "address", p.id) or self.forms.get(p.name, "usted"))
                  for p in s.household}
         if setup.status(ctx.conn) in ("not_started", "in_progress"):  # paused: wait for the next day's offer

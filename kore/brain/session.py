@@ -85,6 +85,12 @@ class Session:
             if p.status == "pending" and self.turn > p.created_turn + CONFIRM_WITHIN_TURNS:
                 p.status = "expired"
 
+    def drop_pending(self) -> None:
+        """Nothing read back can be confirmed any more (the turn went wrong before the read-back was said)."""
+        for p in self.pending.values():
+            if p.status == "pending":
+                p.status = "expired"
+
     def end_conversation(self) -> None:
         """Silence after the conversation: forget who was speaking and any open question."""
         self.speaker_id = None

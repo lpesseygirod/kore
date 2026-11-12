@@ -15,8 +15,10 @@ MONTHS = ["enero", "febrero", "marzo", "abril", "mayo", "junio", "julio", "agost
 NUMBERS = ["doce", "una", "dos", "tres", "cuatro", "cinco", "seis", "siete", "ocho", "nueve", "diez", "once"]
 
 CONNECTION_PROBLEM = "Tengo un problema de conexión. Los recordatorios siguen funcionando."
+# Too many tool rounds in one turn: the connection is fine, so don't blame it (SR-07). Nothing waits for a yes.
+LOST_THE_THREAD = "Perdone, me he liado. ¿Me lo dice otra vez, por favor?"
 CLOCK_UNTRUSTED = (
-    "No estoy seguro de la hora, así que no puedo llevar la cuenta de las medicinas "
+    "No sé la hora con certeza, así que no puedo llevar la cuenta de las medicinas "
     "hasta que se arregle mi reloj. Mejor mirar el pastillero."
 )
 
@@ -133,7 +135,7 @@ def _short(event) -> str | None:
     if k == "morning_greeting":
         return "Buenos días."
     if k == "clock_untrusted":
-        return "No estoy seguro de la hora. Mejor mirar el pastillero."
+        return "No sé la hora con certeza. Mejor mirar el pastillero."
     if k == "away_presence_check" and not d.get("person"):
         return "Hola. ¿Hay alguien de vuelta?"
     return phrase(event)

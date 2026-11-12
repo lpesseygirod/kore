@@ -4,7 +4,7 @@ import json
 
 import pytest
 
-from kore.brain import tools
+from kore.brain import fallback, tools
 from kore.brain.clients import (ReplayClient, RecordingClient, ScriptedClient, StaleRecording, request_hash, text,
                                 tool_use)
 from kore.brain.conversation import Brain
@@ -93,7 +93,8 @@ def test_request_shape_for_sonnet_5_5(brain_home):
 
 def test_too_many_tool_rounds_still_says_something_true(brain_home):
     brain = Brain(brain_home, ScriptedClient(lambda r: tool_use("read_list", {})))
-    assert "problema" in brain.hear("Léeme la lista")
+    said = brain.hear("Léeme la lista")
+    assert said == fallback.LOST_THE_THREAD and "conexión" not in said  # the connection was fine: don't blame it
 
 
 def test_state_says_who_is_speaking_and_visitors(conn, clock, home):
@@ -217,3 +218,19 @@ def test_never_says_from_a_step_checks_only_later_lines():
     assert run.error is None and run.failures == []
     run = runner.run_once(sc, 1, reply({"Uno": "Bien.", "Dos": "Te va a regalar un pañuelo."}))
     assert run.failures and "from step 1" in run.failures[0]
+
+
+def test_untrusted_clock_is_in_the_state(brain_home, clock):
+    brain = Brain(brain_home, ScriptedClient(lambda r: text("No sé la hora con certeza.")))
+    assert "Clock: not trusted" not in brain.state()
+    clock.set_trusted(False)
+    assert "Clock: not trusted" in brain.state() and "can't be trusted" in brain.state()
+
+
+def test_running_out_of_rounds_leaves_nothing_to_confirm(brain_home, clock):
+    """A read-back the person never heard can't be confirmed by their next "sí"."""
+    calls = iter([tool_use("propose_reminder", {"text": "regar las plantas", "time": "18:00"})]
+                 + [tool_use("read_list", {})] * 10)
+    brain = Brain(brain_home, ScriptedClient(lambda r: next(calls)))
+    brain.hear("Recuérdame regar las plantas a las seis")
+    assert not [p for p in brain_home.session.pending.values() if p.status == "pending"]

@@ -141,7 +141,7 @@ def test_untrusted_clock_says_why(ctx, clock):
     clock.set_trusted(False)
     say(ctx, "Me la he tomado")
     r = call(ctx, "mark_dose_taken")
-    assert r["error"] == "clock_untrusted" and "clock" in r["say"]
+    assert r["error"] == "clock_untrusted" and "reloj" in r["say"] and "seguro" not in r["say"]  # Spanish, neutral
 
 
 # --- outside text -------------------------------------------------------------
@@ -246,3 +246,15 @@ def test_forget_with_nothing_saved_marks_the_conversation_for_the_log(ctx):
     say(ctx, "Olvida eso")
     r = call(ctx, "forget")
     assert r["ok"] and r["forgotten"] == "conversation" and ctx.forget_up_to_turn == 2
+
+
+def test_be_quiet_says_when_medicine_reminders_still_come(ctx, clock):
+    add_pill(ctx)  # Carmen's pill at nine
+    clock.set(clock.now().replace(hour=8, minute=0))
+    say(ctx, "Cállate un par de horas")
+    r = call(ctx, "be_quiet", minutes=120)
+    assert r["medicine_reminders_during_quiet"] and "Solo le avisaré" in r["say"]
+    clock.set(clock.now().replace(hour=10, minute=0))
+    say(ctx, "Cállate una hora")
+    r = call(ctx, "be_quiet", minutes=60)
+    assert not r["medicine_reminders_during_quiet"] and r["say"] == "Say only 'Claro.' Nothing else."

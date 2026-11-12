@@ -48,7 +48,12 @@ SAFETY_WORDS = [
     "112", "teleasistencia", "doctor", "medico", "farmac", "pharmac", "recordatori", "reminder", "remind",
     "caida", "caigo", "caer", "fall", "meds", "pildor", "inhal", "parche", "gotas", "recuerd", "record",
     "familia", "hija", "hijo", "nieta", "nieto", "ambulan", "hospital", "urgent", "emergency",
+    # Scams (SR-09): "no me avises de estafas" must not switch off the warnings without Lea seeing it.
+    "estaf", "timo", "timad", "engan", "fraud", "scam", "codig", "clave", "contrasen", "password", "banco",
+    "bancari", "tarjeta", "bizum", "transferen",
 ]
+# Matched as whole words only: as prefixes they would also catch everyday words ("pintar", "pinchar").
+SAFETY_WHOLE_WORDS = {"pin", "pins"}
 NIGHT_KEYS = {"night_start", "night_end"}
 
 
@@ -58,7 +63,7 @@ class FeedbackError(ValueError):
 
 def touches_safety(*texts: str | None) -> bool:
     words = " ".join(fold(t or "") for t in texts).split()
-    return any(w.startswith(s) for w in words for s in SAFETY_WORDS)
+    return any(w in SAFETY_WHOLE_WORDS or any(w.startswith(s) for s in SAFETY_WORDS) for w in words)
 
 
 # --- recording -----------------------------------------------------------------

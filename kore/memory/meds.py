@@ -35,9 +35,10 @@ NEVER_DOUBLE = (
 class ClockUntrusted(Exception):
     """The time can't be trusted: don't fire or log doses, and say why."""
 
+    # Said as it is (Spanish, neutral about KORE's gender): the same line as the offline phrase.
     say = (
-        "I'm not sure what time it is right now, so I can't keep track of your "
-        "medicines until my clock is fixed. Please check your pill box."
+        "No sé la hora con certeza, así que no puedo llevar la cuenta de las medicinas "
+        "hasta que se arregle mi reloj. Mejor mirar el pastillero."
     )
 
 
