@@ -167,12 +167,33 @@ def _run_pi(a, clock, client) -> int:
 
     ears = PiEars(stt, record=record, on_ready=lit.chime) if stt is not None else NoEars()
     box = Box(home, device, ears, lit)
-    if eleven_voice is not None:  # Pepe's lines that must work without the internet, recorded once while online
-        threading.Thread(target=eleven_voice.prepare, args=(_offline_lines(home),), daemon=True).start()
+    if eleven_voice is not None:  # lines that must work without the internet, recorded while online
+        threading.Thread(target=_keep_offline_lines, args=(eleven_voice, home, a.db, clock, box.stop),
+                         daemon=True).start()
     signal.signal(signal.SIGTERM, lambda *_: box.stop.set())
     print("Pepe está en marcha en el aparato.", flush=True)
     box.run()
     return 0
+
+
+REFRESH_OFFLINE_S = 30 * 60
+
+
+def _keep_offline_lines(voice, home, db: str, clock, stop) -> None:
+    """Record, while online, the fixed help lines and every reminder the box may have to say without the internet
+    (PEPE.md 6b: medication reminders continue offline). Again every half hour, so new medicines and appointments
+    are covered; lines already recorded cost nothing."""
+    from kore.home.offline_lines import reminder_lines
+    from kore.memory.db import connect
+
+    conn = connect(db)
+    while True:
+        try:
+            voice.prepare(_offline_lines(home) + reminder_lines(conn, clock))
+        except Exception as e:  # never stop the box for this
+            print(f"kore: offline lines: {type(e).__name__}: {e}", file=sys.stderr, flush=True)
+        if stop.wait(REFRESH_OFFLINE_S):
+            return
 
 
 def _offline_lines(home) -> list[str]:

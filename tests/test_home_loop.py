@@ -79,6 +79,26 @@ def test_without_claude_the_offline_phrase_is_said(h):
     assert len(h.v.said) == 1 and "pastilla de la tensión" in h.v.said[0]
 
 
+def test_every_offline_reminder_line_was_recorded_in_advance(h):
+    """PEPE.md 6b: medicine reminders continue offline. On the box the voice can only play what it recorded while
+    online, so every line said offline must be in reminder_lines: first time, a later attempt, and in quiet mode."""
+    from kore.home.offline_lines import reminder_lines
+    from kore.manners import modes
+
+    pill(h, ("09:00", "21:00"))
+    meds.add_medication(h.conn, h.clock, h.carmen, "sintrom", ["21:00"], "el sintrom")
+    recorded = set(reminder_lines(h.conn, h.clock))
+    h.claude.down = True
+    h.clock.set(at(9, 0))
+    h.tick()
+    h.clock.set(at(9, 40))
+    h.tick()
+    modes.start(h.conn, h.clock, "quiet", until=at(23, 0))
+    h.clock.set(at(21, 0))
+    h.tick()
+    assert h.v.said and all(line in recorded for line in h.v.said), (h.v.said, recorded)
+
+
 def test_a_broken_speaker_keeps_the_reminder_for_later(h):
     pill(h)
     h.v.broken = True
