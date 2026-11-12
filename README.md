@@ -1,5 +1,7 @@
 # KORE
 
+[![tests](https://github.com/lpesseygirod/kore/actions/workflows/ci.yml/badge.svg)](https://github.com/lpesseygirod/kore/actions/workflows/ci.yml)
+
 KORE is a voice companion for older people who speak Spanish. It's made for people who don't use apps or phones easily: you just talk to it (its default name is **Pepe**). It keeps them company, reminds them about their medicines and appointments, helps with the shopping list, shares photos and messages with their family, and can get help if something is wrong.
 
 ![A simulated day with Pepe](docs/media/day.png)
