@@ -10,6 +10,7 @@ import json
 import sqlite3
 from datetime import date, datetime
 
+from kore.brain import readback
 from kore.brain.language import fold
 from kore.memory.db import from_utc_iso, utc_iso
 from kore.scheduler.clock import Clock
@@ -227,7 +228,7 @@ def appointments(conn: sqlite3.Connection, clock: Clock, person_id: int | None =
         at = from_utc_iso(r["starts_at_utc"], clock.tz)
         out.append(
             {"id": r["id"], "person_id": r["person_id"], "title": r["title"], "location": r["location"],
-             "when": at.strftime("%A %d %B %H:%M"), "starts_at": at}
+             "when": readback.when(at, clock.now().date()), "starts_at": at}
         )
     return out
 

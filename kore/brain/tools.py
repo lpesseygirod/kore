@@ -110,7 +110,7 @@ def call(ctx: Context, name: str, args: dict) -> dict:
             result = {
                 "ok": False,
                 "error": "speaker_unknown",
-                "say": f"Ask, kindly: 'Is that you, {who}?'" if who else "Ask kindly who is speaking.",
+                "say": f"Ask, kindly: '¿Es usted, {who}?'" if who else "Ask kindly: 'Perdone, ¿quién me habla?'",
             }
         except SpeakerMismatch as e:
             result = {
@@ -260,6 +260,13 @@ def _form(ctx: Context) -> str:
     pid = ctx.session.speaker_id
     value = settings.stored(ctx.conn, "address", pid) if pid is not None else None
     return {"tu": "tú"}.get(value or "usted", value or "usted")
+
+
+def _sent_when(at: datetime, today: date) -> str:
+    """When a family message arrived, as KORE would say it: 'hoy a las diez de la mañana', 'el lunes …'."""
+    if today - at.date() == timedelta(days=1):
+        return f"ayer {rb.at(at.strftime('%H:%M'))}"
+    return rb.when(at, today)
 
 
 def _med_words(med) -> str:
@@ -1201,7 +1208,7 @@ def _read_messages(ctx: Context, args: dict) -> dict:
         rows = family_msgs.unread(ctx.conn, s.speaker_id)
         family_msgs.mark_read(ctx.conn, ctx.clock, [r["id"] for r in rows])
     messages = list(ctx.inbox) + [
-        {"from": r["name"], "when": from_utc_iso(r["received_at_utc"], ctx.clock.tz).strftime("%A %H:%M"),
+        {"from": r["name"], "when": _sent_when(from_utc_iso(r["received_at_utc"], ctx.clock.tz), ctx.clock.now().date()),
          "text": r["text"]} for r in rows]
     others = family_msgs.unread_for_others(ctx.conn, s.speaker_id)
     result = {"ok": True, "messages": messages,

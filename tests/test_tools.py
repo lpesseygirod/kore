@@ -229,10 +229,10 @@ def test_appointment_moved_only_after_a_yes(ctx, conn, clock):
     say(ctx, "Soy Carmen. El médico se ha cambiado al viernes a la misma hora")
     r = call(ctx, "propose_appointment_change", appointment_id=aid, starts_at="2026-11-13T11:00")
     assert r["ok"] and "el viernes trece de noviembre a las once de la mañana" in r["say_and_wait"]
-    assert store.appointments(conn, clock)[0]["when"].startswith("Tuesday")
+    assert store.appointments(conn, clock)[0]["when"] == "mañana a las once de la mañana"
     say(ctx, "Sí")
     assert call(ctx, "confirm_action", action_id=r["action_id"])["ok"]
-    assert store.appointments(conn, clock)[0]["when"].startswith("Friday")
+    assert store.appointments(conn, clock)[0]["when"] == "el viernes trece de noviembre a las once de la mañana"
 
 
 def test_someone_elses_appointment_cannot_be_cancelled(ctx, conn, clock):

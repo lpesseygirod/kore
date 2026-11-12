@@ -131,8 +131,8 @@ class Session:
         """Record that Pepe is asking who is speaking; returns the question to say."""
         self.identity_question = (candidate_id, self.turn)
         if candidate_id is not None:
-            return f"Is that you, {self.person(candidate_id).call_name}?"
-        return "Sorry, who am I talking to?"
+            return f"¿Es usted, {self.person(candidate_id).call_name}?"
+        return "Perdone, ¿quién me habla?"
 
     def require_speaker(self, person_id: int) -> None:
         """Raise unless the known speaker is `person_id`. Asks if unknown."""

@@ -22,6 +22,7 @@ import sqlite3
 from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta
 
+from kore.brain.fallback import WEEKDAYS
 from kore.feedback import store as feedback
 from kore.manners import modes
 from kore.memory import meds, settings, store
@@ -144,7 +145,7 @@ class Engine:
         Personal things (medicine times, a doctor's visit) are included only in
         a one-person home: with two, nobody is known to be in the room yet.
         """
-        plan = {"date": day.isoformat(), "weekday": day.strftime("%A")}
+        plan = {"date": day.isoformat(), "weekday": WEEKDAYS[day.weekday()]}
         people = self.conn.execute("SELECT * FROM people ORDER BY id").fetchall()
         if len(people) == 1:
             p = people[0]
@@ -264,7 +265,7 @@ class Engine:
                 events.append(Event(
                     f"appointment_{which}", 1, pids,
                     {"title": a["title"], "location": a["location"], "time": starts.strftime("%H:%M"),
-                     "day": starts.strftime("%A"), "person": self._call_name(a["person_id"]) if a["person_id"] else None},
+                     "day": WEEKDAYS[starts.weekday()], "person": self._call_name(a["person_id"]) if a["person_id"] else None},
                     private=a["person_id"] is not None, key=f"appt:{a['id']}:{which}", expires_at=starts,
                 ))
         return events
