@@ -346,3 +346,17 @@ def test_untrusted_clock_read_back_says_the_full_date(ctx, clock):
     clock.set_trusted(False)
     r = call(ctx, "propose_appointment", title="el dentista", starts_at="2026-11-10T10:00")
     assert "mañana a las" not in r["say_and_wait"] and "el martes diez de noviembre" in r["say_and_wait"]
+
+
+def test_back_from_shopping_keeps_what_was_added_while_out(ctx, clock):
+    say(ctx, "Soy Carmen, apunta leche")
+    call(ctx, "add_to_list", items=["leche"])
+    say(ctx, "Me voy a la compra")
+    call(ctx, "going_shopping")
+    clock.advance(minutes=30)
+    say(ctx, "Soy Toni, apunta pan")  # Toni at home while Carmen is out
+    call(ctx, "add_to_list", items=["pan"])
+    clock.advance(minutes=30)
+    say(ctx, "Soy Carmen, ya estoy aquí, lo he encontrado todo")
+    r = call(ctx, "back_from_shopping", not_found=[])
+    assert r["kept_for_next_time"] == ["pan"]

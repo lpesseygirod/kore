@@ -105,12 +105,15 @@ def remove_from_list(conn: sqlite3.Connection, items: list[str], list_name: str 
     return list_items(conn, list_name)
 
 
-def back_from_shopping(conn: sqlite3.Connection, not_found: list[str]) -> list[str]:
-    """Everything bought is done; what they didn't find stays for next time."""
+def back_from_shopping(conn: sqlite3.Connection, not_found: list[str], left_at_utc: str | None = None) -> list[str]:
+    """Everything bought is done; what they didn't find stays for next time. With `left_at_utc` (when they went
+    out), items added while they were out (the partner at home, a message) also stay: they couldn't buy them."""
     keep = {fold(i) for i in not_found}
     for row in conn.execute(
-        "SELECT id, item FROM list_items WHERE list_name = ? AND status = 'open'", (SHOPPING,)
+        "SELECT id, item, added_at FROM list_items WHERE list_name = ? AND status = 'open'", (SHOPPING,)
     ).fetchall():
+        if left_at_utc is not None and row["added_at"] > left_at_utc:
+            continue
         if fold(row["item"]) not in keep:
             conn.execute("UPDATE list_items SET status = 'done' WHERE id = ?", (row["id"],))
     return list_items(conn, SHOPPING)

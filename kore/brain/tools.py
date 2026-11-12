@@ -638,9 +638,12 @@ def _going(ctx: Context, args: dict) -> dict:
 @tool("back_from_shopping", "They're back and said what they didn't find. Everything else leaves the list.",
       {"not_found": ITEMS}, writes=True, required=["not_found"])
 def _back(ctx: Context, args: dict) -> dict:
+    left_at = None
     if ctx.session.speaker_id is not None:
+        out = modes.active(ctx.conn, ctx.clock, "out", ctx.session.speaker_id)
+        left_at = out["started_at_utc"] if out is not None else None
         modes.end(ctx.conn, ctx.clock, "out", ctx.session.speaker_id)
-    return {"ok": True, "kept_for_next_time": store.back_from_shopping(ctx.conn, args["not_found"])}
+    return {"ok": True, "kept_for_next_time": store.back_from_shopping(ctx.conn, args["not_found"], left_at)}
 
 
 # --- manners: quiet, visitors, away -------------------------------------------
