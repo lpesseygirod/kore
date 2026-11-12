@@ -1,4 +1,4 @@
-"""My feedback page and weekly summary (BUILD-PLAN 2, "Your feedback page").
+"""My feedback page and weekly summary (BUILD-PLAN 2, "My feedback page").
 
 Every item: what was said, how Pepe understood it, what changed, whether it's
 still active. Anything that touched medicine, alerts or night rules comes first.

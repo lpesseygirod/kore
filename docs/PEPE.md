@@ -469,7 +469,7 @@ A second pass over everything above, looking for contradictions and missing case
 
 - **Something broke:** a short, calm message ("I'm having a problem connecting. Your reminders still work"), and family is told only if it lasts.
 
-### Measuring if it works (for the trial with your grandparents)
+### Measuring if it works (for the trial with my grandparents)
 
 - Do they still use it after a month, and for what?
 
@@ -513,7 +513,7 @@ A second pass over everything above, looking for contradictions and missing case
 
 ## 8. Plan
 
-1.  **First version for your grandparents:** medication, water, movement, appointments, birthdays, the shopping list, questions, the morning greeting, quiet mode, and "I don't feel well" → message family.
+1.  **First version for my grandparents:** medication, water, movement, appointments, birthdays, the shopping list, questions, the morning greeting, quiet mode, and "I don't feel well" → message family.
 
 2.  Try it for a few weeks and write down what they like, what annoys them and what they miss.
 
@@ -527,7 +527,7 @@ A second pass over everything above, looking for contradictions and missing case
 
 - Should the family get alerts about missed medication, and should the person be able to turn that off?
 
-- Ready-made device (a small speaker plus a sensor) for the first version, or build your own?
+- Ready-made device (a small speaker plus a sensor) for the first version, or build my own?
 
 - One voice and personality to start, or several?
 

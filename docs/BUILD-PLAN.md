@@ -1,25 +1,21 @@
 # KORE: build plan
 
-> **About this document.** This is the plan I made with an AI advisor before building KORE: its review of my
-> first design, and the phases. The code refers to its sections (e.g. "BUILD-PLAN 0b.9"). I kept it mostly as
-> written, so it speaks to me in the second person. I took out the prompts I used to drive Claude Code.
-
 > **Two parts.** Part 1, *Pepe the app*: this plan, with Claude as the brain. Part 2, *Pepe's model*: an open
 > model trained only to be Pepe, running on the box. It isn't in this repo. Nothing in part 1 waits for part 2.
 
-How to turn the KORE design document into a working device (KORE is the product; Pepe is the companion's default name and wake word), built mostly by Claude Code on your Mac. It covers the architecture, the services to use, the risks, the phases with clear "done" checks, and what only you can do.
+How I'm turning the KORE design document ([PEPE.md](PEPE.md)) into a working device (KORE is the product; Pepe is the companion's default name and wake word), built and tested on my Mac first. It covers the architecture, the services, the risks, the phases with clear "done" checks, and what I have to do by hand. The code refers to its sections (e.g. "BUILD-PLAN 0b.9").
 
-## 0. My verdict on your idea
+## 0. Decisions before building
 
-**I agree with building Pepe on APIs** (cloud speech-to-text, Claude as the brain, cloud voices). It's the fastest way to a version your grandparents can use, and it reuses what you already know from Studiply (ElevenLabs, Supabase).
+**I'm building Pepe on APIs** (cloud speech-to-text, Claude as the brain, cloud voices). It's the fastest way to a version my grandparents can use, and it reuses what I already know from Studiply (ElevenLabs, Supabase).
 
-**I agree only partly with "Claude does it 100% on its own".** Claude Code can write and test almost all of the software by itself. But it can't buy hardware, plug things in, create accounts, type your API keys, or sit with your grandparents. Those parts are yours (section 9). The plan is arranged so that you're only needed at a few clear moments.
+**Most of the work is software, and most of it can be tested without anyone at home.** What can't be automated is buying and plugging in hardware, creating accounts and keys, and sitting with my grandparents (section 9). The plan keeps those to a few clear moments.
 
-Three changes I'd make to the design before building:
+Three changes I made to the design before building:
 
-1. **Build and test everything on your Mac first, with a fake clock.** Claude Code can then simulate a whole day (or a week) in minutes and test itself without you. The Raspberry Pi comes only at the end.
-2. **Anything safety-related must not depend on the AI.** Medication times, "did I take it", alerts to family and the emergency phrase all run as plain, tested code. Claude chooses the words, never the facts or the timing.
-3. **Don't promise fall detection or automatic calls to 112 in version 1.** Detecting a fall from a sound is unreliable, and a family that trusts it could be worse off than without it. Version 1 keeps "Pepe, help" plus a big physical button, and messages family. Sound-based fall detection becomes a later experiment.
+1. **Build and test everything on my Mac first, with a fake clock.** A fake clock simulates a whole day (or a week) in minutes, so most tests need nobody at home. The Raspberry Pi comes only at the end.
+2. **Everything safety-related runs as plain, tested code.** Medication times, "did I take it", alerts to family and the emergency phrase never depend on the AI. Claude chooses the words, never the facts or the timing.
+3. **No fall detection or automatic calls to 112 in version 1.** Detecting a fall from a sound is unreliable, and a family that trusts it could be worse off than without it. Version 1 keeps "Pepe, help" plus a big physical button, and messages family. Sound-based fall detection becomes a later experiment.
 
 ## 0b. Critical review: what was wrong with the first version
 
@@ -28,14 +24,14 @@ I went back through this plan as if someone else had written it. These are the r
 ### Contradictions in the design (would break the product)
 
 1. **"I only listen when you say my name" isn't true for half the design.** Offering help when it hears them struggling, noticing visitors, hearing a thud, noticing the TV is loud: all of these need the microphone analysing sound all the time. **Fix:** v1 really listens only after "Pepe" or the button. Anything that analyses sound continuously comes later, runs only on the device, is never stored or sent, and the consent sentence at setup must say exactly that. Sections 2b and 4 of the design doc need updating to match.
-2. **Your trial is with two people, but v1 had no way to tell them apart.** With your grandparents, "Did you take your pill?" can be answered by the wrong person. That's a medication error. **Fix:** v1 handles two people without voice biometrics. Reminders always use the person's name, a personal answer only counts once Pepe knows who's speaking ("Is that Carmen?"), and each person has separate medication records.
+2. **My trial is with two people, but v1 had no way to tell them apart.** With my grandparents, "Did you take your pill?" can be answered by the wrong person. That's a medication error. **Fix:** v1 handles two people without voice biometrics. Reminders always use the person's name, a personal answer only counts once Pepe knows who's speaking ("Is that Carmen?"), and each person has separate medication records.
 3. **The speed target was impossible.** The plan asked for under 2 seconds from end of speech, and also for waiting 1.5–2 seconds of silence so older people aren't cut off. Both can't be true. **Fix:** a realistic budget (section 2). Pepe shows instantly that it heard them (a soft sound and the light), and speaks within about 3 seconds. "Finished speaking" is judged by meaning as well as silence, so the wait is shorter when the sentence is clearly complete.
 4. **Renaming Pepe isn't a quick voice command.** Each new name needs a new wake word model, which has to be trained. **Fix:** v1 has a fixed name. When renaming arrives, it's a slower step ("give me until tomorrow to learn my new name"), with the button working meanwhile.
 5. **"Pepe" may be a poor wake word.** It's short, two syllables, and a common name in Spain, so it will come up on TV and from visitors. **Fix:** test it in the first week against hours of TV audio. If false wake-ups are too frequent, switch to "Oye Pepe" or a longer name.
 
 ### Safety (the parts that could hurt someone)
 
-6. **KORE must not become their emergency system.** Spain already has public teleasistencia: a pendant button (with fall detection) linked to a 24-hour centre. In Madrid it costs at most €12 a month depending on income, and it's free for people over 87. **Fix:** your grandparents should have teleasistencia, or keep it, and KORE adds to it. KORE's "help" is a convenience, never a guarantee. This is also a business opening (phase 9).
+6. **KORE must not become their emergency system.** Spain already has public teleasistencia: a pendant button (with fall detection) linked to a 24-hour centre. In Madrid it costs at most €12 a month depending on income, and it's free for people over 87. **Fix:** my grandparents should have teleasistencia, or keep it, and KORE adds to it. KORE's "help" is a convenience, never a guarantee. This is also a business opening (phase 9).
 7. **"Pepe, help" quietly failed without internet.** It depends on the internet and a messaging service. **Fix:** if the message can't be sent, Pepe says so out loud straight away and tells them to use their phone or teleasistencia button, instead of seeming to have called someone.
 8. **After a power cut, the clock could be wrong, and the medication reminders with it.** The Raspberry Pi 5 has a clock chip, but it keeps time while unplugged only with its small backup battery fitted. Without it, time freezes until the internet fixes it. **Fix:** buy the RTC battery. If the clock can't be trusted, Pepe doesn't fire or log doses, and says why.
 9. **SD cards corrupt on power cuts, and the dose log lives there.** **Fix:** an SSD or a high-endurance card, a database set up to survive sudden power loss, and nightly encrypted backups off the device.
@@ -47,12 +43,12 @@ I went back through this plan as if someone else had written it. These are the r
 12. **WhatsApp Business is heavy for a trial with two people.** It needs Meta business verification, a dedicated number and pre-approved templates. **Fix:** the trial uses a Telegram bot (free, instant, and family can reply, so Pepe can read replies aloud), plus an SMS for "help". WhatsApp comes before selling. *(Later I decided: build it, switched off. The WhatsApp channel is built and stays off until I set it up; help keeps Telegram and SMS. See docs/PHONE-AND-TV.md 1c.)*
 13. **Supabase isn't needed in v1.** **Fix:** a free heartbeat monitor and an encrypted nightly backup. Supabase comes back when there are many devices.
 
-### Building it hands-off (your main goal)
+### Building and testing it
 
 14. **There were no early risk checks.** The three things most likely to sink the project (speed, understanding older Spanish voices, false wake-ups) only showed up in phase 1 or on the device. **Fix:** a new phase 0.5 of quick experiments before building the product.
 15. **AI tests give different answers each run.** One passing run proves little. **Fix:** each conversation scenario runs several times and must pass nearly every time. Normal test runs replay recorded answers, so they're free and repeatable, and live API runs have a daily budget.
-16. **"Claude does it alone" needed more than a starting prompt.** Long unattended work needs a state file to resume from, spending caps, stop conditions and someone checking the work. **Fix:** an advisor setup like the one you use for Studiply, where one Claude session drives and checks Claude Code.
-17. **Your grandparents' privacy during the trial.** To fix problems, you'd read transcripts of their private conversations. **Fix:** agree it with them first, keep transcripts only 7 days, let them say "don't save that", encrypt the device's disk, and turn off data use for training at each provider.
+16. **Long stretches of building need guardrails.** **Fix:** a written state of what's done and what's next, a daily spending cap on live API runs, clear stop conditions, and every step checked (tests, a review of the diff) before the next one starts.
+17. **My grandparents' privacy during the trial.** To fix problems, I'd read transcripts of their private conversations. **Fix:** agree it with them first, keep transcripts only 7 days, let them say "don't save that", encrypt the device's disk, and turn off data use for training at each provider.
 18. **No way to measure "before".** The trial compares missed medication before and after, but nothing measured before. **Fix:** one baseline week, with a family member checking the pill box daily, before KORE arrives.
 
 ## 1. What version 1 includes (and what waits)
@@ -60,7 +56,7 @@ I went back through this plan as if someone else had written it. These are the r
 > **Added later:** a private web page for each box, reached on the home Wi-Fi (chat, photos,
 > calendar, the same memory as the voice). The plan is in WEB-PLAN.md. A family app beyond that still waits.
 
-Version 1 is the scope from your plan (section 8 of the Pepe doc), for your grandparents only:
+Version 1 is the scope from my design (section 8 of the Pepe doc), for my grandparents only:
 
 - Talking by voice in one language (the variety they speak at home), with one voice and a fixed wake word, plus the button
 - **Listening only after the wake word or the button** (new): nothing analyses sound in between
@@ -73,7 +69,7 @@ Version 1 is the scope from your plan (section 8 of the Pepe doc), for your gran
 - Memory of the person: interests, people, life stories, preferences, "What do you know about me?", "Forget that"
 - "I don't feel well" → offers to message family (asks first)
 - "Pepe, help" and the button → messages family straight away (only if agreed at setup). **If it can't, it says so out loud** (new) and points them to their phone or teleasistencia button.
-- Setup as a conversation (the script in section 2b of the design doc), for both people. Plus feedback that Pepe applies straight away, with at most one follow-up question, logged on a page you can check and undo (new, section 2)
+- Setup as a conversation (the script in section 2b of the design doc), for both people. Plus feedback that Pepe applies straight away, with at most one follow-up question, logged on a page I can check and undo (new, section 2)
 
 **Waits for later** (each one is hard or risky, and none is needed to learn whether Pepe works):
 
@@ -103,7 +99,7 @@ Version 1 is the scope from your plan (section 8 of the Pepe doc), for your gran
 - **Text to speech:** ElevenLabs Flash (very low latency) in a warm, slow voice, streamed sentence by sentence.
 - **Messages to family** (new): a Telegram bot for v1 (free, two-way: family can reply and Pepe reads it aloud on request), plus an SMS (for example through Twilio) for "help". WhatsApp Business comes before selling.
 - **Weather and news** (new): Open-Meteo for weather (free, no key); headlines from a public broadcaster's RSS feed (check its terms), summarised, never invented.
-- **Monitoring and backup** (new): a heartbeat to a free "dead man's switch" service (for example Healthchecks.io) that alerts you if the device goes quiet; a nightly encrypted backup of the database. Supabase (EU) comes later for many devices, and API keys move to a backend before selling.
+- **Monitoring and backup** (new): a heartbeat to a free "dead man's switch" service (for example Healthchecks.io) that alerts me if the device goes quiet; a nightly encrypted backup of the database. Supabase (EU) comes later for many devices, and API keys move to a backend before selling.
 
 ### The one rule that matters most
 
@@ -128,7 +124,7 @@ Every turn logs its timings. A turn over 4 seconds counts as a failure in tests.
 
 ### The feedback loop (new)
 
-When either of them says something about how Pepe behaves, Pepe learns from it straight away and keeps a record you can check.
+When either of them says something about how Pepe behaves, Pepe learns from it straight away and keeps a record I can check.
 
 **What counts as feedback:** direct requests ("talk slower", "don't wake me so early", "that was too long"), complaints ("you never let me finish"), praise ("I like it when you ask about my book") and corrections. Corrections of facts ("no, the pill is at 10") go through the normal tools; feedback about how Pepe behaves goes to the feedback system.
 
@@ -153,38 +149,38 @@ When either of them says something about how Pepe behaves, Pepe learns from it s
 - Rules are merged and capped so the prompt doesn't grow forever. If two rules conflict, the newer one wins and the older one is marked replaced.
 - Indirect signals ("be quiet" three afternoons in a row) are noticed but never applied silently. Pepe suggests instead: "You often rest around 4. Shall I stay quiet then?"
 
-**Your feedback page (for you):**
+**My feedback page:**
 
 - A simple private page (in the trial, also a weekly Telegram summary) listing every item: what was said, how Pepe understood it, what changed, and whether it's still active.
-- You can undo any change, reword a rule, or mark "Pepe misunderstood". Undoing works from the next turn, without Pepe announcing it.
+- I can undo any change, reword a rule, or mark "Pepe misunderstood". Undoing works from the next turn, without Pepe announcing it.
 - Anything that touched medication, alerts or night rules is listed first.
-- It shows the feedback, not the private conversation around it: only the feedback sentence is stored. Your grandparents are told at setup that you'll see their feedback about Pepe.
+- It shows the feedback, not the private conversation around it: only the feedback sentence is stored. My grandparents are told at setup that I'll see their feedback about Pepe.
 - Each item becomes a test scenario, so a fixed problem can't come back unnoticed.
 
 ## 3. Hardware for the first device
 
-Buy the speakerphone in phase 0, since the experiments need it; the rest once the Mac version works (phase 7). Rough cost: under €300.
+The speakerphone comes first (phase 0), since the experiments need it; the rest once the Mac version works (phase 7). Rough cost: under €300.
 
 - **Raspberry Pi 5 (8 GB)** with the **active cooler** (it runs all day), official power supply, a case
 - **The official RTC battery** (new): keeps the clock running through power cuts, so medication times stay right
 - **An SSD (M.2 HAT) or a high-endurance microSD** (new): normal cards corrupt on power cuts
-- **A USB conference speakerphone with built-in echo cancellation** (the Jabra Speak or Anker PowerConf type). This is the most important part: a cheap mic and speaker make Pepe hear itself and miss quiet voices. Check it's loud enough for them.
-- **LD2410C mmWave presence sensor.** Unlike normal motion sensors, it detects people sitting still, and it works with the Raspberry Pi. Tune its range: it senses through walls, and pets can trigger it.
+- **A USB conference speakerphone with built-in echo cancellation** (the Jabra Speak or Anker PowerConf type). This is the most important part: a cheap mic and speaker make Pepe hear itself and miss quiet voices. It has to be loud enough for them.
+- **LD2410C mmWave presence sensor.** Unlike normal motion sensors, it detects people sitting still, and it works with the Raspberry Pi. Its range needs tuning: it senses through walls, and pets can trigger it.
 - **A large arcade-style button** and a small LED ring
 - **Recommended:** a small battery backup (UPS) so a power cut doesn't stop reminders; a 4G dongle if their Wi-Fi is unreliable
 
-Before buying, check: is there stable Wi-Fi where KORE will sit, and a socket near where they spend most of the day? One device covers one room, so agree with them which room (usually the living room or kitchen), and accept that reminders won't be heard from the bedroom in v1.
+Before buying, I check: is there stable Wi-Fi where KORE will sit, and a socket near where they spend most of the day? One device covers one room, so we agree which room (usually the living room or kitchen), and reminders won't be heard from the bedroom in v1.
 
-## 4. Risks I'd take seriously
+## 4. Risks I take seriously
 
 - **Echo and false wake-ups:** TV dialogue saying something like "Pepe" will trigger it. Tune the threshold on real recordings of their living room, and mute wake word detection while Pepe is speaking.
 - **Latency:** more than about 3 seconds of silence after they speak feels broken. Stream all three steps (speech to text → Claude → voice) and measure every reply.
-- **Accuracy in Spanish with older voices:** test with real recordings of your grandparents early (phase 1). If ElevenLabs struggles, try another provider; Soniox, for example, claims better accuracy on Spanish (that's their own claim, so test it).
+- **Accuracy in Spanish with older voices:** test with real recordings of my grandparents early (phase 1). If ElevenLabs struggles, try another provider; Soniox, for example, claims better accuracy on Spanish (that's their own claim, so it needs testing).
 - **The AI saying something wrong about health:** medication answers come only from tools; the system prompt forbids dose advice; scenario tests check it (phase 4).
-- **Silent failure:** if Pepe crashes or loses Wi-Fi, nobody notices. The device sends a heartbeat every few minutes; if it stops for more than an hour during the day, **you** get a message. Family must be told clearly that Pepe is not an alarm system.
-- **Keys on the device:** fine for your grandparents; for selling, devices must call your backend, never hold the API keys themselves.
-- **The wake word model's licence:** openWakeWord's code is open source; train your own "Pepe" model and check the licence of any ready-made model before selling.
-- **Medical-device rules (EU MDR):** a reminder tool is usually low-risk, but anything that monitors health or advises on treatment can make the product a medical device. Keep the purpose "daily organisation and company", never "health monitoring", and get a lawyer's view before selling. For a trial with your own grandparents this isn't a blocker.
+- **Silent failure:** if Pepe crashes or loses Wi-Fi, nobody notices. The device sends a heartbeat every few minutes; if it stops for more than an hour during the day, **I** get a message. The family must be told clearly that Pepe is not an alarm system.
+- **Keys on the device:** fine for my grandparents; for selling, devices must call a backend, never hold the API keys themselves.
+- **The wake word model's licence:** openWakeWord's code is open source; I train my own "Pepe" model and check the licence of any ready-made model before selling.
+- **Medical-device rules (EU MDR):** a reminder tool is usually low-risk, but anything that monitors health or advises on treatment can make the product a medical device. Keep the purpose "daily organisation and company", never "health monitoring", and get a lawyer's view before selling. For a trial with my own grandparents this isn't a blocker.
 - **GDPR:** health data and voice. Clear spoken consent at setup (already in the design), data in the EU, a data processing agreement with each provider before selling.
 
 ## 5. Monthly running cost (estimate for one home)
@@ -203,15 +199,12 @@ For comparison, ElliQ (the best-known companion device, sold in the US) charges 
 
 ## 6. Folder and code layout
 
-One repo, `~/Documents/Projects/Apps/KORE`, Python on both Mac and Pi:
+One repo, Python on both Mac and Pi. This is the layout I planned at the start; the README has the one that exists now.
 
 ```
 KORE/
-  CLAUDE.md            rules for Claude Code
-  docs/PEPE.md         the design doc (exported from Claude)
+  docs/PEPE.md         the design doc
   docs/BUILD-PLAN.md   this plan
-  docs/PROGRESS.md     what's done, kept up to date
-  docs/reports/        Claude Code's reports (git-ignored)
   kore/
     audio/             mic, speaker, wake word, voice activity
     stt/  tts/         providers behind one interface each
@@ -219,7 +212,7 @@ KORE/
     memory/            SQLite schema and access
     scheduler/         reminders, dose log, fake clock
     manners/           when to speak: categories, limits, quiet, night
-    feedback/          spotting feedback, follow-up, rules, log, your page
+    feedback/          spotting feedback, follow-up, rules, log, my page
     family/            Telegram and SMS messages, heartbeat
     hardware/          sensor, button, LED (Pi only)
   experiments/         phase 0.5 throwaway experiments
@@ -229,16 +222,16 @@ KORE/
 
 ## 7. The phases
 
-Each phase ends with checks Claude Code runs itself, one local commit, and a short report. You're needed only where it says **(you)**.
+Each phase ends with automatic checks, one local commit, and a short report. The steps I have to do by hand are marked **(me)**.
 
-### Phase 0 — Setup (you, about 1 hour)
+### Phase 0 — Setup (me, about 1 hour)
 
 - Create the folder, export the KORE design doc and this plan as Markdown into `docs/`
 - Create accounts and keys: Anthropic API, ElevenLabs; a Telegram bot (through BotFather) for family messages
-- Put the keys in a `.env` file yourself (hidden typing), and set a monthly spending limit with each provider
+- Put the keys in a `.env` file myself (hidden typing), and set a monthly spending limit with each provider
 - Buy the USB speakerphone now (the experiments need it)
 - Record 5–10 short clips of each grandparent speaking normally (with their OK), plus 2–3 hours of audio from the TV they usually watch
-- Talk to your grandparents: their consent to the trial and to you reading transcripts; do they have teleasistencia?
+- Talk to my grandparents: their consent to the trial and to me reading transcripts; do they have teleasistencia?
 - Decide section 10
 
 ### Phase 0.5 — Risk experiments (new, about a week)
@@ -246,17 +239,17 @@ Each phase ends with checks Claude Code runs itself, one local commit, and a sho
 Quick throwaway experiments before building the product. Each one can change the plan.
 
 1. **Speed:** a minimal loop (button → speech to text → Claude → voice), measuring each step. Goal: about 3 seconds or less from end of speech to first word.
-2. **Understanding older voices:** run your grandparents' clips through ElevenLabs Scribe and one alternative (for example Soniox), and compare the errors on 20 phrases. Pick the better one.
+2. **Understanding older voices:** run my grandparents' clips through ElevenLabs Scribe and one alternative (for example Soniox), and compare the errors on 20 phrases. Pick the better one.
 3. **False wake-ups:** train a "Pepe" wake word model and play the TV audio at it. Count false wake-ups per hour and missed calls. Decide between "Pepe" and "Oye Pepe".
-4. **Personality:** a 30-minute text conversation with a first system prompt built from the design doc. You read it: does it sound like Pepe?
+4. **Personality:** a 30-minute text conversation with a first system prompt built from the design doc. I read it: does it sound like Pepe?
 
-**Done when:** a short report with numbers and a recommendation for each, and you've approved the choices.
+**Done when:** a short report with numbers and a choice for each.
 
 ### Phase 1 — Voice loop on the Mac
 
 Press a key (stand-in for the button) or say the wake word → speech to text → Claude → spoken reply.
 
-**Done when:** 20 test phrases (including your grandparents' clips) are understood; end of speech to first word is under 3 seconds for 90% of turns; every turn logs its timings and cost; Pepe doesn't hear itself; they can interrupt it; long pauses don't cut people off.
+**Done when:** 20 test phrases (including my grandparents' clips) are understood; end of speech to first word is under 3 seconds for 90% of turns; every turn logs its timings and cost; Pepe doesn't hear itself; they can interrupt it; long pauses don't cut people off.
 
 ### Phase 2 — Memory and tools
 
@@ -278,9 +271,9 @@ The "when to speak" engine (the three categories, daily limit, backing off after
 
 ### Phase 4b — Feedback loop (new)
 
-Spotting feedback, applying it at once, the single follow-up question, the scope, the later check, the safety exceptions, the feedback log, your page and weekly summary, and undo.
+Spotting feedback, applying it at once, the single follow-up question, the scope, the later check, the safety exceptions, the feedback log, my page and weekly summary, and undo.
 
-**Done when:** in the simulator, 30 feedback examples (direct, vague, praise, said in passing, about the other person, about safety) are understood and applied correctly: 5 runs out of 5 for safety items, 4 out of 5 for the rest. Pepe asks at most one follow-up and drops it when they don't answer. Every change appears on your page, and undoing it works on the next turn.
+**Done when:** in the simulator, 30 feedback examples (direct, vague, praise, said in passing, about the other person, about safety) are understood and applied correctly: 5 runs out of 5 for safety items, 4 out of 5 for the rest. Pepe asks at most one follow-up and drops it when they don't answer. Every change appears on my page, and undoing it works on the next turn.
 
 ### Phase 5 — Setup conversation
 
@@ -292,21 +285,21 @@ The welcome and the setup questions as a real conversation, one question at a ti
 
 Telegram messages to family (asking first, except the agreed emergency path), with family replies read aloud on request; "Pepe, help" and the button (Telegram and SMS, and a spoken warning if neither can be sent); missed-medication alerts if agreed; the heartbeat monitor; the nightly encrypted backup.
 
-**You:** add the family member to the Telegram bot, set up an SMS sender (for example Twilio), and create the heartbeat monitor.
+**Me:** add the family member to the Telegram bot, set up an SMS sender (for example Twilio), and create the heartbeat monitor.
 
-**Done when:** a test phone receives each message type; with the internet unplugged, "help" says out loud that it couldn't reach anyone; stopping the device sends you an alert within the hour.
+**Done when:** a test phone receives each message type; with the internet unplugged, "help" says out loud that it couldn't reach anyone; stopping the device sends me an alert within the hour.
 
 ### Phase 7 — The real device
 
-Move to the Raspberry Pi: speakerphone, presence sensor, button, light ring; starts on boot, restarts itself on a crash, remote access for you (for example Tailscale), logs, an encrypted disk, and updates installed only at night, rolled back automatically if the device's self-test fails afterwards.
+Move to the Raspberry Pi: speakerphone, presence sensor, button, light ring; starts on boot, restarts itself on a crash, remote access for me (for example Tailscale), logs, an encrypted disk, and updates installed only at night, rolled back automatically if the device's self-test fails afterwards.
 
-**You:** buy the hardware, flash the card, plug things in, run the commands Claude Code gives you.
+**Me:** buy the hardware, flash the card, plug things in, follow [DEVICE.md](DEVICE.md).
 
-**Done when:** 48 hours running at your place with no crash; morning greeting works with the sensor; reminders work with the Wi-Fi switched off; after pulling the plug 10 times mid-use, the dose log is intact and the clock is still right.
+**Done when:** 48 hours running at my place with no crash; morning greeting works with the sensor; reminders work with the Wi-Fi switched off; after pulling the plug 10 times mid-use, the dose log is intact and the clock is still right.
 
-### Phase 8 — Trial with your grandparents (2–4 weeks)
+### Phase 8 — Trial with my grandparents (2–4 weeks)
 
-**You:** set it up with them, explain that it's not an alarm system, keep a family member on the alert list, and make sure their teleasistencia stays in place.
+**Me:** set it up with them, explain that it's not an alarm system, keep a family member on the alert list, and make sure their teleasistencia stays in place.
 
 Measure against the baseline week (a family member checked the pill box daily before KORE arrived), using section 6c of the design doc: do they still use it after a month, how often they say "be quiet" or ignore it, missed medication before and after, and what they like, dislike and miss. Fix the manners first, then features.
 
@@ -314,44 +307,44 @@ Measure against the baseline week (a family member checked the pill box daily be
 
 Several voices and renaming, two-person recognition, the family app, visitor detection, the fall-sound experiment, keys moved to the backend, device setup at scale, the legal checks (MDR, GDPR, data processing agreements), pricing. Consider partnering with teleasistencia providers (town halls, the Red Cross, private companies) instead of competing with them: they already reach older people and their families, and KORE adds daily company to their emergency button.
 
-## 8. How to test without you
+## 8. How it's tested without them
 
-This is what makes "Claude builds it alone" realistic:
+This is what lets most of the testing happen on my Mac, without my grandparents or the box:
 
-- **Text simulator:** type as the grandparent, see Pepe's replies, with a fake clock you can speed up.
+- **Text simulator:** type as the grandparent, see Pepe's replies, with a fake clock that can run fast.
 - **Voice simulator:** plays recorded clips into the pipeline and checks the transcript and timing.
 - **Scenario files:** each one is a short script (time, what the person says, what Pepe must and must not do). Every row of the Pepe doc's tables becomes one.
-- **Automatic judge:** a separate Claude call reads each transcript with the manners checklist. Its verdicts are a signal, not proof: Claude Code shows you a sample of transcripts to read.
+- **Automatic judge:** a separate Claude call reads each transcript with the manners checklist. Its verdicts are a signal, not proof: I read a sample of the transcripts myself.
 - **Hard tests for hard rules:** medication, confirmations and family messages are checked by normal code tests, never by the judge.
 
 * **Recorded answers** (new): normal test runs replay saved API answers, so they're free, fast and repeatable. Live runs are deliberate and capped by a test budget (for example €5 a day).
 * **Repeated runs** (new): each conversation scenario runs 5 times (see phase 4).
 * **Speed and cost in every report** (new): each test run reports the median and slowest turn, and the cost per simulated day.
 
-## 9. What only you can do
+## 9. What I have to do by hand
 
 1. Create the accounts and type the API keys (Anthropic, ElevenLabs, the Telegram bot, an SMS sender, the heartbeat monitor), with spending limits
 2. Export the KORE design doc and this plan into the repo
-3. Buy the speakerphone (phase 0) and record test clips of your grandparents and their TV, with their OK
-4. Make the decisions in section 10, and approve the experiment results (phase 0.5)
-5. Get your grandparents' consent, check their teleasistencia, and organise the baseline week
+3. Buy the speakerphone (phase 0) and record test clips of my grandparents and their TV, with their OK
+4. Make the decisions in section 10, and choose from the experiment results (phase 0.5)
+5. Get my grandparents' consent, check their teleasistencia, and organise the baseline week
 6. Buy and assemble the rest of the hardware; flash the Raspberry Pi
-7. Listen to Pepe yourself at each phase end and say whether it feels right (the advisor can read transcripts, but only you can hear it)
-8. Run the trial with your grandparents, and check the feedback page each week (keep, undo or reword what Pepe changed)
+7. Listen to Pepe myself at each phase end and decide whether it feels right (transcripts aren't enough: it has to be heard)
+8. Run the trial with my grandparents, and check the feedback page each week (keep, undo or reword what Pepe changed)
 9. Before selling: lawyer review, data processing agreements, pricing
 
 ## 10. Decisions before starting
 
-My recommendation comes first in each:
+What I chose:
 
 - **Language and accent:** the variety they speak at home, only that one in v1, with a voice in the same accent.
 - **Voice:** one warm, slow voice in v1; the voice choice comes later.
 - **Wake word:** decided by the false wake-up experiment: "Pepe" if it holds up, otherwise "Oye Pepe". Plus the button.
-- **Family alerts:** one family member (not you) gets help and missed-medication alerts on Telegram, plus an SMS for help; you get only device alerts.
-- **Teleasistencia:** your grandparents have it, or apply for it, before the trial. KORE is never the only safety net.
-- **Device:** Raspberry Pi 5 + USB speakerphone, not a ready-made smart speaker (those don't let you control the microphone, the wake word or the sensor).
+- **Family alerts:** one family member (not me) gets help and missed-medication alerts on Telegram, plus an SMS for help; I get only device alerts.
+- **Teleasistencia:** my grandparents have it, or apply for it, before the trial. KORE is never the only safety net.
+- **Device:** Raspberry Pi 5 + USB speakerphone, not a ready-made smart speaker (those don't let me control the microphone, the wake word or the sensor).
 - **Claude model:** decided by the experiments: a fast model for simple turns and a stronger one when a turn needs tools or judgment, both with caching.
-- **Transcripts:** kept 7 days, only to fix problems, with your grandparents' OK.
+- **Transcripts:** kept 7 days, only to fix problems, with my grandparents' OK.
 - **112:** not in v1.
 
 ## Sources

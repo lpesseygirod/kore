@@ -1,7 +1,7 @@
 """The heartbeat: "I'm alive" every few minutes to a free dead man's switch (Healthchecks.io).
 
 If the pings stop (crash, power cut, no internet), the service alerts me, not the
-family (BUILD-PLAN 3, "silent failure"). Set the check to period 5 minutes, grace
+family (BUILD-PLAN 4, "silent failure"). Set the check to period 5 minutes, grace
 30 minutes: an alert arrives at most 35 minutes after Pepe stops.
 
 The ping carries nothing about the home. The URL is a secret (anyone with it could

@@ -19,16 +19,16 @@ wherever these appear.
 The list, with why and rough prices, is in [HARDWARE.md](HARDWARE.md) ("Buy before phase 7"). In short: Raspberry
 Pi 5 (8 GB), the official 27 W power supply, active cooler, the official RTC battery, an M.2 SSD board with a
 256 GB NVMe SSD, a case that fits both, the LD2410C presence sensor, a large arcade button, a 12-LED WS2812 ring
-(with wires), jumper wires (female-female), and the USB speakerphone you already have.
+(with wires), jumper wires (female-female), and the USB speakerphone I already have.
 
 Also useful (costs money, about €15): **a USB adapter for NVMe SSDs**, so you can write the system straight onto
-the SSD from your Mac (step 2). Without it, use the microSD card first and move to the SSD afterwards.
+the SSD from the Mac (step 2). Without it, use the microSD card first and move to the SSD afterwards.
 
-Free: Raspberry Pi Imager (on your Mac), Tailscale's personal plan, everything in this repo.
+Free: Raspberry Pi Imager (on the Mac), Tailscale's personal plan, everything in this repo.
 
 ## 2. Write the system onto the SSD  (free)
 
-1. On your Mac, download **Raspberry Pi Imager** from raspberrypi.com/software and open it.
+1. On the Mac, download **Raspberry Pi Imager** from raspberrypi.com/software and open it.
 2. If you don't have an SSH key yet, open Terminal on the Mac and type `ssh-keygen -t ed25519`, then press Enter
    three times. (It makes a key pair in your home folder; nothing is sent anywhere.)
 3. Put the SSD in the USB adapter and plug it into the Mac.
@@ -69,26 +69,26 @@ Unplug the power while you do any of this.
    The LD2410C has more pins (RX, TX): leave them free.
 3. Plug the speakerphone into one of the blue USB ports. Then the power supply.
 
-**Check:** after about a minute the Pi's green light flickers and settles. From your Mac's Terminal:
+**Check:** after about a minute the Pi's green light flickers and settles. From the Mac's Terminal:
 `ping kore-abuelos.local` answers (press Ctrl-C to stop).
 
-## 4. Reach it from your Mac, and from anywhere: Tailscale  (free personal plan)
+## 4. Reach it from the Mac, and from anywhere: Tailscale  (free personal plan)
 
 1. In Terminal: `ssh lea@kore-abuelos.local`. The first time, type `yes`. You are now typing on the box.
 2. Install Tailscale on the box (its official installer; Tailscale's licence is BSD):
    `curl -fsSL https://tailscale.com/install.sh | sh`
-3. `sudo tailscale up` prints a web address. Open it on your Mac and log in (create a free Tailscale account
+3. `sudo tailscale up` prints a web address. Open it on the Mac and log in (create a free Tailscale account
    if you don't have one: the Personal plan, no card needed).
-4. Install Tailscale on your Mac too (Mac App Store, free) and log in with the same account.
+4. Install Tailscale on the Mac too (Mac App Store, free) and log in with the same account.
 5. In the Tailscale web page (login.tailscale.com → Machines), on kore-abuelos press "…" → **Disable key expiry**.
    Otherwise the box drops off after six months.
 
-**Check:** from your Mac, `ssh lea@kore-abuelos` (without `.local`) works, even with the Mac on another network.
+**Check:** from the Mac, `ssh lea@kore-abuelos` (without `.local`) works, even with the Mac on another network.
 From now on this is how you reach the box, wherever it is.
 
 ## 5. Install Pepe  (free)
 
-On your Mac, in the KORE folder (Terminal, `cd` to the repo):
+On the Mac, in the KORE folder (Terminal, `cd` to the repo):
 
     deploy/send_release.sh --first kore-abuelos
 
@@ -119,7 +119,7 @@ On the box, one key at a time. Each asks for the value and **does not show it** 
     sudo kore-set-key KORE_HEARTBEAT_URL
 
 The first two are needed for Pepe to talk; the others for help messages and the heartbeat (the same ones as in
-your Mac's `.env`). They are stored in `/etc/kore/kore.env`, readable only by the system (root). Never paste a key
+the Mac's `.env`). They are stored in `/etc/kore/kore.env`, readable only by the system (root). Never paste a key
 into a chat, an email or an AI tool. To change a key later, run the same line again.
 
 Then start Pepe and the web page:
@@ -131,7 +131,7 @@ Then start Pepe and the web page:
 1. `sudo kore-selftest` prints one line per check and ends `KORE self-test: OK`. A `[warn]` is fine (for
    example a key for later); a `[fail]` says what's wrong.
 2. `systemctl status kore-home kore-web` shows **active (running)** for both.
-3. The web page: on your Mac, open `http://kore-abuelos:8080` (over Tailscale) or `http://kore-abuelos.local:8080`
+3. The web page: on the Mac, open `http://kore-abuelos:8080` (over Tailscale) or `http://kore-abuelos.local:8080`
    (on the same Wi-Fi). Get your login code on the box with
    `sudo -u kore /opt/kore/current/.venv/bin/python -m kore.web --db /var/lib/kore/kore.db invite`.
 4. Press the button briefly and ask the time (the wake word isn't built yet). Hold the button for 2 seconds: that is **help**, so
@@ -159,7 +159,7 @@ Goal: after 10 sudden power cuts in the middle of use, the dose log is intact an
 
 ## 9. New versions: they install themselves at night
 
-When there's a new committed version, on your Mac:
+When there's a new committed version, on the Mac:
 
     deploy/send_release.sh kore-abuelos
 
