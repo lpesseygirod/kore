@@ -35,7 +35,7 @@ def add_pill(ctx, person="Carmen", text="Soy Carmen"):
 def test_medication_is_not_saved_without_a_yes(ctx, conn):
     say(ctx, "Soy Carmen, apunta la pastilla de la tensión a las 9")
     r = call(ctx, "propose_medication", name="tensión", times=["9:00"])
-    assert r["ok"] and "09:00" in r["say_and_wait"]
+    assert r["ok"] and "a las nueve de la mañana" in r["say_and_wait"]
     assert meds.medications(conn) == []
     # Claude trying to confirm in the same turn:
     assert call(ctx, "confirm_action", action_id=r["action_id"])["reason"] == "must_wait_for_their_answer"
@@ -221,14 +221,14 @@ def test_forget_removes_notes_with_quotes_from_the_log_too(ctx, conn):
 def test_appointment_time_zone_is_converted_not_overwritten(ctx, conn, clock):
     say(ctx, "Soy Carmen. El médico el jueves")
     r = call(ctx, "propose_appointment", title="médico", starts_at="2026-11-12T10:00+00:00")
-    assert "11:00" in r["say_and_wait"]  # 10:00 UTC is 11:00 in Madrid
+    assert "a las once de la mañana" in r["say_and_wait"]  # 10:00 UTC is 11:00 in Madrid
 
 
 def test_appointment_moved_only_after_a_yes(ctx, conn, clock):
     aid = store.add_appointment(conn, clock, ctx.session.household[0].id, "el médico", at(11, day=10))
     say(ctx, "Soy Carmen. El médico se ha cambiado al viernes a la misma hora")
     r = call(ctx, "propose_appointment_change", appointment_id=aid, starts_at="2026-11-13T11:00")
-    assert r["ok"] and "Friday 13 November at 11:00" in r["say_and_wait"]
+    assert r["ok"] and "el viernes trece de noviembre a las once de la mañana" in r["say_and_wait"]
     assert store.appointments(conn, clock)[0]["when"].startswith("Tuesday")
     say(ctx, "Sí")
     assert call(ctx, "confirm_action", action_id=r["action_id"])["ok"]
@@ -258,3 +258,41 @@ def test_be_quiet_says_when_medicine_reminders_still_come(ctx, clock):
     say(ctx, "Cállate una hora")
     r = call(ctx, "be_quiet", minutes=60)
     assert not r["medicine_reminders_during_quiet"] and r["say"] == "Say only 'Claro.' Nothing else."
+
+
+def test_read_backs_are_spoken_spanish():
+    from datetime import date as d, datetime as dt
+    from kore.brain import readback as rb
+    assert rb.at("09:00") == "a las nueve de la mañana"
+    assert rb.at("13:10") == "a la una y diez del mediodía"
+    assert rb.at("20:45") == "a las nueve menos cuarto de la tarde"
+    assert rb.at("23:50") == "a las doce menos diez de la noche"
+    assert rb.at("00:30") == "a las doce y media de la noche"
+    assert rb.at("17:30") == "a las cinco y media de la tarde"
+    today = d(2026, 11, 9)
+    assert rb.day(d(2026, 11, 10), today) == "mañana"
+    assert rb.day(d(2026, 11, 21), today) == "el sábado veintiuno de noviembre"
+    assert rb.when(dt(2026, 11, 13, 11, 0), today) == "el viernes trece de noviembre a las once de la mañana"
+    assert rb.rule("weekly:MON,THU", today, today) == "los lunes y jueves"
+    assert rb.rule("weekly:THU", today, today) == "todos los jueves"
+    assert rb.rule("every:3", today, today) == "cada tres días"
+    assert rb.rule("every:21", today, today) == "cada veintiún días"
+    assert rb.birthday("03-01") == "el uno de marzo"
+    assert rb.of("el martes once de noviembre") == "del martes once de noviembre"
+
+
+def test_no_read_back_is_english_or_has_digits(ctx, clock):
+    import re
+    say(ctx, "Soy Carmen, apunta la pastilla de la tensión a las 9")
+    lines = [call(ctx, "propose_medication", person="Carmen", name="tensión", times=["09:00"],
+                  description="la pastilla de la tensión")["say_and_wait"]]
+    say(ctx, "Soy Carmen, recuérdame regar las plantas cada tres días a las 6")
+    r = call(ctx, "propose_reminder", text="regar las plantas", time="18:00", rule="every:3")
+    assert "say_and_wait" in r, r
+    lines.append(r["say_and_wait"])
+    say(ctx, "Soy Carmen, el dentista el viernes a las 5 y media")
+    lines.append(call(ctx, "propose_appointment", title="el dentista", starts_at="2026-11-13T17:30")["say_and_wait"])
+    say(ctx, "Soy Carmen, ¿puedes guardar mis medicinas?")
+    lines.append(call(ctx, "propose_permission", kind="health_info")["say_and_wait"])
+    for line in lines:
+        assert not re.search(r"\d", line) and "Is that" not in line and line.endswith(("?", ".")), line

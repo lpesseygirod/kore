@@ -18,6 +18,7 @@ from dataclasses import dataclass, field
 from datetime import date, datetime, timedelta, timezone
 from typing import Callable
 
+from kore.brain import readback as rb
 from kore.brain.session import ConfirmationRefused, Person, Session, SpeakerMismatch, SpeakerUnknown
 from kore.family import messages as family_msgs
 from kore.family.service import Family
@@ -254,6 +255,18 @@ def _is_medicine(text: str) -> bool:
     return any(w.startswith(m) for w in fold(text).split() for m in MEDICINE_WORDS)
 
 
+def _form(ctx: Context) -> str:
+    """How KORE addresses the person speaking: 'usted' (the default) or 'tú'."""
+    pid = ctx.session.speaker_id
+    value = settings.stored(ctx.conn, "address", pid) if pid is not None else None
+    return {"tu": "tú"}.get(value or "usted", value or "usted")
+
+
+def _med_words(med) -> str:
+    """How the person calls the medicine ('la pastilla de la tensión'), else its name."""
+    return med["description"] or med["name"]
+
+
 def _health_ok(ctx: Context, pid: int) -> None:
     if store.declined(ctx.conn, pid, "health_info"):
         raise ValueError("they said no to keeping their medicines and appointments: ask again only if they "
@@ -270,7 +283,8 @@ def _propose_med(ctx: Context, args: dict) -> dict:
     _health_ok(ctx, pid)
     times = meds._valid_times(args["times"])
     who = ctx.session.person(pid).call_name
-    readback = f"{args['name']} for {who} at {', '.join(times)}. Is that right?"
+    what = args.get("description") or args["name"]
+    readback = f"Apunto {what}, para {who}, {rb.times(times)}. ¿Es así?"
     a = ctx.session.propose("add_medication", {"person_id": pid, "name": args["name"], "times": times,
                                                "description": args.get("description", "")}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
@@ -288,11 +302,11 @@ def _propose_med_change(ctx: Context, args: dict) -> dict:
         return med
     if args["times"]:
         times = meds._valid_times(args["times"])
-        readback = f"{med['name']} at {', '.join(times)} from now on. Is that right?"
+        readback = f"{_med_words(med)}: a partir de ahora, {rb.times(times)}. ¿Es así?"
         kind = "change_medication"
     else:
         times = []
-        readback = f"I'll stop reminding you about {med['name']}. Is that right?"
+        readback = f"Dejo de recordar {_med_words(med)}. ¿Es así?"
         kind = "stop_medication"
     a = ctx.session.propose(kind, {"medication_id": med["id"], "times": times}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
@@ -311,7 +325,7 @@ def _propose_appt(ctx: Context, args: dict) -> dict:
         _health_ok(ctx, pid)
     starts = datetime.fromisoformat(args["starts_at"])
     starts = starts.replace(tzinfo=ctx.clock.tz) if starts.tzinfo is None else starts.astimezone(ctx.clock.tz)
-    readback = f"{args['title']} on {starts.strftime('%A %d %B at %H:%M')}. Is that right?"
+    readback = f"Apunto {args['title']}, {rb.when(starts, ctx.clock.now().date())}. ¿Es así?"
     a = ctx.session.propose("add_appointment", {"person_id": pid, "title": args["title"],
                                                 "starts_at": starts.isoformat(),
                                                 "location": args.get("location", "")}, readback)
@@ -330,14 +344,15 @@ def _propose_appt_change(ctx: Context, args: dict) -> dict:
     if row["person_id"] is not None:
         ctx.session.require_speaker(row["person_id"])  # someone's own appointment: only they change it
     if args.get("cancel"):
-        readback = f"Cancel {row['title']}. Is that right?"
+        was = from_utc_iso(row["starts_at_utc"], ctx.clock.tz)
+        readback = f"Quito {row['title']} {rb.of(rb.when(was, ctx.clock.now().date()))}. ¿Es así?"
         a = ctx.session.propose("cancel_appointment", {"appointment_id": row["id"]}, readback)
     else:
         if not args.get("starts_at"):
             raise ValueError("starts_at or cancel is needed")
         starts = datetime.fromisoformat(args["starts_at"])
         starts = starts.replace(tzinfo=ctx.clock.tz) if starts.tzinfo is None else starts.astimezone(ctx.clock.tz)
-        readback = f"{row['title']} moved to {starts.strftime('%A %d %B at %H:%M')}. Is that right?"
+        readback = f"Cambio {row['title']} para {rb.when(starts, ctx.clock.now().date())}. ¿Es así?"
         a = ctx.session.propose("move_appointment", {"appointment_id": row["id"], "starts_at": starts.isoformat()},
                                 readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
@@ -358,7 +373,8 @@ def _propose_reminder(ctx: Context, args: dict) -> dict:
     first = date.fromisoformat(args["first_day"]) if args.get("first_day") else ctx.clock.now().date()
     if args["rule"] == "once" and local_at(first, time, ctx.clock.tz) <= ctx.clock.now():
         raise ValueError("that time has already passed: ask which day they mean")
-    readback = f"I'll remind you: '{args['text']}' at {time} ({args['rule']}). Is that right?"
+    how_often = rb.rule(args["rule"], first, ctx.clock.now().date())
+    readback = f"Apunto el recordatorio «{args['text']}», {how_often}, {rb.at(time)}. ¿Es así?"
     a = ctx.session.propose("add_reminder", {"person_id": pid, "text": args["text"], "time": time,
                                              "rule": args["rule"], "anchor": first.isoformat()}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
@@ -379,7 +395,7 @@ def _propose_reminder_stop(ctx: Context, args: dict) -> dict:
         raise ValueError("no such reminder")
     if row["person_id"] is not None:
         ctx.session.require_speaker(row["person_id"])  # someone's own reminder: only they stop it
-    readback = f"I'll stop reminding: '{row['text']}'. Is that right?"
+    readback = f"Quito el recordatorio «{row['text']}». ¿Es así?"
     a = ctx.session.propose("stop_reminder", {"reminder_id": row["id"]}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
@@ -713,9 +729,9 @@ def _propose_away(ctx: Context, args: dict) -> dict:
     if back_on is not None and back_on < ctx.clock.now().date():
         raise ValueError("back_on is in the past")
     people = _who_goes(ctx, args)
-    names = " and ".join(ctx.session.person(p).call_name for p in people)
-    readback = (f"{names} away{' until ' + back_on.isoformat() if back_on else ''}: reminders pause until "
-                "you tell me you're back. Is that right?")
+    names = rb.join([ctx.session.person(p).call_name for p in people])
+    until = f" hasta {rb.day(back_on, ctx.clock.now().date())}" if back_on else ""
+    readback = f"{names} fuera de casa{until}. Pauso los recordatorios hasta la vuelta. ¿Es así?"
     a = ctx.session.propose("go_away", {"person_ids": people, "back_on": back_on.isoformat() if back_on else None},
                             readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
@@ -929,7 +945,10 @@ def _propose_person(ctx: Context, args: dict) -> dict:
         raise ValueError("first save the person who is speaking: ask their name")
     if speaking and s.speaker_id is not None:
         raise ValueError("the speaker is already saved; this must be someone else (is_speaker false)")
-    readback = f"So I'll call {'you' if speaking else 'them'} {call}. Is that right?"
+    if speaking:
+        readback = f"Entonces {rb.you(_form(ctx), 'le', 'te')} llamaré {call}. ¿Es así?"
+    else:
+        readback = f"Entonces a {name} le llamaré {call}. ¿Es así?"
     a = ctx.session.propose("add_person", {"name": name, "call_name": call, "speaking": speaking}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
@@ -945,7 +964,7 @@ def _propose_call_name(ctx: Context, args: dict) -> dict:
     if not call or len(call) > 40:
         raise ValueError("a name, please")
     _check_name(s, [call], except_id=s.speaker_id)
-    readback = f"From now on I'll call you {call}. Is that right?"
+    readback = f"A partir de ahora {rb.you(_form(ctx), 'le', 'te')} llamaré {call}. ¿Es así?"
     a = s.propose("rename", {"person_id": s.speaker_id, "call_name": call}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
@@ -979,21 +998,40 @@ def _setup_setting(ctx: Context, args: dict) -> dict:
     return {"ok": True, "setting": key, "value": value}
 
 
+# Each permission in one plain sentence, (usted, tú): read back word for word before their yes.
 PERMISSION_TEXT = {
-    "health_info": "keep your medicines and appointments, to remind you",
-    "conversation_starters": "start a conversation with you sometimes",
-    "water_nudges": "remind you now and then to drink some water",
-    "movement_nudges": "suggest moving a little after sitting a long time",
-    "listening": "listen only after you say my name or press the button",
-    "presence_sensor": "notice when you're up or moving around, to greet you and check you're all right",
-    "family_missed_meds": "let your help contact know if you miss your medicine several times in a row",
-    "emergency_path": "message your help contact straight away, without asking first, if you say 'Pepe, ayuda', tell me you've fallen, or press the button",
-    "share_with_partner": "tell the other person at home whether you've taken your medicine, if they ask",
-    "keep_conversations": "keep what we talk about, so you can read it later on your phone; it's deleted after 90 days",
-    "lea_sees_day": "let Lea, who looks after Pepe, see your reminders, medicines, notes and what you've told me about "
-                    "how I speak, only to check Pepe works well",
-    "lea_reads_conversations": "let Lea read our conversations of the last 7 days, only to fix problems",
-    "family_sees_doses": "let your family see on their phone whether you've taken today's medicine",
+    "health_info": ("guardar sus medicinas y sus citas, para recordárselas",
+                    "guardar tus medicinas y tus citas, para recordártelas"),
+    "conversation_starters": ("empezar yo a hablar con usted alguna vez", "empezar yo a hablar contigo alguna vez"),
+    "water_nudges": ("recordarle de vez en cuando que beba agua", "recordarte de vez en cuando que bebas agua"),
+    "movement_nudges": ("proponerle moverse un poco cuando lleve mucho rato sin levantarse",
+                        "proponerte moverte un poco cuando lleves mucho rato sin levantarte"),
+    "listening": ("escuchar solo cuando diga mi nombre o pulse el botón",
+                  "escuchar solo cuando digas mi nombre o pulses el botón"),
+    "presence_sensor": ("notar cuándo se levanta o se mueve por casa, para saludarle y ver que está bien",
+                        "notar cuándo te levantas o te mueves por casa, para saludarte y ver que estás bien"),
+    "family_missed_meds": ("avisar a su contacto de ayuda si se salta la medicina varias veces seguidas",
+                           "avisar a tu contacto de ayuda si te saltas la medicina varias veces seguidas"),
+    "emergency_path": ("mandar un mensaje a su contacto de ayuda enseguida, sin preguntarle antes, si me pide ayuda, "
+                       "me dice que se ha caído o pulsa el botón",
+                       "mandar un mensaje a tu contacto de ayuda enseguida, sin preguntarte antes, si me pides ayuda, "
+                       "me dices que te has caído o pulsas el botón"),
+    "share_with_partner": ("decirle a la otra persona de casa si se ha tomado la medicina, si me lo pregunta",
+                           "decirle a la otra persona de casa si te has tomado la medicina, si me lo pregunta"),
+    "keep_conversations": ("guardar lo que hablamos, para que pueda leerlo luego en el móvil; se borra a los noventa "
+                           "días",
+                           "guardar lo que hablamos, para que puedas leerlo luego en el móvil; se borra a los noventa "
+                           "días"),
+    "lea_sees_day": ("dejar que Lea, que cuida de este aparato, vea sus recordatorios, sus medicinas, sus notas y lo "
+                     "que me ha dicho sobre cómo hablo, solo para comprobar que todo funciona bien",
+                     "dejar que Lea, que cuida de este aparato, vea tus recordatorios, tus medicinas, tus notas y lo "
+                     "que me has dicho sobre cómo hablo, solo para comprobar que todo funciona bien"),
+    "lea_reads_conversations": ("dejar que Lea lea nuestras conversaciones de los últimos siete días, solo para "
+                                "arreglar problemas",
+                                "dejar que Lea lea nuestras conversaciones de los últimos siete días, solo para "
+                                "arreglar problemas"),
+    "family_sees_doses": ("dejar que su familia vea en el móvil si se ha tomado la medicina de hoy",
+                          "dejar que tu familia vea en el móvil si te has tomado la medicina de hoy"),
 }
 
 
@@ -1008,7 +1046,10 @@ def _propose_permission(ctx: Context, args: dict) -> dict:
     if s.speaker_id is None:
         s.ask_identity(None)
         raise SpeakerUnknown(None)
-    readback = f"May I {PERMISSION_TEXT[kind]}? You can change it any time."
+    form = _form(ctx)
+    usted, tu = PERMISSION_TEXT[kind]
+    readback = (f"{rb.you(form, '¿Me permite', '¿Me dejas')} {rb.you(form, usted, tu)}? "
+                f"{rb.you(form, 'Lo puede cambiar', 'Lo puedes cambiar')} cuando quiera{rb.you(form, '', 's')}.")
     a = s.propose("permission", {"person_id": s.speaker_id, "kind": kind}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
@@ -1042,12 +1083,12 @@ def _propose_contact(ctx: Context, args: dict) -> dict:
     if birthday:
         m, d = (int(x) for x in birthday.split("-"))
         date(2024, m, d)
-    parts = [args["name"] + (f" ({args['relation']})" if args.get("relation") else "")]
+    parts = [f"Apunto a {args['name']}" + (f", {args['relation']}" if args.get("relation") else "")]
     if birthday:
-        parts.append(f"birthday on {date(2024, m, d).strftime('%d %B')}")
+        parts.append(f"que cumple años {rb.birthday(birthday)}")
     if args.get("help"):
-        parts.append("the person to contact if you need help")
-    readback = ", ".join(parts) + ". Is that right?"
+        parts.append(f"y que es a quien aviso si {rb.you(_form(ctx), 'necesita', 'necesitas')} ayuda")
+    readback = ", ".join(parts) + ". ¿Es así?"
     a = s.propose("add_contact", {"name": args["name"], "relation": args.get("relation", ""),
                                   "birthday": birthday, "help": bool(args.get("help")),
                                   "for_person": s.speaker_id}, readback)
