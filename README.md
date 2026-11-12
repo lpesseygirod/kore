@@ -102,7 +102,7 @@ docs/             the product design (PEPE.md), my plans, device and hardware gu
 
 ## How I built it
 
-I designed KORE: the product (in [`docs/PEPE.md`](docs/PEPE.md)), the safety rules and the screens. I planned it with an AI advisor ([`docs/BUILD-PLAN.md`](docs/BUILD-PLAN.md)) and built it with Claude Code, phase by phase, with tests and live checks at each step. The commit history shows that progression.
+I designed KORE: the product (in [`docs/PEPE.md`](docs/PEPE.md)), the safety rules and the screens. I planned the build in [`docs/BUILD-PLAN.md`](docs/BUILD-PLAN.md) and built it phase by phase using Claude Code as a coding assistant, reviewing every change, with tests and live checks at each step. The commit history shows that progression.
 
 ## Next: its own model
 
