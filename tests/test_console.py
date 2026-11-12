@@ -139,7 +139,7 @@ def test_leas_medicine_change_is_only_a_proposal_pepe_asks_about(lea, app, conn,
     assert "Lea propone tomar sintrom a las 08:00, 20:00" in carmen.get("/").text
     s = Session([Person(day["carmen"], "Carmen", "Carmen")], fixed_speaker=day["carmen"])
     state = Brain(tools.Context(conn, clock, s), ScriptedClient(lambda r: text(""))).state()
-    assert "Lea (who looks after Pepe) proposed changing sintrom to 08:00, 20:00" in state
+    assert "Lea (who looks after this KORE) proposed changing sintrom to 08:00, 20:00" in state
     meds.change_medication_times(conn, clock, mid, ["08:00", "20:00"])  # what her yes to Pepe does
     assert "accepted" in lea.get("/console/calendar").text
 

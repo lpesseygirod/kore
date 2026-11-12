@@ -117,8 +117,8 @@ def record(conn: sqlite3.Connection, clock: Clock, *, speaker_id: int | None, ab
 
 
 HOLD_SAY_SAFETY = ("This touches their medicines, their safety or their night, so nothing changes now. Answer "
-                   "kindly: offer to keep reminders short and quiet, and suggest mentioning it to their doctor "
-                   "or their family. Stopping a medicine goes through propose_medication_change.")
+                   "kindly that it stays as it is for now (never promise reminders will be shorter or quieter), and "
+                   "suggest mentioning it to their doctor or their family. Stopping a medicine goes through propose_medication_change.")
 HOLD_SAY_NIGHT_SHARED = ("They share the room: a shorter night would wake the other person. Say kindly that you'll "
                          "keep it as it is for now, and they can agree it together.")
 HOLD_SAY_NIGHT_MEDICINE = ("A medicine time would fall in the night, and night reminders are only said once, "

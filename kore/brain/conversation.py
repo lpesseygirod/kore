@@ -66,8 +66,10 @@ class ToolCall:
     result: dict
 
 
-AFTER_HELP = ("Don't repeat it, and don't say again that you're here or staying with them (it was just said): "
-              "add only one calm, simple question about what is happening.")
+AFTER_HELP = ("Don't repeat it, and don't say again that you're here or staying with them (it was just said). If "
+              "their words carry a red flag (chest pain, can't breathe, a knock to the head, a face or arm that "
+              "suddenly won't work, sudden confusion), add one sentence: 'Llame al ciento doce ahora.' Otherwise add "
+              "only one calm, simple question about what is happening.")
 
 
 @dataclass
@@ -116,13 +118,13 @@ class Brain:
         pending = [p for p in s.pending.values() if p.status == "pending" and p.kind == "send_help"]
         if pending:  # pressing the button answers "¿Aviso a Lucía?"
             said = self._answer_help(pending[-1], "the help button")
-            note = (f"The help button was pressed after Pepe asked whether to tell someone; the help path (code) "
-                    f"ran. Pepe already said: «{said}». " + AFTER_HELP)
+            note = (f"The help button was pressed after you asked whether to tell someone; the help path (code) "
+                    f"ran. You already said: «{said}». " + AFTER_HELP)
             return self._with(said, lambda: self._turn([{"type": "text", "text": note}]))
         out = self.ctx.link().call_for_help(s, "button")
         self.code_actions.append(f"help path, after the help button: {out.summary()}"
                                  + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
-        note = (f"The help button was pressed. Help path (code): {out.summary()}. Pepe already said: «{out.say}». "
+        note = (f"The help button was pressed. Help path (code): {out.summary()}. You already said: «{out.say}». "
                 "Don't repeat it. Stay calm and with them; ask simply how they are.")
         return self._with(out.say, lambda: self._turn([{"type": "text", "text": note}]))
 
@@ -133,14 +135,14 @@ class Brain:
         kind = help_requested(text, [a for p in s.household for a in p.aliases])
         if pending and (is_affirmative(text) or kind):  # "¡ayuda!" answers "¿Aviso a Lucía?" too
             said = self._answer_help(pending[-1], f"«{text}»")
-            return said, (f"They said yes, and the help path (code) ran. Pepe already said: «{said}». " + AFTER_HELP)
+            return said, (f"They said yes, and the help path (code) ran. You already said: «{said}». " + AFTER_HELP)
         if kind is None:
             return "", ""
         # In text, a typed "ayuda" often means "help me with this page": always ask first. Falls go as by voice.
         out = self.ctx.link().call_for_help(s, kind, text, ask_first=self.channel == "chat" and kind == "help")
         self.code_actions.append(f"help path, after «{text}» ({kind}): {out.summary()}"
                                  + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
-        return out.say, (f"Help path (code), after their words: {out.summary()}. Pepe already said: «{out.say}». "
+        return out.say, (f"Help path (code), after their words: {out.summary()}. You already said: «{out.say}». "
                          "Don't repeat it or send anything else. "
                          + ("Code's question is waiting for their answer, and code says it again after your words: "
                             "ask nothing yourself. Add one short calm sentence at most (if their words carry a red "
@@ -282,11 +284,11 @@ class Brain:
             for r in ctx.conn.execute("SELECT id, payload FROM operator_proposals WHERE kind = 'medication' AND "
                                       "status = 'open' AND person_id = ?", (s.speaker_id,)):
                 p = json.loads(r["payload"])
-                lines.append(f"Lea (who looks after Pepe) proposed changing {p['name']} to {', '.join(p['times'])} "
+                lines.append(f"Lea (who looks after this KORE) proposed changing {p['name']} to {', '.join(p['times'])} "
                              f"(proposal {r['id']}). When it fits, tell them simply and ask, once; only if they agree, "
                              "use propose_medication_change and wait for their yes. If they say no or want to ask "
                              "their doctor first, call decline_lea_proposal. Their doctor's word wins.")
-        when = f"{fallback.spoken_date(now.date())}, {now.strftime('%H:%M')}"
+        when = f"{fallback.spoken_date(now.date())} de {now.year}, {now.strftime('%H:%M')}"
         if not ctx.clock.trusted():  # a power cut without the clock battery: don't sound sure of the time
             when += " (the clock can't be trusted right now: the date and time may be wrong)"
             lines.insert(0, "Clock: not trusted. Don't say the time or date as a fact; say you don't know it for "
@@ -312,10 +314,10 @@ class Brain:
                         out.append(("Persona", b["text"][len("They say: "):]))
                     elif b.get("type") == "text" and b["text"].startswith("Event from the scheduler"):
                         out.append(("Evento", b["text"]))
-                    elif b.get("type") == "text" and "Pepe already said: «" in b["text"]:
+                    elif b.get("type") == "text" and "You already said: «" in b["text"]:
                         if b["text"].startswith("The help button"):
                             out.append(("Persona", "[pulsa el botón de ayuda]"))
-                        said = b["text"].split("Pepe already said: «", 1)[1].split("»", 1)[0]
+                        said = b["text"].split("You already said: «", 1)[1].split("»", 1)[0]
                         out.append(("Pepe", said))  # code's own line (help)
             else:
                 text = " ".join(speakable(b["text"])[0] for b in m["content"] if b.get("type") == "text").strip()

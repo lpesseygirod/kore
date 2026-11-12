@@ -455,8 +455,9 @@ def _exec_stop_med(ctx, p):
             ctx.link().stop_request(med["person_id"], med["name"])
         return {"stopped": True, "family_told": tell}
     return {"stopped": False,
-            "say": "The reminder stays for now. Say kindly you'll keep it short and quiet, suggest mentioning it "
-                   "to their doctor, and that if they still want it stopped on another day, they can tell you again."}
+            "say": "The reminder stays for now. Say kindly that it stays for the moment (never promise it will be "
+                   "shorter or quieter), suggest mentioning it to their doctor, and that if they still want it "
+                   "stopped on another day, they can tell you again."}
 
 
 @executor("add_person")
@@ -1169,8 +1170,9 @@ def _propose_message(ctx: Context, args: dict) -> dict:
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
 
-@tool("propose_help_alert", "They seem to be in danger or need urgent help but didn't use the agreed phrase "
-      "('no puedo respirar', 'me duele mucho el pecho', 'estoy en el suelo'). Asks whether to tell their help "
+@tool("propose_help_alert", "They seem to be in danger or need urgent help but code didn't catch it (code already "
+      "acts on 'ayuda', 'me he caído', 'estoy en el suelo' and 'no me puedo levantar'): for example 'no puedo "
+      "respirar', 'me duele mucho el pecho', 'no siento el brazo'. Asks whether to tell their help "
       "contact now; code sends it on their yes. Also suggest 112 if it sounds serious. Never for ordinary help. "
       "If they're afraid of someone who is a help contact (a relative hurting or threatening them), pass that "
       "person in leave_out: they are never told, and the question names exactly who will be.",
