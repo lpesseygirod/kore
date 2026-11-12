@@ -31,7 +31,7 @@ from kore.web import agenda
 
 LEA_DAYS = 7
 CONVERSATION_GAP = timedelta(minutes=30)
-LOOP_SEEN = "loop_seen_at"  # written by the voice loop on each tick (phase 1); none yet: "not running yet"
+LOOP_SEEN = "loop_seen_at"  # written by the voice loop (kore.home) on each tick; never written: "not started"
 PROPOSAL_LIFE = timedelta(days=7)
 PERMISSION_ROWS = [
     ("presence_sensor", "Presence sensor greets them"),

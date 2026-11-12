@@ -6,7 +6,9 @@ Seeds a throwaway database with Carmen and Antonio (made-up), their medicines,
 appointments, family and shopping list, then serves the page in test mode
 (the chat answers with a placeholder; nothing reaches Claude, SMS or Telegram).
 Log in as Carmen (Pepe "says" her code in this terminal) or open the admin
-console with the code it prints.
+console with the code it prints. KORE's real home loop runs alongside, offline
+(no Claude: only its offline phrases, printed here), so the console shows the
+device as running, as it would on the box.
 The clock is fixed at 11:00 today, home time, so the page looks the same
 whenever you run it (at night Pepe would refuse to say login codes).
 """
@@ -16,6 +18,7 @@ from __future__ import annotations
 import argparse
 import sys
 import tempfile
+import threading
 from datetime import datetime, timedelta
 from pathlib import Path
 
@@ -62,6 +65,41 @@ def admin_code(db: str, clock: FakeClock) -> str:
     return code
 
 
+class TerminalVoice:
+    """What Pepe would say out loud, printed in this terminal."""
+
+    def say(self, text: str, settings: dict) -> bool:
+        print(f"  Pepe diría: {text}", flush=True)
+        return True
+
+    def chime(self) -> None:
+        pass
+
+
+def start_home_loop(db: str, clock: FakeClock, every_s: float = 5.0) -> threading.Event:
+    """KORE's real home loop, offline: no Claude, no messages, no backups. It ticks like on the box, so the
+    console sees it running. Returns an event that stops it."""
+    from kore.brain.clients import ScriptedClient
+    from kore.home.loop import Home
+
+    def offline(request):
+        raise ConnectionError("demo: offline")
+
+    stop = threading.Event()
+
+    def run():
+        home = Home(db, clock, ScriptedClient(offline), TerminalVoice(), channels={}, backups=False)
+        while not stop.is_set():
+            try:
+                home.tick()
+            except Exception as e:  # the demo page keeps working even if a tick fails
+                print(f"  (home loop: {type(e).__name__}: {e})", flush=True)
+            stop.wait(every_s)
+
+    threading.Thread(target=run, name="home-loop", daemon=True).start()
+    return stop
+
+
 def main() -> int:
     ap = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
     ap.add_argument("--port", type=int, default=8080)
@@ -78,6 +116,7 @@ def main() -> int:
     seed(db, clock)
     admin = admin_code(db, clock)
     app = create_app(db, clock, secure=False, dev=True, chat=_chat_worker(db, clock, dev=True), family_links={})
+    start_home_loop(db, clock)
     print(f"KORE demo on http://127.0.0.1:{a.port}  (made-up people, test mode, nothing is sent)")
     print("  Carmen's app:   choose Carmen and ask for a code; what Pepe would say aloud prints below")
     print(f"  Admin console:  open /entrar and type {admin} (valid 10 minutes)")

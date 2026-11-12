@@ -71,7 +71,7 @@ def test_without_their_yes_lea_sees_only_the_box(lea, day):
     page = everything(lea)
     for private in ("sintrom", "la rosa", "metformina", "Ginecólogo", "Urólogo", "novelas", "carpintero", "panecillos"):
         assert private not in page, private
-    assert "Not shared" in page and "hasn’t agreed" in page and "Not running yet" in page
+    assert "Not shared" in page and "hasn’t agreed" in page and "Not started" in page
 
 
 def test_with_carmens_yes_lea_sees_carmens_day_only(lea, conn, clock, day):

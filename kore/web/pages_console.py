@@ -48,8 +48,8 @@ def overview(d: dict) -> str:
     device_card = (f'<a class="card stat" href="/console/device"><span class="label">Device</span>'
                    + (f'<span class="big-number" style="color:var(--online)">Online</span><span class="muted">Heartbeat '
                       f'{loop["ago_min"]} min ago</span>' if loop and loop["online"] else
-                      f'<span class="big-number" style="color:var(--wait)">{"Offline" if loop else "Not running yet"}'
-                      f'</span><span class="muted">{"Last seen " + str(loop["ago_min"]) + " min ago" if loop else "The voice loop comes with phase 1"}</span>')
+                      f'<span class="big-number" style="color:var(--wait)">{"Offline" if loop else "Not started"}'
+                      f'</span><span class="muted">{"Last seen " + str(loop["ago_min"]) + " min ago" if loop else "Start KORE (Pepe.command on the Mac, or the box) to see it here"}</span>')
                    + "</a>")
     doses = (f'{today["taken"]} of {today["total"]} taken' if today["total"] else "None today") if today["anyone"] \
         else "Not shared"
@@ -316,7 +316,7 @@ def device(d: dict) -> str:
                   f'{loop["ago_min"]} min ago</span>') if loop and loop["online"] else
                  (f'<span class="big-number" style="color:var(--wait)">Offline</span><span class="muted">last seen '
                   f'{loop["ago_min"]} min ago</span>') if loop else
-                 '<span class="big-number">Not running yet</span><span class="muted">The voice loop comes with phase 1</span>')
+                 '<span class="big-number">Not started</span><span class="muted">Start KORE (Pepe.command on the Mac, or the box) to see it here</span>')
     cards = [f'<div class="card stat"><span class="label">Connection</span>{conn_card}</div>',
              f'<div class="card stat"><span class="label">Clock</span><span class="big-number">'
              f'{"Trusted" if dev["clock_ok"] else "Not trusted"}</span><span class="muted">'

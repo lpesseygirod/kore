@@ -489,7 +489,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         now = clock.now()
         dev = console.device(db(), clock, cost_log)
         need = console.needs_you(db(), clock)
-        summary = ("Something needs you." if need else "The voice loop isn't running yet (phase 1)." if not dev["loop"]
+        summary = ("Something needs you." if need else "KORE's voice isn't running: start it with Pepe.command or on the box." if not dev["loop"]
                    else "Everything is running normally." if dev["loop"]["online"] else "The box hasn't been seen lately.")
         return {**base(), "hour": now.hour, "date": now.strftime("%A %-d %B"), "summary": summary, "device": dev,
                 "today": console.today(db(), clock), "messages_today": console.messages_today(db(), clock),
