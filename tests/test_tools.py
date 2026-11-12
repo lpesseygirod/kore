@@ -296,3 +296,24 @@ def test_no_read_back_is_english_or_has_digits(ctx, clock):
     lines.append(call(ctx, "propose_permission", kind="health_info")["say_and_wait"])
     for line in lines:
         assert not re.search(r"\d", line) and "Is that" not in line and line.endswith(("?", ".")), line
+
+
+def test_switching_off_an_agreed_permission_needs_a_yes(ctx, conn, clock):
+    """A visitor or the TV saying "no" must not silently switch off their help alerts (G-C2)."""
+    from kore.memory import store
+    carmen = ctx.session.household[0].id
+    store.set_consent(conn, clock, carmen, "emergency_path", True)
+    say(ctx, "Soy Carmen, no avises a nadie sin preguntarme")
+    r = call(ctx, "record_permission_no", kind="emergency_path")
+    assert r["say_and_wait"] == "A partir de ahora, si pide ayuda, le preguntaré antes de avisar a nadie. ¿Es así?"
+    assert store.has_consent(conn, carmen, "emergency_path")  # nothing changed yet
+    say(ctx, "Sí")
+    assert call(ctx, "confirm_action", action_id=r["action_id"])["ok"]
+    assert not store.has_consent(conn, carmen, "emergency_path")
+
+
+def test_a_no_to_a_new_question_is_saved_at_once(ctx, conn):
+    from kore.memory import store
+    say(ctx, "Soy Carmen, no, lo del agua no")
+    r = call(ctx, "record_permission_no", kind="water_nudges")
+    assert "say_and_wait" not in r and store.declined(conn, ctx.session.household[0].id, "water_nudges")

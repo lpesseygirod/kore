@@ -485,6 +485,14 @@ def _exec_permission(ctx, p):
     return {}
 
 
+@executor("permission_off")
+def _exec_permission_off(ctx, p):
+    store.set_consent(ctx.conn, ctx.clock, p["person_id"], p["kind"], False)
+    if p["kind"] in STEP_FOR_PERMISSION:
+        _close_step(ctx, STEP_FOR_PERMISSION[p["kind"]], p["person_id"])
+    return {}
+
+
 @executor("add_contact")
 def _exec_add_contact(ctx, p):
     cid = store.add_contact(ctx.conn, ctx.clock, p["name"], p["relation"], p["birthday"],
@@ -1054,8 +1062,10 @@ def _propose_permission(ctx: Context, args: dict) -> dict:
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
 
-@tool("record_permission_no", "They said no to a permission (or would rather not). Saved at once: no needs no "
-      "confirmation.", {"kind": {"type": "string"}}, writes=True, required=["kind"])
+@tool("record_permission_no", "They said no to a permission (or would rather not). A no to a question saved at "
+      "once. Switching OFF something they had already agreed to needs a read-back and their yes, like any change "
+      "(a visitor or the TV must not switch off their help alerts): say the read-back and wait, then confirm_action.",
+      {"kind": {"type": "string"}}, writes=True, required=["kind"])
 def _permission_no(ctx: Context, args: dict) -> dict:
     kind = args["kind"]
     if kind not in PERMISSION_TEXT:
@@ -1064,10 +1074,30 @@ def _permission_no(ctx: Context, args: dict) -> dict:
     if s.speaker_id is None:
         s.ask_identity(None)
         raise SpeakerUnknown(None)
+    if store.has_consent(ctx.conn, s.speaker_id, kind):
+        readback = _permission_off_readback(kind, _form(ctx))
+        a = s.propose("permission_off", {"person_id": s.speaker_id, "kind": kind}, readback)
+        return {"ok": True, "action_id": a.id, "say_and_wait": readback}
     store.set_consent(ctx.conn, ctx.clock, s.speaker_id, kind, False)
     if kind in STEP_FOR_PERMISSION:
         _close_step(ctx, STEP_FOR_PERMISSION[kind], s.speaker_id)
     return {"ok": True, "say": "Say that's fine, in a few words. No persuading."}
+
+
+def _permission_off_readback(kind: str, form: str) -> str:
+    """Switching off what they had agreed to, said so they know exactly what changes."""
+    special = {
+        "emergency_path": ("A partir de ahora, si pide ayuda, le preguntaré antes de avisar a nadie. ¿Es así?",
+                           "A partir de ahora, si pides ayuda, te preguntaré antes de avisar a nadie. ¿Es así?"),
+        "listening": ("Dejo de escuchar cuando diga mi nombre: solo le atenderé con el botón. ¿Es así?",
+                      "Dejo de escuchar cuando digas mi nombre: solo te atenderé con el botón. ¿Es así?"),
+    }
+    if kind in special:
+        return rb.you(form, *special[kind])
+    text = rb.you(form, *PERMISSION_TEXT[kind])
+    if text.startswith("dejar que "):
+        return f"Ya no dejaré que {text[len('dejar que '):]}. ¿Es así?"
+    return f"Dejo de {text}. ¿Es así?"
 
 
 @tool("propose_contact", "A family member or friend: their birthday (MM-DD) to remember, and/or that they're the "
