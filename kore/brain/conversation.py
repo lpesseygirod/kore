@@ -142,8 +142,10 @@ class Brain:
                                  + ("; sent without asking, as they agreed to at setup" if out.agreed else ""))
         return out.say, (f"Help path (code), after their words: {out.summary()}. Pepe already said: «{out.say}». "
                          "Don't repeat it or send anything else. "
-                         + ("Wait for their answer to that question. " if out.asked else "")
-                         + "Stay calm and with them; ask simply how they are.")
+                         + ("Code's question is waiting for their answer, and code says it again after your words: "
+                            "ask nothing yourself. Add one short calm sentence at most (if their words carry a red "
+                            "flag: 'llame al ciento doce ahora'). " if out.asked
+                            else "Stay calm and with them; ask simply how they are."))
 
     def _answer_help(self, action, answer: str) -> str:
         """Code sends the help Pepe asked about: their yes, a help cry or the button answered it."""
@@ -155,12 +157,27 @@ class Brain:
 
     def _with(self, said: str, make_reply: Callable[[], str]) -> str:
         """Code's own line first (spoken at once by the voice loop, before Claude is even asked, so a slow or
-        failing Claude can never hold it back), then Claude's reply."""
+        failing Claude can never hold it back), then Claude's reply. If code asked "¿Aviso a …?" and Claude added
+        words, code's question is said again last, so it's the last thing they hear and the one they answer."""
+        asked = self._help_question_pending()
         if said and self.say_now is not None:
             self.say_now(said)
-            return make_reply()
-        reply = make_reply()
+            return self._question_last(make_reply(), asked)
+        reply = self._question_last(make_reply(), asked)
         return f"{said} {reply}".strip() if said else reply
+
+    def _help_question_pending(self) -> str | None:
+        s = self.ctx.session
+        pending = [p for p in s.pending.values()
+                   if p.status == "pending" and p.kind == "send_help" and p.created_turn == s.turn]
+        return pending[-1].readback if pending else None
+
+    def _question_last(self, reply: str, question: str | None) -> str:
+        if not question or not reply.strip() or reply.rstrip().endswith(question):
+            return reply
+        still = [p for p in self.ctx.session.pending.values()
+                 if p.status == "pending" and p.kind == "send_help" and p.readback == question]
+        return f"{reply.rstrip()} {question}" if still else reply
 
     def speak_event(self, item: Item) -> str | None:
         """Pepe speaks first: word an event from the scheduler, in the manner the gate chose."""

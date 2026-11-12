@@ -749,3 +749,13 @@ def test_the_state_names_the_help_contact(conn, clock, home):
     h = Home(conn, clock, home)
     h.session.begin_turn("")
     assert "Help contact: Lucía (hija)." in h.brain.state()
+
+
+def test_code_says_its_help_question_last_after_claudes_words(conn, clock, home):
+    """G-C6: '¿Aviso ahora a Lucía?' must be the last thing heard, even when Claude adds the 112 line."""
+    h = Home(conn, clock, home, agreed=False)
+    h.brain = Brain(h.ctx, ScriptedClient(lambda r: text("Llame al ciento doce ahora.")))
+    h.session.speaker_id = h.carmen
+    said = h.brain.hear("Pepe, ayuda, me duele mucho el pecho")
+    assert said.endswith("Llame al ciento doce ahora. ¿Aviso ahora a Lucía?")
+    assert said.count("¿Aviso ahora a Lucía?") == 2  # code's line first (spoken at once), then again last
