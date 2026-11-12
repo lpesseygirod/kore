@@ -676,8 +676,11 @@ def family_home(account, d: dict) -> str:
         + "</b></div>" for x in d["doses"])
     today = "".join(f'<li><span class="time">{e(i["time"])}</span><span class="what">{e(i["text"])}</span></li>'
                     for i in d["today"])
-    hero = (('<div class="card hero"><span class="label">Hoy</span><b style="font-size:1.3rem">Todo bien</b>'
-             '<span class="muted">Sin avisos hoy.</span></div>') if d["all_good"] else
+    # Never "Todo bien": no alert only means none went out, not that KORE heard from them today (PEPE.md 6b: an
+    # "all good" signal needs both to agree, and must be true).
+    hero = (('<div class="card hero"><span class="label">Hoy</span><b style="font-size:1.3rem">Sin avisos</b>'
+             '<span class="muted">Solo quiere decir que hoy no ha salido ningún aviso. No dice cómo están: si te '
+             'preocupa, llámales.</span></div>') if d["no_alerts"] else
             '<a class="card hero" href="/familia/avisos" style="display:block;text-decoration:none"><span class="label">Hoy'
             '</span><br><b style="font-size:1.3rem">Hay un aviso</b><br><span class="muted">Míralo en Avisos.</span></a>')
     return layout("Pepe — Inicio", f"""

@@ -143,7 +143,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             if a.role == "family":
                 return html(pages.family_home(a, {
                     "date": elder.long_date(clock.now().date()), "people": fam.their_people(db(), a.contact_id),
-                    "all_good": fam.all_good(db(), clock, a.contact_id),
+                    "no_alerts": fam.no_alerts_today(db(), clock, a.contact_id),
                     "doses": fam.doses_shared(db(), clock, a.contact_id),
                     "today": fam.days_ahead(db(), clock, a.contact_id, 1)[0]["items"]}))
             return html(pages.elder_home(a, elder_home_data(a)))

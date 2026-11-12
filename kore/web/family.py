@@ -359,7 +359,8 @@ def alerts(conn, clock: Clock, contact_id: int) -> dict:
     return {"kinds": kinds, "recent": recent}
 
 
-def all_good(conn, clock: Clock, contact_id: int) -> bool:
+def no_alerts_today(conn, clock: Clock, contact_id: int) -> bool:
+    """No help or missed-dose alert went to this contact today. Only that: it says nothing about how they are."""
     since = utc_iso(clock.now().replace(hour=0, minute=0, second=0, microsecond=0))
     return conn.execute("SELECT count(*) FROM family_out WHERE contact_id = ? AND kind IN ('help', 'missed_meds') AND "
                         "created_at_utc >= ?", (contact_id, since)).fetchone()[0] == 0

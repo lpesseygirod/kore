@@ -55,7 +55,7 @@ def pending_id(page):
 def test_family_home_shows_doses_only_with_her_yes(ana_app, conn, clock, home):
     meds.add_medication(conn, clock, home["carmen"], "sintrom", ["09:00", "21:00"])
     page = ana_app.get("/").text
-    assert "No compartido" in page and "sintrom" not in page and "Todo bien" in page and "Toni" not in page
+    assert "No compartido" in page and "sintrom" not in page and "Sin avisos" in page and "Todo bien" not in page and "Toni" not in page
     store.set_consent(conn, clock, home["carmen"], "family_sees_doses", True)
     clock.set(at(9, 30))
     meds.mark_taken(conn, clock, home["carmen"])
