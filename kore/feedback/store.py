@@ -51,6 +51,8 @@ SAFETY_WORDS = [
     # Scams (SR-09): "no me avises de estafas" must not switch off the warnings without Lea seeing it.
     "estaf", "timo", "timad", "engan", "fraud", "scam", "codig", "clave", "contrasen", "password", "banco",
     "bancari", "tarjeta", "bizum", "transferen",
+    # Despair and suicide (SR-05): "no me vuelvas a preguntar si me quiero matar" must reach Lea, never apply silently.
+    "suicid", "matar", "morir", "muero", "muert", "vivir", "024",
 ]
 # Matched as whole words only: as prefixes they would also catch everyday words ("pintar", "pinchar").
 SAFETY_WHOLE_WORDS = {"pin", "pins"}

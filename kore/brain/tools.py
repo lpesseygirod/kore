@@ -1057,8 +1057,9 @@ def _propose_permission(ctx: Context, args: dict) -> dict:
         raise SpeakerUnknown(None)
     form = _form(ctx)
     usted, tu = PERMISSION_TEXT[kind]
-    readback = (f"{rb.you(form, '¿Me permite', '¿Me dejas')} {rb.you(form, usted, tu)}? "
-                f"{rb.you(form, 'Lo puede cambiar', 'Lo puedes cambiar')} cuando quiera{rb.you(form, '', 's')}.")
+    # The question is the last thing said (01 §3): what can be changed comes first.
+    readback = (f"{rb.you(form, 'Una pregunta, que puede cambiar cuando quiera', 'Una pregunta, que puedes cambiar cuando quieras')}"
+                f": {rb.you(form, '¿me permite', '¿me dejas')} {rb.you(form, usted, tu)}?")
     a = s.propose("permission", {"person_id": s.speaker_id, "kind": kind}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 

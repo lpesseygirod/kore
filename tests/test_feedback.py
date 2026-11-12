@@ -510,3 +510,8 @@ def test_scam_words_are_safety_too():
         assert store.touches_safety(text), text
     for text in ("Me gusta pintar", "Habla de los pinchos de la fiesta"):
         assert not store.touches_safety(text), text
+
+
+def test_despair_words_are_safety_too():
+    assert store.touches_safety("No me vuelvas a preguntar si me quiero matar")
+    assert store.touches_safety("Deja de hablarme de la muerte")

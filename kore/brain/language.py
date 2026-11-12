@@ -78,7 +78,9 @@ def is_affirmative(text: str) -> bool:
     # only counts as the first word ("Si, ya está") or on its own.
     if re.search(r"(^|\W)sí(\W|$)", text.lower()):
         return True
-    return words[0] == "si" and (len(words) == 1 or re.match(r"\s*si\s*[,.!]", text.lower()) is not None)
+    # Seseo and ceceo (Andalucía, Canarias): speech-to-text often writes "sí" as "ci" or "zi". Same rule as plain "si".
+    return words[0] in ("si", "ci", "zi") and (
+        len(words) == 1 or re.match(r"\s*[scz][ií]\s*[,.!]", text.lower()) is not None)
 
 
 def is_negative(text: str) -> bool:

@@ -317,3 +317,15 @@ def test_a_no_to_a_new_question_is_saved_at_once(ctx, conn):
     say(ctx, "Soy Carmen, no, lo del agua no")
     r = call(ctx, "record_permission_no", kind="water_nudges")
     assert "say_and_wait" not in r and store.declined(conn, ctx.session.household[0].id, "water_nudges")
+
+
+def test_permission_question_comes_last(ctx):
+    say(ctx, "Soy Carmen")
+    r = call(ctx, "propose_permission", kind="water_nudges")
+    assert r["say_and_wait"] == ("Una pregunta, que puede cambiar cuando quiera: ¿me permite recordarle de vez en "
+                                 "cuando que beba agua?")
+
+
+def test_seseo_yes_counts():
+    from kore.brain.language import is_affirmative
+    assert is_affirmative("ci") and is_affirmative("Zi, ya está") and not is_affirmative("ci no te importa")
