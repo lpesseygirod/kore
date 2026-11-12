@@ -1,7 +1,7 @@
 # KORE: build plan
 
-> **Two parts.** Part 1, *Pepe the app*: this plan, with Claude as the brain. Part 2, *Pepe's model*: an open
-> model trained only to be Pepe, running on the box. It isn't in this repo. Nothing in part 1 waits for part 2.
+> **Two parts.** Part 1, *the app*: this plan, with Claude as the brain. Part 2, *KORE's model*: an open
+> model trained only to be KORE, running on the box. It isn't in this repo. Nothing in part 1 waits for part 2.
 
 How I'm turning the KORE design document ([PEPE.md](PEPE.md)) into a working device (KORE is the product; Pepe is the companion's default name and wake word), built and tested on my Mac first. It covers the architecture, the services, the risks, the phases with clear "done" checks, and what I have to do by hand. The code refers to its sections (e.g. "BUILD-PLAN 0b.9").
 
