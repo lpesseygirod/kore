@@ -407,7 +407,8 @@ def _propose_reminder_stop(ctx: Context, args: dict) -> dict:
         raise ValueError("no such reminder")
     if row["person_id"] is not None:
         ctx.session.require_speaker(row["person_id"])  # someone's own reminder: only they stop it
-    readback = f"Quito el recordatorio «{row['text']}». ¿Es así?"
+    # The time too: two reminders with the same words ("tomar agua") must not be confused.
+    readback = f"Quito el recordatorio «{row['text']}», el de {rb.clock(row['time_hhmm'])}. ¿Es así?"
     a = ctx.session.propose("stop_reminder", {"reminder_id": row["id"]}, readback)
     return {"ok": True, "action_id": a.id, "say_and_wait": readback}
 
