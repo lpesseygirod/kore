@@ -46,6 +46,7 @@ DEFAULT_HOSTS = ["localhost", "127.0.0.1"]  # plus the box's own name(s), given 
 
 HEADERS = {
     "Content-Security-Policy": "default-src 'none'; style-src 'unsafe-inline'; img-src 'self'; manifest-src 'self'; "
+                               "font-src 'self'; "
                                "form-action 'self'; "
                                "frame-ancestors 'none'; base-uri 'none'",
     "X-Frame-Options": "DENY",
@@ -1009,6 +1010,13 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
             return Response(icons.png(size), media_type="image/png", headers=cached)
         return serve
 
+    async def font(request: Request):
+        name = request.path_params["name"]
+        if name not in icons.FONTS:
+            return PlainTextResponse("Not found", status_code=404, headers=HEADERS)
+        return Response(icons.font(name), media_type="font/woff2",
+                        headers={**cached, "Cache-Control": "public, max-age=2592000"})
+
     async def health(request: Request):
         return PlainTextResponse("ok", headers=HEADERS)
 
@@ -1017,7 +1025,7 @@ def create_app(db_path: str, clock: Clock | None = None, secure: bool = False, h
         Route("/entrar/codigo", code_page), Route("/entrar", use_code, methods=["POST"]),
         Route("/dispositivos", devices), Route("/dispositivos/cerrar", close_device, methods=["POST"]),
         Route("/salir", logout, methods=["POST"]), Route("/salud", health),
-        Route("/manifest.webmanifest", manifest), *[Route(f"/icono-{s}.png", icon(s)) for s in icons.SIZES],
+        Route("/manifest.webmanifest", manifest), Route("/fuentes/{name}", font), *[Route(f"/icono-{s}.png", icon(s)) for s in icons.SIZES],
         Route("/hablar", talk_page), Route("/hablar", talk, methods=["POST"]),
         Route("/hablar/borrar", delete_page), Route("/hablar/borrar", delete, methods=["POST"]),
         Route("/calendario", calendar_page),

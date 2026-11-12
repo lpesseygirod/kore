@@ -1,0 +1,58 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>KORE Persephone — Console</title>
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&amp;family=Figtree:wght@400;500;600;700&amp;display=swap" rel="stylesheet">
+<style>
+body{margin:0}
+a{color:#8C1C2B}a:hover{color:#5E0F1C}
+</style>
+</helmet>
+<div style="min-height: 100vh; background: #F7F2EA; font-family: Figtree, system-ui, sans-serif; color: #2B1418; display: flex; flex-wrap: wrap; align-items: stretch">
+<nav aria-label="Main" style="flex: 1 1 220px; max-width: 260px; min-width: 0; background: #1E1014; color: #F7F2EA; padding: 28px 16px; display: flex; flex-direction: column; gap: 6px">
+<span style="display: flex; align-items: center; gap: 10px; padding: 0 12px 24px"><svg aria-hidden="true" width="30" height="32" viewBox="0 0 54 58"><path d="M31 3 C36 1 40 4 39 8 C35 9 32 7 31 3 Z" fill="#9DB89A"/><path d="M17 12 L20 18 L23.5 13 L27 18 L30.5 13 L34 18 L37 12 L37 20 L17 20 Z" fill="#C2394E"/><circle cx="27" cy="36" r="20" fill="#C2394E"/><circle cx="21" cy="32" r="2.6" fill="#F4A3AE"/><circle cx="29" cy="40" r="2.6" fill="#F4A3AE"/><circle cx="33" cy="31" r="2.2" fill="#F4A3AE"/></svg><span style="font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.02em">Kore</span></span>
+<a href="#" aria-current="page" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; background: #F7F2EA; color: #2B1418; font-size: 16px; font-weight: 700; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M4 10.5 L12 4 L20 10.5 V18.5 A2 2 0 0 1 18 20.5 H6 A2 2 0 0 1 4 18.5 Z"/><circle cx="12" cy="14.5" r="2" fill="#E04A5F" stroke="none"/></svg>Overview</a>
+<a href="#" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; color: #E3D6D2; font-size: 16px; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="3.5" y="5" width="17" height="15.5" rx="4"/><path d="M3.5 10 H20.5 M8.5 3 V6.5 M15.5 3 V6.5"/><circle cx="15.5" cy="15" r="1.8" fill="#E04A5F" stroke="none"/></svg>Calendar</a>
+<a href="#" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; color: #E3D6D2; font-size: 16px; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M5 5.5 H19 A2.5 2.5 0 0 1 21.5 8 V14.5 A2.5 2.5 0 0 1 19 17 H10 L5.5 20.5 V17 H5 A2.5 2.5 0 0 1 2.5 14.5 V8 A2.5 2.5 0 0 1 5 5.5 Z"/><circle cx="8.5" cy="11.25" r="1.2" fill="#E04A5F" stroke="none"/><circle cx="12" cy="11.25" r="1.2" fill="#E04A5F" stroke="none"/><circle cx="15.5" cy="11.25" r="1.2" fill="#E04A5F" stroke="none"/></svg>Chat</a>
+<a href="#" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; color: #E3D6D2; font-size: 16px; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><path d="M12 20 C7 16.5 4 13.5 4 9.8 A4 4 0 0 1 12 8 A4 4 0 0 1 20 9.8 C20 13.5 17 16.5 12 20 Z"/><circle cx="12" cy="11.5" r="1.8" fill="#E04A5F" stroke="none"/></svg>Feedback</a>
+<a href="#" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; color: #E3D6D2; font-size: 16px; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><circle cx="8.5" cy="8.5" r="3"/><circle cx="16.5" cy="10" r="2.4"/><path d="M3 19.5 C3 15.8 5.5 14 8.5 14 C11.5 14 14 15.8 14 19.5 M14.6 15 C17.6 14 21 15.6 21 19"/></svg>People</a>
+<a href="#" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; color: #E3D6D2; font-size: 16px; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linejoin="round"><rect x="6" y="3.5" width="12" height="17" rx="6"/><circle cx="12" cy="8.5" r="1.8" fill="#E04A5F" stroke="none"/><path d="M9.5 15 H14.5"/></svg>Device</a>
+<a href="#" style="min-height: 48px; padding: 0 14px; display: flex; align-items: center; gap: 12px; border-radius: 999px; color: #E3D6D2; font-size: 16px; text-decoration: none"><svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round"><path d="M4 7 H14 M18 7 H20 M4 17 H8 M12 17 H20"/><circle cx="16" cy="7" r="2.2"/><circle cx="10" cy="17" r="2.2" fill="#E04A5F" stroke="none"/></svg>Settings</a>
+</nav>
+<main style="flex: 999 1 640px; min-width: 0; padding: 36px 40px 48px; display: flex; flex-direction: column; gap: 24px">
+<div style="display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 16px">
+<div style="display: flex; flex-direction: column; gap: 4px"><h1 style="margin: 0; font-family: Fraunces, Georgia, serif; font-size: 46px; line-height: 50px; font-weight: 600; letter-spacing: -0.02em">Hola, Lea</h1><span style="font-size: 17px; color: #5C474B">Sunday 8 November · everything is running normally</span></div>
+<span style="display: flex; align-items: center; gap: 8px; padding: 10px 18px; border-radius: 999px; background: #FFFCF7; font-size: 15px; font-weight: 600; box-shadow: 0 10px 24px -20px rgba(43,20,24,0.6)"><span style="width: 10px; height: 10px; border-radius: 50%; background: #3F7A3A"></span>Carmen &amp; Antonio’s home</span>
+</div>
+<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px">
+<div style="background: #FFFCF7; border-radius: 30px; padding: 22px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 14px 30px -24px rgba(43,20,24,0.5)"><span style="font-size: 15px; font-weight: 600; color: #5C474B">Device</span><b style="font-family: Fraunces, Georgia, serif; font-size: 32px; font-weight: 600; color: #3F7A3A">Online</b><span style="font-size: 15px; color: #5C474B">2 min ago</span></div>
+<div style="background: #FFFCF7; border-radius: 30px; padding: 22px; display: flex; flex-direction: column; gap: 6px; box-shadow: 0 14px 30px -24px rgba(43,20,24,0.5)"><span style="font-size: 15px; font-weight: 600; color: #5C474B">Doses today</span><b style="font-family: Fraunces, Georgia, serif; font-size: 32px; font-weight: 600">3 of 4</b><span style="display: flex; gap: 5px" aria-hidden="true"><span style="width: 12px; height: 12px; border-radius: 50%; background: #E04A5F"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #E04A5F"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #E04A5F"></span><span style="width: 12px; height: 12px; border-radius: 50%; background: #E9D9DB"></span></span></div>
+<div style="background: #DDE8D6; border-radius: 30px; padding: 22px; display: flex; flex-direction: column; gap: 6px"><span style="font-size: 15px; font-weight: 600; color: #3B5A36">Conversations</span><b style="font-family: Fraunces, Georgia, serif; font-size: 32px; font-weight: 600; color: #23401F">14</b><span style="font-size: 15px; color: #3B5A36">9 started by them</span></div>
+<a href="#" style="background: #8C1C2B; border-radius: 30px; padding: 22px; display: flex; flex-direction: column; gap: 6px; color: #FFFFFF; text-decoration: none; box-shadow: 0 18px 34px -22px rgba(140,28,43,0.9)"><span style="font-size: 15px; font-weight: 700; color: #F6DCDF">Needs you</span><b style="font-family: Fraunces, Georgia, serif; font-size: 32px; font-weight: 600">1 safety item</b><span style="font-size: 15px; font-weight: 600; color: #F6DCDF">Open feedback →</span></a>
+</div>
+<section aria-labelledby="c-today" style="background: #FFFCF7; border-radius: 30px; padding: 26px; display: flex; flex-direction: column; gap: 10px; box-shadow: 0 14px 30px -24px rgba(43,20,24,0.5)">
+<h2 id="c-today" style="margin: 0 0 6px; font-family: Fraunces, Georgia, serif; font-size: 28px; font-weight: 600; letter-spacing: -0.01em">Today</h2>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px; border-radius: 20px; background: #F7F2EA"><b style="width: 56px">09:00</b><span style="flex: 1 1 200px">Blood pressure pill · Carmen</span><span style="padding: 6px 14px; border-radius: 999px; background: #DDE8D6; color: #23401F; font-size: 14px; font-weight: 700">Taken 09:04</span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px; border-radius: 20px; background: #F7F2EA"><b style="width: 56px">14:00</b><span style="flex: 1 1 200px">Lunch pill · Carmen</span><span style="padding: 6px 14px; border-radius: 999px; background: #DDE8D6; color: #23401F; font-size: 14px; font-weight: 700">Taken 14:22</span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px; border-radius: 20px; background: #F7F2EA"><b style="width: 56px">18:00</b><span style="flex: 1 1 200px">Lucía’s birthday call · both</span><span style="padding: 6px 14px; border-radius: 999px; background: #F4E3C2; color: #5A3F0A; font-size: 14px; font-weight: 700">Upcoming</span></div>
+<div style="display: flex; flex-wrap: wrap; align-items: center; gap: 8px 16px; padding: 12px 16px; border-radius: 20px; background: #F7F2EA"><b style="width: 56px">21:30</b><span style="flex: 1 1 200px">Evening pill · Carmen</span><span style="padding: 6px 14px; border-radius: 999px; background: #F4E3C2; color: #5A3F0A; font-size: 14px; font-weight: 700">Upcoming</span></div>
+</section>
+</main>
+</div>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props='{"$preview":{"width":1280,"height":900}}'>
+class Component extends DCLogic {
+renderVals() {
+return {};
+}
+}
+</script>
+</body>
+</html>

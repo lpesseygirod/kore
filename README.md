@@ -42,6 +42,10 @@ The console I use to look after it (only what they agreed to share):
 
 ![Admin console](docs/media/console.png)
 
+The website ([site/index.html](site/index.html)), in the same look, "Persephone": Kore, who brings back the spring.
+
+![Website](docs/media/site.png)
+
 ## Choosing its voice
 
 I tested three Claude models with the same conversations: someone feeling dizzy, a scam phone call, a fake message about a medicine, and "cállate".

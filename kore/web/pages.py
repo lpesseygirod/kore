@@ -12,156 +12,227 @@ from html import escape
 from kore.web import icons
 
 CSS = """
-/* The look from Lea's design (docs/design/Style.dc.html): wine, linen, Inter, big and calm. */
-:root { --bg: #FBF7F5; --fg: #2A1A1F; --muted: #6F5A61; --card: #FFFFFF; --line: #E6D7DC; --soft-line: #EFE4E8;
-        --accent: #6E1E35; --accent-dark: #4A1224; --tint: #F3E6EA; --tint-line: #E2C9D1; --on-accent: #FFFFFF;
-        --ok-bg: #E4F0EA; --ok: #245640; --wait-bg: #FBEFDF; --wait: #7A410C; --off-bg: #EFEAEC; --off: #4F464A;
-        --online: #2F6B4F; }
+/* Lea's chosen look, "Persephone" (docs/design/persephone/): Kore brings back the spring. Pomegranate, seed, wheat
+   and spring green on warm marble; Fraunces for titles, Figtree for reading. Both fonts are served by the box itself
+   (kore/web/fonts, SIL Open Font Licence), so nothing is loaded from outside. */
+@font-face { font-family: "Fraunces"; src: url(/fuentes/fraunces.woff2) format("woff2"); font-weight: 100 900;
+             font-display: swap; }
+@font-face { font-family: "Figtree"; src: url(/fuentes/figtree.woff2) format("woff2"); font-weight: 300 900;
+             font-display: swap; }
+:root { --bg: #F7F2EA; --fg: #2B1418; --muted: #5C474B; --card: #FFFCF7; --line: #E8DED0; --soft-line: #EFE6DA;
+        --card-edge: transparent; --accent: #8C1C2B; --accent-dark: #5E0F1C; --tint: #F6E4E6; --tint-line: #EBCBD0;
+        --on-accent: #FFFFFF; --on-accent-soft: #F6DCDF; --seed: #E04A5F; --seed-off: #E9D9DB; --wheat: #D9A84E;
+        --ok-bg: #DDE8D6; --ok: #23401F; --wait-bg: #F4E3C2; --wait: #5A3F0A; --off-bg: #EFE6DA; --off: #4A3337;
+        --online: #3F7A3A; --side: #1E1014; --side-fg: #E3D6D2; --side-here: #F7F2EA; --side-here-fg: #2B1418;
+        --shadow: 0 14px 30px -24px rgba(43, 20, 24, .55); --lift: 0 18px 34px -22px rgba(140, 28, 43, .85);
+        --serif: Fraunces, Georgia, "Times New Roman", serif;
+        --sans: Figtree, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
 @media (prefers-color-scheme: dark) {
-  :root { --bg: #1C1517; --fg: #F6EDF0; --muted: #CDB9C0; --card: #261D20; --line: #44343A; --soft-line: #3A2C31;
-          --accent: #E7A3B6; --accent-dark: #F3C6D3; --tint: #3A2530; --tint-line: #5A3A47; --on-accent: #1C1517;
-          --ok-bg: #1F3A2D; --ok: #9AD5B4; --wait-bg: #3D2B14; --wait: #F2C27A; --off-bg: #33292D; --off: #D8CCD0;
-          --online: #8FD3AE; }
+  :root { --bg: #1A0F12; --fg: #F7EDE6; --muted: #CDB8B3; --card: #261719; --line: #46302F; --soft-line: #3A2628;
+          --card-edge: #3A2628; --accent: #F08A99; --accent-dark: #F8B9C2; --tint: #3A1F25; --tint-line: #5A2E37;
+          --on-accent: #1A0F12; --on-accent-soft: #4A1620; --seed: #F06A7C; --seed-off: #4A3336; --wheat: #D9A84E;
+          --ok-bg: #23361F; --ok: #BFDDB4; --wait-bg: #3D2E14; --wait: #F0CC85; --off-bg: #33262A; --off: #D8CCD0;
+          --online: #8FCB86; --side: #120A0C; --shadow: none; --lift: none; }
 }
+@media (prefers-color-scheme: dark) { .mark .pg { fill: #C2394E; } .mark .pg-seed { fill: #F4A3AE; } }
 * { box-sizing: border-box; }
 html { font-size: 20px; }
 html.compact { font-size: 17px; }
-body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.5;
-       font-family: Inter, system-ui, -apple-system, "Segoe UI", Roboto, sans-serif; }
-main { max-width: 40rem; margin: 0 auto; padding: 1.4rem 16px 3rem; }
+body { margin: 0; background: var(--bg); color: var(--fg); line-height: 1.5; font-family: var(--sans); }
+main { max-width: 40rem; margin: 0 auto; padding: 1.2rem 16px 3rem; }
 html.compact main { max-width: 1200px; padding: 2rem 24px 4rem; }
-h1 { font-size: 1.8rem; line-height: 1.22; margin: .3rem 0 1rem; font-weight: 700; }
-h2 { font-size: 1.15rem; line-height: 1.4; margin: 1.6rem 0 .6rem; font-weight: 700; }
+h1, h2, .serif { font-family: var(--serif); font-weight: 600; letter-spacing: -.02em; }
+h1 { font-size: 1.8rem; line-height: 1.12; margin: .3rem 0 1rem; }
+html.compact h1 { font-size: 2.6rem; }
+h2 { font-size: 1.3rem; line-height: 1.3; margin: 1.6rem 0 .6rem; letter-spacing: -.01em; }
 p, li { font-size: 1rem; }
 .muted { color: var(--muted); }
-.label { font-size: .75rem; font-weight: 600; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
+.label { font-size: .75rem; font-weight: 700; letter-spacing: .06em; color: var(--muted); text-transform: uppercase; }
 a { color: var(--accent); }
 a:hover { color: var(--accent-dark); }
-.card { background: var(--card); border: 1px solid var(--line); border-radius: 16px; padding: 1rem 1.2rem;
-        margin: .7rem 0; }
-.card.tint { background: var(--tint); border-color: var(--tint-line); }
-.card.hero { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.card.hero .label, .card.hero .muted { color: var(--tint); }
+:focus-visible { outline: 3px solid var(--seed); outline-offset: 2px; }
+.card { background: var(--card); border: 1px solid var(--card-edge); border-radius: 28px; padding: 1.1rem 1.3rem;
+        margin: .8rem 0; box-shadow: var(--shadow); }
+.card.tint { background: var(--ok-bg); border-color: var(--ok-bg); color: var(--ok); box-shadow: none; }
+.card.tint .muted { color: var(--ok); }
+.card.due { background: var(--tint); border-color: var(--tint); box-shadow: none; }
+.card.hero { background: var(--accent); border-color: var(--accent); color: var(--on-accent); box-shadow: var(--lift); }
+.card.hero .label, .card.hero .muted { color: var(--on-accent-soft); }
 ul.plain { list-style: none; padding: 0; margin: 0; }
-ul.plain li { padding: .6rem 0; border-bottom: 1px solid var(--soft-line); display: flex; gap: .9rem;
+ul.plain li { padding: .65rem 0; border-bottom: 1px solid var(--soft-line); display: flex; gap: .9rem;
               align-items: center; flex-wrap: wrap; }
 ul.plain li:last-child { border-bottom: 0; }
-.time { font-weight: 600; min-width: 3.2rem; font-variant-numeric: tabular-nums; }
+html.compact ul.plain { display: flex; flex-direction: column; gap: .5rem; }
+html.compact ul.plain li { background: var(--bg); border: 0; border-radius: 20px; padding: .7rem 1rem; }
+.time { font-weight: 700; min-width: 3.2rem; font-variant-numeric: tabular-nums; }
 .tag { margin-left: auto; font-size: .8rem; color: var(--muted); white-space: nowrap; }
-.pill { display: inline-block; padding: .2rem .65rem; border-radius: 999px; font-size: .75rem; font-weight: 600;
+.pill { display: inline-block; padding: .25rem .8rem; border-radius: 999px; font-size: .75rem; font-weight: 700;
         background: var(--off-bg); color: var(--off); white-space: nowrap; }
 .pill.ok, .tag.ok { background: var(--ok-bg); color: var(--ok); }
 .pill.wait, .tag.warn { background: var(--wait-bg); color: var(--wait); }
-.tag.ok, .tag.warn { padding: .2rem .65rem; border-radius: 999px; font-weight: 600; }
-.pill.safety { background: var(--accent); color: var(--on-accent); letter-spacing: .04em; font-weight: 700; }
-header.top { background: var(--card); border-bottom: 1px solid var(--line); }
-header.top .bar { max-width: 40rem; margin: 0 auto; padding: .6rem 16px; display: flex; flex-wrap: wrap;
+.tag.ok, .tag.warn { padding: .25rem .8rem; border-radius: 999px; font-weight: 700; }
+.pill.safety { background: var(--accent); color: var(--on-accent); letter-spacing: .04em; }
+.seeds { display: inline-flex; gap: .35rem; align-items: center; }
+.seeds i { width: .8rem; height: .8rem; border-radius: 50%; background: var(--seed-off); display: inline-block; }
+.seeds i.on { background: var(--seed); }
+header.top { background: transparent; }
+header.top .bar { max-width: 40rem; margin: 0 auto; padding: .7rem 16px 0; display: flex; flex-wrap: wrap;
                   align-items: center; gap: .4rem 1rem; }
 html.compact header.top .bar { max-width: 1200px; padding: .8rem 24px; gap: .8rem 2rem; }
-.mark { font-size: 1.1rem; font-weight: 700; letter-spacing: .18em; color: var(--accent); text-decoration: none; }
+.mark { display: inline-flex; align-items: center; gap: .45rem; text-decoration: none; color: var(--fg);
+        font-family: var(--serif); font-size: 1.35rem; font-weight: 600; letter-spacing: -.02em; }
+.mark svg { width: 1.45rem; height: auto; }
 nav { display: flex; gap: .25rem; flex-wrap: wrap; flex: 1 1 auto; align-items: center; }
-nav a, nav button { font: inherit; font-size: .8rem; color: var(--muted); text-decoration: none; background: none;
-      border: 0; padding: .55rem .65rem; border-radius: 8px; cursor: pointer; min-height: 44px; display: inline-flex;
-      align-items: center; }
-nav a.here { background: var(--tint); color: var(--accent); font-weight: 600; }
+nav a, nav button { font: inherit; font-size: .8rem; font-weight: 600; color: var(--muted); text-decoration: none;
+      background: none; border: 0; padding: .55rem .9rem; border-radius: 999px; cursor: pointer; min-height: 44px;
+      display: inline-flex; align-items: center; gap: .6rem; }
+nav a.here { background: var(--tint); color: var(--accent); font-weight: 700; }
 nav form { margin-left: auto; }
-.home-chip { display: flex; align-items: center; gap: .4rem; padding: .35rem .75rem; border: 1px solid var(--line);
-             border-radius: 999px; font-size: .75rem; }
-.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--online); display: inline-block; }
+.home-chip { display: flex; align-items: center; gap: .5rem; padding: .45rem 1rem; border-radius: 999px;
+             font-size: .8rem; font-weight: 600; background: var(--card); box-shadow: var(--shadow); }
+.dot { width: 10px; height: 10px; border-radius: 50%; background: var(--online); display: inline-block; }
 .dot.off { background: var(--wait); }
-button.big, a.big { display: block; width: 100%; font: inherit; font-size: 1.05rem; font-weight: 600;
-      text-align: center; padding: .85rem 1rem; margin: .6rem 0; border-radius: 12px; min-height: 48px;
-      border: 1px solid var(--accent); background: var(--accent); color: var(--on-accent); cursor: pointer;
-      text-decoration: none; }
-a.big:hover, button.big:hover { background: var(--accent-dark); color: var(--on-accent); }
-button.big.second, a.big.second { background: var(--card); color: var(--accent); }
+/* Lea's console: a dark pomegranate-black side bar on a wide screen, a dark top bar on a narrow one. */
+html.compact header.top { background: var(--side); color: var(--side-fg); }
+html.compact .mark { color: #F7F2EA; }
+/* The pomegranate on a dark ground (the console's side bar, dark mode): lighter, as in the design. */
+html.compact .mark .pg { fill: #C2394E; } html.compact .mark .pg-seed { fill: #F4A3AE; }
+html.compact nav a, html.compact nav button { color: var(--side-fg); font-size: .95rem; }
+html.compact nav a.here { background: var(--side-here); color: var(--side-here-fg); }
+html.compact .home-chip { background: rgba(255, 255, 255, .08); box-shadow: none; color: var(--side-fg); }
+html.compact header.top button.small { background: transparent; color: var(--side-fg);
+                                       border-color: rgba(255, 255, 255, .28); }
+@media (min-width: 960px) {
+  html.compact header.top { position: fixed; top: 0; bottom: 0; left: 0; width: 248px; overflow-y: auto; z-index: 5; }
+  html.compact header.top .bar { flex-direction: column; flex-wrap: nowrap; align-items: stretch; height: 100%;
+                                 padding: 28px 16px; gap: 1.2rem; }
+  html.compact .mark { padding: 0 12px 12px; font-size: 1.7rem; }
+  html.compact header.top nav { flex-direction: column; align-items: stretch; flex: 0 0 auto; gap: .3rem; }
+  html.compact nav a { min-height: 48px; padding: 0 1.1rem; }
+  html.compact .home-chip { margin-top: auto; }
+  html.compact main { margin: 0 auto 0 248px; padding: 2.2rem 40px 4rem; }
+}
+button.big, a.big { display: block; width: 100%; font: inherit; font-size: 1.05rem; font-weight: 700;
+      text-align: center; padding: .85rem 1.4rem; margin: .7rem 0; border-radius: 999px; min-height: 60px;
+      border: 2px solid var(--accent); background: var(--accent); color: var(--on-accent); cursor: pointer;
+      text-decoration: none; box-shadow: var(--lift); }
+a.big { display: flex; align-items: center; justify-content: center; }
+a.big:hover, button.big:hover { background: var(--accent-dark); border-color: var(--accent-dark); color: var(--on-accent); }
+button.big.second, a.big.second { background: var(--card); color: var(--accent); border-color: var(--tint-line);
+      box-shadow: none; }
+button.big.second:hover, a.big.second:hover { background: var(--tint); color: var(--accent); }
 a.small.here { background: var(--tint); border-color: var(--tint-line); }
 button.small, a.small { text-decoration: none; display: inline-flex; align-items: center; font: inherit;
-      font-size: .8rem; font-weight: 600; padding: .35rem .8rem; min-height: 44px; border-radius: 10px;
+      font-size: .8rem; font-weight: 700; padding: .35rem 1rem; min-height: 44px; border-radius: 999px;
       border: 1px solid var(--line); background: var(--card); color: var(--accent); cursor: pointer; }
 input.code { font: inherit; font-size: 2rem; letter-spacing: .4em; text-align: center; width: 100%;
-      padding: .6rem; border-radius: 12px; border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+      padding: .6rem; border-radius: 22px; border: 2px solid var(--line); background: var(--card); color: var(--fg); }
 .chat { display: flex; flex-direction: column; gap: .6rem; margin: 1rem 0; }
-.bubble { max-width: 85%; padding: .65rem .9rem; border-radius: 16px 16px 16px 4px; border: 1px solid var(--line);
-          background: var(--card); white-space: pre-wrap; overflow-wrap: anywhere; }
+.bubble { max-width: 85%; padding: .7rem 1rem; border-radius: 22px 22px 22px 6px; border: 1px solid var(--card-edge);
+          background: var(--card); white-space: pre-wrap; overflow-wrap: anywhere; box-shadow: var(--shadow); }
 .bubble.me { align-self: flex-end; background: var(--accent); border-color: var(--accent); color: var(--on-accent);
-             border-radius: 16px 16px 4px 16px; }
-.bubble.me .when { color: var(--tint); }
-.bubble img { display: block; max-width: 100%; height: auto; border-radius: 10px; margin-bottom: .3rem; }
+             border-radius: 22px 22px 6px 22px; box-shadow: none; }
+.bubble.me .when { color: var(--on-accent-soft); }
+.bubble img { display: block; max-width: 100%; height: auto; border-radius: 16px; margin-bottom: .3rem; }
 .bubble .when { display: block; font-size: .7rem; color: var(--muted); margin-top: .25rem; }
-.note-line { align-self: center; padding: .3rem .8rem; border-radius: 999px; background: var(--off-bg);
+.note-line { align-self: center; padding: .3rem .9rem; border-radius: 999px; background: var(--off-bg);
              color: var(--off); font-size: .7rem; }
-textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .7rem; border-radius: 12px;
-               border: 1px solid var(--line); background: var(--card); color: var(--fg); }
-.msg { padding: .8rem 1rem; border-radius: 14px; border: 1px solid var(--line); background: var(--card); }
-.msg.bad { border-color: var(--wait); background: var(--wait-bg); color: var(--wait); }
-.msg.good { border-color: var(--ok); background: var(--ok-bg); color: var(--ok); }
-label.f { display: block; margin: .9rem 0 .3rem; font-weight: 600; }
-input.f, select.f { font: inherit; width: 100%; min-height: 48px; padding: .55rem .75rem; border-radius: 10px;
-      border: 1px solid var(--line); background: var(--card); color: var(--fg); }
+textarea.say { font: inherit; width: 100%; min-height: 5.5rem; padding: .8rem 1rem; border-radius: 22px;
+               border: 2px solid var(--line); background: var(--card); color: var(--fg); }
+.msg { padding: .85rem 1.1rem; border-radius: 22px; border: 1px solid var(--line); background: var(--card); }
+.msg.bad { border-color: var(--wait-bg); background: var(--wait-bg); color: var(--wait); }
+.msg.good { border-color: var(--ok-bg); background: var(--ok-bg); color: var(--ok); }
+label.f { display: block; margin: .9rem 0 .3rem; font-weight: 700; }
+input.f, select.f { font: inherit; width: 100%; min-height: 52px; padding: .55rem 1rem; border-radius: 16px;
+      border: 2px solid var(--line); background: var(--card); color: var(--fg); }
 .check { display: flex; gap: .55rem; align-items: center; margin: .6rem 0; font-size: 1rem; min-height: 44px; }
 .check input { width: 1.4rem; height: 1.4rem; accent-color: var(--accent); }
 .days { display: flex; flex-wrap: wrap; gap: .1rem 1rem; }
-.readback { font-size: 1.2rem; font-weight: 600; }
+.readback { font-family: var(--serif); font-size: 1.3rem; font-weight: 600; }
 ul.plain li form { margin-left: auto; }
 ul.plain li .what { flex: 1 1 12rem; min-width: 0; }
 .grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 16px; }
-.stat { display: flex; flex-direction: column; gap: .3rem; text-decoration: none; color: var(--fg); margin: 0; }
-.stat .big-number { font-size: 1.3rem; font-weight: 700; }
+.stat { display: flex; flex-direction: column; gap: .3rem; text-decoration: none; color: var(--fg); margin: 0;
+        padding: 1.3rem; }
+.stat .big-number { font-family: var(--serif); font-size: 1.9rem; line-height: 1.15; font-weight: 600; }
+.stat.tint .label { color: var(--ok); }
 .row { display: flex; flex-wrap: wrap; gap: 24px; align-items: flex-start; }
 .row > .wide { flex: 999 1 520px; min-width: 0; }
 .row > .side { flex: 1 1 300px; min-width: 0; }
-.kv { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; }
-.week { overflow-x: auto; border: 1px solid var(--line); border-radius: 16px; background: var(--card); }
+.kv { display: flex; justify-content: space-between; align-items: center; gap: 1rem; padding: .35rem 0; }
+.week { overflow-x: auto; border-radius: 28px; background: var(--card); box-shadow: var(--shadow);
+        border: 1px solid var(--card-edge); }
 .week .days7 { min-width: 980px; display: grid; grid-template-columns: repeat(7, minmax(0, 1fr)); }
-.week .day { border-right: 1px solid var(--soft-line); padding: .7rem .5rem; display: flex; flex-direction: column;
+.week .day { border-right: 1px solid var(--soft-line); padding: .8rem .55rem; display: flex; flex-direction: column;
              gap: .4rem; min-height: 300px; }
 .week .day:last-child { border-right: 0; }
-.week .day.today { background: var(--tint); }
-.ev { border-radius: 8px; padding: .4rem; font-size: .7rem; line-height: 1.35; background: var(--off-bg); }
+.week .day.today { background: var(--ok-bg); }
+.ev { border-radius: 12px; padding: .45rem .55rem; font-size: .7rem; line-height: 1.35; background: var(--off-bg); }
 .ev.med { background: var(--tint); } .ev.appt { background: var(--wait-bg); }
 .ev.bday { background: var(--accent); color: var(--on-accent); }
 .legend { display: flex; flex-wrap: wrap; gap: .4rem 1.2rem; font-size: .75rem; color: var(--muted); }
-.sw { width: 14px; height: 14px; border-radius: 4px; display: inline-block; vertical-align: middle;
+.sw { width: 14px; height: 14px; border-radius: 50%; display: inline-block; vertical-align: middle;
       margin-right: .4rem; border: 1px solid var(--line); }
 table.perm { width: 100%; border-collapse: collapse; font-size: .85rem; }
 table.perm th, table.perm td { text-align: left; padding: .55rem .4rem; border-bottom: 1px solid var(--soft-line); }
 html.size-mayor { font-size: 23px; } html.size-enorme { font-size: 26px; }
-body:has(nav.tabs) main { padding-bottom: 7rem; }
-nav.tabs { position: fixed; left: 0; right: 0; bottom: 0; z-index: 5; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr));
-           background: var(--card); border-top: 1px solid var(--line); padding: .3rem .3rem 1rem; gap: 0; }
-nav.tabs a { flex-direction: column; justify-content: center; gap: .15rem; font-size: .75rem; min-height: 64px;
-             font-weight: 600; color: var(--off); }
-nav.tabs a.here { background: none; color: var(--accent); font-weight: 700; }
+/* The family app's tab bar: a floating card at the bottom, the current tab in pomegranate. */
+body:has(nav.tabs) main { padding-bottom: 8rem; }
+nav.tabs { position: fixed; bottom: 14px; left: 50%; transform: translateX(-50%); width: min(40rem, calc(100% - 28px));
+           z-index: 5; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 4px; padding: 8px;
+           background: var(--card); border: 1px solid var(--card-edge); border-radius: 32px;
+           box-shadow: 0 14px 30px -18px rgba(43, 20, 24, .5); margin-bottom: env(safe-area-inset-bottom); }
+nav.tabs a { flex-direction: column; justify-content: center; gap: .1rem; font-size: .7rem; min-height: 64px;
+             padding: .3rem; border-radius: 24px; font-weight: 600; color: var(--off); }
+nav.tabs a.here { background: var(--accent); color: var(--on-accent); font-weight: 700; }
+nav.tabs a.here .seed { fill: var(--wheat); }
 nav.tabs svg { width: 1.4rem; height: 1.4rem; }
+.seed { fill: var(--seed); stroke: none; }
 .big-card { display: flex; justify-content: space-between; align-items: center; gap: .8rem; background: var(--card);
-            border: 2px solid var(--line); border-radius: 20px; padding: .8rem 1rem; color: var(--fg);
-            text-decoration: none; margin: .7rem 0; }
+            border: 1px solid var(--card-edge); border-radius: 28px; padding: 1rem 1.2rem; color: var(--fg);
+            text-decoration: none; margin: .8rem 0; box-shadow: var(--shadow); }
 .big-card b { font-size: 1.05rem; } .big-card .chev { font-size: 1.6rem; color: var(--accent); }
-.next { background: var(--accent); color: var(--on-accent); border-radius: 20px; padding: 1rem; margin: .7rem 0;
-        display: flex; flex-direction: column; gap: .6rem; }
-.next .label { color: var(--tint); } .next .what { font-size: 1.15rem; font-weight: 600; }
-.next a { background: var(--card); color: var(--accent); border-radius: 14px; min-height: 56px; display: flex;
-          align-items: center; justify-content: center; font-weight: 700; text-decoration: none; }
-a.talk { min-height: 80px; border-radius: 20px; background: var(--tint); border: 2px solid var(--tint-line);
-         display: flex; align-items: center; justify-content: center; gap: .6rem; color: var(--accent);
-         font-size: 1.1rem; font-weight: 700; text-decoration: none; margin: .7rem 0; }
+.big-card.spring { background: var(--ok-bg); border-color: var(--ok-bg); color: var(--ok); box-shadow: none; }
+.big-card.spring .muted { color: var(--ok); }
+/* The person's home: KORE is here (pomegranate), what comes next (wheat), today's pills (spring). */
+.here-card { background: var(--accent); color: var(--on-accent); border-radius: 32px; padding: 1.1rem; margin: .9rem 0;
+             display: flex; flex-direction: column; gap: .8rem; box-shadow: var(--lift); }
+.here-card .who { display: flex; align-items: center; gap: .7rem; }
+.here-card .who b { font-size: 1.05rem; display: block; }
+.here-card .who b + span { color: var(--on-accent-soft); }
+.avatar { flex: 0 0 auto; width: 3rem; height: 3rem; border-radius: 50%; background: var(--bg); display: flex;
+          align-items: center; justify-content: center; }
+.avatar svg { width: 1.7rem; height: auto; }
+a.talk { min-height: 64px; border-radius: 999px; background: var(--card); color: var(--accent); display: flex;
+         align-items: center; justify-content: center; gap: .5rem; font-size: 1.05rem; font-weight: 700;
+         text-decoration: none; }
+a.talk:hover { background: var(--bg); color: var(--accent-dark); }
+.next { background: var(--card); color: var(--fg); border: 1px solid var(--card-edge); border-radius: 28px;
+        padding: 1rem 1.2rem; margin: .8rem 0; display: flex; flex-wrap: wrap; align-items: center;
+        justify-content: space-between; gap: .7rem; box-shadow: var(--shadow); }
+.next .label { color: var(--wait); display: block; } .next .what { font-size: 1.05rem; font-weight: 700; }
+.next a { background: var(--wheat); color: #2B1418; border-radius: 999px; min-height: 52px; padding: 0 1.1rem;
+          display: flex; align-items: center; justify-content: center; font-weight: 800; text-decoration: none; }
 .day-tabs { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .4rem; margin: .5rem 0 1rem; }
-.day-tabs a { min-height: 64px; border-radius: 14px; border: 2px solid var(--tint-line); background: var(--card);
+.day-tabs a { min-height: 64px; border-radius: 22px; border: 0; background: var(--card); box-shadow: var(--shadow);
               color: var(--fg); display: flex; flex-direction: column; align-items: center; justify-content: center;
               text-decoration: none; font-weight: 600; font-size: .85rem; line-height: 1.2; }
-.day-tabs a.here { background: var(--accent); border-color: var(--accent); color: var(--on-accent); font-weight: 700; }
-.item { display: flex; gap: .7rem; align-items: center; background: var(--card); border: 2px solid var(--line);
-        border-radius: 16px; padding: .7rem .8rem; margin: .5rem 0; }
+.day-tabs a.here { background: var(--accent); color: var(--on-accent); font-weight: 700; }
+.item { display: flex; gap: .7rem; align-items: center; background: var(--card); border: 1px solid var(--card-edge);
+        border-radius: 22px; padding: .8rem 1rem; margin: .5rem 0; box-shadow: var(--shadow); }
 .item b { min-width: 3.2rem; } .item.done { opacity: .75; }
 .item.bday { background: var(--accent); border-color: var(--accent); color: var(--on-accent); }
-.item.appt { background: var(--wait-bg); border-color: var(--wait-bg); }
-.item.med { background: var(--tint); border-color: var(--tint); } .item.med.done { background: var(--card); }
+.item.bday .sub { color: var(--on-accent-soft); }
+.item.appt { background: var(--wait-bg); border-color: var(--wait-bg); box-shadow: none; }
+.item.med { background: var(--tint); border-color: var(--tint); box-shadow: none; }
+.item.med.done { background: var(--ok-bg); border-color: var(--ok-bg); }
 .item .sub { display: block; font-size: .8rem; color: var(--muted); }
-.ok-text { color: var(--ok); font-weight: 600; }
+.ok-text { color: var(--ok); font-weight: 700; }
 .pair { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: .5rem; }
-.pair a, .pair button { margin: 0; }
-button.huge { min-height: 96px; font-size: 1.2rem; border-radius: 22px; }
+.pair a, .pair button { margin: 0; border-radius: 28px; padding: .85rem .8rem; }
+button.huge { min-height: 96px; font-size: 1.2rem; border-radius: 32px; }
+a.help { min-height: 48px; padding: 0 1.1rem; display: inline-flex; align-items: center; border-radius: 999px;
+         background: var(--wait-bg); color: var(--wait); font-weight: 700; text-decoration: none; }
 .skip { position: absolute; left: -999px; } .skip:focus { left: 8px; top: 8px; background: var(--card); padding: .5rem; }
 """
 
@@ -179,6 +250,29 @@ def e(value) -> str:
     return escape("" if value is None else str(value), quote=True)
 
 
+POMEGRANATE = ('<path d="M31 3 C36 1 40 4 39 8 C35 9 32 7 31 3 Z" fill="#9DB89A"/>'
+               '<path class="pg" d="M17 12 L20 18 L23.5 13 L27 18 L30.5 13 L34 18 L37 12 L37 20 L17 20 Z" fill="#8C1C2B"/>'
+               '<circle class="pg" cx="27" cy="36" r="20" fill="#8C1C2B"/>'
+               '<circle class="pg-seed" cx="21" cy="32" r="2.6" fill="#E04A5F"/>'
+               '<circle class="pg-seed" cx="29" cy="40" r="2.6" fill="#E04A5F"/>'
+               '<circle class="pg-seed" cx="33" cy="31" r="2.2" fill="#E04A5F"/>')
+
+
+def pomegranate(width: int = 29) -> str:
+    """KORE's mark: a pomegranate with a spring leaf (Kore, Persephone, brings back the spring)."""
+    return (f'<svg aria-hidden="true" width="{width}" height="{round(width * 58 / 54)}" viewBox="0 0 54 58">'
+            f'{POMEGRANATE}</svg>')
+
+
+MARK = f'<a class="mark" href="/">{pomegranate()}Kore</a>'
+
+
+def seeds(on: int, total: int) -> str:
+    """Progress as pomegranate seeds (pills taken today): a filled seed for each one done."""
+    return ('<span class="seeds" aria-hidden="true">' + "".join(
+        f'<i class="{"on" if i < on else ""}"></i>' for i in range(min(total, 12))) + "</span>")
+
+
 def layout(title: str, body: str, nav: str = "", lang: str = "es", compact: bool = False, after: str = "") -> str:
     """compact: Lea's console (a wider page, smaller type, in English). `after`: what goes below the page (the
     family app's tab bar)."""
@@ -193,12 +287,12 @@ def layout(title: str, body: str, nav: str = "", lang: str = "es", compact: bool
 
 def menu(here: str, account) -> str:
     if account.role == "person":
-        return (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a><nav aria-label="Arriba">'
+        return (f'<header class="top"><div class="bar">{MARK}<nav aria-label="Arriba">'
                 f'<a href="/ajustes" class="{"here" if here == "/ajustes" else ""}" style="margin-left:auto">Ajustes</a>'
-                f'</nav></div></header>' + tabs(here))
+                f'<a class="help" href="/ayuda">Ayuda</a></nav></div></header>' + tabs(here))
     mine = [("/hablar", "Hablar"), ("/calendario", "Calendario"), ("/compra", "La compra"), ("/sabe", "Sobre mí")]
     if account.role == "family":
-        return (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a><nav aria-label="Arriba">'
+        return (f'<header class="top"><div class="bar">{MARK}<nav aria-label="Arriba">'
                 f'<a href="/dispositivos" style="margin-left:auto">Dispositivos</a><form method="post" action="/salir">'
                 f'<button type="submit">Salir</button></form></nav></div></header>'
                 + tabs(here, [("/", "Inicio", "home"), ("/familia/calendario", "Calendario", "cal"),
@@ -207,18 +301,26 @@ def menu(here: str, account) -> str:
         items = [("/", "Hoy")] + (mine if account.role == "person" else []) + [("/dispositivos", "Dispositivos")]
     links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}"'
                     f'{" aria-current=page" if href == here else ""}>{e(label)}</a>' for href, label in items)
-    return (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a><nav aria-label="Menú">{links}'
+    return (f'<header class="top"><div class="bar">{MARK}<nav aria-label="Menú">{links}'
             f'<form method="post" action="/salir"><button type="submit">Salir</button></form></nav></div></header>')
 
 
 ICONS = {
-    "home": '<path d="M3 11 L12 4 L21 11"/><path d="M5 10 V20 H19 V10"/>',
-    "chat": '<path d="M4 5 H20 V16 H9 L4 20 Z"/>',
-    "cal": '<rect x="3" y="5" width="18" height="16" rx="2"/><path d="M3 10 H21 M8 3 V7 M16 3 V7"/>',
-    "family": '<circle cx="9" cy="8" r="3"/><circle cx="17" cy="9" r="2.5"/>'
-              '<path d="M3 20 A6 6 0 0 1 15 20 M14 20 A4.5 4.5 0 0 1 21 17"/>',
-    "bell": '<path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z"/><path d="M10 21 H14"/>',
-    "mic": '<rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11 A7 7 0 0 0 19 11 M12 18 V21"/>',
+    "home": '<path d="M4 10.5 L12 4 L20 10.5 V18.5 A2 2 0 0 1 18 20.5 H6 A2 2 0 0 1 4 18.5 Z"/>'
+            '<circle class="seed" cx="12" cy="14.5" r="2"/>',
+    "chat": '<path d="M5 5.5 H19 A2.5 2.5 0 0 1 21.5 8 V14.5 A2.5 2.5 0 0 1 19 17 H10 L5.5 20.5 V17 H5 A2.5 2.5 0 0 1 '
+            '2.5 14.5 V8 A2.5 2.5 0 0 1 5 5.5 Z"/><circle class="seed" cx="8.5" cy="11.25" r="1.3"/>'
+            '<circle class="seed" cx="12" cy="11.25" r="1.3"/><circle class="seed" cx="15.5" cy="11.25" r="1.3"/>',
+    "cal": '<rect x="3.5" y="5" width="17" height="15.5" rx="4"/><path d="M3.5 10 H20.5 M8.5 3 V6.5 M15.5 3 V6.5"/>'
+           '<circle class="seed" cx="15.5" cy="15" r="1.8"/>',
+    "family": '<circle cx="8.5" cy="8.5" r="3"/><circle cx="16.5" cy="10" r="2.4"/>'
+              '<path d="M3 19.5 C3 15.8 5.5 14 8.5 14 C11.5 14 14 15.8 14 19.5 M14.6 15 C17.6 14 21 15.6 21 19"/>'
+              '<path class="seed" d="M12.2 4.4 C12.2 3.3 13.8 3 14.2 4 C14.6 3 16.2 3.3 16.2 4.4 C16.2 5.5 14.2 6.6 '
+              '14.2 6.6 C14.2 6.6 12.2 5.5 12.2 4.4 Z"/>',
+    "bell": '<path d="M6 16 V11 A6 6 0 0 1 18 11 V16 L20 18 H4 Z"/><path d="M10 21 H14"/>'
+            '<circle class="seed" cx="12" cy="12" r="1.8"/>',
+    "mic": '<rect x="8.5" y="3" width="7" height="11.5" rx="3.5"/><path d="M5.5 11.5 A6.5 6.5 0 0 0 18.5 11.5 M12 18 V21"/>'
+           '<circle class="seed" cx="12" cy="7.5" r="1.4"/>',
 }
 TAB_OF = {"/familia/cita": "/familia/calendario", "/": "/", "/hablar": "/hablar", "/agenda": "/agenda", "/calendario": "/agenda", "/pastillas": "/agenda",
           "/compra": "/agenda", "/mi-familia": "/mi-familia", "/fotos": "/mi-familia"}
@@ -226,7 +328,7 @@ TAB_OF = {"/familia/cita": "/familia/calendario", "/": "/", "/hablar": "/hablar"
 
 def icon(name: str, size: int = 28) -> str:
     return (f'<svg aria-hidden="true" width="{size}" height="{size}" viewBox="0 0 24 24" fill="none" '
-            f'stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">'
+            f'stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">'
             f'{ICONS[name]}</svg>')
 
 
@@ -763,22 +865,25 @@ def family_propose(account, people: list[dict], mine: list[dict], today: str, f:
 def elder_home(account, d: dict) -> str:
     parts = [f'<h1 style="margin-bottom:.2rem">Hola, {e(account.name)}</h1>'
              f'<p class="muted" style="margin:0">{e(d["date"])}<br>{e(d["time"])}{" · " + e(d["weather"]) if d.get("weather") else ""}</p>']
+    # Lea's design (Persephone): KORE is here (pomegranate), what comes next (wheat), today's pills (spring).
+    parts.append(f'<div class="here-card"><div class="who"><span class="avatar" aria-hidden="true">{pomegranate(34)}'
+                 f'</span><span><b>Pepe está aquí</b><span>{t("Pregúntale lo que quieras.", "Pregúntele lo que quiera.")}'
+                 f'</span></span></div><a class="talk" href="/hablar">{icon("mic", 30)}Hablar con Pepe</a></div>')
     nxt = d.get("next")
     if nxt:
         when = f" · {e(nxt['time'])}" if nxt.get("time") else ""
         call = (f'<a href="tel:{e(nxt["phone"])}">Llamar a {e(nxt["call"])}</a>' if nxt.get("phone") else "")
-        parts.append(f'<div class="next"><span class="label">Lo próximo{when}</span>'
-                     f'<span class="what">{e(nxt["text"])}</span>{call}</div>')
+        parts.append(f'<div class="next"><span><span class="label">Lo próximo{when}</span>'
+                     f'<span class="what">{e(nxt["text"])}</span></span>{call}</div>')
     p = d["pills"]
     if not p["clock_ok"]:
         parts.append('<p class="msg bad">La hora de Pepe no es fiable ahora mismo, así que las pastillas no se '
                      'muestran. Mira el pastillero.</p>')
     elif p["doses"]:
         more = f" · la próxima a las {e(p['next'])}" if p["next"] else ""
-        parts.append(f'<a class="big-card" href="/pastillas"><span><b>Pastillas de hoy</b><br>'
+        parts.append(f'<a class="big-card spring" href="/pastillas"><span><b>Pastillas de hoy</b><br>'
                      f'<span class="muted">{p["taken"]} de {len(p["doses"])} tomadas{more}</span></span>'
-                     f'<span class="chev" aria-hidden="true">›</span></a>')
-    parts.append(f'<a class="talk" href="/hablar">{icon("mic", 30)}Hablar con Pepe</a>')
+                     f'{seeds(p["taken"], len(p["doses"]))}</a>')
     if d.get("new_photos"):
         n = len(d["new_photos"])
         who = " y ".join(sorted({x["from"] for x in d["new_photos"]}))
@@ -804,7 +909,6 @@ def elder_home(account, d: dict) -> str:
     if d.get("shopping"):
         parts.append(f'<a class="big-card" href="/compra"><span><b>La compra</b><br><span class="muted">'
                      f'{e(" · ".join(d["shopping"][:6]))}</span></span><span class="chev" aria-hidden="true">›</span></a>')
-    parts.append('<a class="big second" href="/ayuda" style="margin-top:1.2rem">Pedir ayuda</a>')
     return layout("Pepe — Inicio", "".join(parts), menu("/", account))
 
 
@@ -845,7 +949,7 @@ def elder_pills(account, p: dict, note: str = "") -> str:
                 state = '<span class="muted">Sin apuntar</span>'
             button = (f'<form method="post" action="/pastillas/tomada"><input type="hidden" name="id" value="{d["med_id"]}">'
                       f'<button class="big" type="submit">Ya me la he tomado</button></form>' if d["med_id"] else "")
-            cards.append(f'<div class="card{" tint" if d["med_id"] else ""}"><div class="kv"><b style="font-size:1.05rem">'
+            cards.append(f'<div class="card{" due" if d["med_id"] else ""}"><div class="kv"><b style="font-size:1.05rem">'
                          f'{e(d["time"])}</b>{state}</div><div>{e(d["name"])}</div>{button}</div>')
         body = "".join(cards) or f'<p class="msg">Hoy no {t("tienes", "tiene")} pastillas apuntadas.</p>'
     notice = f'<p class="msg good" role="status">{e(note)}</p>' if note else ""

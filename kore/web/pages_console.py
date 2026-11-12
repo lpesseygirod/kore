@@ -4,18 +4,30 @@ from __future__ import annotations
 
 from datetime import date, timedelta
 
-from kore.web.pages import e, layout
+from kore.web.pages import ICONS, MARK, e, layout, seeds
 
-NAV = [("/", "Overview"), ("/console/calendar", "Calendar"), ("/console/chat", "Chat"),
-       ("/console/feedback", "Feedback"), ("/console/people", "People"), ("/console/device", "Device"),
-       ("/console/settings", "Settings")]
+NAV = [("/", "Overview", "home"), ("/console/calendar", "Calendar", "cal"), ("/console/chat", "Chat", "chat"),
+       ("/console/feedback", "Feedback", "heart"), ("/console/people", "People", "family"),
+       ("/console/device", "Device", "box"), ("/console/settings", "Settings", "sliders")]
+SIDE_ICONS = {**ICONS,
+              "heart": '<path d="M12 20 C7 16.5 4 13.5 4 9.8 A4 4 0 0 1 12 8 A4 4 0 0 1 20 9.8 C20 13.5 17 16.5 12 20 Z"/>'
+                       '<circle class="seed" cx="12" cy="11.5" r="1.8"/>',
+              "box": '<rect x="6" y="3.5" width="12" height="17" rx="6"/><circle class="seed" cx="12" cy="8.5" r="1.8"/>'
+                     '<path d="M9.5 15 H14.5"/>',
+              "sliders": '<path d="M4 7 H14 M18 7 H20 M4 17 H8 M12 17 H20"/><circle cx="16" cy="7" r="2.2"/>'
+                         '<circle class="seed" cx="10" cy="17" r="2.2"/>'}
+
+
+def _icon(name: str) -> str:
+    return (f'<svg aria-hidden="true" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" '
+            f'stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">{SIDE_ICONS[name]}</svg>')
 
 
 def _page(title: str, here: str, home: str, body: str, online: bool | None = None) -> str:
     links = "".join(f'<a href="{href}" class="{"here" if href == here else ""}"'
-                    f'{" aria-current=page" if href == here else ""}>{e(label)}</a>' for href, label in NAV)
+                    f'{" aria-current=page" if href == here else ""}>{_icon(ic)}{e(label)}</a>' for href, label, ic in NAV)
     dot = "" if online is None else f'<span class="dot{"" if online else " off"}"></span>'
-    nav = (f'<header class="top"><div class="bar"><a class="mark" href="/">KORE</a>'
+    nav = (f'<header class="top"><div class="bar">{MARK}'
            f'<nav aria-label="Main">{links}</nav><span class="home-chip">{dot}{e(home)}</span>'
            f'<form method="post" action="/salir"><button class="small" type="submit">Log out</button></form>'
            f'</div></header>')
@@ -56,8 +68,10 @@ def overview(d: dict) -> str:
     nxt = f'Next: {e(today["next"][1])}, {e(today["next"][0])}' if today.get("next") else "&nbsp;"
     cards = [device_card,
              f'<a class="card stat" href="/console/calendar"><span class="label">Today’s doses</span>'
-             f'<span class="big-number">{e(doses)}</span><span class="muted">{nxt}</span></a>',
-             f'<a class="card stat" href="/console/chat"><span class="label">Web messages</span>'
+             f'<span class="big-number">{e(doses)}</span>'
+             f'{seeds(today["taken"], today["total"]) if today["anyone"] and today["total"] else ""}'
+             f'<span class="muted">{nxt}</span></a>',
+             f'<a class="card stat tint" href="/console/chat"><span class="label">Web messages</span>'
              f'<span class="big-number">{"Not shared" if d["messages_today"] is None else str(d["messages_today"]) + " today"}'
              f'</span><span class="muted">Written to Pepe on their page</span></a>',
              f'<a class="card stat {"hero" if d["needs_you"] else ""}" href="/console/feedback"><span class="label">'
